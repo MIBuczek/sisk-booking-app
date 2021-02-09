@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 const App: React.SFC = () => {
   return (
@@ -9,4 +9,4 @@ const App: React.SFC = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root") as HTMLElement);
+ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);

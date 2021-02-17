@@ -1,12 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import App from './App';
+import { Provider } from 'react-redux';
+import { store } from './store/rootReducer';
 
-const App: React.SFC = () => {
+const Root = () => {
   return (
-    <h1>
-      <h1>My React and TypeScript App!</h1>
-    </h1>
+    <Provider store={store}>
+      <App />
+    </Provider>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+ReactDOM.render(<Root />, document.getElementById('root') as HTMLElement);

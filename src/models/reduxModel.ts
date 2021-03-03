@@ -1,3 +1,9 @@
+interface IPayload {
+  isFetching: boolean;
+  savingStage: string;
+  errorMessage: string;
+}
+
 //user
 interface IUser {
   name: string;
@@ -9,10 +15,7 @@ export interface IUserFeching {
   payload: IUserPayload;
 }
 
-export interface IUserPayload {
-  isFetching: boolean;
-  savingStage: string;
-  errorMessage: string;
+export interface IUserPayload extends IPayload {
   auth: null | string;
   user?: IUser;
 }
@@ -29,23 +32,16 @@ export interface IClient {
   id: string;
 }
 
-export interface IClientsPayload {
-  isFetching: boolean;
-  savingStage: string;
-  errorMessage: string;
+export interface IClientsPayload extends IPayload {
   clients: IClient[] | [];
+  [key: string]: any;
 }
-export interface IClientsPayloadData {
-  isFetching: boolean;
-  savingStage: string;
-  errorMessage: string;
+export interface IClientsPayloadData extends IPayload {
   client: IClient | {};
+  [key: string]: any;
 }
 
-export interface IClientsPayloadId {
-  isFetching: boolean;
-  savingStage: string;
-  errorMessage: string;
+export interface IClientsPayloadId extends IPayload {
   clientId?: string;
 }
 
@@ -64,25 +60,18 @@ export interface IBulding {
   id: string;
 }
 
-export interface IBuldingsPayload {
-  isFetching: boolean;
-  savingStage: string;
-  errorMessage: string;
+export interface IBuldingsPayload extends IPayload {
   buldings: IBulding[] | [];
+  [key: string]: any;
 }
 
-export interface IBuldingPayloadUpdate {
-  isFetching: boolean;
-  savingStage: string;
-  errorMessage: string;
+export interface IBuldingPayloadUpdate extends IPayload {
   bulding: IBulding | {};
+  [key: string]: any;
 }
 
-export interface IBuldingPayloadId {
-  isFetching: boolean;
-  savingStage: string;
-  errorMessage: string;
-  buldingId: string;
+export interface IBuldingPayloadId extends IPayload {
+  buldingId?: string;
 }
 
 export interface IBuldingsAction {

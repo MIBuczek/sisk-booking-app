@@ -24,7 +24,7 @@ export const fechingBuildings = (): IBuldingsAction => ({
 export const fechingBuildingsDone = () => {
   return async (dispatch: any): Promise<void> => {
     //firebase get collection buildings
-    const buldings: IBulding[];
+    const buldings: IBulding[] = [];
     if ('collection ok') {
       dispatch(
         (): IBuldingsAction => ({
@@ -69,14 +69,16 @@ export const addBuilding = (buldingData: IBulding) => {
         }),
       );
     } else {
-      dispatch(() => ({
-        type: ERROR_BULDING,
-        payload: {
-          savingStage: ERROR,
-          errorMessage: 'err.responce',
-          isFetching: false,
-        },
-      }));
+      dispatch(
+        (): IBuldingsAction => ({
+          type: ERROR_BULDING,
+          payload: {
+            savingStage: ERROR,
+            errorMessage: 'err.responce',
+            isFetching: false,
+          },
+        }),
+      );
     }
   };
 };
@@ -85,24 +87,28 @@ export const updateBuilding = (buldingData: IBulding) => {
   return async (dispatch: any): Promise<void> => {
     // firebase function to edit building
     if ('firebase ok') {
-      dispatch(() => ({
-        type: UPDATE_BULDING,
-        payload: {
-          savingStage: SUCCESS,
-          bulding: buldingData,
-          errorMessage: '',
-          isFetching: false,
-        },
-      }));
+      dispatch(
+        (): IBuldingsAction => ({
+          type: UPDATE_BULDING,
+          payload: {
+            savingStage: SUCCESS,
+            bulding: buldingData,
+            errorMessage: '',
+            isFetching: false,
+          },
+        }),
+      );
     } else {
-      dispatch(() => ({
-        type: ERROR_BULDING,
-        payload: {
-          savingStage: ERROR,
-          errorMessage: 'err.responce',
-          isFetching: false,
-        },
-      }));
+      dispatch(
+        (): IBuldingsAction => ({
+          type: ERROR_BULDING,
+          payload: {
+            savingStage: ERROR,
+            errorMessage: 'err.responce',
+            isFetching: false,
+          },
+        }),
+      );
     }
   };
 };
@@ -123,14 +129,16 @@ export const deleteBuilding = (buldingId: string) => {
         }),
       );
     } else {
-      dispatch(() => ({
-        type: ERROR_CLIENT,
-        payload: {
-          savingStage: ERROR,
-          errorMessage: 'err.responce',
-          isFetching: false,
-        },
-      }));
+      dispatch(
+        (): IBuldingsAction => ({
+          type: ERROR_CLIENT,
+          payload: {
+            savingStage: ERROR,
+            errorMessage: 'err.responce',
+            isFetching: false,
+          },
+        }),
+      );
     }
   };
 };

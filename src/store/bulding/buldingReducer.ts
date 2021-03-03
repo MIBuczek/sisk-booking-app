@@ -4,6 +4,7 @@ import {
   IClient,
   IBulding,
   IBuldingsAction,
+  IBuldingsPayload,
 } from '../../models/reduxModel';
 import {
   SAVING_STAGE,
@@ -16,14 +17,14 @@ import {
 
 const { INITIAL } = SAVING_STAGE;
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IBuldingsPayload = {
   isFetching: false,
   savingStage: INITIAL,
   errorMessage: '',
   buldings: [],
 };
 
-export const clients = (state = INITIAL_STATE, action: IBuldingsAction) => {
+export const clients = (state = INITIAL_STATE, action: any) => {
   const { type, payload } = action;
   switch (type) {
     case GET_BULDINGS:
@@ -33,7 +34,7 @@ export const clients = (state = INITIAL_STATE, action: IBuldingsAction) => {
     case ADD_BULDING:
       return {
         ...payload,
-        buldings: [...state.buldings, payload.bulding],
+        buldings: [...state.buldings, payload.buldingId],
       };
     case DELETE_BULDING:
       return {
@@ -44,7 +45,7 @@ export const clients = (state = INITIAL_STATE, action: IBuldingsAction) => {
       return {
         ...payload,
         buldings: state.buldings.map((bulding: IBulding) =>
-          bulding.id === payload.bulding.id ? payload.buldings : bulding,
+          bulding.id === payload.bulding.id ? payload.bulding : bulding,
         ),
       };
     case ERROR_BULDING:

@@ -1,4 +1,9 @@
-import { IClientsPayload, ICLientActions, IClient } from '../../models/reduxModel';
+import {
+  IClientsPayload,
+  ICLientActions,
+  IClient,
+  IBuldingPayloadUpdate,
+} from '../../models/reduxModel';
 import {
   SAVING_STAGE,
   GET_CLIENTS,
@@ -17,7 +22,7 @@ const INITIAL_STATE: IClientsPayload = {
   clients: [],
 };
 
-export const clients = (state = INITIAL_STATE, action: ICLientActions) => {
+export const clients = (state = INITIAL_STATE, action: any) => {
   const { type, payload } = action;
   switch (type) {
     case GET_CLIENTS:

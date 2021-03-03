@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { currentUser } from './users/userReducer';
 import reduxThunk from 'redux-thunk';
+import { currentUser } from './users/userReducer';
 
 const rootReducer = combineReducers({
   currentUser,

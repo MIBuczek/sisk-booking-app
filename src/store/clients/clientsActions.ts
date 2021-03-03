@@ -23,7 +23,7 @@ export const fechingClientsStart = (): ICLientActions => ({
 export const fechingClientsDone = () => {
   return async (dispatch: any): Promise<void> => {
     //firebase get collection clients
-    const clients: IClient[];
+    const clients: IClient[] = [];
     if ('collection ok') {
       dispatch(
         (): ICLientActions => ({

@@ -1,5 +1,5 @@
-import * as React from "react";
-import styled from "styled-components";
+import * as React from 'react';
+import styled from 'styled-components';
 
 const CalenderWrapper = styled.section`
   width: 90%;
@@ -13,7 +13,9 @@ const CalenderWrapper = styled.section`
 export interface IProps {}
 
 const Calender: React.SFC<IProps> = (): JSX.Element => (
-  <CalenderWrapper></CalenderWrapper>
+  <CalenderWrapper>
+    <h1>callender</h1>
+  </CalenderWrapper>
 );
 
 export default Calender;

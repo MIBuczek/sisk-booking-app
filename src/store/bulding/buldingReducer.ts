@@ -1,11 +1,4 @@
-import {
-  IClientsPayload,
-  ICLientActions,
-  IClient,
-  IBulding,
-  IBuldingsAction,
-  IBuldingsPayload,
-} from '../../models/reduxModel';
+import { IBuldingsAction, IBuldingsPayload } from '../../models/store-models';
 import {
   SAVING_STAGE,
   GET_BULDINGS,
@@ -13,7 +6,7 @@ import {
   DELETE_BULDING,
   UPDATE_BULDING,
   ERROR_BULDING,
-} from '../utils/utils';
+} from '../../utils/store-data';
 
 const { INITIAL } = SAVING_STAGE;
 
@@ -21,38 +14,22 @@ const INITIAL_STATE: IBuldingsPayload = {
   isFetching: false,
   savingStage: INITIAL,
   errorMessage: '',
-  buldings: [],
+  buldings: undefined,
 };
 
-export const clients = (state = INITIAL_STATE, action: any) => {
+export const buldings = (state = INITIAL_STATE, action: IBuldingsAction) => {
   const { type, payload } = action;
   switch (type) {
     case GET_BULDINGS:
-      return {
-        ...payload,
-      };
     case ADD_BULDING:
-      return {
-        ...payload,
-        buldings: [...state.buldings, payload.buldingId],
-      };
     case DELETE_BULDING:
-      return {
-        ...payload,
-        buldings: state.buldings.filter((bulding: IBulding) => bulding.id !== payload.buldingId),
-      };
     case UPDATE_BULDING:
-      return {
-        ...payload,
-        buldings: state.buldings.map((bulding: IBulding) =>
-          bulding.id === payload.bulding.id ? payload.bulding : bulding,
-        ),
-      };
     case ERROR_BULDING:
       return {
         ...state,
         ...payload,
       };
+
     default:
       return state;
   }

@@ -1,4 +1,6 @@
-import { IClient, ICLientActions, IClientsPayload } from '../../models/reduxModel';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Dispatch } from 'redux';
+import { IClient, IClientsActions } from '../../models/store-models';
 import {
   GET_CLIENTS,
   ADD_CLIENT,
@@ -6,138 +8,102 @@ import {
   UPDATE_CLIENT,
   ERROR_CLIENT,
   SAVING_STAGE,
-} from '../utils/utils';
+} from '../../utils/store-data';
+import { db } from '../../utils/firebase';
 
 const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
 
-export const fechingClientsStart = (): ICLientActions => ({
+export const fechingClients = (): IClientsActions => ({
   type: GET_CLIENTS,
   payload: {
     isFetching: true,
     savingStage: INITIAL,
     errorMessage: '',
-    clients: [],
+    clients: undefined,
   },
 });
 
-export const fechingClientsDone = () => {
-  return async (dispatch: any): Promise<void> => {
-    //firebase get collection clients
-    const clients: IClient[] = [];
-    if ('collection ok') {
-      dispatch(
-        (): ICLientActions => ({
-          type: GET_CLIENTS,
-          payload: {
-            isFetching: false,
-            savingStage: SUCCESS,
-            errorMessage: '',
-            clients,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): ICLientActions => ({
-          type: ERROR_CLIENT,
-          payload: {
-            isFetching: false,
-            savingStage: ERROR,
-            errorMessage: 'err responce',
-            clients: [],
-          },
-        }),
-      );
-    }
-  };
+const fechingClientsDone = (type: string, clients: IClient[]): IClientsActions => ({
+  type,
+  payload: {
+    isFetching: false,
+    savingStage: SUCCESS,
+    errorMessage: '',
+    clients,
+  },
+});
+
+const fechingClientsError = (errorMessage: string): IClientsActions => ({
+  type: ERROR_CLIENT,
+  payload: {
+    isFetching: false,
+    savingStage: ERROR,
+    errorMessage,
+    clients: undefined,
+  },
+});
+
+export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>): Promise<void> => {
+  dispatch(fechingClients());
+  try {
+    const resp = await db.collection('clients').get();
+    const clients: IClient[] = resp.docs.map((doc) => {
+      const client: IClient = {
+        name: doc.data().name,
+        address: doc.data().address,
+        id: doc.data().id,
+      };
+      return client;
+    });
+    dispatch(fechingClientsDone(GET_CLIENTS, clients));
+  } catch ({ responce }) {
+    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  }
 };
 
-export const addClient = (clientData: IClient) => {
-  return async (dispatch: any): Promise<void> => {
-    // firebase function to add new user
-    if ('firebase ok') {
-      dispatch(
-        (): ICLientActions => ({
-          type: ADD_CLIENT,
-          payload: {
-            savingStage: SUCCESS,
-            client: clientData,
-            errorMessage: '',
-            isFetching: false,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): ICLientActions => ({
-          type: ERROR_CLIENT,
-          payload: {
-            savingStage: ERROR,
-            errorMessage: 'err.responce',
-            isFetching: false,
-          },
-        }),
-      );
-    }
-  };
+export const addClient = (clientData: IClient) => async (
+  dispatch: Dispatch<IClientsActions>,
+  getStore: any
+): Promise<void> => {
+  dispatch(fechingClients());
+  try {
+    await db.collection('clients').doc().set(clientData);
+    const { clients } = getStore();
+    const newClients: IClient[] = [...clients, clientData];
+    dispatch(fechingClientsDone(ADD_CLIENT, newClients));
+  } catch ({ responce }) {
+    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  }
 };
 
-export const updateClient = (clientData: IClient) => {
-  return async (dispatch: any): Promise<void> => {
-    // firebase function to edit new user
-    if ('firebase ok') {
-      dispatch(
-        (): ICLientActions => ({
-          type: UPDATE_CLIENT,
-          payload: {
-            savingStage: SUCCESS,
-            client: clientData,
-            errorMessage: '',
-            isFetching: false,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): ICLientActions => ({
-          type: ERROR_CLIENT,
-          payload: {
-            savingStage: ERROR,
-            errorMessage: 'err.responce',
-            isFetching: false,
-          },
-        }),
-      );
-    }
-  };
+export const updateClient = (clientData: IClient, id: string) => async (
+  dispatch: Dispatch<IClientsActions>,
+  getStore: any
+): Promise<void> => {
+  dispatch(fechingClients());
+  try {
+    await db.collection('clients').doc(id).update(clientData);
+    const { clients } = getStore();
+    const newClients: IClient[] = clients.map((client: IClient) =>
+      client.id === id ? clientData : client
+    );
+    dispatch(fechingClientsDone(UPDATE_CLIENT, newClients));
+  } catch ({ responce }) {
+    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  }
 };
 
-export const deleteClient = (clientId: string) => {
-  return async (dispatch: any): Promise<void> => {
-    // firebase function to delete client
-    if ('firebase ok') {
-      dispatch(
-        (): ICLientActions => ({
-          type: DELETE_CLIENT,
-          payload: {
-            savingStage: SUCCESS,
-            clientId,
-            errorMessage: '',
-            isFetching: false,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): ICLientActions => ({
-          type: ERROR_CLIENT,
-          payload: {
-            savingStage: ERROR,
-            errorMessage: 'err.responce',
-            isFetching: false,
-          },
-        }),
-      );
-    }
-  };
+export const deleteClient = (id: string) => async (
+  dispatch: Dispatch<IClientsActions>,
+  getStore: any
+): Promise<void> => {
+  dispatch(fechingClients());
+  try {
+    db.collection('clients').doc(id).delete();
+    const { clients } = getStore();
+    const newClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
+    dispatch(fechingClientsDone(DELETE_CLIENT, newClients));
+  } catch ({ responce }) {
+    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  }
 };

@@ -1,9 +1,4 @@
-import {
-  IClientsPayload,
-  ICLientActions,
-  IClient,
-  IBuldingPayloadUpdate,
-} from '../../models/reduxModel';
+import { IClientsPayload, ICLientActions, IClient } from '../../models/store-models';
 import {
   SAVING_STAGE,
   GET_CLIENTS,
@@ -11,7 +6,7 @@ import {
   DELETE_CLIENT,
   UPDATE_CLIENT,
   ERROR_CLIENT,
-} from '../utils/utils';
+} from '../../utils/store-data';
 
 const { INITIAL } = SAVING_STAGE;
 
@@ -22,39 +17,19 @@ const INITIAL_STATE: IClientsPayload = {
   clients: [],
 };
 
-export const clients = (state = INITIAL_STATE, action: any) => {
+export const clients = (state = INITIAL_STATE, action: ICLientActions) => {
   const { type, payload } = action;
   switch (type) {
     case GET_CLIENTS:
-      return {
-        ...state,
-        ...payload,
-      };
     case ADD_CLIENT:
-      return {
-        ...state,
-        ...payload,
-        clients: [...state.clients, payload.client],
-      };
     case DELETE_CLIENT:
-      return {
-        ...state,
-        ...payload,
-        clients: state.clients.filter((client: IClient) => client.id !== payload.clientId),
-      };
     case UPDATE_CLIENT:
-      return {
-        ...state,
-        ...payload,
-        clients: state.clients.map((client: IClient) =>
-          client.id === payload.client.id ? payload.client : client,
-        ),
-      };
     case ERROR_CLIENT:
       return {
         ...state,
         ...payload,
       };
+
     default:
       return state;
   }

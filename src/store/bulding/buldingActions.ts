@@ -1,4 +1,6 @@
-import { IBuldingsAction, IBulding } from '../../models/reduxModel';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Dispatch } from 'react';
+import { IBuldingsAction, IBulding } from '../../models/store-models';
 import {
   GET_BULDINGS,
   ADD_BULDING,
@@ -6,8 +8,8 @@ import {
   UPDATE_BULDING,
   ERROR_BULDING,
   SAVING_STAGE,
-  ERROR_CLIENT,
-} from '../utils/utils';
+} from '../../utils/store-data';
+import { db } from '../../utils/firebase';
 
 const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
 
@@ -21,124 +23,89 @@ export const fechingBuildings = (): IBuldingsAction => ({
   },
 });
 
-export const fechingBuildingsDone = () => {
-  return async (dispatch: any): Promise<void> => {
-    //firebase get collection buildings
-    const buldings: IBulding[] = [];
-    if ('collection ok') {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: GET_BULDINGS,
-          payload: {
-            isFetching: false,
-            savingStage: SUCCESS,
-            errorMessage: '',
-            buldings,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: ERROR_BULDING,
-          payload: {
-            isFetching: false,
-            savingStage: ERROR,
-            errorMessage: 'err responce',
-            buldings: undefined,
-          },
-        }),
-      );
-    }
-  };
+const fechingBuldingsDone = (type: string, buldings: IBulding[]): IBuldingsAction => ({
+  type,
+  payload: {
+    isFetching: false,
+    savingStage: SUCCESS,
+    errorMessage: '',
+    buldings,
+  },
+});
+
+const fechingBuldingsError = (errorMessage: string): IBuldingsAction => ({
+  type: ERROR_BULDING,
+  payload: {
+    isFetching: false,
+    savingStage: ERROR,
+    errorMessage,
+    buldings: [],
+  },
+});
+
+export const getBuildingsData = () => async (
+  dispatch: Dispatch<IBuldingsAction>
+): Promise<void> => {
+  dispatch(fechingBuildings());
+  try {
+    const resp = await db.collection('buildings').get();
+    const buldings: IBulding[] = resp.docs.map((doc) => {
+      const building: IBulding = {
+        name: doc.data().name,
+        address: doc.data().address,
+        id: doc.data().id,
+      };
+      return building;
+    });
+    dispatch(fechingBuldingsDone(ADD_BULDING, buldings));
+  } catch ({ responce }) {
+    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  }
 };
 
-export const addBuilding = (buldingData: IBulding) => {
-  return async (dispatch: any): Promise<void> => {
-    // firebase function to add new building
-    if ('firebase ok') {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: ADD_BULDING,
-          payload: {
-            savingStage: SUCCESS,
-            bulding: buldingData,
-            errorMessage: '',
-            isFetching: false,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: ERROR_BULDING,
-          payload: {
-            savingStage: ERROR,
-            errorMessage: 'err.responce',
-            isFetching: false,
-          },
-        }),
-      );
-    }
-  };
+export const addBuilding = (buldingData: IBulding) => async (
+  dispatch: Dispatch<IBuldingsAction>,
+  getStore: any
+): Promise<void> => {
+  dispatch(fechingBuildings());
+  try {
+    await db.collection('buildings').doc().set(buldingData);
+    const { buildings } = getStore();
+    const newBuldings: IBulding[] = [...buildings, buldingData];
+    dispatch(fechingBuldingsDone(ADD_BULDING, newBuldings));
+  } catch ({ responce }) {
+    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  }
 };
 
-export const updateBuilding = (buldingData: IBulding) => {
-  return async (dispatch: any): Promise<void> => {
-    // firebase function to edit building
-    if ('firebase ok') {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: UPDATE_BULDING,
-          payload: {
-            savingStage: SUCCESS,
-            bulding: buldingData,
-            errorMessage: '',
-            isFetching: false,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: ERROR_BULDING,
-          payload: {
-            savingStage: ERROR,
-            errorMessage: 'err.responce',
-            isFetching: false,
-          },
-        }),
-      );
-    }
-  };
+export const updateBuilding = (buldingData: IBulding, id: string) => async (
+  dispatch: Dispatch<IBuldingsAction>,
+  getStore: any
+): Promise<void> => {
+  dispatch(fechingBuildings());
+  try {
+    await db.collection('buildings').doc(id).update(buldingData);
+    const { buildings } = getStore();
+    const newBuldings: IBulding[] = buildings.map((building: IBulding) =>
+      building.id === id ? buldingData : building
+    );
+    dispatch(fechingBuldingsDone(UPDATE_BULDING, newBuldings));
+  } catch ({ responce }) {
+    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  }
 };
 
-export const deleteBuilding = (buldingId: string) => {
-  return async (dispatch: any): Promise<void> => {
-    // firebase function to delete building
-    if ('firebase ok') {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: DELETE_BULDING,
-          payload: {
-            savingStage: SUCCESS,
-            buldingId,
-            errorMessage: '',
-            isFetching: false,
-          },
-        }),
-      );
-    } else {
-      dispatch(
-        (): IBuldingsAction => ({
-          type: ERROR_CLIENT,
-          payload: {
-            savingStage: ERROR,
-            errorMessage: 'err.responce',
-            isFetching: false,
-          },
-        }),
-      );
-    }
-  };
+export const deleteBuilding = (id: string) => async (
+  dispatch: Dispatch<IBuldingsAction>,
+  getStore: any
+): Promise<void> => {
+  dispatch(fechingBuildings());
+  try {
+    db.collection('buildings').doc(id).delete();
+    const { buildings } = getStore();
+    const newBuldings: IBulding[] = buildings.filter((building: IBulding) => building.id !== id);
+    dispatch(fechingBuldingsDone(DELETE_BULDING, newBuldings));
+  } catch ({ responce }) {
+    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  }
 };

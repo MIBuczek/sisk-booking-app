@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import bg from '../assets/images/background.jpg';
+import NavBar from '../components/molecules/NavBar';
 
 const Main = React.lazy(() => import('./user-view/Main'));
 const Login = React.lazy(() => import('./admin-view/Login'));
@@ -12,8 +13,8 @@ const AppWrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
   display: flex;
-  align-items: centert;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   background-image: url(${bg});
   background-repeat: no-repeat;
   background-position: center;
@@ -23,6 +24,7 @@ const AppWrapper = styled.div`
 const App: React.SFC = (): JSX.Element => (
   <HashRouter>
     <AppWrapper>
+      <NavBar />
       <Switch>
         <Route exact path={'/'} component={Main}>
           <Suspense fallback={<div>Loading...</div>}>

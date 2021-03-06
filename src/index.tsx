@@ -1,15 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Root from './views/Root';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store/rootReducer';
 import PrepareStore from './components/molecules/PrepareStore';
+import { theme } from './theme/mainTheme';
+
+const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;600&display=swap');
+  
+  *, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  html {
+    font-size: 62.5%; 
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 1.6rem;
+    font-family: "Oswald", sans-serif;
+  }
+`;
+
+export default GlobalStyle;
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Root />
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Root />
+      </ThemeProvider>
       <PrepareStore />
     </Provider>
   </React.StrictMode>,

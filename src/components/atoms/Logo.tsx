@@ -1,26 +1,29 @@
-import * as React from "react";
-import styled from "styled-components";
-import logo from "../../assets/images/logo.png";
+import * as React from 'react';
+import styled from 'styled-components';
+import logo from '../../assets/images/logo.svg';
 
 const LogoWrapper = styled.div`
-  width: 200px;
-  height: auto;
+  width: 258px;
+  height: 70px;
+  display: flex;
+  align-items: center;
 `;
 
-const Logo = styled.img`
+const LogoImg = styled.img`
   width: 100%;
-  height: auto;
+  height: 80%;
   background-image: url(${logo});
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 `;
+
 export interface IProps {}
 
-const SellectInput: React.SFC<IProps> = (): JSX.Element => (
+const Logo: React.SFC<IProps> = (): JSX.Element => (
   <LogoWrapper>
-    <Logo />
+    <LogoImg />
   </LogoWrapper>
 );
 
-export default SellectInput;
+export default Logo;

@@ -1,4 +1,4 @@
-import { IClientsPayload, ICLientActions, IClient } from '../../models/store-models';
+import { IClientsPayload, IClientsActions } from '../../models/store-models';
 import {
   SAVING_STAGE,
   GET_CLIENTS,
@@ -17,7 +17,7 @@ const INITIAL_STATE: IClientsPayload = {
   clients: [],
 };
 
-export const clients = (state = INITIAL_STATE, action: ICLientActions) => {
+export const clients = (state = INITIAL_STATE, action: IClientsActions) => {
   const { type, payload } = action;
   switch (type) {
     case GET_CLIENTS:

@@ -40,7 +40,11 @@ export const logInUser = (email: string, password: string) => async (
 ): Promise<void> => {
   dispatch(fechingAuth());
   try {
-    const credencials = await auth.signInWithEmailAndPassword(email, password);
+    const resp = await auth.signInWithEmailAndPassword(email, password);
+    const credencials: IAuth = {
+      email,
+      uid: resp,
+    };
     dispatch(fechingAuthDone(LOG_IN_USER, credencials));
   } catch ({ responce }) {
     dispatch(fechingAuthError(`${responce.status} : ${responce.statusText}`));

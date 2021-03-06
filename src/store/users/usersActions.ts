@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
-import { IUserAction, IUser } from '../../models/store-models';
+import { IUserAction, IUser, IAuth } from '../../models/store-models';
 import { GET_USER, ERROR_USER, SAVING_STAGE } from '../../utils/store-data';
-import { auth, db } from '../../utils/firebase';
+import { db } from '../../utils/firebase';
 
 const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
 
@@ -35,11 +36,15 @@ const fechingUserError = (errorMessage: string): IUserAction => ({
   },
 });
 
-export const getUserData = () => async (dispatch: Dispatch<IUserAction>): Promise<void> => {
+export const getUserData = () => async (
+  dispatch: Dispatch<IUserAction>,
+  getState: any
+): Promise<void> => {
   dispatch(fechingUserStart());
   try {
-    const resp = await db.collection('users').get();
-    const [users]: IUser[] = resp.docs.filter((doc) => {
+    const { auth } = getState();
+    const resp = ((await db.collection('users').get()) as unknown) as IUser;
+    const [user]: IUser[] = resp.docs.filter((doc: { data: () => { [x: string]: string } }) => {
       if (auth.uid === doc.data().id) {
         const currentUser: IUser = {
           name: doc.data().name,
@@ -48,8 +53,9 @@ export const getUserData = () => async (dispatch: Dispatch<IUserAction>): Promis
         };
         return currentUser;
       }
+      return null;
     });
-    dispatch(fechingUserDone(users));
+    dispatch(fechingUserDone(user));
   } catch ({ responce }) {
     dispatch(fechingUserError(`${responce.status} : ${responce.statusText}`));
   }

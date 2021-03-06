@@ -6,6 +6,7 @@ interface IPayload {
 }
 
 export interface IUser {
+  [x: string]: any;
   name: string;
   position: string;
   id: string;
@@ -52,7 +53,7 @@ export interface IBuldingsAction {
 
 export interface IAuth {
   email: string;
-  uid: string;
+  uid: unknown;
 }
 
 export interface IAuthPayload extends IPayload {

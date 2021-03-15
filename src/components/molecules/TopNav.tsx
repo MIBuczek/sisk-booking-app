@@ -21,24 +21,25 @@ const StyledLinksList = styled.ul`
 
 const NavigationLink = styled(NavLink)`
   color: ${({ theme }) => theme.darkColor};
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.bold};
   text-decoration: none;
   text-transform: uppercase;
   padding: 10px;
 `;
+const active = { borderBottom: '2px solid #454545' };
 
-export interface NavBarProps {}
-
-const NavBar: React.SFC<NavBarProps> = () => (
+const TopNav = (): JSX.Element => (
   <NavWrapper>
     <Logo />
     <StyledLinksList>
-      <NavigationLink to="/main">Strona Główna</NavigationLink>
+      <NavigationLink to="/main" activeStyle={active}>
+        Strona Główna
+      </NavigationLink>
       <NavigationLink to="/calender">Kalendarz Rezerwacji</NavigationLink>
       <NavigationLink to="/contacts">Kontakt</NavigationLink>
     </StyledLinksList>
   </NavWrapper>
 );
 
-export default NavBar;
+export default TopNav;

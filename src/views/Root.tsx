@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import bg from '../assets/images/background.jpg';
-import NavBar from '../components/molecules/NavBar';
+// import bg from '../assets/images/background.jpg';
+import TopNav from '../components/molecules/TopNav';
 
 const Main = React.lazy(() => import('./user-view/Main'));
 const Login = React.lazy(() => import('./admin-view/Login'));
@@ -15,28 +15,29 @@ const AppWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-image: url(${bg});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
 `;
+
+// background-image: url(${bg});
+// background-repeat: no-repeat;
+// background-position: center;
+// background-size: cover;
 
 const App: React.SFC = (): JSX.Element => (
   <HashRouter>
     <AppWrapper>
-      <NavBar />
+      <TopNav />
       <Switch>
-        <Route exact path={'/'} component={Main}>
+        <Route exact path={'/'}>
           <Suspense fallback={<div>Loading...</div>}>
             <Main />
           </Suspense>
         </Route>
-        <Route path={'/login'} component={Login}>
+        <Route path={'/login'}>
           <Suspense fallback={<div>Loading...</div>}>
             <Login />
           </Suspense>
         </Route>
-        <Route path={'/admin'} component={Admin}>
+        <Route path={'/admin'}>
           <Suspense fallback={<div>Loading...</div>}>
             <Admin />
           </Suspense>

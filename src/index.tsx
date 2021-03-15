@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    outline:none
   }
   
   html {
@@ -26,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-size: 1.6rem;
     font-family: "Oswald", sans-serif;
+    o
   }
 `;
 

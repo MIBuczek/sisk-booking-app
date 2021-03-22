@@ -90,10 +90,10 @@ const Login: React.FC = (): JSX.Element => {
       <LoginPannel onSubmit={onSubmit}>
         <Header3>Harmonogram Rezerwacji Obiektów</Header3>
         <TextInputField
+          name="eMail"
           placeholder="E-MAIL"
           value={eMail}
-          handler={stateHandler}
-          property="eMail"
+          onChange={({ target }) => stateHandler(target.value, target.name)}
           ref={register({ required: true })}
         />
         {errors.eMail && (
@@ -102,10 +102,10 @@ const Login: React.FC = (): JSX.Element => {
           </ErrorMsg>
         )}
         <TextInputField
+          name="passoword"
           placeholder="HASŁO"
           value={passoword}
-          handler={stateHandler}
-          property="passoword"
+          onChange={({ target }) => stateHandler(target.value, target.name)}
           ref={register({ required: true })}
         />
         {errors.passoword && (
@@ -115,14 +115,16 @@ const Login: React.FC = (): JSX.Element => {
           </ErrorMsg>
         )}
         <Button
-          innerText="ZALOGUJ SIE"
-          callBack={() => {
+          role="button"
+          onClick={() => {
             setValue('eMail', eMail);
             setValue('passoword', passoword);
           }}
           disabled={false}
-          size="SMALL"
-        />
+          // size="SMALL"
+        >
+          ZALOGUJ SIE
+        </Button>
       </LoginPannel>
       <LoginAnimacion ref={imgWrapper}>
         <AnimationImg />

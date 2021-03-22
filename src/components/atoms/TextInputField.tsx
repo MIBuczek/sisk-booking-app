@@ -1,7 +1,7 @@
-import * as React from 'react';
+// import * as React from 'react';
 import styled from 'styled-components';
 
-const Input = styled.input`
+const TextInputField = styled.input`
   width: 330px;
   height: 35px;
   border-radius: 10px;
@@ -20,25 +20,5 @@ const Input = styled.input`
     text-align: center;
   }
 `;
-
-export interface IProps {
-  placeholder: string;
-  property: string;
-  value: string;
-  handler: (value: string, property: string) => void;
-  ref: React.Ref<HTMLInputElement> | undefined;
-}
-
-const TextInputField: React.FC<IProps> = React.forwardRef(
-  ({ placeholder, value, property, handler }, ref) => (
-    <Input
-      name={property}
-      placeholder={placeholder}
-      value={value}
-      onChange={({ target }) => handler(target.value, property)}
-      ref={ref}
-    />
-  )
-);
 
 export default TextInputField;

@@ -1,8 +1,10 @@
 import React, { Suspense } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
-// import bg from '../assets/images/background.jpg';
+import bgMain from '../assets/images/background.jpg';
 import TopNav from '../components/molecules/TopNav';
+import Footer from '../components/organisms/Footer';
+import ModalContextProvider from '../context/ModalContext';
 
 const Main = React.lazy(() => import('./user-view/Main'));
 const Login = React.lazy(() => import('./admin-view/Login'));
@@ -17,38 +19,50 @@ const AppWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-// background-image: url(${bg});
-// background-repeat: no-repeat;
-// background-position: center;
-// background-size: cover;
+/* background-image: url(${bgMain});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; */
 
-const App: React.SFC = (): JSX.Element => (
+const BGImage = styled.img`
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  position: fixed;
+  z-index: -1;
+`;
+
+const App: React.FC = (): JSX.Element => (
   <HashRouter>
-    <AppWrapper>
-      <TopNav />
-      <Switch>
-        <Route exact path={'/'}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Main />
-          </Suspense>
-        </Route>
-        <Route path={'/login'}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Login />
-          </Suspense>
-        </Route>
-        <Route path={'/admin'}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Admin />
-          </Suspense>
-        </Route>
-        <Route>
-          <Suspense fallback={<div>Loading...</div>}>
-            <NoMatch />
-          </Suspense>
-        </Route>
-      </Switch>
-    </AppWrapper>
+    <ModalContextProvider>
+      <AppWrapper>
+        <BGImage src={bgMain} alt="bgMain" />
+        <TopNav />
+        <Switch>
+          <Route exact path={'/'}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Main />
+            </Suspense>
+          </Route>
+          <Route path={'/login'}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Login />
+            </Suspense>
+          </Route>
+          <Route path={'/admin'}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Admin />
+            </Suspense>
+          </Route>
+          <Route>
+            <Suspense fallback={<div>Loading...</div>}>
+              <NoMatch />
+            </Suspense>
+          </Route>
+        </Switch>
+        <Footer />
+      </AppWrapper>
+    </ModalContextProvider>
   </HashRouter>
 );
 

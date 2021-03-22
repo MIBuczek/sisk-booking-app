@@ -1,14 +1,6 @@
-import * as React from 'react';
 import styled from 'styled-components';
 
-export interface ButtonProps {
-  innerText: string;
-  callBack: () => void;
-  size: string;
-  disabled: boolean;
-}
-
-const Btn = styled.button`
+const Button = styled.button`
   width: 100px;
   height: 30px;
   color: ${({ theme }) => theme.darkColor};
@@ -19,11 +11,7 @@ const Btn = styled.button`
   border-radius: 10px;
   font-family: inherit;
   margin: 1rem 0;
+  cursor: pointer;
 `;
-const Button: React.SFC<ButtonProps> = ({ innerText, callBack, size, disabled }): JSX.Element => (
-  <Btn disabled={disabled} onClick={callBack}>
-    {innerText}
-  </Btn>
-);
 
 export default Button;

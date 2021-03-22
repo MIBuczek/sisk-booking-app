@@ -18,9 +18,7 @@ const LogoImg = styled.img`
   background-size: cover;
 `;
 
-export interface IProps {}
-
-const Logo: React.SFC<IProps> = (): JSX.Element => (
+const Logo: React.FC = (): JSX.Element => (
   <LogoWrapper>
     <LogoImg />
   </LogoWrapper>

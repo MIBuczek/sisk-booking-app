@@ -5,12 +5,12 @@ import Logo from '../atoms/Logo';
 
 const NavWrapper = styled.nav`
   width: 100%;
-  height: 120px;
+  height: 10vh;
   background: transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 60px;
+  padding: 0 60px;
 `;
 
 const StyledLinksList = styled.ul`

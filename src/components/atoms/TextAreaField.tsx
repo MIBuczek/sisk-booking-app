@@ -1,9 +1,8 @@
-// import * as React from 'react';
 import styled from 'styled-components';
 
-const TextInputField = styled.input`
+const TextAreaField = styled.textarea`
   width: 330px;
-  height: 35px;
+  height: 135px;
   border-radius: 10px;
   background: #eaeaea;
   border: 1px solid #afbf36;
@@ -12,6 +11,7 @@ const TextInputField = styled.input`
   font-weight: ${({ theme }) => theme.bold};
   text-align: center;
   margin: ${({ theme }) => theme.fontSize.xs} 0;
+  resize: none;
   padding: 10px;
   text-align: left;
   &::hover {
@@ -20,7 +20,8 @@ const TextInputField = styled.input`
   &::placeholder {
     text-transform: uppercase;
     text-align: center;
+    font-family: 'Oswald', sans-serif;
   }
 `;
 
-export default TextInputField;
+export default TextAreaField;

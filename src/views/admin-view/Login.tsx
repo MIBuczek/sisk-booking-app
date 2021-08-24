@@ -6,6 +6,7 @@ import Button from '../../components/atoms/Button';
 import TextInputField from '../../components/atoms/TextInputField';
 import { ICredencial } from '../../models/credencials-models';
 import { ReactComponent as AnimationImg } from '../../assets/images/animation2.svg';
+import ErrorMsg from '../../components/atoms/ErrorMsg';
 
 const LoginWrapper = styled.section`
   width: 100%;
@@ -22,19 +23,6 @@ const LoginPannel = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`;
-
-const ErrorMsg = styled.span`
-  font-size: 10px;
-  color: red;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  svg {
-    height: 15px;
-    width: 12px;
-    margin-left: 3px;
-  }
 `;
 
 const Header3 = styled.h3`

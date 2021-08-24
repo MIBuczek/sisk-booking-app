@@ -80,3 +80,11 @@ export interface IBookingsAction {
   type: string;
   payload: IBookingsPayload;
 }
+
+export interface IReduxState {
+  auth: IAuthPayload;
+  clients: IClientsPayload;
+  buldings: IBuldingsPayload;
+  bookings: IBookingsPayload;
+  currentUser: IUserPayload;
+}

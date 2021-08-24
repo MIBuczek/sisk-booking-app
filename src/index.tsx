@@ -16,31 +16,29 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     outline:none
-  }
+  };
   
   html {
     font-size: 62.5%; 
-  }
+  };
   
   body {
     margin: 0;
     padding: 0;
     font-size: 1.6rem;
     font-family: "Oswald", sans-serif;
-    o
-  }
+  };
 `;
-
-export default GlobalStyle;
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Root />
-      </ThemeProvider>
-      <PrepareStore />
+      <PrepareStore>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Root />
+        </ThemeProvider>
+      </PrepareStore>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

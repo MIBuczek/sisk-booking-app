@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import SideNav from '../../components/molecules/SideNav';
 import Modal from '../../components/organisms/Modal';
+import ModalMessage from '../../components/molecules/ModalMessage';
 import { ModalContext } from '../../context/ModalContext';
 
 const MainWrapper = styled.section`
@@ -20,7 +21,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
       <SideNav />
       {isOpen && (
         <Modal>
-          <span>modal</span>
+          <ModalMessage />
         </Modal>
       )}
     </MainWrapper>

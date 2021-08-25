@@ -89,10 +89,10 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --quiet --fix"
-    ],
-    "*.{json,md,html}": [
-      "prettier --write 'src/**/*.{ts,tsx,scss,css,json}'"
+      "npm run test",
+      "npm run lint --fix",
+      "npm run format",
+      "git add"
     ]
   }
 }

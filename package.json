@@ -39,6 +39,19 @@
     "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json}'",
     "isready": "npm run format && npm run lint && npm run build"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "npm run test",
+      "npm run lint --fix",
+      "npm run format",
+      "git add"
+    ]
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -81,18 +94,5 @@
     "prettier": "2.2.1",
     "prettier-eslint": "12.0.0",
     "prettier-eslint-cli": "5.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "npm run test",
-      "npm run lint --fix",
-      "npm run format",
-      "git add"
-    ]
   }
 }

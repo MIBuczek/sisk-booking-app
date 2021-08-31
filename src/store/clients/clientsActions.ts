@@ -56,8 +56,9 @@ export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>):
       return client;
     });
     dispatch(fechingClientsDone(GET_CLIENTS, clients));
-  } catch ({ responce }) {
-    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingClientsError('Problem z serverem. Nie można pobrać bazy danych z klientami.'));
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -71,8 +72,9 @@ export const addClient = (clientData: IClient) => async (
     const { clients } = getStore();
     const newClients: IClient[] = [...clients, clientData];
     dispatch(fechingClientsDone(ADD_CLIENT, newClients));
-  } catch ({ responce }) {
-    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingClientsError('Problem z serverem. Nie można dodać klienta do bazy danych'));
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -88,8 +90,9 @@ export const updateClient = (clientData: IClient, id: string) => async (
       client.id === id ? clientData : client
     );
     dispatch(fechingClientsDone(UPDATE_CLIENT, newClients));
-  } catch ({ responce }) {
-    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingClientsError('Problem z serverem. Nie można zaktualizować danych klienta.'));
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -103,7 +106,8 @@ export const deleteClient = (id: string) => async (
     const { clients } = getStore();
     const newClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
     dispatch(fechingClientsDone(DELETE_CLIENT, newClients));
-  } catch ({ responce }) {
-    dispatch(fechingClientsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingClientsError('Problem z serverem. Nie można skasować danych klienta.'));
+    throw new Error(JSON.stringify(err));
   }
 };

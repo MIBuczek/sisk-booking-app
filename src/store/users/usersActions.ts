@@ -56,7 +56,8 @@ export const getUserData = () => async (
       return null;
     });
     dispatch(fechingUserDone(user));
-  } catch ({ responce }) {
-    dispatch(fechingUserError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
+    throw new Error(JSON.stringify(err));
   }
 };

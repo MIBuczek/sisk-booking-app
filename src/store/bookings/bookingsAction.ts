@@ -57,8 +57,9 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
       return booking;
     });
     dispatch(fechingBookingsDone(ADD_BOOKING, bookings));
-  } catch ({ responce }) {
-    dispatch(fechingBookingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -72,8 +73,9 @@ export const addBooking = (bookingData: IBooking) => async (
     const { bookings } = getStore();
     const newBookings: IBooking[] = [...bookings, bookingData];
     dispatch(fechingBookingsDone(ADD_BOOKING, newBookings));
-  } catch ({ responce }) {
-    dispatch(fechingBookingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingBookingsError('Problem z serverem. Nie można dodać nowej rezerwacji.'));
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -89,8 +91,9 @@ export const updateBooking = (bookingData: IBooking, id: string) => async (
       booking.id === id ? bookingData : booking
     );
     dispatch(fechingBookingsDone(UPDATE_BOOKING, newBookings));
-  } catch ({ responce }) {
-    dispatch(fechingBookingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingBookingsError('Problem z serverem. Nie można zaktualizować rezerwacji.'));
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -104,7 +107,8 @@ export const deleteBooking = (id: string) => async (
     const { bookings } = getStore();
     const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
     dispatch(fechingBookingsDone(DELETE_BOOKING, newBookings));
-  } catch ({ responce }) {
-    dispatch(fechingBookingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingBookingsError('Problem z serverem. Nie można skasować rezerwacji.'));
+    throw new Error(JSON.stringify(err));
   }
 };

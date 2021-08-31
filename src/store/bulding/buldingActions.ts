@@ -58,8 +58,8 @@ export const getBuildingsData = () => async (
       return building;
     });
     dispatch(fechingBuldingsDone(ADD_BULDING, buldings));
-  } catch ({ responce }) {
-    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingBuldingsError('Problem z serverem. Nie można pobrać danych o obiektach.'));
   }
 };
 
@@ -73,8 +73,10 @@ export const addBuilding = (buldingData: IBulding) => async (
     const { buildings } = getStore();
     const newBuldings: IBulding[] = [...buildings, buldingData];
     dispatch(fechingBuldingsDone(ADD_BULDING, newBuldings));
-  } catch ({ responce }) {
-    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(
+      fechingBuldingsError('Problem z serverem. Nie można dodać nowego obiektu do bazy danych.')
+    );
   }
 };
 
@@ -90,8 +92,11 @@ export const updateBuilding = (buldingData: IBulding, id: string) => async (
       building.id === id ? buldingData : building
     );
     dispatch(fechingBuldingsDone(UPDATE_BULDING, newBuldings));
-  } catch ({ responce }) {
-    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(
+      fechingBuldingsError('Problem z serverem. Nie można zaktualizować obiektu w bazie danych.')
+    );
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -105,7 +110,10 @@ export const deleteBuilding = (id: string) => async (
     const { buildings } = getStore();
     const newBuldings: IBulding[] = buildings.filter((building: IBulding) => building.id !== id);
     dispatch(fechingBuldingsDone(DELETE_BULDING, newBuldings));
-  } catch ({ responce }) {
-    dispatch(fechingBuldingsError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(
+      fechingBuldingsError('Problem z serverem. Nie można skasować obiektu z bazie danych.')
+    );
+    throw new Error(JSON.stringify(err));
   }
 };

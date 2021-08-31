@@ -1,0 +1,9 @@
+.eslint
+.eslintignore
+.prettierrc
+.prettierignore
+
+package.json
+package-lock.json
+
+pre-commit

@@ -46,8 +46,9 @@ export const logInUser = (email: string, password: string) => async (
       uid: resp,
     };
     dispatch(fechingAuthDone(LOG_IN_USER, credencials));
-  } catch ({ responce }) {
-    dispatch(fechingAuthError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingAuthError('Nie udane logowanie do aplikacji.'));
+    throw new Error(JSON.stringify(err));
   }
 };
 
@@ -56,7 +57,8 @@ export const logOutUser = () => async (dispatch: Dispatch<IAuthAction>): Promise
   try {
     await auth.signOut();
     dispatch(fechingAuthDone(LOG_OUT_USER, undefined));
-  } catch ({ responce }) {
-    dispatch(fechingAuthError(`${responce.status} : ${responce.statusText}`));
+  } catch (err) {
+    dispatch(fechingAuthError('Problem z serwerem. Nieudane wylogowanie z aplikacji.'));
+    throw new Error(JSON.stringify(err));
   }
 };

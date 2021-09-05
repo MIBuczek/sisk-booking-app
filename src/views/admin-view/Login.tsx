@@ -26,7 +26,7 @@ const LoginPannel = styled.form`
 `;
 
 const Header3 = styled.h3`
-  color: ${({ theme }) => theme.darkColor};
+  color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.bold};
   text-transform: uppercase;

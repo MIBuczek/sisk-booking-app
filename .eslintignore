@@ -6,3 +6,7 @@ src/serviceWorker.ts
 package.json
 package-lock.json
 .prettierrc
+
+*.png
+*.svg
+*.jpg

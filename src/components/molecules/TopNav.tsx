@@ -2,42 +2,65 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../atoms/Logo';
+import BIP from '../../assets/images/bip.png';
 
 const NavWrapper = styled.nav`
   width: 100%;
-  height: 10vh;
+  height: 13vh;
   background: transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 60px;
+  background: white;
 `;
 
 const StyledLinksList = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const NavigationLink = styled(NavLink)`
-  color: ${({ theme }) => theme.darkColor};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.bold};
+  color: ${({ theme }) => theme.darkGrey};
+  font-size: ${({ theme }) => theme.fontSize.ml};
+  font-weight: ${({ theme }) => theme.ubold};
+  line-height: 1.5;
   text-decoration: none;
   text-transform: uppercase;
-  padding: 10px;
+  padding: 16px 10px 17px 10px;
+  transition: 0.4s;
+  &:hover {
+    color: ${({ theme }) => theme.green};
+  }
 `;
-const active = { borderBottom: '2px solid #454545' };
+const BIPImage = styled.img`
+  margin-left: 6rem;
+  max-width: 100%;
+  height: auto;
+`;
+const active = { color: '#AFBF36' };
 
 const TopNav = (): JSX.Element => (
   <NavWrapper>
     <Logo />
     <StyledLinksList>
-      <NavigationLink to="/main" activeStyle={active}>
-        Strona Główna
-      </NavigationLink>
-      <NavigationLink to="/calender">Kalendarz Rezerwacji</NavigationLink>
-      <NavigationLink to="/contacts">Kontakt</NavigationLink>
+      <li>
+        <NavigationLink to="/" exact activeStyle={active}>
+          Kalendarz Rezerwacji
+        </NavigationLink>
+      </li>
+      <li>
+        <NavigationLink to="/contact" activeStyle={active}>
+          Kontakt
+        </NavigationLink>
+      </li>
+      <li>
+        <BIPImage src={BIP} />
+      </li>
     </StyledLinksList>
   </NavWrapper>
 );

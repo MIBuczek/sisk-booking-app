@@ -1,3 +1,6 @@
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -8,9 +11,7 @@ import { store } from './store/rootReducer';
 import PrepareStore from './components/molecules/PrepareStore';
 import { theme } from './theme/mainTheme';
 
-const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;600&display=swap');
-  
+const GlobalStyle = createGlobalStyle`  
   *, *::before, *::after {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
@@ -26,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-size: 1.6rem;
-    font-family: "Oswald", sans-serif;
+    font-family: 'Oswald', sans-serif;
   };
 `;
 

@@ -16,7 +16,7 @@ const SelectInputField = styled(Select)`
 `;
 
 export const Label = styled.span`
-  color: ${({ theme }) => theme.darkColor};
+  color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: ${({ theme }) => theme.bold};
   margin: 8px 0;

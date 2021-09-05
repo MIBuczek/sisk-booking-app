@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import logo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/logo-white.png';
 
 const LogoWrapper = styled.div`
   width: 258px;
@@ -10,17 +10,13 @@ const LogoWrapper = styled.div`
 `;
 
 const LogoImg = styled.img`
-  width: 100%;
-  height: 80%;
-  background-image: url(${logo});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  width: 270px;
+  height: auto;
 `;
 
 const Logo: React.FC = (): JSX.Element => (
   <LogoWrapper>
-    <LogoImg />
+    <LogoImg src={logo} />
   </LogoWrapper>
 );
 

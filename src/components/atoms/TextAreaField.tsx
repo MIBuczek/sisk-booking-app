@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 const TextAreaField = styled.textarea`
-  width: 330px;
+  width: 390px;
   height: 135px;
   border-radius: 10px;
   background: #eaeaea;
   border: 1px solid #afbf36;
-  color: ${({ theme }) => theme.darkColor};
+  color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.bold};
   text-align: center;

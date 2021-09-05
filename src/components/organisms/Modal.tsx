@@ -28,6 +28,7 @@ const ModalContent = styled.div`
   border: 2px solid #afbf36;
   background: white;
   position: fixed;
+  border-radius: 5px;
 `;
 
 const closeBtn = {

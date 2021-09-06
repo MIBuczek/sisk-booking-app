@@ -16,6 +16,7 @@ const Anhore = styled.a<AnhoreProps>`
   font-family: 'Roboto', sans-serif;
   transition: 0.3s;
   text-decoration: none;
+  letter-spacing: -0.5px;
   &:hover {
     text-decoration: underline;
     opacity: 0.8;

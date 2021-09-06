@@ -14,6 +14,7 @@ const Paragraph = styled.p<ParagraphProps>`
   text-align: justify;
   font-family: 'Roboto', sans-serif;
   margin: 0;
+  letter-spacing: -0.5px;
 `;
 
 export default Paragraph;

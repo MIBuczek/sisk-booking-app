@@ -14,6 +14,7 @@ const TextAreaField = styled.textarea`
   resize: none;
   padding: 10px;
   text-align: left;
+  letter-spacing: -0.5px;
   &::hover {
     box-shadow: 0 0 5px 0 #eaeaea;
   }

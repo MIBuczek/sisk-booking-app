@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import bgMain from '../assets/images/background.jpg';
+import Cookies from '../components/molecules/Cookies';
 import Loading from '../components/molecules/Loading';
 import TopNav from '../components/molecules/TopNav';
 import Footer from '../components/organisms/Footer';
@@ -14,17 +15,12 @@ const NoMatch = React.lazy(() => import('./user-view/NoMatch'));
 const Contact = React.lazy(() => import('./user-view/Contact'));
 
 const AppWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 `;
-
-/* background-image: url(${bgMain});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover; */
 
 const BGImage = styled.img`
   width: 100%;
@@ -67,6 +63,7 @@ const App: React.FC = (): JSX.Element => (
             </Suspense>
           </Route>
         </Switch>
+        <Cookies />
         <Footer />
       </AppWrapper>
     </ModalContextProvider>

@@ -12,6 +12,7 @@ const RedirectLink = styled(Link)`
   margin: 1rem 0;
   cursor: pointer;
   padding: 10px;
+  letter-spacing: -0.5px;
 `;
 
 export default RedirectLink;

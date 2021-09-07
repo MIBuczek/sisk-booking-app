@@ -24,6 +24,8 @@ const CookieHeader = styled(Header)`
   font-size: 24px;
   text-transform: none;
   text-align: left;
+  font-weight: 400;
+  margin-top: 5px;
 `;
 
 const CookieParagraph = styled(Paragraph)`

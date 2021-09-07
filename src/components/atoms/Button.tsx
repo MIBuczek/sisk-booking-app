@@ -17,6 +17,11 @@ const Button = styled.button<ButtonProps>`
   padding: ${({ primary }) => (primary ? '12px 20px' : '8px 6px')};
   border-radius: 3px;
   letter-spacing: -0.5px;
+  transition: 0.4s;
+  &:hover {
+    box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 40%);
+    opacity: 0.8;
+  }
 `;
 
 export default Button;

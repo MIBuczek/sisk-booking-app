@@ -43,16 +43,25 @@ const Contact = () => (
       <Paragraph bold small>
         Godziny przyjęć interesantów:
       </Paragraph>
-      <Paragraph small>poniedziałek: 08:00 - 14:00</Paragraph>
-      <Paragraph small>wtorek: 08 - 14:00</Paragraph>
-      <Paragraph small>środa: 08 - 14:00</Paragraph>
-      <Paragraph small>czwartek: 08:00 - 16:00</Paragraph>
-      <Paragraph small>piątek: 8:00 - 14:00</Paragraph>
+      <Paragraph small>
+        poniedziałek: 08:00 - 14:00
+        <br />
+        wtorek: 08 - 14:00
+        <br />
+        środa: 08 - 14:00
+        <br />
+        czwartek: 08:00 - 16:00
+        <br />
+        piątek: 8:00 - 14:00
+      </Paragraph>
     </ContactInfo>
     <ContactInfo>
       <ContactHeader>Biuro / Adres korespondencyjny</ContactHeader>
-      <Paragraph>ul. Księżnej Anny z Przemyślidów 6a,</Paragraph>
-      <Paragraph>55-011 Siechnice</Paragraph>
+      <Paragraph>
+        ul. Księżnej Anny z Przemyślidów 6a,
+        <br />
+        55-011 Siechnice
+      </Paragraph>
       <Anhore href="tel:+48718890023">
         <BsEnvelope style={iconeNormal} />
         tel. 71 889 00 23

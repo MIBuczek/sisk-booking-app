@@ -6,12 +6,12 @@ import BIP from '../../assets/images/bip.png';
 
 const NavWrapper = styled.nav`
   width: 100%;
-  height: 13vh;
+  min-height: 13vh;
   background: transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 60px;
+  padding: 20px 60px;
   background: white;
 `;
 
@@ -38,7 +38,7 @@ const NavigationLink = styled(NavLink)`
   }
 `;
 const BIPImage = styled.img`
-  margin-left: 6rem;
+  margin-left: 10rem;
   max-width: 100%;
   height: auto;
 `;

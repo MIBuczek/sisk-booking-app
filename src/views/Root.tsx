@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import bgMain from '../assets/images/background.jpg';
+// import bgMain from '../assets/images/background.jpg';
 import Cookies from '../components/molecules/Cookies';
 import Loading from '../components/molecules/Loading';
 import TopNav from '../components/molecules/TopNav';
@@ -22,13 +22,13 @@ const AppWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const BGImage = styled.img`
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  position: fixed;
-  z-index: -1;
-`;
+// const BGImage = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   opacity: 0.7;
+//   position: fixed;
+//   z-index: -1;
+// `;
 
 const App: React.FC = (): JSX.Element => (
   <HashRouter>

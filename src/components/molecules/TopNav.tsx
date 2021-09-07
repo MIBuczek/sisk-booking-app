@@ -6,6 +6,7 @@ import BIP from '../../assets/images/bip.png';
 
 const NavWrapper = styled.nav`
   width: 100%;
+  max-width: 1470px;
   min-height: 13vh;
   background: transparent;
   display: flex;
@@ -37,11 +38,13 @@ const NavigationLink = styled(NavLink)`
     color: ${({ theme }) => theme.green};
   }
 `;
+
 const BIPImage = styled.img`
-  margin-left: 10rem;
+  margin-left: 6rem;
   max-width: 100%;
   height: auto;
 `;
+
 const active = { color: '#AFBF36' };
 
 const TopNav = (): JSX.Element => (

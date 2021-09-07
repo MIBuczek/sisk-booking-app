@@ -7,6 +7,7 @@ import Paragraph from '../../components/atoms/Paragrahp';
 
 const ContactWrapper = styled.main`
   width: 100%;
+  max-width: 1470px;
   min-height: 78vh;
   display: flex;
   align-items: flex-start;

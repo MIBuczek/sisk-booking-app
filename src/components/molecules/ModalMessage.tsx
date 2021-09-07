@@ -27,7 +27,8 @@ const ModalMessage: React.FC<IProps> = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
 
   const onSubmit = handleSubmit((cred) => {
-    console.log(cred);
+    // eslint-disable-next-line no-alert
+    alert(JSON.stringify(cred));
   });
 
   return (

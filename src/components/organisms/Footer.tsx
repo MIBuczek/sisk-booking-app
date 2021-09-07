@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
-import { BsFillEnvelopeFill } from 'react-icons/bs';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { ModalContext } from '../../context/ModalContext';
-import ButtonIcone, { iconeStyle } from '../atoms/ButtonIcone';
 import logoFooter from '../../assets/images/logo_footer.png';
 import BIPFooter from '../../assets/images/bip-footer.png';
 import Paragraph from '../atoms/Paragrahp';
 import Anhore from '../atoms/Anhore';
+import Button from '../atoms/Button';
+import Modal from './Modal';
+import ModalMessage from '../molecules/ModalMessage';
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -39,7 +41,7 @@ const FooterCredits = styled.section`
   border-top: 2px solid #57694a;
   a,
   p {
-    padding: 0 20px;
+    padding: 0 30px;
   }
 `;
 
@@ -69,6 +71,31 @@ const ContentItem = styled.div`
     }
   }
 `;
+const FooterButton = styled(Button)`
+  background: transparent;
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: left;
+  padding: 0;
+  border: none;
+  width: 150px;
+  &:hover {
+    text-decoration: underline;
+    box-shadow: none;
+    opacity: 1;
+  }
+`;
+
+const FooterLinkItem = styled(NavLink)`
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 15px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const FooterParagraph = styled(Paragraph)`
   color: white;
@@ -81,7 +108,10 @@ const FooterAnhore = styled(Anhore)`
 `;
 
 const Footer = (): JSX.Element => {
-  const { setModal } = useContext(ModalContext);
+  const {
+    modal: { isOpen },
+    setModal,
+  } = useContext(ModalContext);
   return (
     <FooterWrapper>
       <FooterContent>
@@ -101,7 +131,18 @@ const Footer = (): JSX.Element => {
             <FooterAnhore href="www.sisk-siechnice.pl">tel. 71 889 00 23</FooterAnhore>
           </FooterParagraph>
         </ContentItem>
-        <ContentItem />
+        <ContentItem>
+          <FooterButton
+            role="button"
+            onClick={() => setModal({ type: 'MESSAGE', isOpen: true, callback: () => null })}
+          >
+            Napisz do nas
+          </FooterButton>
+          <FooterLinkItem to="/" exact>
+            Kalendarz rezerwacji
+          </FooterLinkItem>
+          <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
+        </ContentItem>
       </FooterContent>
       <FooterCredits>
         <FooterAnhore href="http://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
@@ -111,14 +152,11 @@ const Footer = (): JSX.Element => {
           © Copyright 2018 SISK / Created by GEKON Web Services
         </FooterParagraph>
       </FooterCredits>
-      {/* <ButtonIcone
-        role="button"
-        onClick={() =>
-          setModal({ type: 'MESSAGE', isOpen: true, callback: () => console.log('message') })
-        }
-      >
-        <BsFillEnvelopeFill style={iconeStyle} /> NAPISZ DO NAS
-      </ButtonIcone> */}
+      {isOpen && (
+        <Modal>
+          <ModalMessage />
+        </Modal>
+      )}
     </FooterWrapper>
   );
 };

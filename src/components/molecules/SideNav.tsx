@@ -29,7 +29,7 @@ const SideNav = (): JSX.Element => {
           setModal({
             type: 'RESERVATION',
             isOpen: true,
-            callback: () => console.log('RESERVATION'),
+            callback: () => null,
           })
         }
       >

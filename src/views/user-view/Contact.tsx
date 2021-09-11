@@ -66,16 +66,16 @@ const Contact = () => (
         55-011 Siechnice
       </Paragraph>
       <Anhore href="tel:+48718890023">
-        <BsEnvelope style={iconeNormal} />
+        <BsPhone style={iconeNormal} />
         tel. 71 889 00 23
       </Anhore>
       <Anhore href="biuro@sisk-siechnice.pl">
-        <BsPhone style={iconeNormal} />
-        www.sisk-siechnice.pl
+        <BsEnvelope style={iconeNormal} />
+        biuro@sisk-siechnice.pl
       </Anhore>
       <Anhore href="www.sisk-siechnice.pl">
         <BsHouseDoor style={iconeNormal} />
-        tel. 71 889 00 23
+        www.sisk-siechnice.pl
       </Anhore>
     </ContactInfo>
   </ContactWrapper>

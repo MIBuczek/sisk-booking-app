@@ -7,6 +7,7 @@ import Loading from '../components/molecules/Loading';
 import TopNav from '../components/molecules/TopNav';
 import Footer from '../components/organisms/Footer';
 import ModalContextProvider from '../context/ModalContext';
+import ServerError from './user-view/ServerError';
 
 const Main = React.lazy(() => import('./user-view/Main'));
 const Login = React.lazy(() => import('./admin-view/Login'));
@@ -56,6 +57,11 @@ const App: React.FC = (): JSX.Element => (
           <Route path="/contact">
             <Suspense fallback={<Loading />}>
               <Contact />
+            </Suspense>
+          </Route>
+          <Route path="/server-error">
+            <Suspense fallback={<Loading />}>
+              <ServerError />
             </Suspense>
           </Route>
           <Route>

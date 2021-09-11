@@ -8,7 +8,7 @@ import { ModalContext } from '../../context/ModalContext';
 
 // const { LARGE } = SIZE;
 
-const SideWrapper = styled.nav`
+const SideWrapper = styled.aside`
   width: 30%;
   height: 60%;
   display: flex;

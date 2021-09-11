@@ -19,7 +19,7 @@ const Button = styled.button<ButtonProps>`
   letter-spacing: -0.5px;
   transition: 0.4s;
   &:hover {
-    box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 40%);
+    box-shadow: 0px 1px 5px 0px rgb(0 0 0 / 40%);
     opacity: 0.8;
   }
 `;

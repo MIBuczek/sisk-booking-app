@@ -28,7 +28,7 @@ const FooterContent = styled.section`
   justify-content: space-between;
   width: 100%;
   max-width: 1470px;
-  padding: 30px 0;
+  padding: 20px 0;
 `;
 
 const FooterCredits = styled.section`
@@ -41,7 +41,7 @@ const FooterCredits = styled.section`
   border-top: 2px solid #57694a;
   a,
   p {
-    padding: 0 30px;
+    padding: 0 20px;
   }
 `;
 
@@ -49,14 +49,15 @@ const ContentItem = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: left;
-  width: 25%;
+  width: 20%;
   height: auto;
-  padding: 0 30px;
+  padding: 0 20px;
   &:first-of-type {
     height: 100%;
   }
   &:nth-of-type(3) {
     border-right: 2px solid #57694a;
+    width: 30%;
   }
   img {
     padding: 10px 0;
@@ -135,7 +136,7 @@ const Footer = (): JSX.Element => {
         </ContentItem>
         <ContentItem>
           <FooterLinkItem to="/" exact>
-            Kalendarz rezerwacji
+            Rezerwacje
           </FooterLinkItem>
           <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
           <FooterButton

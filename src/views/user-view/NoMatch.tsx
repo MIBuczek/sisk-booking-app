@@ -6,6 +6,7 @@ import RedirectLink from '../../components/atoms/RedirectLinkt';
 const NoMatchWrapper = styled.section`
   width: 100%;
   max-width: 1470px;
+  margin-top: 13vh;
   min-height: 82vh;
   display: flex;
   align-items: center;

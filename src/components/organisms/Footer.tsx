@@ -49,13 +49,13 @@ const ContentItem = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: left;
-  width: 30%;
+  width: 25%;
   height: auto;
   padding: 0 30px;
   &:first-of-type {
     height: 100%;
   }
-  &:nth-of-type(2) {
+  &:nth-of-type(3) {
     border-right: 2px solid #57694a;
   }
   img {
@@ -99,12 +99,13 @@ const FooterLinkItem = styled(NavLink)`
 
 const FooterParagraph = styled(Paragraph)`
   color: white;
-  line-height: 1.8em;
+  line-height: 1.6em;
 `;
 
 const FooterAnhore = styled(Anhore)`
   color: white;
-  line-height: 1.8em;
+  line-height: 1.6em;
+  padding-top: 0px;
 `;
 
 const Footer = (): JSX.Element => {
@@ -119,6 +120,7 @@ const Footer = (): JSX.Element => {
           <img src={logoFooter} alt="logo" />
           <img src={BIPFooter} alt="BIP" />
         </ContentItem>
+        <ContentItem />
         <ContentItem>
           <FooterParagraph small>
             Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.
@@ -127,21 +129,22 @@ const Footer = (): JSX.Element => {
             <br />
             55-011 Siechnice
             <FooterAnhore href="tel:+48718890023">tel. 71 889 00 23</FooterAnhore>
-            <FooterAnhore href="biuro@sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnhore>
-            <FooterAnhore href="www.sisk-siechnice.pl">tel. 71 889 00 23</FooterAnhore>
+            <FooterAnhore href="biuro@sisk-siechnice.pl">biuro@sisk-siechnice.pl</FooterAnhore>
+            <FooterAnhore href="www.sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnhore>
           </FooterParagraph>
         </ContentItem>
         <ContentItem>
+          <FooterLinkItem to="/" exact>
+            Kalendarz rezerwacji
+          </FooterLinkItem>
+          <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
           <FooterButton
             role="button"
             onClick={() => setModal({ type: 'MESSAGE', isOpen: true, callback: () => null })}
           >
             Napisz do nas
           </FooterButton>
-          <FooterLinkItem to="/" exact>
-            Kalendarz rezerwacji
-          </FooterLinkItem>
-          <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
+          <FooterAnhore href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnhore>
         </ContentItem>
       </FooterContent>
       <FooterCredits>

@@ -11,7 +11,7 @@ export interface IProps {
 }
 
 const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
-  const [storeReady, setStoreReady] = React.useState<boolean>(false);
+  const [storeReady, setStoreReady] = React.useState(true);
 
   const { INITIAL, SUCCESS } = SAVING_STAGE;
   const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookings);
@@ -19,8 +19,8 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
 
   React.useEffect(() => {
     if (savingStage === INITIAL) {
-      distpatch(getBookingsData());
-      setStoreReady(false);
+      // distpatch(getBookingsData());
+      // setStoreReady(false);
     }
     if (savingStage === SUCCESS) {
       setStoreReady(true);

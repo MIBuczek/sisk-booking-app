@@ -7,6 +7,7 @@ export const theme = {
   error: '#cc0000',
   light: 200,
   regular: 400,
+  middle: 400,
   bold: 600,
   ubold: 700,
   fontSize: {

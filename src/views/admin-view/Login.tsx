@@ -10,7 +10,8 @@ import ErrorMsg from '../../components/atoms/ErrorMsg';
 
 const LoginWrapper = styled.section`
   width: 100%;
-  height: 60vh;
+  min-height: 83vh;
+  margin-right: 13vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0.5rem 0;

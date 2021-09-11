@@ -3,6 +3,7 @@ public/*
 src/react-app-env.d.ts
 src/serviceWorker.ts
 
+tsconfig.json
 package.json
 package-lock.json
 .prettierrc

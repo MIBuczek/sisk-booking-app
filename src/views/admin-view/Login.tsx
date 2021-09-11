@@ -10,7 +10,8 @@ import ErrorMsg from '../../components/atoms/ErrorMsg';
 
 const LoginWrapper = styled.section`
   width: 100%;
-  height: 60vh;
+  min-height: 83vh;
+  margin-right: 13vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0.5rem 0;
@@ -57,7 +58,7 @@ const Login: React.FC = (): JSX.Element => {
 
   React.useEffect(() => {
     if (imgWrapper.current) {
-      const elements = imgWrapper.current.children;
+      // const elements = imgWrapper.current.children;
       // const window = elements.getElementById('');
       // console.log(window);
     }
@@ -70,7 +71,8 @@ const Login: React.FC = (): JSX.Element => {
   };
 
   const onSubmit = handleSubmit((cred) => {
-    console.log(cred);
+    // eslint-disable-next-line no-alert
+    alert(JSON.stringify(cred));
   });
 
   return (

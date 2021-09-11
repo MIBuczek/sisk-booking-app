@@ -26,6 +26,10 @@ const CookieHeader = styled(Header)`
   text-align: left;
   font-weight: 400;
   margin-top: 5px;
+  margin-bottom: 0;
+  &:after {
+    position: static;
+  }
 `;
 
 const CookieParagraph = styled(Paragraph)`

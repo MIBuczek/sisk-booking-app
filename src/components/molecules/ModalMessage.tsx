@@ -2,8 +2,11 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
+import Anhore from '../atoms/Anhore';
 import Button from '../atoms/Button';
+import Checkbox from '../atoms/Checkbox';
 import ErrorMsg from '../atoms/ErrorMsg';
+import Header from '../atoms/Header';
 import TextAreaField from '../atoms/TextAreaField';
 import TextInputField from '../atoms/TextInputField';
 
@@ -15,16 +18,34 @@ const MessageWrapper = styled.form`
     align-self: flex-end;
   }
 `;
-export interface IProps {}
 
-const ModalMessage: React.FC<IProps> = () => {
+const MessageHeader = styled(Header)`
+  width: 100%;
+  margin: 20px 0 40px;
+`;
+
+const RodoWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+`;
+
+const ModalMessage = () => {
   const [newMessage, setNewMessage] = React.useState({
     eMail: '',
     phone: '',
     message: '',
+    rodo: false,
   });
-  const { eMail, phone, message } = newMessage;
+
+  const { eMail, phone, message, rodo } = newMessage;
   const { register, handleSubmit, setValue, errors } = useForm();
+
+  const changeHandler = (value: string | boolean, name: string): void => {
+    setNewMessage((prev) => ({ ...prev, [name]: value }));
+  };
 
   const onSubmit = handleSubmit((cred) => {
     // eslint-disable-next-line no-alert
@@ -33,13 +54,12 @@ const ModalMessage: React.FC<IProps> = () => {
 
   return (
     <MessageWrapper onSubmit={onSubmit}>
+      <MessageHeader>Napisz do nas wiadomość</MessageHeader>
       <TextInputField
         name="eMail"
         placeholder="E-MAIL"
         value={eMail}
-        onChange={({ target }) =>
-          setNewMessage((prev) => ({ ...prev, [target.name]: target.value }))
-        }
+        onChange={({ target }) => changeHandler(target.value, target.name)}
         ref={register({ required: true })}
       />
       {errors.eMail && (
@@ -51,12 +71,10 @@ const ModalMessage: React.FC<IProps> = () => {
         name="phone"
         placeholder="Telefon"
         value={phone}
-        onChange={({ target }) =>
-          setNewMessage((prev) => ({ ...prev, [target.name]: target.value }))
-        }
-        ref={register({ required: false })}
+        onChange={({ target }) => changeHandler(target.value, target.name)}
+        ref={register({ required: true })}
       />
-      {errors.eMail && (
+      {errors.phone && (
         <ErrorMsg>
           Prosze podać tylko liczby <BsExclamationCircle />
         </ErrorMsg>
@@ -65,16 +83,24 @@ const ModalMessage: React.FC<IProps> = () => {
         name="message"
         placeholder="Wiadomość"
         value={message}
-        onChange={({ target }) =>
-          setNewMessage((prev) => ({ ...prev, [target.name]: target.value }))
-        }
-        ref={register({ required: false })}
+        onChange={({ target }) => changeHandler(target.value, target.name)}
+        ref={register({ required: true })}
       />
-      {errors.eMail && (
+      {errors.message && (
         <ErrorMsg>
           Pole nie moze byc puste <BsExclamationCircle />
         </ErrorMsg>
       )}
+      <RodoWrapper>
+        <Checkbox checked={rodo} className="checkbox" name="rodo" changeHandler={changeHandler} />
+        <Anhore
+          small
+          href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
+          target="_blank"
+        >
+          Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
+        </Anhore>
+      </RodoWrapper>
       <Button
         role="button"
         onClick={() => {
@@ -82,8 +108,7 @@ const ModalMessage: React.FC<IProps> = () => {
           setValue('phone', phone);
           setValue('message', message);
         }}
-        disabled={false}
-        // size="SMALL"
+        disabled={!rodo}
       >
         Wyślij
       </Button>

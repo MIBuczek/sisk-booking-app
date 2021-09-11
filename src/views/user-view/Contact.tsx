@@ -16,18 +16,6 @@ const ContactWrapper = styled.main`
   flex-wrap: wrap;
 `;
 
-const ContactHeader = styled(Header)`
-  margin-bottom: 40px;
-  &:after {
-    position: absolute;
-    bottom: -14px;
-    left: 0;
-    content: '';
-    border-bottom: 5px solid #afbf36;
-    width: 110px;
-  }
-`;
-
 const ContactInfo = styled.section`
   padding: 60px 40px;
   width: 550px;
@@ -39,7 +27,7 @@ const ContactInfo = styled.section`
 const Contact = () => (
   <ContactWrapper>
     <ContactInfo>
-      <ContactHeader>DANE TELEADRESOWE</ContactHeader>
+      <Header>DANE TELEADRESOWE</Header>
       <Paragraph bold>Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.</Paragraph>
       <Paragraph>ul. Jana Pawła || 12 55-011 Siechnice</Paragraph>
       <br />
@@ -59,7 +47,7 @@ const Contact = () => (
       </Paragraph>
     </ContactInfo>
     <ContactInfo>
-      <ContactHeader>Biuro / Adres korespondencyjny</ContactHeader>
+      <Header>Biuro / Adres korespondencyjny</Header>
       <Paragraph>
         ul. Księżnej Anny z Przemyślidów 6a,
         <br />

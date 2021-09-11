@@ -24,29 +24,13 @@ const NoMatchContent = styled.section`
   }
 `;
 
-const ErrorHeader = styled(Header)`
-  margin: 40px 0;
-  &:after {
-    position: absolute;
-    bottom: -14px;
-    left: 0;
-    content: '';
-    border-bottom: 5px solid #afbf36;
-    width: 110px;
-  }
-  svg {
-    color: #afbf36;
-    margin-left: 2rem;
-  }
-`;
-
 const NoMatch: React.SFC = (): JSX.Element => (
   <NoMatchWrapper>
     <NoMatchContent>
-      <ErrorHeader>
+      <Header>
         Strona nie istnieje
         <BsExclamationSquare />
-      </ErrorHeader>
+      </Header>
       <Paragraph>Bład 404</Paragraph>
       <RedirectLink to="/">Powrót do kaledarza rezerwacji</RedirectLink>
     </NoMatchContent>

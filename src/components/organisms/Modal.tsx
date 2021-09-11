@@ -3,6 +3,7 @@ import { BsX } from 'react-icons/bs';
 import styled from 'styled-components';
 import bgModal from '../../assets/images/background-modal.jpg';
 import { ModalContext, initialModal } from '../../context/ModalContext';
+import { fadeIn } from '../../style/animation';
 import ButtonIcone from '../atoms/ButtonIcone';
 
 const ModalWrapper = styled.div`
@@ -14,6 +15,11 @@ const ModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: ${fadeIn} 0.5s linear;
+  z-index: 9999;
+  button {
+    margin: 0 0 0 auto;
+  }
 `;
 
 const BGImage = styled.img`
@@ -31,14 +37,6 @@ const ModalContent = styled.div`
   border-radius: 5px;
 `;
 
-const closeBtn = {
-  margin: ' 0',
-  color: 'grey',
-  fontSize: '2.5rem',
-  marginLeft: 'auto',
-  padding: '10px',
-};
-
 export interface IProps {
   children: JSX.Element;
 }
@@ -54,7 +52,7 @@ const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {
       <ModalWrapper>
         <BGImage src={bgModal} alt="bg" />
         <ModalContent>
-          <ButtonIcone role="button" style={closeBtn} onClick={() => setModal({ ...initialModal })}>
+          <ButtonIcone role="button" onClick={() => setModal({ ...initialModal })}>
             <BsX />
           </ButtonIcone>
           {children}

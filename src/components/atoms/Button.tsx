@@ -22,6 +22,9 @@ const Button = styled.button<ButtonProps>`
     box-shadow: 0px 1px 5px 0px rgb(0 0 0 / 40%);
     opacity: 0.8;
   }
+  &:disabled {
+    background: ${({ theme }) => theme.midleGray};
+  }
 `;
 
 export default Button;

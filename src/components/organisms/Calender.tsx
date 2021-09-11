@@ -8,7 +8,7 @@ import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { createEventId, INITIAL_EVENTS } from '../../utils/calender-functions';
-import RenderEventContent from '../atoms/CalenderContentEvent';
+import RenderEventContent from '../atoms/CalenderEvent';
 
 const CalenderWrapper = styled.section`
   width: 60%;

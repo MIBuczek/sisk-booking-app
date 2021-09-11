@@ -11,8 +11,15 @@ const ButtonIcone = styled.button`
   margin: 1rem 0;
   display: flex;
   align-items: center;
-  margin: 40px 0;
   cursor: pointer;
+  transition: 0.5s;
+  &:hover {
+    color: ${({ theme }) => theme.green};
+  }
+  svg {
+    color: inherit;
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
 `;
 
 export const iconeStyle = {

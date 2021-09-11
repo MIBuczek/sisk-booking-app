@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Header from '../../components/atoms/Header';
 import SideNav from '../../components/molecules/SideNav';
 import BookingCalender from '../../components/organisms/Calender';
+import { fadeIn } from '../../style/animation';
 
 const MainWrapper = styled.section`
   width: 100%;
@@ -11,26 +12,14 @@ const MainWrapper = styled.section`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-`;
-
-const MainHeader = styled(Header)`
-  width: 80%;
-  margin: 40px 0;
-  &:after {
-    position: absolute;
-    bottom: -14px;
-    left: 0;
-    content: '';
-    border-bottom: 5px solid #afbf36;
-    width: 110px;
-  }
+  animation: ${fadeIn} 0.5s linear;
 `;
 
 export interface IProps {}
 
 const Main: React.FC<IProps> = (): JSX.Element => (
   <MainWrapper>
-    <MainHeader>HARMONOGRAM REZERWACJI OBIEKTÓW</MainHeader>
+    <Header>HARMONOGRAM REZERWACJI OBIEKTÓW</Header>
     <SideNav />
     <BookingCalender />
   </MainWrapper>

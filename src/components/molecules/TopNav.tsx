@@ -91,10 +91,7 @@ const active = { color: '#AFBF36' };
 const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
 
-  const {
-    modal: { isOpen },
-    setModal,
-  } = React.useContext(ModalContext);
+  const { setModal } = React.useContext(ModalContext);
 
   const scrollPosition = useScrollPosition();
 

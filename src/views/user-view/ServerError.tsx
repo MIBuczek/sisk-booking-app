@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BsEnvelope, BsExclamationSquareFill, BsExclamationSquare } from 'react-icons/bs';
+import { BsEnvelope, BsExclamationSquare } from 'react-icons/bs';
 import styled from 'styled-components';
 import Anhore, { iconeNormal } from '../../components/atoms/Anhore';
 import Header from '../../components/atoms/Header';
@@ -22,30 +22,13 @@ const ServerErrorContent = styled.section`
   }
 `;
 
-const ServerHeader = styled(Header)`
-  width: 80%;
-  margin: 40px 0;
-  &:after {
-    position: absolute;
-    bottom: -14px;
-    left: 0;
-    content: '';
-    border-bottom: 5px solid #afbf36;
-    width: 110px;
-  }
-  svg {
-    color: #afbf36;
-    margin-left: 2rem;
-  }
-`;
-
 const ServerError = () => (
   <ServerErrorWrapper>
     <ServerErrorContent>
-      <ServerHeader>
+      <Header>
         Mamy obecnie problem z serverem
         <BsExclamationSquare />
-      </ServerHeader>
+      </Header>
       <Paragraph>Zapraszamy do kontaktu telefonicznego lub napisz do nas wiadomos</Paragraph>
       <Anhore href="tel:+48718890023">
         <BsEnvelope style={iconeNormal} />

@@ -115,53 +115,55 @@ const Footer = (): JSX.Element => {
     setModal,
   } = useContext(ModalContext);
   return (
-    <FooterWrapper>
-      <FooterContent>
-        <ContentItem>
-          <img src={logoFooter} alt="logo" />
-          <img src={BIPFooter} alt="BIP" />
-        </ContentItem>
-        <ContentItem />
-        <ContentItem>
+    <>
+      <FooterWrapper>
+        <FooterContent>
+          <ContentItem>
+            <img src={logoFooter} alt="logo" />
+            <img src={BIPFooter} alt="BIP" />
+          </ContentItem>
+          <ContentItem />
+          <ContentItem>
+            <FooterParagraph small>
+              Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.
+              <br />
+              ul. Księżnej Anny z Przemyślidów 6a,
+              <br />
+              55-011 Siechnice
+              <FooterAnhore href="tel:+48718890023">tel. 71 889 00 23</FooterAnhore>
+              <FooterAnhore href="biuro@sisk-siechnice.pl">biuro@sisk-siechnice.pl</FooterAnhore>
+              <FooterAnhore href="www.sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnhore>
+            </FooterParagraph>
+          </ContentItem>
+          <ContentItem>
+            <FooterLinkItem to="/" exact>
+              Rezerwacje
+            </FooterLinkItem>
+            <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
+            <FooterButton
+              role="button"
+              onClick={() => setModal({ type: 'MESSAGE', isOpen: true, callback: () => null })}
+            >
+              Napisz do nas
+            </FooterButton>
+            <FooterAnhore href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnhore>
+          </ContentItem>
+        </FooterContent>
+        <FooterCredits>
+          <FooterAnhore href="http://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
+            Polityka prywatności
+          </FooterAnhore>
           <FooterParagraph small>
-            Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.
-            <br />
-            ul. Księżnej Anny z Przemyślidów 6a,
-            <br />
-            55-011 Siechnice
-            <FooterAnhore href="tel:+48718890023">tel. 71 889 00 23</FooterAnhore>
-            <FooterAnhore href="biuro@sisk-siechnice.pl">biuro@sisk-siechnice.pl</FooterAnhore>
-            <FooterAnhore href="www.sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnhore>
+            © Copyright 2018 SISK / Created by GEKON Web Services
           </FooterParagraph>
-        </ContentItem>
-        <ContentItem>
-          <FooterLinkItem to="/" exact>
-            Rezerwacje
-          </FooterLinkItem>
-          <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
-          <FooterButton
-            role="button"
-            onClick={() => setModal({ type: 'MESSAGE', isOpen: true, callback: () => null })}
-          >
-            Napisz do nas
-          </FooterButton>
-          <FooterAnhore href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnhore>
-        </ContentItem>
-      </FooterContent>
-      <FooterCredits>
-        <FooterAnhore href="http://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
-          Polityka prywatności
-        </FooterAnhore>
-        <FooterParagraph small>
-          © Copyright 2018 SISK / Created by GEKON Web Services
-        </FooterParagraph>
-      </FooterCredits>
+        </FooterCredits>
+      </FooterWrapper>
       {isOpen && (
         <Modal>
           <ModalMessage />
         </Modal>
       )}
-    </FooterWrapper>
+    </>
   );
 };
 

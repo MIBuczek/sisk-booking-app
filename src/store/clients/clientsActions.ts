@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
-import { IClient, IClientsActions } from '../../models/store-models';
+import { IClient, IClientsActions } from '../../models/store/store-models';
 import {
   GET_CLIENTS,
   ADD_CLIENT,

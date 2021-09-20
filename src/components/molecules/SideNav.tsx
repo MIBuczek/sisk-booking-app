@@ -2,9 +2,11 @@ import * as React from 'react';
 import { BsPlusCircle } from 'react-icons/bs';
 import styled from 'styled-components';
 import ButtonIcone, { iconeStyle } from '../atoms/ButtonIcone';
-import SelectInputField, { customStyles, Label, SelectWrapper } from '../atoms/SelectInputField';
+import SelectInputField, { customStyles, SelectWrapper } from '../atoms/SelectInputField';
 import { options } from '../../utils/utils-data';
 import { ModalContext } from '../../context/ModalContext';
+import { MODAL_TYPES } from '../../utils/modal-variables';
+import Label from '../atoms/Label';
 
 // const { LARGE } = SIZE;
 
@@ -16,9 +18,12 @@ const SideWrapper = styled.aside`
   align-items: center;
   background: transparent;
   justify-content: center;
+  padding-top: 30px;
 `;
 
 const SideNav = (): JSX.Element => {
+  const { RESERVATION } = MODAL_TYPES;
+
   const { setModal } = React.useContext(ModalContext);
 
   return (
@@ -27,7 +32,7 @@ const SideNav = (): JSX.Element => {
         role="button"
         onClick={() =>
           setModal({
-            type: 'RESERVATION',
+            type: RESERVATION,
             isOpen: true,
             callback: () => null,
           })

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { IBooking, IBookingsAction } from '../../models/store-models';
+import { IBooking, IBookingsAction } from '../../models/store/store-models';
 import {
   SAVING_STAGE,
   GET_BOOKINGS,

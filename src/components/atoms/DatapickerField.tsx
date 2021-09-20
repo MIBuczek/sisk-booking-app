@@ -1,32 +1,26 @@
-// import * as React from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
+import ReactDatePicker from 'react-datepicker';
 
-type InputType = {
+type DataPickerType = {
   invalid?: boolean;
 };
 
-const TextInputField = styled.input<InputType>`
-  width: 290px;
+export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
+  width: 190px;
   height: 35px;
-  border-radius: 5px;
+  border-radius: 10px;
   background: #eaeaea;
   border: 1px solid #afbf36;
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.bold};
   text-align: center;
-  /* margin: ${({ theme }) => theme.fontSize.xs} 0; */
   padding: 10px;
-  text-align: left;
+  text-align: center;
   letter-spacing: -0.5px;
   border-color: ${({ invalid }) => (invalid ? '#cc0000' : '#afbf36')};
-  &::hover {
-    box-shadow: 0 0 5px 0 #eaeaea;
-  }
   &::placeholder {
     color: #b9b8b8;
-    text-align: center;
   }
 `;
-
-export default TextInputField;

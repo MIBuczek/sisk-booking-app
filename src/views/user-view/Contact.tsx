@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Anhore, { iconeNormal } from '../../components/atoms/Anhore';
 import Header from '../../components/atoms/Header';
 import Paragraph from '../../components/atoms/Paragrahp';
+import { fadeIn } from '../../style/animation';
 
 const ContactWrapper = styled.main`
   width: 100%;
@@ -14,6 +15,7 @@ const ContactWrapper = styled.main`
   align-items: flex-start;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  animation: ${fadeIn} 0.5s linear;
 `;
 
 const ContactInfo = styled.section`

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
-import { IUserAction, IUser, IAuth } from '../../models/store-models';
+import { IUserAction, IUser, IAuth } from '../../models/store/store-models';
 import { GET_USER, ERROR_USER, SAVING_STAGE } from '../../utils/store-data';
 import { db } from '../../utils/firebase';
 

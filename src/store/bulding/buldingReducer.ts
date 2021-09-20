@@ -1,4 +1,4 @@
-import { IBuldingsAction, IBuldingsPayload } from '../../models/store-models';
+import { IBuldingsAction, IBuldingsPayload } from '../../models/store/store-models';
 import {
   SAVING_STAGE,
   GET_BULDINGS,

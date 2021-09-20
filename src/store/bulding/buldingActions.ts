@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { IBuldingsAction, IBulding } from '../../models/store-models';
+import { IBuldingsAction, IBulding } from '../../models/store/store-models';
 import {
   GET_BULDINGS,
   ADD_BULDING,

@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { IAuthAction, IAuth } from '../../models/store-models';
+import { IAuthAction, IAuth } from '../../models/store/store-models';
 import { LOG_IN_USER, LOG_OUT_USER, SAVING_STAGE } from '../../utils/store-data';
 import { auth } from '../../utils/firebase';
 

@@ -2,8 +2,9 @@ import * as React from 'react';
 import { BsX } from 'react-icons/bs';
 import styled from 'styled-components';
 import bgModal from '../../assets/images/background-modal.jpg';
-import { ModalContext, initialModal } from '../../context/ModalContext';
+import { ModalContext } from '../../context/ModalContext';
 import { fadeIn } from '../../style/animation';
+import { initialModal } from '../../utils/modal-variables';
 import ButtonIcone from '../atoms/ButtonIcone';
 
 const ModalWrapper = styled.div`
@@ -38,7 +39,7 @@ const ModalContent = styled.div`
 `;
 
 export interface IProps {
-  children: JSX.Element;
+  children: (JSX.Element | boolean)[];
 }
 
 const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {

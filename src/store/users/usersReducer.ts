@@ -1,4 +1,4 @@
-import { IUserAction } from '../../models/store-models';
+import { IUserAction } from '../../models/store/store-models';
 import { SAVING_STAGE, ERROR_USER, GET_USER } from '../../utils/store-data';
 
 const { INITIAL } = SAVING_STAGE;

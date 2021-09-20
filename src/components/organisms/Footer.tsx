@@ -9,6 +9,9 @@ import Anhore from '../atoms/Anhore';
 import Button from '../atoms/Button';
 import Modal from './Modal';
 import ModalMessage from '../molecules/ModalMessage';
+import ModalReservation from '../molecules/ModalReservation';
+import { MODAL_TYPES } from '../../utils/modal-variables';
+import { fadeIn } from '../../style/animation';
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -20,6 +23,7 @@ const FooterWrapper = styled.footer`
   align-items: center;
   justify-content: center;
   padding: 20px 40px;
+  animation: ${fadeIn} 0.5s linear;
 `;
 
 const FooterContent = styled.section`
@@ -60,7 +64,6 @@ const ContentItem = styled.div`
     width: 30%;
   }
   img {
-    padding: 10px 0;
     &:first-of-type {
       max-width: 250px;
       height: auto;
@@ -72,6 +75,7 @@ const ContentItem = styled.div`
     }
   }
 `;
+
 const FooterButton = styled(Button)`
   background: transparent;
   margin-top: 0;
@@ -110,10 +114,13 @@ const FooterAnhore = styled(Anhore)`
 `;
 
 const Footer = (): JSX.Element => {
+  const { MESSAGE, RESERVATION } = MODAL_TYPES;
+
   const {
-    modal: { isOpen },
+    modal: { isOpen, type },
     setModal,
   } = useContext(ModalContext);
+
   return (
     <>
       <FooterWrapper>
@@ -142,7 +149,7 @@ const Footer = (): JSX.Element => {
             <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
             <FooterButton
               role="button"
-              onClick={() => setModal({ type: 'MESSAGE', isOpen: true, callback: () => null })}
+              onClick={() => setModal({ type: MESSAGE, isOpen: true, callback: () => null })}
             >
               Napisz do nas
             </FooterButton>
@@ -160,7 +167,8 @@ const Footer = (): JSX.Element => {
       </FooterWrapper>
       {isOpen && (
         <Modal>
-          <ModalMessage />
+          {type === MESSAGE && <ModalMessage />}
+          {type === RESERVATION && <ModalReservation />}
         </Modal>
       )}
     </>

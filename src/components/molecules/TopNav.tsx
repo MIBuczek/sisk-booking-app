@@ -7,6 +7,8 @@ import useScrollPosition from '../../hooks/useScrollPosition ';
 import Anhore from '../atoms/Anhore';
 import Button from '../atoms/Button';
 import { ModalContext } from '../../context/ModalContext';
+import { MODAL_TYPES } from '../../utils/modal-variables';
+import { fadeIn } from '../../style/animation';
 
 type Navigation = {
   isTop: boolean;
@@ -26,6 +28,7 @@ const NavWrapper = styled.nav<Navigation>`
   transition-duration: 0.3s;
   transition-timing-function: ease;
   transition-delay: 0s;
+  animation: ${fadeIn} 0.5s linear;
 `;
 
 const NavContent = styled.div`
@@ -91,6 +94,7 @@ const active = { color: '#AFBF36' };
 const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
 
+  const { MESSAGE } = MODAL_TYPES;
   const { setModal } = React.useContext(ModalContext);
 
   const scrollPosition = useScrollPosition();
@@ -116,7 +120,7 @@ const TopNav = (): JSX.Element => {
           <li>
             <NavButton
               role="button"
-              onClick={() => setModal({ type: 'MESSAGE', isOpen: true, callback: () => null })}
+              onClick={() => setModal({ type: MESSAGE, isOpen: true, callback: () => null })}
             >
               <BsEnvelopeFill />
             </NavButton>

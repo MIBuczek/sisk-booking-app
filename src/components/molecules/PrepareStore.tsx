@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IReduxState, IBookingsPayload } from '../../models/store-models';
+import { IReduxState, IBookingsPayload } from '../../models/store/store-models';
 import { getBookingsData } from '../../store/bookings/bookingsAction';
 import { SAVING_STAGE } from '../../utils/store-data';
 import Loading from './Loading';

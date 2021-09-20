@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import Button from '../../components/atoms/Button';
 import TextInputField from '../../components/atoms/TextInputField';
-import { ICredencial } from '../../models/credencials-models';
+import { ICredencial } from '../../models/auth/credencials-models';
 import { ReactComponent as AnimationImg } from '../../assets/images/animation2.svg';
 import ErrorMsg from '../../components/atoms/ErrorMsg';
 

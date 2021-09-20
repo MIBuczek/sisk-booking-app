@@ -1,21 +1,6 @@
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
-
-interface IModal {
-  type: string;
-  isOpen: boolean;
-  callback: () => void;
-}
-
-interface IModalContext {
-  modal: IModal;
-  setModal: Dispatch<SetStateAction<IModal>>;
-}
-
-export const initialModal = {
-  type: '',
-  isOpen: false,
-  callback: () => null,
-};
+import React, { createContext, ReactNode, useState } from 'react';
+import { IModal, IModalContext } from '../models/modals/types-models';
+import { initialModal } from '../utils/modal-variables';
 
 export const ModalContext = createContext<IModalContext>({
   modal: { ...initialModal },

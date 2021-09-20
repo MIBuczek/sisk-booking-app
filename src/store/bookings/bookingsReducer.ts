@@ -1,4 +1,4 @@
-import { IBookingsAction, IBookingsPayload } from '../../models/store-models';
+import { IBookingsAction, IBookingsPayload } from '../../models/store/store-models';
 import {
   SAVING_STAGE,
   GET_BOOKINGS,

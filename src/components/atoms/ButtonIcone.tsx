@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const ButtonIcone = styled.button`
   color: ${({ theme }) => theme.darkGrey};
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.bold};
   background: transparent;
   border: none;

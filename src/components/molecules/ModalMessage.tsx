@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
+import { IMessage, innitlaMessage } from '../../models/modals/message-models';
 import Anhore from '../atoms/Anhore';
 import Button from '../atoms/Button';
 import Checkbox from '../atoms/Checkbox';
@@ -33,14 +34,9 @@ const RodoWrapper = styled.div`
 `;
 
 const ModalMessage = () => {
-  const [newMessage, setNewMessage] = React.useState({
-    eMail: '',
-    phone: '',
-    message: '',
-    rodo: false,
-  });
+  const [newMessage, setNewMessage] = React.useState<IMessage>({ ...innitlaMessage });
 
-  const { eMail, phone, message, rodo } = newMessage;
+  const { email, phone, message, police } = newMessage;
   const { register, handleSubmit, setValue, errors } = useForm();
 
   const changeHandler = (value: string | boolean, name: string): void => {
@@ -56,13 +52,13 @@ const ModalMessage = () => {
     <MessageWrapper onSubmit={onSubmit}>
       <MessageHeader>Napisz do nas wiadomość</MessageHeader>
       <TextInputField
-        name="eMail"
+        name="email"
         placeholder="E-MAIL"
-        value={eMail}
+        value={email}
         onChange={({ target }) => changeHandler(target.value, target.name)}
         ref={register({ required: true })}
       />
-      {errors.eMail && (
+      {errors.email && (
         <ErrorMsg>
           Pole nie moze byc puste <BsExclamationCircle />
         </ErrorMsg>
@@ -92,7 +88,12 @@ const ModalMessage = () => {
         </ErrorMsg>
       )}
       <RodoWrapper>
-        <Checkbox checked={rodo} className="checkbox" name="rodo" changeHandler={changeHandler} />
+        <Checkbox
+          checked={police}
+          className="checkbox"
+          name="police"
+          changeHandler={changeHandler}
+        />
         <Anhore
           small
           href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
@@ -104,11 +105,11 @@ const ModalMessage = () => {
       <Button
         role="button"
         onClick={() => {
-          setValue('eMail', eMail);
+          setValue('email', email);
           setValue('phone', phone);
           setValue('message', message);
         }}
-        disabled={!rodo}
+        disabled={!police}
       >
         Wyślij
       </Button>

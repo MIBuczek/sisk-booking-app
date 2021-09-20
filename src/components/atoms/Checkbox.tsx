@@ -68,7 +68,7 @@ interface ICheckbox {
 
 const Checkbox: React.FC<ICheckbox> = ({ className, checked, name, changeHandler }) => (
   <CheckboxContainer className={className} onClick={() => changeHandler(!checked, name)}>
-    <HiddenCheckbox checked={checked} name={name} type="checkbox" />
+    <HiddenCheckbox checked={checked} name={name} type="checkbox" readOnly />
     <StyledCheckbox checked={checked}>
       <Icon viewBox="0 0 24 24">
         <polyline points="20 6 9 17 4 12" />

@@ -1,4 +1,4 @@
-import { IClientsPayload, IClientsActions } from '../../models/store-models';
+import { IClientsPayload, IClientsActions } from '../../models/store/store-models';
 import {
   SAVING_STAGE,
   GET_CLIENTS,

@@ -1,3 +1,5 @@
+import { TSelect } from '../components/select-model';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface IPayload {
   isFetching: boolean;
@@ -66,14 +68,25 @@ export interface IAuthAction {
 }
 
 export interface IBooking {
-  date: string;
-  place: string;
-  user: string;
-  id: string;
+  city: TSelect;
+  bulding: TSelect;
+  size: TSelect;
+  person: string;
+  clube?: string;
+  email: string;
+  phone: string;
+  regular?: boolean;
+  when: Date | null;
+  whenEnd?: Date | null;
+  start: Date | null;
+  end: Date | null;
+  accepted: boolean;
+  message: string;
+  id?: string;
 }
 
 export interface IBookingsPayload extends IPayload {
-  bookings?: IBooking[];
+  bookings: IBooking[];
 }
 
 export interface IBookingsAction {
@@ -85,6 +98,6 @@ export interface IReduxState {
   auth: IAuthPayload;
   clients: IClientsPayload;
   buldings: IBuldingsPayload;
-  bookings: IBookingsPayload;
+  bookingState: IBookingsPayload;
   currentUser: IUserPayload;
 }

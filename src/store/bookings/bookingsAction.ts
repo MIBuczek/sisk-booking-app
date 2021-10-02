@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { IBooking, IBookingsAction } from '../../models/store/store-models';
+import { IBooking, IBookingsAction, IReduxState } from '../../models/store/store-models';
 import {
   SAVING_STAGE,
   GET_BOOKINGS,
@@ -19,7 +19,7 @@ const fechingBookings = (): IBookingsAction => ({
     isFetching: true,
     savingStage: INITIAL,
     errorMessage: '',
-    bookings: undefined,
+    bookings: [],
   },
 });
 
@@ -39,7 +39,7 @@ const fechingBookingsError = (errorMessage: string): IBookingsAction => ({
     isFetching: false,
     savingStage: ERROR,
     errorMessage,
-    bookings: undefined,
+    bookings: [],
   },
 });
 
@@ -49,9 +49,18 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
     const resp = await db.collection('bookings').get();
     const bookings: IBooking[] = resp.docs.map((doc) => {
       const booking: IBooking = {
-        date: doc.data().date,
-        place: doc.data().place,
-        user: doc.data().user,
+        city: doc.data().city,
+        bulding: doc.data().bulding,
+        size: doc.data().size,
+        person: doc.data().person,
+        clube: doc.data().clube,
+        email: doc.data().email,
+        phone: doc.data().phone,
+        when: doc.data().when,
+        start: doc.data().start,
+        end: doc.data().end,
+        message: doc.data().message,
+        accepted: doc.data().accepted,
         id: doc.data().id,
       };
       return booking;
@@ -65,12 +74,14 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
 
 export const addBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction>,
-  getStore: any
+  getState: () => IReduxState
 ): Promise<void> => {
   dispatch(fechingBookings());
   try {
-    await db.collection('bookings').doc().set(bookingData);
-    const { bookings } = getStore();
+    // await db.collection('bookings').doc().set(bookingData);
+    const {
+      bookingState: { bookings },
+    } = getState();
     const newBookings: IBooking[] = [...bookings, bookingData];
     dispatch(fechingBookingsDone(ADD_BOOKING, newBookings));
   } catch (err) {

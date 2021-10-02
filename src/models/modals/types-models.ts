@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-export type ModalTypes = 'EMPTY' | 'MESSAGE' | 'RESERVATION' | string;
+export type ModalTypes = 'EMPTY' | 'MESSAGE' | 'RESERVATION' | 'CONFIRM';
 
 export interface IModal {
   type: ModalTypes;

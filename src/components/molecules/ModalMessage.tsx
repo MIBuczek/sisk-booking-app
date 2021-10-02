@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
-import { IMessage, innitlaMessage } from '../../models/modals/message-models';
 import Anhore from '../atoms/Anhore';
 import Button from '../atoms/Button';
 import Checkbox from '../atoms/Checkbox';
 import ErrorMsg from '../atoms/ErrorMsg';
 import Header from '../atoms/Header';
+import Label from '../atoms/Label';
 import TextAreaField from '../atoms/TextAreaField';
 import TextInputField from '../atoms/TextInputField';
 
@@ -34,14 +34,9 @@ const RodoWrapper = styled.div`
 `;
 
 const ModalMessage = () => {
-  const [newMessage, setNewMessage] = React.useState<IMessage>({ ...innitlaMessage });
+  const [police, setPolice] = React.useState<boolean>(false);
 
-  const { email, phone, message, police } = newMessage;
-  const { register, handleSubmit, setValue, errors } = useForm();
-
-  const changeHandler = (value: string | boolean, name: string): void => {
-    setNewMessage((prev) => ({ ...prev, [name]: value }));
-  };
+  const { control, handleSubmit, errors } = useForm();
 
   const onSubmit = handleSubmit((cred) => {
     // eslint-disable-next-line no-alert
@@ -51,36 +46,88 @@ const ModalMessage = () => {
   return (
     <MessageWrapper onSubmit={onSubmit}>
       <MessageHeader>Napisz do nas wiadomość</MessageHeader>
-      <TextInputField
+      <Label>Imie i nazwisko</Label>
+      <Controller
+        name="person"
+        defaultValue={''}
+        control={control}
+        rules={{ required: true }}
+        render={({ onChange, onBlur, value }) => (
+          <TextInputField
+            onBlur={onBlur}
+            value={value}
+            onChange={onChange}
+            invalid={!!errors.person}
+            className="input"
+            placeholder="Wpisz"
+          />
+        )}
+      />
+      {errors.person && (
+        <ErrorMsg>
+          Pole nie moze byc puste <BsExclamationCircle />
+        </ErrorMsg>
+      )}
+      <Label>Wpisz swoj adres e-mail</Label>
+      <Controller
         name="email"
-        placeholder="E-MAIL"
-        value={email}
-        onChange={({ target }) => changeHandler(target.value, target.name)}
-        ref={register({ required: true })}
+        defaultValue={''}
+        control={control}
+        rules={{ required: true }}
+        render={({ onChange, onBlur, value }) => (
+          <TextInputField
+            onBlur={onBlur}
+            value={value}
+            onChange={onChange}
+            invalid={!!errors.email}
+            className="input"
+            placeholder="E-mail"
+          />
+        )}
       />
       {errors.email && (
         <ErrorMsg>
           Pole nie moze byc puste <BsExclamationCircle />
         </ErrorMsg>
       )}
-      <TextInputField
+      <Label>Numer kontaktowy</Label>
+      <Controller
         name="phone"
-        placeholder="Telefon"
-        value={phone}
-        onChange={({ target }) => changeHandler(target.value, target.name)}
-        ref={register({ required: true })}
+        defaultValue={''}
+        control={control}
+        rules={{ required: true }}
+        render={({ onChange, onBlur, value }) => (
+          <TextInputField
+            onBlur={onBlur}
+            value={value}
+            onChange={onChange}
+            invalid={!!errors.phone}
+            className="input"
+            placeholder="000-000-000"
+          />
+        )}
       />
       {errors.phone && (
         <ErrorMsg>
           Prosze podać tylko liczby <BsExclamationCircle />
         </ErrorMsg>
       )}
-      <TextAreaField
+      <Label>Wiadomość</Label>
+      <Controller
         name="message"
-        placeholder="Wiadomość"
-        value={message}
-        onChange={({ target }) => changeHandler(target.value, target.name)}
-        ref={register({ required: true })}
+        defaultValue={''}
+        control={control}
+        rules={{ required: true }}
+        render={({ onChange, onBlur, value }) => (
+          <TextAreaField
+            onBlur={onBlur}
+            value={value}
+            onChange={onChange}
+            invalid={!!errors.message}
+            className="input"
+            placeholder="Wiadomość"
+          />
+        )}
       />
       {errors.message && (
         <ErrorMsg>
@@ -92,7 +139,7 @@ const ModalMessage = () => {
           checked={police}
           className="checkbox"
           name="police"
-          changeHandler={changeHandler}
+          changeHandler={() => setPolice(!police)}
         />
         <Anhore
           small
@@ -102,15 +149,7 @@ const ModalMessage = () => {
           Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
         </Anhore>
       </RodoWrapper>
-      <Button
-        role="button"
-        onClick={() => {
-          setValue('email', email);
-          setValue('phone', phone);
-          setValue('message', message);
-        }}
-        disabled={!police}
-      >
+      <Button role="button" onClick={onSubmit} disabled={!police}>
         Wyślij
       </Button>
     </MessageWrapper>

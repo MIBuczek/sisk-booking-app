@@ -42,11 +42,11 @@ const SideNav = (): JSX.Element => {
       </ButtonIcone>
       <SelectWrapper>
         <Label>Miejscowość</Label>
-        <SelectInputField options={options} styles={customStyles} />
+        <SelectInputField options={options} styles={customStyles(false)} />
       </SelectWrapper>
       <SelectWrapper>
         <Label>Obiekt</Label>
-        <SelectInputField options={options} styles={customStyles} />
+        <SelectInputField options={options} styles={customStyles(false)} />
       </SelectWrapper>
     </SideWrapper>
   );

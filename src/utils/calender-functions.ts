@@ -1,21 +1,18 @@
 import { EventInput } from '@fullcalendar/react';
 
-let eventGuid = 0;
-const todayStr = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
+export const formatDate = (date: Date): string => date.toISOString().replace(/T.*$/, '');
 
 export const INITIAL_EVENTS: EventInput[] = [
   {
-    id: createEventId(),
-    title: 'All-day event',
-    start: todayStr,
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: `${todayStr}T12:00:00`,
+    allDay: false,
+    id: '#1234123',
+    title: 'Rezerwacja',
+    start: `${formatDate(new Date())}T12:00:00+02:00`,
+    end: `${formatDate(new Date())}T14:00:00+02:00`,
   },
 ];
 
+let eventGuid = 0;
 export function createEventId() {
   return String(eventGuid++);
 }

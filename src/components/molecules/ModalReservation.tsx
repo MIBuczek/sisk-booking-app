@@ -4,22 +4,26 @@ import { registerLocale } from 'react-datepicker';
 import pl from 'date-fns/locale/pl';
 import { Controller, useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
-import {
-  inntialReservation,
-  IReservation,
-  ReservationState,
-} from '../../models/modals/reservation-models';
+import { useDispatch } from 'react-redux';
 import { DataPickerField } from '../atoms/DatapickerField';
 import Header from '../atoms/Header';
 import TextInputField from '../atoms/TextInputField';
 import SelectInputField, { customStyles, SelectWrapper } from '../atoms/SelectInputField';
-import { options } from '../../utils/utils-data';
 import Checkbox from '../atoms/Checkbox';
 import Anhore from '../atoms/Anhore';
 import Button from '../atoms/Button';
 import TextAreaField from '../atoms/TextAreaField';
 import ErrorMsg from '../atoms/ErrorMsg';
 import Label from '../atoms/Label';
+import { IBooking } from '../../models/store/store-models';
+import { addBooking } from '../../store/bookings/bookingsAction';
+import { ModalContext } from '../../context/ModalContext';
+import { initialModal } from '../../utils/modal-variables';
+import {
+  BUILDINGS_OPTIONS,
+  CITY_OPTIONS,
+  SIZE_FIELD_OPTIONS,
+} from '../../utils/variables/options-const';
 import { TSelect } from '../../models/components/select-model';
 
 registerLocale('pl', pl);
@@ -48,7 +52,6 @@ const InputContainer = styled.div`
 `;
 
 const RodoWrapper = styled.div`
-  width: 100%;
   height: auto;
   display: flex;
   align-items: center;
@@ -61,19 +64,36 @@ const MessageTextArea = styled(TextAreaField)`
 `;
 
 const ModalReservation = () => {
-  const [reservation, setReservation] = React.useState<IReservation>({ ...inntialReservation });
+  const [police, setPolice] = React.useState<boolean>(false);
 
-  const { from, to, when, person, phone, email, bulding, city, police, message } = reservation;
+  const dispatch = useDispatch();
 
-  const { register, handleSubmit, setValue, errors, control } = useForm();
+  const { setModal } = React.useContext(ModalContext);
 
-  const reservationHandler = (value: ReservationState, name: string): void => {
-    setReservation((prev) => ({ ...prev, [name]: value }));
+  const { handleSubmit, errors, control, watch } = useForm();
+
+  const cityValue = watch('city');
+  const buldingValue = watch('bulding');
+  const regularValue = watch('regular');
+
+  const selectBuilding = (): TSelect[] => {
+    if (!cityValue) return [];
+    return BUILDINGS_OPTIONS[cityValue.value];
   };
 
-  const onSubmit = handleSubmit((cred) => {
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(cred));
+  const selectSizeField = (): TSelect[] => {
+    if (!buldingValue || !cityValue) return [];
+    return SIZE_FIELD_OPTIONS[cityValue.value][buldingValue.value];
+  };
+
+  const onSubmit = handleSubmit<IBooking>(async (cred) => {
+    dispatch(
+      addBooking({
+        ...cred,
+        accepted: false,
+      })
+    );
+    setModal({ ...initialModal });
   });
 
   return (
@@ -83,16 +103,17 @@ const ModalReservation = () => {
         <Label>Miejscowość</Label>
         <Controller
           name="city"
-          defaultValue={city}
+          defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={() => (
+          render={({ onChange, onBlur, value }) => (
             <SelectInputField
-              value={city}
-              options={options}
+              options={CITY_OPTIONS}
               styles={customStyles(!!errors.city)}
               placeholder="Wybierz"
-              onChange={(selected: TSelect) => reservationHandler(selected, 'city')}
+              onChange={onChange}
+              onBlur={onBlur}
+              selected={value}
             />
           )}
         />
@@ -106,16 +127,17 @@ const ModalReservation = () => {
         <Label>Obiekt</Label>
         <Controller
           name="bulding"
-          defaultValue={bulding}
+          defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={() => (
+          render={({ onChange, onBlur, value }) => (
             <SelectInputField
-              value={bulding}
-              options={options}
+              options={selectBuilding()}
               styles={customStyles(!!errors.bulding)}
               placeholder="Wybierz"
-              onChange={(selected: TSelect) => reservationHandler(selected, 'bulding')}
+              onChange={onChange}
+              onBlur={onBlur}
+              selected={value}
             />
           )}
         />
@@ -125,15 +147,67 @@ const ModalReservation = () => {
           </ErrorMsg>
         )}
       </SelectWrapper>
+      <SelectWrapper>
+        <Label>Wynajmowana powierzchnia</Label>
+        <Controller
+          name="size"
+          defaultValue={''}
+          control={control}
+          rules={{ required: true }}
+          render={({ onChange, onBlur, value }) => (
+            <SelectInputField
+              options={selectSizeField()}
+              styles={customStyles(!!errors.size)}
+              placeholder="Wybierz"
+              onChange={onChange}
+              onBlur={onBlur}
+              selected={value}
+              isDisabled={!buldingValue}
+            />
+          )}
+        />
+        {errors.bulding && (
+          <ErrorMsg>
+            Pole nie moze byc puste <BsExclamationCircle />
+          </ErrorMsg>
+        )}
+      </SelectWrapper>
+      <SelectWrapper>
+        <RodoWrapper>
+          <Label>Czy jest to rezerwacja cykliczna</Label>
+          <Controller
+            name="regular"
+            defaultValue={false}
+            control={control}
+            rules={{ required: true }}
+            render={({ onChange, onBlur, value }) => (
+              <Checkbox
+                checked={value}
+                className="checkbox"
+                name="regular"
+                changeHandler={onChange}
+              />
+            )}
+          />
+        </RodoWrapper>
+      </SelectWrapper>
       <InputContainer>
         <Label>Imie i nazwisko</Label>
-        <TextInputField
+        <Controller
           name="person"
-          placeholder="Wpisz"
-          value={person}
-          invalid={!!errors.person}
-          onChange={({ target }) => reservationHandler(target.value as string, target.name)}
-          ref={register({ required: true })}
+          defaultValue={''}
+          control={control}
+          rules={{ required: true }}
+          render={({ onChange, onBlur, value }) => (
+            <TextInputField
+              onBlur={onBlur}
+              value={value}
+              onChange={onChange}
+              invalid={!!errors.person}
+              className="input"
+              placeholder="Wpisz"
+            />
+          )}
         />
         {errors.person && (
           <ErrorMsg>
@@ -141,13 +215,21 @@ const ModalReservation = () => {
           </ErrorMsg>
         )}
         <Label>Adres e-mail</Label>
-        <TextInputField
+        <Controller
           name="email"
-          placeholder="Wpisz"
-          value={email}
-          invalid={!!errors.email}
-          onChange={({ target }) => reservationHandler(target.value as string, target.name)}
-          ref={register({ required: true })}
+          defaultValue={''}
+          control={control}
+          rules={{ required: true }}
+          render={({ onChange, onBlur, value }) => (
+            <TextInputField
+              onBlur={onBlur}
+              value={value}
+              onChange={onChange}
+              invalid={!!errors.email}
+              className="input"
+              placeholder="Wpisz"
+            />
+          )}
         />
         {errors.email && (
           <ErrorMsg>
@@ -155,13 +237,21 @@ const ModalReservation = () => {
           </ErrorMsg>
         )}
         <Label>Podaj numer telefonu</Label>
-        <TextInputField
+        <Controller
           name="phone"
-          placeholder="Wpisz"
-          value={phone}
-          invalid={!!errors.phone}
-          onChange={({ target }) => reservationHandler(target.value as string, target.name)}
-          ref={register({ required: true })}
+          defaultValue={''}
+          control={control}
+          rules={{ required: true }}
+          render={({ onChange, onBlur, value }) => (
+            <TextInputField
+              onBlur={onBlur}
+              value={value}
+              onChange={onChange}
+              invalid={!!errors.phone}
+              className="input"
+              placeholder="000-000-000"
+            />
+          )}
         />
         {errors.phone && (
           <ErrorMsg>
@@ -170,13 +260,13 @@ const ModalReservation = () => {
         )}
       </InputContainer>
       <InputContainer>
-        <Label>Kiedy chciałby zarezerwować obiekt</Label>
+        <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałby zarezerwować obiekt`}</Label>
         <Controller
           name="when"
-          defaultValue={when}
+          defaultValue={new Date()}
           control={control}
           rules={{ required: true }}
-          render={() => (
+          render={({ value, onChange, onBlur }) => (
             <DataPickerField
               showTimeSelect={false}
               isClearable
@@ -184,8 +274,9 @@ const ModalReservation = () => {
               placeholderText="Wybierz"
               locale="pl"
               invalid={!!errors.when}
-              selected={when}
-              onChange={(date: Date) => reservationHandler(date, 'when')}
+              onChange={onChange}
+              onBlur={onBlur}
+              selected={value}
             />
           )}
         />
@@ -194,77 +285,115 @@ const ModalReservation = () => {
             Pole nie moze byc puste <BsExclamationCircle />
           </ErrorMsg>
         )}
+        {regularValue && (
+          <>
+            <Label>Do kiedy chciałby zarezerwować obiekt</Label>
+            <Controller
+              name="whenEnd"
+              defaultValue={new Date()}
+              control={control}
+              rules={{ required: true }}
+              render={({ value, onChange, onBlur }) => (
+                <DataPickerField
+                  showTimeSelect={false}
+                  isClearable
+                  shouldCloseOnSelect
+                  placeholderText="Wybierz"
+                  locale="pl"
+                  invalid={!!errors.whenEnd}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                />
+              )}
+            />
+            {errors.whenEnd && (
+              <ErrorMsg>
+                Pole nie moze byc puste <BsExclamationCircle />
+              </ErrorMsg>
+            )}
+          </>
+        )}
         <Label>Od której godziny</Label>
         <Controller
-          name="from"
-          defaultValue={from}
+          name="start"
+          defaultValue={null}
           control={control}
           rules={{ required: true }}
-          render={() => (
+          render={({ onChange, onBlur, value }) => (
             <DataPickerField
-              selected={from}
               placeholderText="Wybierz"
               showTimeSelect
               showTimeSelectOnly
               isClearable
               shouldCloseOnSelect
-              invalid={!!errors.from}
+              invalid={!!errors.start}
               timeIntervals={15}
               timeCaption="Godzina"
               dateFormat="h:mm aa"
               locale="pl"
-              onChange={(date) => reservationHandler(date as Date, 'from')}
+              onChange={onChange}
+              onBlur={onBlur}
+              selected={value}
             />
           )}
         />
-        {errors.from && (
+        {errors.start && (
           <ErrorMsg>
             Pole nie moze byc puste <BsExclamationCircle />
           </ErrorMsg>
         )}
         <Label>Do której godziny</Label>
         <Controller
-          name="to"
-          defaultValue={to}
+          name="end"
+          defaultValue={null}
           control={control}
           rules={{ required: true }}
-          render={() => (
+          render={({ onChange, onBlur, value }) => (
             <DataPickerField
-              selected={to}
               placeholderText="Wybierz"
               showTimeSelect
               showTimeSelectOnly
               isClearable
               shouldCloseOnSelect
-              invalid={!!errors.to}
+              invalid={!!errors.end}
               timeIntervals={15}
               timeCaption="Godzina"
               dateFormat="h:mm aa"
               locale="pl"
-              onChange={(date) => reservationHandler(date as Date, 'to')}
+              onChange={onChange}
+              onBlur={onBlur}
+              selected={value}
             />
           )}
         />
-        {errors.to && (
+        {errors.end && (
           <ErrorMsg>
             Pole nie moze byc puste <BsExclamationCircle />
           </ErrorMsg>
         )}
       </InputContainer>
       <Label>Chciałbyś przesłać dodatkowe informacje </Label>
-      <MessageTextArea
+      <Controller
         name="message"
-        placeholder="Wpisz..."
-        value={message}
-        onChange={({ target }) => reservationHandler(target.value, target.name)}
-        ref={register({ required: true })}
+        defaultValue={''}
+        control={control}
+        rules={{ required: false }}
+        render={({ onChange, onBlur, value }) => (
+          <MessageTextArea
+            placeholder="Wiadomość"
+            onChange={onChange}
+            onBlur={onBlur}
+            value={value}
+          />
+        )}
       />
       <RodoWrapper>
         <Checkbox
           checked={police}
           className="checkbox"
           name="police"
-          changeHandler={reservationHandler}
+          changeHandler={() => setPolice(!police)}
         />
         <Anhore
           small
@@ -274,14 +403,7 @@ const ModalReservation = () => {
           Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
         </Anhore>
       </RodoWrapper>
-      <Button
-        role="button"
-        onClick={() => {
-          setValue('email', email);
-          setValue('phone', phone);
-        }}
-        disabled={!police}
-      >
+      <Button role="button" onClick={onSubmit} disabled={!police}>
         Wyślij Rezerwacje
       </Button>
     </ReservationWrapper>

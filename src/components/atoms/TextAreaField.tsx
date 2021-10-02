@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-const TextAreaField = styled.textarea`
+type TextAreaType = {
+  invalid?: boolean;
+};
+
+const TextAreaField = styled.textarea<TextAreaType>`
   width: 390px;
   height: 135px;
   border-radius: 5px;
@@ -14,6 +18,7 @@ const TextAreaField = styled.textarea`
   padding: 10px;
   text-align: left;
   letter-spacing: -0.5px;
+  border-color: ${({ invalid }) => (invalid ? '#cc0000' : '#afbf36')};
   &::hover {
     box-shadow: 0 0 5px 0 #eaeaea;
   }

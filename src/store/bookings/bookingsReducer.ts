@@ -14,10 +14,10 @@ const INITIAL_STATE: IBookingsPayload = {
   isFetching: false,
   savingStage: INITIAL,
   errorMessage: '',
-  bookings: undefined,
+  bookings: [],
 };
 
-export const bookings = (state = INITIAL_STATE, action: IBookingsAction) => {
+export const bookingState = (state = INITIAL_STATE, action: IBookingsAction) => {
   const { type, payload } = action;
   switch (type) {
     case GET_BOOKINGS:

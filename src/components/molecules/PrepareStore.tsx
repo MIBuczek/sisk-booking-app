@@ -14,7 +14,7 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const [storeReady, setStoreReady] = React.useState(true);
 
   const { INITIAL, SUCCESS } = SAVING_STAGE;
-  const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookings);
+  const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookingState);
   const distpatch = useDispatch();
 
   React.useEffect(() => {

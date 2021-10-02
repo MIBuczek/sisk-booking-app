@@ -8,8 +8,8 @@ import { initialModal } from '../../utils/modal-variables';
 import ButtonIcone from '../atoms/ButtonIcone';
 
 const ModalWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
@@ -35,6 +35,7 @@ const ModalContent = styled.div`
   border: 2px solid #afbf36;
   background: white;
   position: fixed;
+  top: 5px;
   border-radius: 5px;
 `;
 

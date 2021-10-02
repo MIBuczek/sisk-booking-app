@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
@@ -19,7 +20,8 @@ export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
   padding: 10px;
   text-align: center;
   letter-spacing: -0.5px;
-  border-color: ${({ invalid }) => (invalid ? '#cc0000' : '#afbf36')};
+  border-color: ${({ invalid, disabled }) =>
+    invalid ? '#cc0000' : disabled ? '#b9b8b8' : '#afbf36'};
   &::placeholder {
     color: #b9b8b8;
   }

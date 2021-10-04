@@ -5,7 +5,6 @@ export const fadeIn = keyframes`
     opacity : 0;
     visibility : hidden;
   }
-
   to {
     opacity : 1;
     visibility: visible;

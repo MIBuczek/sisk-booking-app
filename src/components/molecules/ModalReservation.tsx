@@ -10,7 +10,7 @@ import Header from '../atoms/Header';
 import TextInputField from '../atoms/TextInputField';
 import SelectInputField, { customStyles, SelectWrapper } from '../atoms/SelectInputField';
 import Checkbox from '../atoms/Checkbox';
-import Anhore from '../atoms/Anhore';
+import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 import TextAreaField from '../atoms/TextAreaField';
 import ErrorMsg from '../atoms/ErrorMsg';
@@ -18,7 +18,7 @@ import Label from '../atoms/Label';
 import { IBooking } from '../../models/store/store-models';
 import { addBooking } from '../../store/bookings/bookingsAction';
 import { ModalContext } from '../../context/ModalContext';
-import { initialModal } from '../../utils/modal-variables';
+import { INITIAL_MODAL } from '../../utils/variables/modal-const';
 import {
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
@@ -73,7 +73,7 @@ const ModalReservation = () => {
   const { handleSubmit, errors, control, watch } = useForm();
 
   const cityValue = watch('city');
-  const buldingValue = watch('bulding');
+  const buildingValue = watch('building');
   const regularValue = watch('regular');
 
   const selectBuilding = (): TSelect[] => {
@@ -82,18 +82,19 @@ const ModalReservation = () => {
   };
 
   const selectSizeField = (): TSelect[] => {
-    if (!buldingValue || !cityValue) return [];
-    return SIZE_FIELD_OPTIONS[cityValue.value][buldingValue.value];
+    if (!buildingValue || !cityValue) return [];
+    return SIZE_FIELD_OPTIONS[cityValue.value][buildingValue.value];
   };
 
   const onSubmit = handleSubmit<IBooking>(async (cred) => {
+    console.log(cred);
     dispatch(
       addBooking({
         ...cred,
         accepted: false,
       })
     );
-    setModal({ ...initialModal });
+    setModal({ ...INITIAL_MODAL });
   });
 
   return (
@@ -126,22 +127,23 @@ const ModalReservation = () => {
       <SelectWrapper>
         <Label>Obiekt</Label>
         <Controller
-          name="bulding"
+          name="building"
           defaultValue={''}
           control={control}
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
             <SelectInputField
               options={selectBuilding()}
-              styles={customStyles(!!errors.bulding)}
+              styles={customStyles(!!errors.building)}
               placeholder="Wybierz"
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              isDisabled={!cityValue}
             />
           )}
         />
-        {errors.bulding && (
+        {errors.building && (
           <ErrorMsg>
             Pole nie moze byc puste <BsExclamationCircle />
           </ErrorMsg>
@@ -162,11 +164,11 @@ const ModalReservation = () => {
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
-              isDisabled={!buldingValue}
+              isDisabled={!cityValue || !buildingValue}
             />
           )}
         />
-        {errors.bulding && (
+        {errors.size && (
           <ErrorMsg>
             Pole nie moze byc puste <BsExclamationCircle />
           </ErrorMsg>
@@ -395,13 +397,13 @@ const ModalReservation = () => {
           name="police"
           changeHandler={() => setPolice(!police)}
         />
-        <Anhore
+        <Anchor
           small
           href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
           target="_blank"
         >
           Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
-        </Anhore>
+        </Anchor>
       </RodoWrapper>
       <Button role="button" onClick={onSubmit} disabled={!police}>
         Wyślij Rezerwacje

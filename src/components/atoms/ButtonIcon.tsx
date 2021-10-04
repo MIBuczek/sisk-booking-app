@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ButtonIcone = styled.button`
+const ButtonIcon = styled.button`
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.bold};
@@ -22,10 +22,10 @@ const ButtonIcone = styled.button`
   }
 `;
 
-export const iconeStyle = {
+export const iconStyle = {
   fontSize: '2rem',
   marginRight: '1rem',
   color: 'AFBF36',
 };
 
-export default ButtonIcone;
+export default ButtonIcon;

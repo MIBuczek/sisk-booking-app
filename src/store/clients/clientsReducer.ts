@@ -6,7 +6,7 @@ import {
   DELETE_CLIENT,
   UPDATE_CLIENT,
   ERROR_CLIENT,
-} from '../../utils/store-data';
+} from '../../utils/variables/store-data';
 
 const { INITIAL } = SAVING_STAGE;
 

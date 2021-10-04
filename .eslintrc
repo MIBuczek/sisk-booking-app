@@ -43,6 +43,7 @@
         "ignoreComments": true
       }
     ],
+    "no-underscore-dangle": "off",
     "no-plusplus": 0,
     "react/jsx-key": "error",
     "import/no-extraneous-dependencies": [

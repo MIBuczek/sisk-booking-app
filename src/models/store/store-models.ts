@@ -38,19 +38,19 @@ export interface IClientsActions {
   payload: IClientsPayload;
 }
 
-export interface IBulding {
+export interface IBuilding {
   name: string;
   address: string;
   id: string;
 }
 
-export interface IBuldingsPayload extends IPayload {
-  buldings?: IBulding[];
+export interface IBuildingsPayload extends IPayload {
+  buildings?: IBuilding[];
 }
 
-export interface IBuldingsAction {
+export interface IBuildingsAction {
   type: string;
-  payload: IBuldingsPayload;
+  payload: IBuildingsPayload;
 }
 
 export interface IAuth {
@@ -69,10 +69,10 @@ export interface IAuthAction {
 
 export interface IBooking {
   city: TSelect;
-  bulding: TSelect;
+  building: TSelect;
   size: TSelect;
   person: string;
-  clube?: string;
+  club?: string;
   email: string;
   phone: string;
   regular?: boolean;
@@ -86,6 +86,7 @@ export interface IBooking {
 }
 
 export interface IBookingsPayload extends IPayload {
+  booking?: IBooking;
   bookings: IBooking[];
 }
 
@@ -97,7 +98,7 @@ export interface IBookingsAction {
 export interface IReduxState {
   auth: IAuthPayload;
   clients: IClientsPayload;
-  buldings: IBuldingsPayload;
+  buildings: IBuildingsPayload;
   bookingState: IBookingsPayload;
   currentUser: IUserPayload;
 }

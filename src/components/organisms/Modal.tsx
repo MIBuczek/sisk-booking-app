@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import bgModal from '../../assets/images/background-modal.jpg';
 import { ModalContext } from '../../context/ModalContext';
 import { fadeIn } from '../../style/animation';
-import { initialModal } from '../../utils/modal-variables';
-import ButtonIcone from '../atoms/ButtonIcone';
+import { INITIAL_MODAL } from '../../utils/variables/modal-const';
+import ButtonIcon from '../atoms/ButtonIcon';
 
 const ModalWrapper = styled.div`
   width: 100vw;
@@ -32,11 +32,14 @@ const BGImage = styled.img`
 const ModalContent = styled.div`
   min-width: 400px;
   min-height: 200px;
+  max-height: 100%;
+  overflow-y: auto;
   border: 2px solid #afbf36;
+  border-radius: 5px;
   background: white;
   position: fixed;
   top: 5px;
-  border-radius: 5px;
+  bottom: 5px;
 `;
 
 export interface IProps {
@@ -54,9 +57,9 @@ const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {
       <ModalWrapper>
         <BGImage src={bgModal} alt="bg" />
         <ModalContent>
-          <ButtonIcone role="button" onClick={() => setModal({ ...initialModal })}>
+          <ButtonIcon role="button" onClick={() => setModal({ ...INITIAL_MODAL })}>
             <BsX />
-          </ButtonIcone>
+          </ButtonIcon>
           {children}
         </ModalContent>
       </ModalWrapper>

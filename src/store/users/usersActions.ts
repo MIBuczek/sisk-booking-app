@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
 import { IUserAction, IUser, IAuth } from '../../models/store/store-models';
-import { GET_USER, ERROR_USER, SAVING_STAGE } from '../../utils/store-data';
-import { db } from '../../utils/firebase';
+import { GET_USER, ERROR_USER, SAVING_STAGE } from '../../utils/variables/store-data';
+import { db } from '../../utils/variables/firebase-const';
 
 const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
 
-export const fechingUserStart = (): IUserAction => ({
+export const fetchingUserStart = (): IUserAction => ({
   type: GET_USER,
   payload: {
     isFetching: true,
@@ -16,7 +16,7 @@ export const fechingUserStart = (): IUserAction => ({
   },
 });
 
-const fechingUserDone = (user: IUser): IUserAction => ({
+const fetchingUserDone = (user: IUser): IUserAction => ({
   type: GET_USER,
   payload: {
     isFetching: false,
@@ -26,7 +26,7 @@ const fechingUserDone = (user: IUser): IUserAction => ({
   },
 });
 
-const fechingUserError = (errorMessage: string): IUserAction => ({
+const fetchingUserError = (errorMessage: string): IUserAction => ({
   type: ERROR_USER,
   payload: {
     isFetching: false,
@@ -40,7 +40,7 @@ export const getUserData = () => async (
   dispatch: Dispatch<IUserAction>,
   getState: any
 ): Promise<void> => {
-  dispatch(fechingUserStart());
+  dispatch(fetchingUserStart());
   try {
     const { auth } = getState();
     const resp = ((await db.collection('users').get()) as unknown) as IUser;
@@ -55,9 +55,9 @@ export const getUserData = () => async (
       }
       return null;
     });
-    dispatch(fechingUserDone(user));
+    dispatch(fetchingUserDone(user));
   } catch (err) {
-    dispatch(fechingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
+    dispatch(fetchingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
     throw new Error(JSON.stringify(err));
   }
 };

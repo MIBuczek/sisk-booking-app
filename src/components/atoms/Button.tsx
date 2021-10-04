@@ -23,7 +23,7 @@ const Button = styled.button<ButtonProps>`
     opacity: 0.8;
   }
   &:disabled {
-    background: ${({ theme }) => theme.midleGray};
+    background: ${({ theme }) => theme.middleGray};
   }
 `;
 

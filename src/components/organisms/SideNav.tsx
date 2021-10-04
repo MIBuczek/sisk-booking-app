@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { BsPlusCircle } from 'react-icons/bs';
 import styled from 'styled-components';
-import ButtonIcone, { iconeStyle } from '../atoms/ButtonIcone';
+import ButtonIcon, { iconStyle } from '../atoms/ButtonIcon';
 import SelectInputField, { customStyles, SelectWrapper } from '../atoms/SelectInputField';
-import { options } from '../../utils/utils-data';
 import { ModalContext } from '../../context/ModalContext';
-import { MODAL_TYPES } from '../../utils/modal-variables';
+import { MODAL_TYPES } from '../../utils/variables/modal-const';
 import Label from '../atoms/Label';
+import ReservationDetails from '../molecules/ReservationDetails';
 
 // const { LARGE } = SIZE;
 
@@ -28,7 +28,7 @@ const SideNav = (): JSX.Element => {
 
   return (
     <SideWrapper>
-      <ButtonIcone
+      <ButtonIcon
         role="button"
         onClick={() =>
           setModal({
@@ -38,16 +38,17 @@ const SideNav = (): JSX.Element => {
           })
         }
       >
-        <BsPlusCircle style={iconeStyle} /> DODAJ REZERWACJE
-      </ButtonIcone>
+        <BsPlusCircle style={iconStyle} /> DODAJ REZERWACJE
+      </ButtonIcon>
       <SelectWrapper>
         <Label>Miejscowość</Label>
-        <SelectInputField options={options} styles={customStyles(false)} />
+        <SelectInputField options={[]} styles={customStyles(false)} />
       </SelectWrapper>
       <SelectWrapper>
         <Label>Obiekt</Label>
-        <SelectInputField options={options} styles={customStyles(false)} />
+        <SelectInputField options={[]} styles={customStyles(false)} />
       </SelectWrapper>
+      <ReservationDetails />
     </SideWrapper>
   );
 };

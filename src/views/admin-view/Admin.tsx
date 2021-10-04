@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { getBuildingsData } from '../../store/bulding/buldingActions';
+import { getBuildingsData } from '../../store/building/buildingActions';
 
 const AdminWrapper = styled.section`
   width: 100%;

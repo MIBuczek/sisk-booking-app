@@ -1,9 +1,9 @@
 import React, { createContext, ReactNode, useState } from 'react';
 import { IModal, IModalContext } from '../models/modals/types-models';
-import { initialModal } from '../utils/modal-variables';
+import { INITIAL_MODAL } from '../utils/variables/modal-const';
 
 export const ModalContext = createContext<IModalContext>({
-  modal: { ...initialModal },
+  modal: { ...INITIAL_MODAL },
   setModal: () => null,
 });
 
@@ -12,7 +12,7 @@ export interface IProps {
 }
 
 const ModalContextProvider: React.FC<IProps> = ({ children }): JSX.Element => {
-  const [modal, setModal] = useState<IModal>({ ...initialModal });
+  const [modal, setModal] = useState<IModal>({ ...INITIAL_MODAL });
 
   return (
     <ModalContext.Provider

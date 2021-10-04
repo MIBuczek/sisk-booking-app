@@ -34,7 +34,14 @@ export const customStyles = (invalid: boolean) => ({
     { isDisabled, isFocused, isSelected }: { [x: string]: string }
   ) => ({
     ...styles,
-    backgroundColor: isDisabled ? null : isSelected ? '#afbf36' : isFocused ? '#eaeaea' : null,
+    backgroundColor: isDisabled ? '#b9b8b8' : isSelected ? '#afbf36' : isFocused ? '#eaeaea' : null,
+    border: isDisabled
+      ? '1px solid #b9b8b8'
+      : isSelected
+      ? '1px solid #afbf36'
+      : isFocused
+      ? '#eaeaea'
+      : null,
   }),
   placeholder: (styles: { [x: string]: string }) => ({ ...styles, left: '50%', color: '#b9b8b8' }),
 });

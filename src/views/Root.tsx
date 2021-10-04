@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import bgMain from '../assets/images/background.jpg';
 import Cookies from '../components/molecules/Cookies';
 import Loading from '../components/molecules/Loading';
-import TopNav from '../components/molecules/TopNav';
+import TopNav from '../components/organisms/TopNav';
 import Footer from '../components/organisms/Footer';
 import ModalContextProvider from '../context/ModalContext';
 import ServerError from './user-view/ServerError';

@@ -1,8 +1,10 @@
-export const routes = {
+const ROUTES = {
   main: '/',
   login: '/login',
   admin: '/admin',
-  buldings: '/admin/bulding/:id',
+  buildings: '/admin/buildings/:id',
   client: '/admin/client/:id',
   booking: './admin/booking/id',
 };
+
+export { ROUTES };

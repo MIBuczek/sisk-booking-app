@@ -4,13 +4,13 @@ import { NavLink } from 'react-router-dom';
 import { ModalContext } from '../../context/ModalContext';
 import logoFooter from '../../assets/images/logo_footer.png';
 import BIPFooter from '../../assets/images/bip-footer.png';
-import Paragraph from '../atoms/Paragrahp';
-import Anhore from '../atoms/Anhore';
+import Paragraph from '../atoms/Paragraph';
+import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 import Modal from './Modal';
 import ModalMessage from '../molecules/ModalMessage';
 import ModalReservation from '../molecules/ModalReservation';
-import { MODAL_TYPES } from '../../utils/modal-variables';
+import { MODAL_TYPES } from '../../utils/variables/modal-const';
 import { fadeIn } from '../../style/animation';
 
 const FooterWrapper = styled.footer`
@@ -107,7 +107,7 @@ const FooterParagraph = styled(Paragraph)`
   line-height: 1.6em;
 `;
 
-const FooterAnhore = styled(Anhore)`
+const FooterAnchor = styled(Anchor)`
   color: white;
   line-height: 1.6em;
   padding-top: 0px;
@@ -137,9 +137,9 @@ const Footer = (): JSX.Element => {
               ul. Księżnej Anny z Przemyślidów 6a,
               <br />
               55-011 Siechnice
-              <FooterAnhore href="tel:+48718890023">tel. 71 889 00 23</FooterAnhore>
-              <FooterAnhore href="biuro@sisk-siechnice.pl">biuro@sisk-siechnice.pl</FooterAnhore>
-              <FooterAnhore href="www.sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnhore>
+              <FooterAnchor href="tel:+48718890023">tel. 71 889 00 23</FooterAnchor>
+              <FooterAnchor href="biuro@sisk-siechnice.pl">biuro@sisk-siechnice.pl</FooterAnchor>
+              <FooterAnchor href="www.sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnchor>
             </FooterParagraph>
           </ContentItem>
           <ContentItem>
@@ -153,13 +153,13 @@ const Footer = (): JSX.Element => {
             >
               Napisz do nas
             </FooterButton>
-            <FooterAnhore href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnhore>
+            <FooterAnchor href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
           </ContentItem>
         </FooterContent>
         <FooterCredits>
-          <FooterAnhore href="http://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
+          <FooterAnchor href="http://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
             Polityka prywatności
-          </FooterAnhore>
+          </FooterAnchor>
           <FooterParagraph small>
             © Copyright 2018 SISK / Created by GEKON Web Services
           </FooterParagraph>

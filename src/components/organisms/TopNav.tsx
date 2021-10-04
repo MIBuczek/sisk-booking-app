@@ -4,10 +4,10 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../atoms/Logo';
 import useScrollPosition from '../../hooks/useScrollPosition ';
-import Anhore from '../atoms/Anhore';
+import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 import { ModalContext } from '../../context/ModalContext';
-import { MODAL_TYPES } from '../../utils/modal-variables';
+import { MODAL_TYPES } from '../../utils/variables/modal-const';
 import { fadeIn } from '../../style/animation';
 
 type Navigation = {
@@ -50,7 +50,7 @@ const StyledLinksList = styled.ul`
 const NavigationLink = styled(NavLink)`
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.ml};
-  font-weight: ${({ theme }) => theme.ubold};
+  font-weight: ${({ theme }) => theme.bold};
   line-height: 1.5;
   text-decoration: none;
   text-transform: uppercase;
@@ -77,7 +77,7 @@ const NavButton = styled(Button)`
   }
 `;
 
-const NaviAnchore = styled(Anhore)`
+const NaviAnchor = styled(Anchor)`
   background: transparent;
   font-size: 1.9rem;
   padding: 16px 10px 17px 10px;
@@ -126,9 +126,9 @@ const TopNav = (): JSX.Element => {
             </NavButton>
           </li>
           <li>
-            <NaviAnchore href="http://www.sisk-siechnice.pl/" target="_blank">
+            <NaviAnchor href="http://www.sisk-siechnice.pl/" target="_blank">
               <BsFillHouseFill />
-            </NaviAnchore>
+            </NaviAnchor>
           </li>
         </StyledLinksList>
       </NavContent>

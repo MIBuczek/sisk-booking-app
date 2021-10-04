@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from '../../components/atoms/Header';
-import SideNav from '../../components/molecules/SideNav';
+import SideNav from '../../components/organisms/SideNav';
 import BookingCalender from '../../components/organisms/Calender';
 import { fadeIn } from '../../style/animation';
 

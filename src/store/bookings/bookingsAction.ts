@@ -8,118 +8,135 @@ import {
   ADD_BOOKING,
   DELETE_BOOKING,
   ERROR_BOOKING,
-} from '../../utils/store-data';
-import { db } from '../../utils/firebase';
+} from '../../utils/variables/store-data';
+import { db } from '../../utils/variables/firebase-const';
+import { parseFirebaseData } from '../../utils/functions/api-functions';
 
 const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
 
-const fechingBookings = (): IBookingsAction => ({
+const fetchingBookings = (): IBookingsAction => ({
   type: GET_BOOKINGS,
   payload: {
     isFetching: true,
     savingStage: INITIAL,
     errorMessage: '',
+    booking: undefined,
     bookings: [],
   },
 });
 
-const fechingBookingsDone = (type: string, bookings: IBooking[]): IBookingsAction => ({
+const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBookingsAction => ({
   type,
   payload: {
     isFetching: false,
     savingStage: SUCCESS,
     errorMessage: '',
+    booking: undefined,
     bookings,
   },
 });
 
-const fechingBookingsError = (errorMessage: string): IBookingsAction => ({
+const fetchingBookingsError = (errorMessage: string): IBookingsAction => ({
   type: ERROR_BOOKING,
   payload: {
     isFetching: false,
     savingStage: ERROR,
     errorMessage,
+    booking: undefined,
     bookings: [],
   },
 });
 
+const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBookingsAction => ({
+  type: ERROR_BOOKING,
+  payload: {
+    isFetching: false,
+    savingStage: SUCCESS,
+    errorMessage: '',
+    booking,
+    bookings,
+  },
+});
+
 export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
-  dispatch(fechingBookings());
+  dispatch(fetchingBookings());
   try {
     const resp = await db.collection('bookings').get();
-    const bookings: IBooking[] = resp.docs.map((doc) => {
-      const booking: IBooking = {
-        city: doc.data().city,
-        bulding: doc.data().bulding,
-        size: doc.data().size,
-        person: doc.data().person,
-        clube: doc.data().clube,
-        email: doc.data().email,
-        phone: doc.data().phone,
-        when: doc.data().when,
-        start: doc.data().start,
-        end: doc.data().end,
-        message: doc.data().message,
-        accepted: doc.data().accepted,
-        id: doc.data().id,
-      };
-      return booking;
-    });
-    dispatch(fechingBookingsDone(ADD_BOOKING, bookings));
+    const bookings: IBooking[] = resp.docs.map(parseFirebaseData);
+    dispatch(fetchingBookingsDone(ADD_BOOKING, bookings));
   } catch (err) {
-    dispatch(fechingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
+    dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
     throw new Error(JSON.stringify(err));
   }
 };
 
 export const addBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction>,
-  getState: () => IReduxState
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fechingBookings());
+  dispatch(fetchingBookings());
   try {
     // await db.collection('bookings').doc().set(bookingData);
-    const {
-      bookingState: { bookings },
-    } = getState();
+    const { bookings } = getStore().bookingState;
     const newBookings: IBooking[] = [...bookings, bookingData];
-    dispatch(fechingBookingsDone(ADD_BOOKING, newBookings));
+    dispatch(fetchingBookingsDone(ADD_BOOKING, newBookings));
   } catch (err) {
-    dispatch(fechingBookingsError('Problem z serverem. Nie można dodać nowej rezerwacji.'));
+    dispatch(fetchingBookingsError('Problem z serverem. Nie można dodać nowej rezerwacji.'));
     throw new Error(JSON.stringify(err));
   }
 };
 
 export const updateBooking = (bookingData: IBooking, id: string) => async (
   dispatch: Dispatch<IBookingsAction>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fechingBookings());
+  dispatch(fetchingBookings());
   try {
     await db.collection('bookings').doc(id).update(bookingData);
-    const { bookings } = getStore();
+    const { bookings } = getStore().bookingState;
     const newBookings: IBooking[] = bookings.map((booking: IBooking) =>
       booking.id === id ? bookingData : booking
     );
-    dispatch(fechingBookingsDone(UPDATE_BOOKING, newBookings));
+    dispatch(fetchingBookingsDone(UPDATE_BOOKING, newBookings));
   } catch (err) {
-    dispatch(fechingBookingsError('Problem z serverem. Nie można zaktualizować rezerwacji.'));
+    dispatch(fetchingBookingsError('Problem z serverem. Nie można zaktualizować rezerwacji.'));
     throw new Error(JSON.stringify(err));
   }
 };
 
+export const getCurrentBooking = (id: string) => async (
+  dispatch: Dispatch<IBookingsAction>,
+  getStore: () => IReduxState
+): Promise<void> => {
+  const { bookings } = getStore().bookingState;
+  const currentBooking = bookings.find((b) => b.id === id);
+  if (currentBooking) {
+    dispatch(getSingleBooking(bookings, currentBooking));
+  } else {
+    dispatch(fetchingBookingsError('Problem z serverem. Nie można pokazac wybranej rezerwacji.'));
+  }
+};
+
+export const clearCurrentBooking = () => async (
+  dispatch: Dispatch<IBookingsAction>,
+  getStore: () => IReduxState
+): Promise<void> => {
+  const { bookings } = getStore().bookingState;
+  dispatch(getSingleBooking(bookings, undefined));
+};
+
 export const deleteBooking = (id: string) => async (
   dispatch: Dispatch<IBookingsAction>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fechingBookings());
+  dispatch(fetchingBookings());
   try {
     db.collection('bookings').doc(id).delete();
-    const { bookings } = getStore();
+    const { bookings } = getStore().bookingState;
     const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
-    dispatch(fechingBookingsDone(DELETE_BOOKING, newBookings));
+    dispatch(fetchingBookingsDone(DELETE_BOOKING, newBookings));
   } catch (err) {
-    dispatch(fechingBookingsError('Problem z serverem. Nie można skasować rezerwacji.'));
+    dispatch(fetchingBookingsError('Problem z serverem. Nie można skasować rezerwacji.'));
     throw new Error(JSON.stringify(err));
   }
 };

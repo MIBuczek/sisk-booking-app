@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-type IconeTypes = {
+type IconTypes = {
   small?: boolean;
 };
 
-const Icone = styled.svg<IconeTypes>`
+const Icon = styled.svg<IconTypes>`
   margin-right: 1rem;
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ small }) => (small ? '1rem' : '1.5rem')};
@@ -16,4 +16,4 @@ const Icone = styled.svg<IconeTypes>`
   }
 `;
 
-export default Icone;
+export default Icon;

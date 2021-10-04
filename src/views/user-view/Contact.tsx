@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { BsEnvelope, BsPhone, BsHouseDoor } from 'react-icons/bs';
 import styled from 'styled-components';
-import Anhore, { iconeNormal } from '../../components/atoms/Anhore';
+import Anchor, { iconNormal } from '../../components/atoms/Anchor';
 import Header from '../../components/atoms/Header';
-import Paragraph from '../../components/atoms/Paragrahp';
+import Paragraph from '../../components/atoms/Paragraph';
 import { fadeIn } from '../../style/animation';
 
 const ContactWrapper = styled.main`
@@ -55,18 +55,18 @@ const Contact = () => (
         <br />
         55-011 Siechnice
       </Paragraph>
-      <Anhore href="tel:+48718890023">
-        <BsPhone style={iconeNormal} />
+      <Anchor href="tel:+48718890023">
+        <BsPhone style={iconNormal} />
         tel. 71 889 00 23
-      </Anhore>
-      <Anhore href="biuro@sisk-siechnice.pl">
-        <BsEnvelope style={iconeNormal} />
+      </Anchor>
+      <Anchor href="biuro@sisk-siechnice.pl">
+        <BsEnvelope style={iconNormal} />
         biuro@sisk-siechnice.pl
-      </Anhore>
-      <Anhore href="www.sisk-siechnice.pl">
-        <BsHouseDoor style={iconeNormal} />
+      </Anchor>
+      <Anchor href="www.sisk-siechnice.pl">
+        <BsHouseDoor style={iconNormal} />
         www.sisk-siechnice.pl
-      </Anhore>
+      </Anchor>
     </ContactInfo>
   </ContactWrapper>
 );

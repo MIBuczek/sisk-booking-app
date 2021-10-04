@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
-import Anhore from '../atoms/Anhore';
+import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 import Checkbox from '../atoms/Checkbox';
 import ErrorMsg from '../atoms/ErrorMsg';
@@ -141,13 +141,13 @@ const ModalMessage = () => {
           name="police"
           changeHandler={() => setPolice(!police)}
         />
-        <Anhore
+        <Anchor
           small
           href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
           target="_blank"
         >
           Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
-        </Anhore>
+        </Anchor>
       </RodoWrapper>
       <Button role="button" onClick={onSubmit} disabled={!police}>
         Wyślij

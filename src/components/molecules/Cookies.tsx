@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Anhore from '../atoms/Anhore';
+import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 import Header from '../atoms/Header';
-import Paragraph from '../atoms/Paragrahp';
+import Paragraph from '../atoms/Paragraph';
 
 const CookiesWrapper = styled.div`
   position: fixed;
@@ -72,9 +72,9 @@ const Cookies = () => {
       <CookieParagraph>
         Serwis wykorzystuje pliki cookies. Korzystając ze strony wyrażasz zgodę na wykorzystywanie
         plików cookies.
-        <Anhore target="_blank" href="http://www.sisk-siechnice.pl/polityka-prywatnosci/">
+        <Anchor target="_blank" href="http://www.sisk-siechnice.pl/polityka-prywatnosci/">
           Dowiedz się więcej.
-        </Anhore>
+        </Anchor>
       </CookieParagraph>
       <Button role="button" onClick={setLocalStorage}>
         Ok, rozumiem

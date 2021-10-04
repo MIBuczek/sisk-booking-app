@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-type AnhoreProps = {
+type AnchorProps = {
   small?: boolean;
 };
 
-const Anhore = styled.a<AnhoreProps>`
+const Anchor = styled.a<AnchorProps>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -23,10 +23,10 @@ const Anhore = styled.a<AnhoreProps>`
   }
 `;
 
-export const iconeNormal = {
+export const iconNormal = {
   fontSize: '2rem',
   marginRight: '1rem',
   color: 'AFBF36',
 };
 
-export default Anhore;
+export default Anchor;

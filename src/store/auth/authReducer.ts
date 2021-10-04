@@ -1,5 +1,5 @@
 import { IAuthAction } from '../../models/store/store-models';
-import { SAVING_STAGE, LOG_OUT_USER, LOG_IN_USER } from '../../utils/store-data';
+import { SAVING_STAGE, LOG_OUT_USER, LOG_IN_USER } from '../../utils/variables/store-data';
 
 const { INITIAL } = SAVING_STAGE;
 const INITIAL_STATE = {

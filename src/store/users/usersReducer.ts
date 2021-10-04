@@ -1,5 +1,5 @@
 import { IUserAction } from '../../models/store/store-models';
-import { SAVING_STAGE, ERROR_USER, GET_USER } from '../../utils/store-data';
+import { SAVING_STAGE, ERROR_USER, GET_USER } from '../../utils/variables/store-data';
 
 const { INITIAL } = SAVING_STAGE;
 const INITIAL_STATE = {

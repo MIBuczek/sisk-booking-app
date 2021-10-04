@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BsExclamationSquare } from 'react-icons/bs';
 import styled from 'styled-components';
 import Header from '../../components/atoms/Header';
-import Paragraph from '../../components/atoms/Paragrahp';
+import Paragraph from '../../components/atoms/Paragraph';
 import RedirectLink from '../../components/atoms/RedirectLinkt';
 
 const NoMatchWrapper = styled.main`

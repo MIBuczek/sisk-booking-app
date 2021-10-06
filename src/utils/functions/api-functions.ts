@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IBooking } from '../../models/store/store-models';
+import { IBooking } from 'models/store/booking-models';
 
 const parseFirebaseData = (doc: any) =>
   ({
@@ -15,7 +15,7 @@ const parseFirebaseData = (doc: any) =>
     end: doc.data().end,
     message: doc.data().message,
     accepted: doc.data().accepted,
-    id: doc.data().id,
+    id: doc.data().id
   } as IBooking);
 
 export { parseFirebaseData };

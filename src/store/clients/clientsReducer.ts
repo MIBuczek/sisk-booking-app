@@ -1,33 +1,24 @@
-import { IClientsPayload, IClientsActions } from '../../models/store/store-models';
-import {
-  SAVING_STAGE,
-  GET_CLIENTS,
-  ADD_CLIENT,
-  DELETE_CLIENT,
-  UPDATE_CLIENT,
-  ERROR_CLIENT,
-} from '../../utils/variables/store-data';
-
-const { INITIAL } = SAVING_STAGE;
+import { IClientsActions, IClientsPayload } from 'models';
+import { COLLECTION_STATE, SAVING_STAGE } from 'utils';
 
 const INITIAL_STATE: IClientsPayload = {
   isFetching: false,
-  savingStage: INITIAL,
+  savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  clients: [],
+  clients: []
 };
 
 export const clients = (state = INITIAL_STATE, action: IClientsActions) => {
   const { type, payload } = action;
   switch (type) {
-    case GET_CLIENTS:
-    case ADD_CLIENT:
-    case DELETE_CLIENT:
-    case UPDATE_CLIENT:
-    case ERROR_CLIENT:
+    case COLLECTION_STATE.ADD:
+    case COLLECTION_STATE.GET:
+    case COLLECTION_STATE.UPDATE:
+    case COLLECTION_STATE.DELETE:
+    case COLLECTION_STATE.ERROR:
       return {
         ...state,
-        ...payload,
+        ...payload
       };
 
     default:

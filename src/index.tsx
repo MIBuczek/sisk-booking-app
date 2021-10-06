@@ -5,11 +5,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import Root from './views/Root';
-import reportWebVitals from './reportWebVitals';
-import { store } from './store/rootReducer';
-import PrepareStore from './components/molecules/PrepareStore';
-import { theme } from './theme/mainTheme';
+import PrepareStore from 'components/molecules/PrepareStore';
+import { store } from 'store/rootReducer';
+import Root from 'views/Root';
+import { theme } from 'theme/mainTheme';
+import reportWebVitals from 'reportWebVitals';
 
 const GlobalStyle = createGlobalStyle`  
   *, *::before, *::after {

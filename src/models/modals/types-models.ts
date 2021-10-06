@@ -1,14 +1,8 @@
-import { Dispatch, SetStateAction } from 'react';
-
-export type ModalTypes = 'EMPTY' | 'MESSAGE' | 'RESERVATION' | 'CONFIRM';
-
-export interface IModal {
-  type: ModalTypes;
-  isOpen: boolean;
-  callback: () => void;
+enum ModalTypes {
+  EMPTY = 'EMPTY',
+  MESSAGE = 'MESSAGE',
+  RESERVATION = 'RESERVATION',
+  CONFIRM = 'CONFIRM'
 }
 
-export interface IModalContext {
-  modal: IModal;
-  setModal: Dispatch<SetStateAction<IModal>>;
-}
+export { ModalTypes };

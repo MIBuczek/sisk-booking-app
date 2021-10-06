@@ -1,46 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { IBuildingsAction, IBuilding } from '../../models/store/store-models';
-import {
-  GET_BUILDINGS,
-  ADD_BUILDINGS,
-  DELETE_BUILDINGS,
-  UPDATE_BUILDINGS,
-  ERROR_BUILDINGS,
-  SAVING_STAGE,
-} from '../../utils/variables/store-data';
-import { db } from '../../utils/variables/firebase-const';
-
-const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
+import { IBuilding, IBuildingsAction } from 'models';
+import { db, COLLECTION_STATE, SAVING_STAGE } from 'utils';
 
 export const fetchingBuildings = (): IBuildingsAction => ({
-  type: GET_BUILDINGS,
+  type: COLLECTION_STATE.GET,
   payload: {
     isFetching: true,
-    savingStage: INITIAL,
+    savingStage: SAVING_STAGE.INITIAL,
     errorMessage: '',
-    buildings: [],
-  },
+    buildings: []
+  }
 });
 
 const fetchingBuildingsDone = (type: string, buildings: IBuilding[]): IBuildingsAction => ({
   type,
   payload: {
     isFetching: false,
-    savingStage: SUCCESS,
+    savingStage: SAVING_STAGE.SUCCESS,
     errorMessage: '',
-    buildings,
-  },
+    buildings
+  }
 });
 
 const fetchingBuildingsError = (errorMessage: string): IBuildingsAction => ({
-  type: ERROR_BUILDINGS,
+  type: COLLECTION_STATE.ERROR,
   payload: {
     isFetching: false,
-    savingStage: ERROR,
+    savingStage: SAVING_STAGE.ERROR,
     errorMessage,
-    buildings: [],
-  },
+    buildings: []
+  }
 });
 
 export const getBuildingsData = () => async (
@@ -53,26 +43,26 @@ export const getBuildingsData = () => async (
       const building: IBuilding = {
         name: doc.data().name,
         address: doc.data().address,
-        id: doc.data().id,
+        id: doc.data().id
       };
       return building;
     });
-    dispatch(fetchingBuildingsDone(ADD_BUILDINGS, buildings));
+    dispatch(fetchingBuildingsDone(COLLECTION_STATE.GET, buildings));
   } catch (err) {
     dispatch(fetchingBuildingsError('Problem z serverem. Nie można pobrać danych o obiektach.'));
   }
 };
 
-export const addBuilding = (buldingData: IBuilding) => async (
+export const addBuilding = (buildingData: IBuilding) => async (
   dispatch: Dispatch<IBuildingsAction>,
   getStore: any
 ): Promise<void> => {
   dispatch(fetchingBuildings());
   try {
-    await db.collection('buildings').doc().set(buldingData);
+    await db.collection('buildings').doc().set(buildingData);
     const { buildings } = getStore();
-    const newBuldings: IBuilding[] = [...buildings, buldingData];
-    dispatch(fetchingBuildingsDone(ADD_BUILDINGS, newBuldings));
+    const newBuildings: IBuilding[] = [...buildings, buildingData];
+    dispatch(fetchingBuildingsDone(COLLECTION_STATE.ADD, newBuildings));
   } catch (err) {
     dispatch(
       fetchingBuildingsError('Problem z serverem. Nie można dodać nowego obiektu do bazy danych.')
@@ -80,18 +70,18 @@ export const addBuilding = (buldingData: IBuilding) => async (
   }
 };
 
-export const updateBuilding = (buldingData: IBuilding, id: string) => async (
+export const updateBuilding = (buildingData: IBuilding, id: string) => async (
   dispatch: Dispatch<IBuildingsAction>,
   getStore: any
 ): Promise<void> => {
   dispatch(fetchingBuildings());
   try {
-    await db.collection('buildings').doc(id).update(buldingData);
+    await db.collection('buildings').doc(id).update(buildingData);
     const { buildings } = getStore();
     const newBuildings: IBuilding[] = buildings.map((building: IBuilding) =>
-      building.id === id ? buldingData : building
+      building.id === id ? buildingData : building
     );
-    dispatch(fetchingBuildingsDone(UPDATE_BUILDINGS, newBuildings));
+    dispatch(fetchingBuildingsDone(COLLECTION_STATE.UPDATE, newBuildings));
   } catch (err) {
     dispatch(
       fetchingBuildingsError('Problem z serverem. Nie można zaktualizować obiektu w bazie danych.')
@@ -108,8 +98,8 @@ export const deleteBuilding = (id: string) => async (
   try {
     db.collection('buildings').doc(id).delete();
     const { buildings } = getStore();
-    const newBuldings: IBuilding[] = buildings.filter((building: IBuilding) => building.id !== id);
-    dispatch(fetchingBuildingsDone(DELETE_BUILDINGS, newBuldings));
+    const newBuildings: IBuilding[] = buildings.filter((building: IBuilding) => building.id !== id);
+    dispatch(fetchingBuildingsDone(COLLECTION_STATE.DELETE, newBuildings));
   } catch (err) {
     dispatch(
       fetchingBuildingsError('Problem z serverem. Nie można skasować obiektu z bazie danych.')

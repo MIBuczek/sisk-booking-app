@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { BsEnvelope, BsPhone, BsHouseDoor } from 'react-icons/bs';
+import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
-import Anchor, { iconNormal } from '../../components/atoms/Anchor';
-import Header from '../../components/atoms/Header';
-import Paragraph from '../../components/atoms/Paragraph';
-import { fadeIn } from '../../style/animation';
+
+import Anchor, { iconNormal } from 'components/atoms/Anchor';
+import Header from 'components/atoms/Header';
+import Paragraph from 'components/atoms/Paragraph';
 
 const ContactWrapper = styled.main`
   width: 100%;

@@ -14,13 +14,8 @@
   },
   "rules": {
     "object-curly-spacing": ["warn", "always"],
-    "no-unused-vars": [
-      "warn",
-      {
-        "vars": "all",
-        "args": "none"
-      }
-    ],
+    "import/no-cycle": 0,
+    "no-unused-vars": 0,
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
@@ -68,6 +63,7 @@
     "react/jsx-wrap-multilines": 0,
     "react/destructuring-assignment": 0,
     "react-hooks/exhaustive-deps": 0,
+    "@typescript-eslint/naming-convention": 0,
     "@typescript-eslint/comma-dangle": [
       "error",
       {

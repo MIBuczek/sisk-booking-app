@@ -2,13 +2,14 @@ import * as React from 'react';
 import { BsEnvelopeFill, BsFillHouseFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import Logo from '../atoms/Logo';
 import useScrollPosition from '../../hooks/useScrollPosition ';
 import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
-import { ModalContext } from '../../context/ModalContext';
-import { MODAL_TYPES } from '../../utils/variables/modal-const';
 import { fadeIn } from '../../style/animation';
+import { openModal } from '../../store/modal/modalAction';
+import { MODAL_TYPES } from '../../utils/variables/store-const';
 
 type Navigation = {
   isTop: boolean;
@@ -94,8 +95,7 @@ const active = { color: '#AFBF36' };
 const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
 
-  const { MESSAGE } = MODAL_TYPES;
-  const { setModal } = React.useContext(ModalContext);
+  const dispatch = useDispatch();
 
   const scrollPosition = useScrollPosition();
 
@@ -118,10 +118,7 @@ const TopNav = (): JSX.Element => {
             </NavigationLink>
           </li>
           <li>
-            <NavButton
-              role="button"
-              onClick={() => setModal({ type: MESSAGE, isOpen: true, callback: () => null })}
-            >
+            <NavButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
               <BsEnvelopeFill />
             </NavButton>
           </li>

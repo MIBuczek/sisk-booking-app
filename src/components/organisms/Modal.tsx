@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { BsX } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import bgModal from '../../assets/images/background-modal.jpg';
-import { ModalContext } from '../../context/ModalContext';
+import { IReduxState } from '../../models';
+import { closeModal } from '../../store/modal/modalAction';
 import { fadeIn } from '../../style/animation';
-import { INITIAL_MODAL } from '../../utils/variables/modal-const';
 import ButtonIcon from '../atoms/ButtonIcon';
 
 const ModalWrapper = styled.div`
@@ -32,14 +33,11 @@ const BGImage = styled.img`
 const ModalContent = styled.div`
   min-width: 400px;
   min-height: 200px;
-  max-height: 100%;
   overflow-y: auto;
   border: 2px solid #afbf36;
   border-radius: 5px;
   background: white;
-  position: fixed;
-  top: 5px;
-  bottom: 5px;
+  position: absolute;
 `;
 
 export interface IProps {
@@ -47,17 +45,14 @@ export interface IProps {
 }
 
 const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {
-  const {
-    modal: { isOpen },
-    setModal,
-  } = React.useContext(ModalContext);
-
+  const dispatch = useDispatch();
+  const { isOpen } = useSelector((state: IReduxState) => state.modal);
   if (isOpen) {
     return (
       <ModalWrapper>
         <BGImage src={bgModal} alt="bg" />
         <ModalContent>
-          <ButtonIcon role="button" onClick={() => setModal({ ...INITIAL_MODAL })}>
+          <ButtonIcon role="button" onClick={() => dispatch(closeModal())}>
             <BsX />
           </ButtonIcon>
           {children}

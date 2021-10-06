@@ -1,22 +1,21 @@
-import { IAuthAction } from '../../models/store/store-models';
-import { SAVING_STAGE, LOG_OUT_USER, LOG_IN_USER } from '../../utils/variables/store-data';
+import { IAuthAction } from 'models';
+import { LOGIN_STATE, SAVING_STAGE } from 'utils/variables/store-const';
 
-const { INITIAL } = SAVING_STAGE;
 const INITIAL_STATE = {
   isFetching: false,
-  savingStage: INITIAL,
+  savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  auth: undefined,
+  auth: undefined
 };
 
 export const auth = (state = INITIAL_STATE, action: IAuthAction) => {
   const { type, payload } = action;
   switch (type) {
-    case LOG_IN_USER:
-    case LOG_OUT_USER:
+    case LOGIN_STATE.LOG_IN:
+    case LOGIN_STATE.LOG_OUT:
       return {
         ...state,
-        ...payload,
+        ...payload
       };
     default:
       return state;

@@ -1,13 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
-import { IBookingsPayload, IReduxState } from '../../models/store/store-models';
 import Paragraph from '../atoms/Paragraph';
 import Header from '../atoms/Header';
 import Button from '../atoms/Button';
 import { clearCurrentBooking } from '../../store/bookings/bookingsAction';
 import { fadeIn } from '../../style/animation';
+import { IBookingsPayload, IReduxState } from '../../models';
 
 const ReservationDetailsWrapper = styled.article`
   width: 290px;

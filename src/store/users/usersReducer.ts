@@ -1,23 +1,22 @@
-import { IUserAction } from '../../models/store/store-models';
-import { SAVING_STAGE, ERROR_USER, GET_USER } from '../../utils/variables/store-data';
+import { IUserAction } from 'models';
+import { SAVING_STAGE, USER_STATE } from 'utils';
 
-const { INITIAL } = SAVING_STAGE;
 const INITIAL_STATE = {
   isFetching: false,
-  savingStage: INITIAL,
+  savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
   auth: null,
-  user: {},
+  user: {}
 };
 
 export const currentUser = (state = INITIAL_STATE, action: IUserAction) => {
   const { type, payload } = action;
   switch (type) {
-    case GET_USER:
-    case ERROR_USER:
+    case USER_STATE.GET:
+    case USER_STATE.ERROR:
       return {
         ...state,
-        ...payload,
+        ...payload
       };
     default:
       return state;

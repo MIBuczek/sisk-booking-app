@@ -15,16 +15,15 @@ import Button from '../atoms/Button';
 import TextAreaField from '../atoms/TextAreaField';
 import ErrorMsg from '../atoms/ErrorMsg';
 import Label from '../atoms/Label';
-import { IBooking } from '../../models/store/store-models';
-import { addBooking } from '../../store/bookings/bookingsAction';
-import { ModalContext } from '../../context/ModalContext';
-import { INITIAL_MODAL } from '../../utils/variables/modal-const';
+import { TSelect } from '../../models/components/select-model';
+import { closeModal } from '../../store/modal/modalAction';
 import {
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
-  SIZE_FIELD_OPTIONS,
+  SIZE_FIELD_OPTIONS
 } from '../../utils/variables/options-const';
-import { TSelect } from '../../models/components/select-model';
+import { IBooking } from '../../models';
+import { addBooking } from '../../store/bookings/bookingsAction';
 
 registerLocale('pl', pl);
 
@@ -68,8 +67,6 @@ const ModalReservation = () => {
 
   const dispatch = useDispatch();
 
-  const { setModal } = React.useContext(ModalContext);
-
   const { handleSubmit, errors, control, watch } = useForm();
 
   const cityValue = watch('city');
@@ -87,14 +84,13 @@ const ModalReservation = () => {
   };
 
   const onSubmit = handleSubmit<IBooking>(async (cred) => {
-    console.log(cred);
     dispatch(
       addBooking({
         ...cred,
-        accepted: false,
+        accepted: false
       })
     );
-    setModal({ ...INITIAL_MODAL });
+    dispatch(closeModal());
   });
 
   return (

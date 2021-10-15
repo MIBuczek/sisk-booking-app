@@ -37,12 +37,16 @@ export const logInUser = (email: string, password: string) => async (
 ): Promise<void> => {
   dispatch(fetchingAuth());
   try {
-    const resp = await auth.signInWithEmailAndPassword(email, password);
-    const credentials: IAuth = {
-      email,
-      uid: resp
-    };
-    dispatch(fetchingAuthDone(LOGIN_STATE.LOG_IN, credentials));
+    const resp = (await auth.signInWithEmailAndPassword(email, password)).user?.uid;
+    if (resp) {
+      const credentials: IAuth = {
+        email,
+        uid: resp
+      };
+      dispatch(fetchingAuthDone(LOGIN_STATE.LOG_IN, credentials));
+    } else {
+      dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
+    }
   } catch (err) {
     dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
     throw new Error(JSON.stringify(err));

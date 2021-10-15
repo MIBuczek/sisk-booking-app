@@ -5,7 +5,10 @@ const INITIAL_STATE = {
   isFetching: false,
   savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  auth: undefined
+  auth: {
+    email: 'sara@sisk.pl',
+    uid: '#123123'
+  }
 };
 
 export const auth = (state = INITIAL_STATE, action: IAuthAction) => {

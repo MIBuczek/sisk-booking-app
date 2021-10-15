@@ -1,4 +1,3 @@
-// import * as React from 'react';
 import styled from 'styled-components';
 
 type InputType = {
@@ -15,9 +14,7 @@ const TextInputField = styled.input<InputType>`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.bold};
   text-align: center;
-  /* margin: ${({ theme }) => theme.fontSize.xs} 0; */
   padding: 10px;
-  text-align: left;
   letter-spacing: -0.5px;
   border-color: ${({ invalid }) => (invalid ? '#cc0000' : '#afbf36')};
   &::hover {

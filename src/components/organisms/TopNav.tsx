@@ -33,7 +33,7 @@ const NavWrapper = styled.nav<Navigation>`
 `;
 
 const NavContent = styled.div`
-  max-width: 1430px;
+  /* max-width: 1430px; */
   display: flex;
   align-items: center;
   justify-content: space-between;

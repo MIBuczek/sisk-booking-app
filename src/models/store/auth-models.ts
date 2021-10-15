@@ -2,7 +2,7 @@ import { IPayload } from 'models';
 
 interface IAuth {
   email: string;
-  uid: unknown;
+  uid: string;
 }
 
 interface IAuthPayload extends IPayload {

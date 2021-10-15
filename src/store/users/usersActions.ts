@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
-import { IUser, IUserAction } from 'models';
-import { db, SAVING_STAGE, USER_STATE } from 'utils';
+import { IReduxState, IUser, IUserAction } from 'models';
+import { ADMIN_ROLE, db, SAVING_STAGE, USER_STATE } from 'utils';
 
 export const fetchingUserStart = (): IUserAction => ({
   type: USER_STATE.GET,
@@ -35,19 +35,19 @@ const fetchingUserError = (errorMessage: string): IUserAction => ({
 
 export const getUserData = () => async (
   dispatch: Dispatch<IUserAction>,
-  getState: any
+  getState: () => IReduxState
 ): Promise<void> => {
   dispatch(fetchingUserStart());
   try {
-    const { auth } = getState();
+    const { auth } = getState().auth;
     const resp = ((await db.collection('users').get()) as unknown) as IUser;
     const [user]: IUser[] = ((resp.docs as unknown) as any[]).filter(
-      (doc: { data: () => { [x: string]: string } }) => {
-        if (auth.uid === doc.data().id) {
+      (doc: { data: () => { [x: string]: string | any } }) => {
+        if (auth?.uid === doc.data().id) {
           const currentUser: IUser = {
             name: doc.data().name,
             id: doc.data().id,
-            position: doc.data().position
+            role: doc.data().role
           };
           return currentUser;
         }

@@ -16,19 +16,6 @@
     "object-curly-spacing": ["warn", "always"],
     "import/no-cycle": 0,
     "no-unused-vars": 0,
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "vars": "all",
-        "args": "none"
-      }
-    ],
-    "@typescript-eslint/no-explicit-any": [
-      "error",
-      {
-        "ignoreRestArgs": true
-      }
-    ],
     "max-len": [
       "warn",
       {
@@ -39,7 +26,6 @@
       }
     ],
     "no-underscore-dangle": "off",
-    "no-plusplus": 0,
     "react/jsx-key": "error",
     "import/no-extraneous-dependencies": [
       "error",
@@ -64,6 +50,19 @@
     "react/destructuring-assignment": 0,
     "react-hooks/exhaustive-deps": 0,
     "@typescript-eslint/naming-convention": 0,
+    "@typescript-eslint/no-explicit-any": [
+      "error",
+      {
+        "ignoreRestArgs": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "none"
+      }
+    ],
     "@typescript-eslint/comma-dangle": [
       "error",
       {

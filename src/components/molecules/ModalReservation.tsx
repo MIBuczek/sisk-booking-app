@@ -5,25 +5,20 @@ import pl from 'date-fns/locale/pl';
 import { Controller, useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { DataPickerField } from '../atoms/DatapickerField';
-import Header from '../atoms/Header';
-import TextInputField from '../atoms/TextInputField';
-import SelectInputField, { customStyles, SelectWrapper } from '../atoms/SelectInputField';
-import Checkbox from '../atoms/Checkbox';
-import Anchor from '../atoms/Anchor';
-import Button from '../atoms/Button';
-import TextAreaField from '../atoms/TextAreaField';
-import ErrorMsg from '../atoms/ErrorMsg';
-import Label from '../atoms/Label';
-import { TSelect } from '../../models/components/select-model';
-import { closeModal } from '../../store/modal/modalAction';
-import {
-  BUILDINGS_OPTIONS,
-  CITY_OPTIONS,
-  SIZE_FIELD_OPTIONS
-} from '../../utils/variables/options-const';
-import { IBooking } from '../../models';
-import { addBooking } from '../../store/bookings/bookingsAction';
+import Header from 'components/atoms/Header';
+import TextAreaField from 'components/atoms/TextAreaField';
+import { IMainState } from 'models/components/main-view-model';
+import { BUILDINGS_OPTIONS, CITY_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils';
+import { addBooking, closeModal } from 'store';
+import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
+import Label from 'components/atoms/Label';
+import ErrorMsg from 'components/atoms/ErrorMsg';
+import Checkbox from 'components/atoms/Checkbox';
+import TextInputField from 'components/atoms/TextInputField';
+import { DataPickerField } from 'components/atoms/DatapickerField';
+import Button from 'components/atoms/Button';
+import Anchor from 'components/atoms/Anchor';
+import { IBooking, TSelect } from 'models';
 
 registerLocale('pl', pl);
 
@@ -62,12 +57,20 @@ const MessageTextArea = styled(TextAreaField)`
   margin: 10px;
 `;
 
-const ModalReservation = () => {
+interface IProps {
+  mainState: IMainState;
+}
+
+const ModalReservation: React.FunctionComponent<IProps> = ({ mainState }) => {
   const [police, setPolice] = React.useState<boolean>(false);
+
+  const { city, building } = mainState;
 
   const dispatch = useDispatch();
 
-  const { handleSubmit, errors, control, watch } = useForm();
+  const { handleSubmit, errors, control, watch } = useForm({
+    defaultValues: mainState
+  });
 
   const cityValue = watch('city');
   const buildingValue = watch('building');
@@ -100,7 +103,7 @@ const ModalReservation = () => {
         <Label>Miejscowość</Label>
         <Controller
           name="city"
-          defaultValue={''}
+          defaultValue={city}
           control={control}
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
@@ -111,6 +114,7 @@ const ModalReservation = () => {
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              defaultValue={city}
             />
           )}
         />
@@ -124,7 +128,7 @@ const ModalReservation = () => {
         <Label>Obiekt</Label>
         <Controller
           name="building"
-          defaultValue={''}
+          defaultValue={building}
           control={control}
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
@@ -136,6 +140,7 @@ const ModalReservation = () => {
               onBlur={onBlur}
               selected={value}
               isDisabled={!cityValue}
+              defaultValue={building}
             />
           )}
         />

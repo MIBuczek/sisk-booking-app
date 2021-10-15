@@ -6,3 +6,4 @@ export * from 'utils/variables/options-const';
 export * from 'utils/variables/roles-const';
 export * from 'utils/variables/routes-const';
 export * from 'utils/variables/store-const';
+export * from 'utils/variables/initial-states-const';

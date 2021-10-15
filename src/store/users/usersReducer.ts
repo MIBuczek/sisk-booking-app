@@ -1,12 +1,16 @@
 import { IUserAction } from 'models';
-import { SAVING_STAGE, USER_STATE } from 'utils';
+import { ADMIN_ROLE, SAVING_STAGE, USER_STATE } from 'utils';
 
 const INITIAL_STATE = {
   isFetching: false,
   savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
   auth: null,
-  user: {}
+  user: {
+    name: 'SARA BUCZEK',
+    role: ADMIN_ROLE.ADMIN,
+    id: '#12341'
+  }
 };
 
 export const currentUser = (state = INITIAL_STATE, action: IUserAction) => {

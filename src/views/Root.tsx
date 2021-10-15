@@ -6,7 +6,8 @@ import Cookies from 'components/molecules/Cookies';
 import Loading from 'components/molecules/Loading';
 import Footer from 'components/organisms/Footer';
 import TopNav from 'components/organisms/TopNav';
-import ServerError from './user-view/ServerError';
+import bgMain from 'assets/images/background.jpg';
+import ServerError from 'views/user-view/ServerError';
 
 const Main = React.lazy(() => import('./user-view/Main'));
 const Login = React.lazy(() => import('./admin-view/Login'));

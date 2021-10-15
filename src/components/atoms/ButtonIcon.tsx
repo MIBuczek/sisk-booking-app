@@ -25,7 +25,7 @@ const ButtonIcon = styled.button`
 export const iconStyle = {
   fontSize: '2rem',
   marginRight: '1rem',
-  color: 'AFBF36',
+  color: 'AFBF36'
 };
 
 export default ButtonIcon;

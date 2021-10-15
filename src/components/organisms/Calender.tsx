@@ -21,12 +21,73 @@ const CalenderWrapper = styled.section`
   z-index: 0;
   .fc-direction-ltr {
     width: 95%;
+    max-height: 580px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #454545;
+    .fc-day-today {
+      .fc-timegrid-col-frame {
+        background: #eeeeee;
+      }
+    }
+    .fc-timegrid-event.fc-v-event {
+      background-color: #afbf36;
+      border-color: #b9b8b8;
+    }
+    .fc-button-primary {
+      background-color: #eaeaea;
+      border-color: #afbf36;
+      color: #454545;
+      transition: 0.4s;
+      &:focus,
+      &:hover {
+        background-color: #afbf36;
+        border-color: #b9b8b8;
+        box-shadow: none;
+      }
+      &:not(:disabled):active {
+        background-color: #454545;
+        color: #b9b8b8;
+      }
+      &:disabled {
+        background-color: #b9b8b8;
+        border-color: #454545;
+        color: #454545;
+        &:hover {
+          background-color: #b9b8b8;
+          border-color: #454545;
+        }
+      }
+    }
+    .fc-button-primary.fc-next-button,
+    .fc-button-primary.fc-prev-button {
+      color: white;
+    }
+    .fc-button-primary.fc-timeGridWeek-button.fc-button-active,
+    .fc-button-primary.fc-listWeek-button.fc-button-active {
+      background-color: #454545;
+      color: #b9b8b8;
+      &:focus {
+        box-shadow: none;
+      }
+    }
+    .fc-list-day-cushion {
+      color: #454545;
+    }
+    .fc-button-group {
+      .fc-button {
+        background: #afbf36;
+        border-color: #eaeaea;
+      }
+      .fc-button-active {
+        background-color: #eaeaea;
+        border-color: #afbf36;
+      }
+    }
   }
 `;
 
-export interface IProps {}
-
-const BookingCalender: React.FC<IProps> = (): JSX.Element => {
+const BookingCalender: React.FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
   const { bookings } = useSelector((state: IReduxState) => state.bookingState);
 
@@ -42,7 +103,7 @@ const BookingCalender: React.FC<IProps> = (): JSX.Element => {
         plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
           left: 'prev,next today',
-          right: 'timeGridWeek,listWeek',
+          right: 'timeGridWeek,listWeek'
         }}
         locale="pl"
         initialView="timeGridWeek"

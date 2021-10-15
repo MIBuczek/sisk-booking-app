@@ -1,17 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import logoFooter from '../../assets/images/logo_footer.png';
 import BIPFooter from '../../assets/images/bip-footer.png';
 import Paragraph from '../atoms/Paragraph';
 import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
-import Modal from './Modal';
-import ModalMessage from '../molecules/ModalMessage';
-import ModalReservation from '../molecules/ModalReservation';
 import { fadeIn } from '../../style/animation';
-import { IReduxState } from '../../models';
 import { MODAL_TYPES } from '../../utils/variables/store-const';
 import { openModal } from '../../store/modal/modalAction';
 
@@ -80,8 +76,7 @@ const ContentItem = styled.div`
 
 const FooterButton = styled(Button)`
   background: transparent;
-  margin-top: 0;
-  margin-bottom: 15px;
+  margin-top: 30px;
   text-align: left;
   padding: 0;
   border: none;
@@ -117,7 +112,6 @@ const FooterAnchor = styled(Anchor)`
 
 const Footer = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { isOpen, type } = useSelector((state: IReduxState) => state.modal);
   return (
     <>
       <FooterWrapper>
@@ -144,10 +138,10 @@ const Footer = (): JSX.Element => {
               Rezerwacje
             </FooterLinkItem>
             <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
+            <FooterAnchor href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
             <FooterButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
               Napisz do nas
             </FooterButton>
-            <FooterAnchor href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
           </ContentItem>
         </FooterContent>
         <FooterCredits>
@@ -159,12 +153,6 @@ const Footer = (): JSX.Element => {
           </FooterParagraph>
         </FooterCredits>
       </FooterWrapper>
-      {isOpen && (
-        <Modal>
-          {type === MODAL_TYPES.MESSAGE && <ModalMessage />}
-          {type === MODAL_TYPES.RESERVATION && <ModalReservation />}
-        </Modal>
-      )}
     </>
   );
 };

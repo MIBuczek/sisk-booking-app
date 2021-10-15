@@ -26,7 +26,7 @@ const Anchor = styled.a<AnchorProps>`
 export const iconNormal = {
   fontSize: '2rem',
   marginRight: '1rem',
-  color: 'AFBF36',
+  color: 'AFBF36'
 };
 
 export default Anchor;

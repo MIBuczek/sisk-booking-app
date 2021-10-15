@@ -27,7 +27,7 @@ export const customStyles = (invalid: boolean) => ({
     backgroundColor: '#eaeaea',
     letterSpacing: '-0.5px',
     fontSize: '1rem',
-    fontWeight: '600',
+    fontWeight: '600'
   }),
   option: (
     styles: { [x: string]: string },
@@ -41,9 +41,13 @@ export const customStyles = (invalid: boolean) => ({
       ? '1px solid #afbf36'
       : isFocused
       ? '#eaeaea'
-      : null,
+      : null
   }),
   placeholder: (styles: { [x: string]: string }) => ({ ...styles, left: '50%', color: '#b9b8b8' }),
+  singleValue: (provided: { [x: string]: string }) => {
+    const left = '50%';
+    return { ...provided, left };
+  }
 });
 
 export default SelectInputField;

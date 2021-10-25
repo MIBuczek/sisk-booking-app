@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
-import Anchor from '../atoms/Anchor';
-import Button from '../atoms/Button';
-import Checkbox from '../atoms/Checkbox';
-import ErrorMsg from '../atoms/ErrorMsg';
-import Header from '../atoms/Header';
-import Label from '../atoms/Label';
-import TextAreaField from '../atoms/TextAreaField';
-import TextInputField from '../atoms/TextInputField';
+import Anchor from '../../atoms/Anchor';
+import Button from '../../atoms/Button';
+import Checkbox from '../../atoms/Checkbox';
+import ErrorMsg from '../../atoms/ErrorMsg';
+import Header from '../../atoms/Header';
+import Label from '../../atoms/Label';
+import TextAreaField from '../../atoms/TextAreaField';
+import TextInputField from '../../atoms/TextInputField';
 
 const MessageWrapper = styled.form`
   padding: 20px;

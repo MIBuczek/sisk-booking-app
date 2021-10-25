@@ -1,11 +1,11 @@
 import { IBuildingOptions, ISizeFieldOptions, TSelect } from 'models/components/select-model';
 
-const SIZE_TYPE_HAFL: TSelect[] = [
+const SIZE_TYPE_HALF: TSelect[] = [
   { label: '1/2', value: '1/2' },
   { label: '2/2', value: '2/2' }
 ];
 
-const SIZE_TYPE_QUATER: TSelect[] = [
+const SIZE_TYPE_QUATRE: TSelect[] = [
   { label: '1/4', value: '1/4' },
   { label: '2/4', value: '2/4' },
   { label: '4/4', value: '4/4' }
@@ -39,20 +39,20 @@ const BUILDINGS_OPTIONS: IBuildingOptions = {
 
 const SIZE_FIELD_OPTIONS: ISizeFieldOptions = {
   radwanice: {
-    'obiekt-one': SIZE_TYPE_HAFL,
-    'obiekt-two': SIZE_TYPE_QUATER
+    'obiekt-one': SIZE_TYPE_HALF,
+    'obiekt-two': SIZE_TYPE_QUATRE
   },
   siechnice: {
-    'obiekt-tree': SIZE_TYPE_HAFL,
-    'obiekt-four': SIZE_TYPE_HAFL
+    'obiekt-tree': SIZE_TYPE_HALF,
+    'obiekt-four': SIZE_TYPE_HALF
   },
   'swieta-katarzyna': {
-    'obiekt-five': SIZE_TYPE_HAFL,
-    'obiekt-six': SIZE_TYPE_QUATER
+    'obiekt-five': SIZE_TYPE_HALF,
+    'obiekt-six': SIZE_TYPE_QUATRE
   },
   'zerniki-wroclawskie': {
-    'obiekt-seven': SIZE_TYPE_HAFL,
-    'obiekt-eight': SIZE_TYPE_HAFL
+    'obiekt-seven': SIZE_TYPE_HALF,
+    'obiekt-eight': SIZE_TYPE_HALF
   }
 };
 

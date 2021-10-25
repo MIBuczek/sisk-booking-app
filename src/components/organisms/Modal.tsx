@@ -1,3 +1,4 @@
+import Button from 'components/atoms/Button';
 import * as React from 'react';
 import { BsX } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +7,6 @@ import bgModal from '../../assets/images/background-modal.jpg';
 import { IReduxState } from '../../models';
 import { closeModal } from '../../store/modal/modalAction';
 import { fadeIn } from '../../style/animation';
-import ButtonIcon from '../atoms/ButtonIcon';
 
 const ModalWrapper = styled.div`
   width: 100vw;
@@ -19,8 +19,18 @@ const ModalWrapper = styled.div`
   justify-content: center;
   animation: ${fadeIn} 0.5s linear;
   z-index: 9999;
-  button {
-    margin: 0 0 0 auto;
+`;
+
+const CloseBtn = styled(Button)`
+  display: block;
+  margin: 10px 10px 0 auto;
+  color: ${({ theme }) => theme.white};
+  padding: 0;
+  svg {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    top: 2px;
   }
 `;
 
@@ -33,7 +43,6 @@ const BGImage = styled.img`
 const ModalContent = styled.div`
   min-width: 400px;
   min-height: 200px;
-  overflow-y: auto;
   border: 2px solid #afbf36;
   border-radius: 5px;
   background: white;
@@ -52,9 +61,9 @@ const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {
       <ModalWrapper>
         <BGImage src={bgModal} alt="bg" />
         <ModalContent>
-          <ButtonIcon role="button" onClick={() => dispatch(closeModal())}>
+          <CloseBtn role="button" onClick={() => dispatch(closeModal())}>
             <BsX />
-          </ButtonIcon>
+          </CloseBtn>
           {children}
         </ModalContent>
       </ModalWrapper>

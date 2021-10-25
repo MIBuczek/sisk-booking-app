@@ -9,8 +9,8 @@ import { initialMainState, MODAL_TYPES } from 'utils';
 import { cloneDeep } from 'lodash';
 import { useSelector } from 'react-redux';
 import Modal from 'components/organisms/Modal';
-import ModalMessage from 'components/molecules/ModalMessage';
-import ModalReservation from 'components/molecules/ModalReservation';
+import ModalMessage from 'components/molecules/modals/ModalMessage';
+import ModalReservation from 'components/molecules/modals/ModalReservation';
 
 const MainWrapper = styled.section`
   width: 100%;

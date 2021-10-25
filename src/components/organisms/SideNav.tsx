@@ -70,16 +70,19 @@ const SideNav: React.FunctionComponent<IProps> = ({ admin, state, stateHandler }
       </SelectWrapper>
       {admin ? (
         <>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.RESERVATION))}>
+          <ButtonIcon
+            role="button"
+            onClick={() => dispatch(openModal(MODAL_TYPES.ADMIN_RESERVATION))}
+          >
             <BsFillPinFill style={iconStyle} /> REZERWACJE
           </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.RESERVATION))}>
+          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
             <BsFileEarmarkPersonFill style={iconStyle} /> NAJEMCY
           </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.RESERVATION))}>
+          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BUILDINGS))}>
             <BsBuilding style={iconStyle} /> OBIEKTY
           </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.RESERVATION))}>
+          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.SUMMARY))}>
             <BsFileEarmarkBarGraphFill style={iconStyle} /> PODSUMOWANIE NAJMÓW
           </ButtonIcon>
         </>

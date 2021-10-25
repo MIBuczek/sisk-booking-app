@@ -7,8 +7,13 @@ import Header from 'components/atoms/Header';
 import { fadeIn } from 'style/animation';
 import SideNav from 'components/organisms/SideNav';
 import BookingCalender from 'components/organisms/Calender';
+import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
-import { initialAdminState } from 'utils';
+import { initialAdminState, MODAL_TYPES } from 'utils';
+import ModalClient from 'components/molecules/modals/ModalClient';
+import ModalBuilding from 'components/molecules/modals/ModalBuilding';
+import ModalAdminReservation from 'components/molecules/modals/ModalAdminReservation';
+import ModalSummary from 'components/molecules/modals/ModalSummary';
 
 const AdminWrapper = styled.section`
   width: 100%;
@@ -23,13 +28,15 @@ const Admin = (): JSX.Element => {
   const [adminState, setAdminState] = React.useState<IAdminState>({ ...initialAdminState });
 
   const dispatch = useDispatch();
-  const { auth } = useSelector((state: IReduxState) => state.auth);
+  const {
+    auth: { auth },
+    modal: { isOpen, type }
+  } = useSelector((state: IReduxState) => state);
 
   const stateHandler = (value: TSelect, field: string) => {
     setAdminState((prev) => ({ ...prev, [field]: value }));
   };
 
-  console.log(auth);
   // React.useEffect(() => {
   //   dispatch(getBuildingsData());
   // }, []);
@@ -42,6 +49,14 @@ const Admin = (): JSX.Element => {
       <Header>Panel Administratora</Header>
       <SideNav admin state={adminState} stateHandler={stateHandler} />
       <BookingCalender />
+      {isOpen && (
+        <Modal>
+          {type === MODAL_TYPES.CLIENT && <ModalClient />}
+          {type === MODAL_TYPES.BUILDINGS && <ModalBuilding adminState={adminState} />}
+          {type === MODAL_TYPES.SUMMARY && <ModalSummary />}
+          {type === MODAL_TYPES.ADMIN_RESERVATION && <ModalAdminReservation />}
+        </Modal>
+      )}
     </AdminWrapper>
   );
 };

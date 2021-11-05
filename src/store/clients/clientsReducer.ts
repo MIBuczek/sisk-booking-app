@@ -8,7 +8,7 @@ const INITIAL_STATE: IClientsPayload = {
   clients: []
 };
 
-export const clients = (state = INITIAL_STATE, action: IClientsActions) => {
+export const clientStore = (state = INITIAL_STATE, action: IClientsActions) => {
   const { type, payload } = action;
   switch (type) {
     case COLLECTION_STATE.ADD:

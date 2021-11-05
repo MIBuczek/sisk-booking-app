@@ -50,6 +50,7 @@ const SideNav: React.FunctionComponent<IProps> = ({ admin, state, stateHandler }
       <SelectWrapper>
         <Label>Miejscowość</Label>
         <SelectInputField
+          defaultValue={city}
           options={CITY_OPTIONS}
           styles={customStyles(false)}
           placeholder="Wybierz"

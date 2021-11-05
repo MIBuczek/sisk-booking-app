@@ -28,8 +28,9 @@ const Admin = (): JSX.Element => {
   const [adminState, setAdminState] = React.useState<IAdminState>({ ...initialAdminState });
 
   const dispatch = useDispatch();
+
   const {
-    auth: { auth },
+    authStore: { auth },
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 

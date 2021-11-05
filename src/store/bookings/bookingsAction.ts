@@ -63,10 +63,10 @@ export const addBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingBookings());
+  // dispatch(fetchingBookings());
   try {
     // await db.collection('bookings').doc().set(bookingData);
-    const { bookings } = getStore().bookingState;
+    const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = [...bookings, bookingData];
     dispatch(fetchingBookingsDone(COLLECTION_STATE.ADD, newBookings));
   } catch (err) {
@@ -79,10 +79,10 @@ export const updateBooking = (bookingData: IBooking, id: string) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingBookings());
+  // dispatch(fetchingBookings());
   try {
     await db.collection('bookings').doc(id).update(bookingData);
-    const { bookings } = getStore().bookingState;
+    const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.map((booking: IBooking) =>
       booking.id === id ? bookingData : booking
     );
@@ -97,7 +97,7 @@ export const getCurrentBooking = (id: string) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  const { bookings } = getStore().bookingState;
+  const { bookings } = getStore().bookingStore;
   const currentBooking = bookings.find((b) => b.id === id);
   if (currentBooking) {
     dispatch(getSingleBooking(bookings, currentBooking));
@@ -110,7 +110,7 @@ export const clearCurrentBooking = () => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  const { bookings } = getStore().bookingState;
+  const { bookings } = getStore().bookingStore;
   dispatch(getSingleBooking(bookings, undefined));
 };
 
@@ -121,7 +121,7 @@ export const deleteBooking = (id: string) => async (
   dispatch(fetchingBookings());
   try {
     db.collection('bookings').doc(id).delete();
-    const { bookings } = getStore().bookingState;
+    const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
     dispatch(fetchingBookingsDone(COLLECTION_STATE.DELETE, newBookings));
   } catch (err) {

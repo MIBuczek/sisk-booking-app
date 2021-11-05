@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   }
 };
 
-export const auth = (state = INITIAL_STATE, action: IAuthAction) => {
+export const authStore = (state = INITIAL_STATE, action: IAuthAction) => {
   const { type, payload } = action;
   switch (type) {
     case LOGIN_STATE.LOG_IN:

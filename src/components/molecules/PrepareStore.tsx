@@ -12,7 +12,7 @@ export interface IProps {
 const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const [storeReady, setStoreReady] = React.useState(true);
 
-  const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookingState);
+  const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
   const dispatch = useDispatch();
 
   React.useEffect(() => {

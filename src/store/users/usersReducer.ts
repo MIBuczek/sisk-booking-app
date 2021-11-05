@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   }
 };
 
-export const currentUser = (state = INITIAL_STATE, action: IUserAction) => {
+export const currentUserStore = (state = INITIAL_STATE, action: IUserAction) => {
   const { type, payload } = action;
   switch (type) {
     case USER_STATE.GET:

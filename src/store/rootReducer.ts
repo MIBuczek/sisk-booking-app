@@ -1,14 +1,21 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import reduxThunk from 'redux-thunk';
-import { auth, bookingState, buildings, clients, currentUser, modal } from 'store';
+import {
+  authStore,
+  bookingStore,
+  buildingStore,
+  clientStore,
+  currentUserStore,
+  modal
+} from 'store';
 
 const rootReducer = combineReducers({
-  auth,
-  clients,
-  buildings,
-  bookingState,
-  currentUser,
+  authStore,
+  clientStore,
+  buildingStore,
+  bookingStore,
+  currentUserStore,
   modal
 });
 

@@ -1,13 +1,18 @@
 import { IPayload } from 'models';
+import { SIZE_OPTIONS } from 'utils/variables/form-const';
 
 interface IBuilding {
   name: string;
-  address: string;
-  id: string;
+  city: string;
+  phone: string;
+  email: string;
+  size: SIZE_OPTIONS;
+  id?: string;
+  [x: string]: string | SIZE_OPTIONS | undefined;
 }
 
 interface IBuildingsPayload extends IPayload {
-  buildings?: IBuilding[];
+  buildings: IBuilding[];
 }
 
 interface IBuildingsAction {

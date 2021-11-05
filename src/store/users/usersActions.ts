@@ -39,7 +39,7 @@ export const getUserData = () => async (
 ): Promise<void> => {
   dispatch(fetchingUserStart());
   try {
-    const { auth } = getState().auth;
+    const { auth } = getState().authStore;
     const resp = ((await db.collection('users').get()) as unknown) as IUser;
     const [user]: IUser[] = ((resp.docs as unknown) as any[]).filter(
       (doc: { data: () => { [x: string]: string | any } }) => {

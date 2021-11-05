@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { IBuilding, IBuildingsAction } from 'models';
+import { IBuilding, IBuildingsAction, IReduxState } from 'models';
 import { db, COLLECTION_STATE, SAVING_STAGE } from 'utils';
 
 export const fetchingBuildings = (): IBuildingsAction => ({
@@ -42,7 +42,10 @@ export const getBuildingsData = () => async (
     const buildings: IBuilding[] = resp.docs.map((doc) => {
       const building: IBuilding = {
         name: doc.data().name,
-        address: doc.data().address,
+        city: doc.data().city,
+        phone: doc.data().phone,
+        email: doc.data().email,
+        size: doc.data().size,
         id: doc.data().id
       };
       return building;
@@ -53,16 +56,14 @@ export const getBuildingsData = () => async (
   }
 };
 
-export const addBuilding = (buildingData: IBuilding) => async (
+export const addBuilding = (building: IBuilding) => async (
   dispatch: Dispatch<IBuildingsAction>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingBuildings());
   try {
-    await db.collection('buildings').doc().set(buildingData);
-    const { buildings } = getStore();
-    const newBuildings: IBuilding[] = [...buildings, buildingData];
-    dispatch(fetchingBuildingsDone(COLLECTION_STATE.ADD, newBuildings));
+    // await db.collection('buildings').doc().set(buildingData);
+    const { buildings } = getStore().buildingStore;
+    dispatch(fetchingBuildingsDone(COLLECTION_STATE.ADD, [...buildings, building]));
   } catch (err) {
     dispatch(
       fetchingBuildingsError('Problem z serverem. Nie można dodać nowego obiektu do bazy danych.')
@@ -70,16 +71,15 @@ export const addBuilding = (buildingData: IBuilding) => async (
   }
 };
 
-export const updateBuilding = (buildingData: IBuilding, id: string) => async (
+export const updateBuilding = (buildingData: IBuilding) => async (
   dispatch: Dispatch<IBuildingsAction>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingBuildings());
   try {
-    await db.collection('buildings').doc(id).update(buildingData);
-    const { buildings } = getStore();
+    // await db.collection('buildings').doc(id).update(buildingData);
+    const { buildings } = getStore().buildingStore;
     const newBuildings: IBuilding[] = buildings.map((building: IBuilding) =>
-      building.id === id ? buildingData : building
+      building.id === buildingData.id ? buildingData : building
     );
     dispatch(fetchingBuildingsDone(COLLECTION_STATE.UPDATE, newBuildings));
   } catch (err) {
@@ -92,12 +92,11 @@ export const updateBuilding = (buildingData: IBuilding, id: string) => async (
 
 export const deleteBuilding = (id: string) => async (
   dispatch: Dispatch<IBuildingsAction>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingBuildings());
   try {
-    db.collection('buildings').doc(id).delete();
-    const { buildings } = getStore();
+    // db.collection('buildings').doc(id).delete();
+    const { buildings } = getStore().buildingStore;
     const newBuildings: IBuilding[] = buildings.filter((building: IBuilding) => building.id !== id);
     dispatch(fetchingBuildingsDone(COLLECTION_STATE.DELETE, newBuildings));
   } catch (err) {

@@ -89,7 +89,7 @@ const CalenderWrapper = styled.section`
 
 const BookingCalender: React.FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { bookings } = useSelector((state: IReduxState) => state.bookingState);
+  const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
 
   const createEvents = (): EventInput[] => bookings.map(prepareCalenderItem);
 

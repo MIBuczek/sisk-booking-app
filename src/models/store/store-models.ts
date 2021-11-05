@@ -14,11 +14,11 @@ interface IPayload {
 }
 
 interface IReduxState {
-  auth: IAuthPayload;
-  clients: IClientsPayload;
-  buildings: IBuildingsPayload;
-  bookingState: IBookingsPayload;
-  currentUser: IUserPayload;
+  authStore: IAuthPayload;
+  clientStore: IClientsPayload;
+  buildingStore: IBuildingsPayload;
+  bookingStore: IBookingsPayload;
+  currentUserStore: IUserPayload;
   modal: IModal;
 }
 

@@ -1,7 +1,10 @@
 import { IAdminState, IMainState } from 'models';
 
 const initialMainState: IMainState = {
-  city: undefined,
+  city: {
+    value: 'siechnice',
+    label: 'Siechnice'
+  },
   building: undefined
 };
 

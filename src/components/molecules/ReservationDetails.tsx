@@ -35,7 +35,7 @@ const DetailsSpan = styled.span`
 
 const ReservationDetails = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { booking } = useSelector((state: IReduxState): IBookingsPayload => state.bookingState);
+  const { booking } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
 
   const clear = () => {
     dispatch(clearCurrentBooking());

@@ -1,3 +1,25 @@
-const checkRights = (id: string): boolean => true;
+import { TSelect } from 'models';
 
-export { checkRights };
+const firstLetterUpperCase = (s: string): string => s.charAt(0).toLocaleUpperCase();
+
+const generateSelectDefaultValue = (s: string): TSelect => ({
+  value: s,
+  label: firstLetterUpperCase(s)
+});
+
+const pagination = (items: string[], currentPage: number, postPerPage: number): string[] => {
+  console.log(items);
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  return items.slice(indexOfFirstPost, indexOfLastPost);
+};
+
+const paginationItems = (totalPost: number, postPerPage: number) => {
+  const pageNumbers = [];
+  // eslint-disable-next-line no-plusplus
+  for (let i = 1; i <= Math.ceil(totalPost / postPerPage); i++) {
+    pageNumbers.push(i);
+  }
+  return pageNumbers;
+};
+export { generateSelectDefaultValue, pagination, paginationItems };

@@ -39,6 +39,7 @@
         ]
       }
     ],
+    "no-case-declarations": "off",
     "react/jsx-curly-brace-presence": 0,
     "react/jsx-props-no-spreading": 0,
     "import/prefer-default-export": 0,

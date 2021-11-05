@@ -5,10 +5,10 @@ const INITIAL_STATE: IBuildingsPayload = {
   isFetching: false,
   savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  buildings: undefined
+  buildings: []
 };
 
-export const buildings = (state = INITIAL_STATE, action: IBuildingsAction) => {
+export const buildingStore = (state = INITIAL_STATE, action: IBuildingsAction) => {
   const { type, payload } = action;
   switch (type) {
     case COLLECTION_STATE.ADD:

@@ -36,7 +36,7 @@ const INITIAL_STATE: IBookingsPayload = {
   bookings: example
 };
 
-export const bookingState = (state = INITIAL_STATE, action: IBookingsAction) => {
+export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => {
   const { type, payload } = action;
   switch (type) {
     case COLLECTION_STATE.ADD:

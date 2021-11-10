@@ -15,7 +15,7 @@ import MultipleRecords from 'components/atoms/MultipleRecords';
 import ButtonGroup from 'components/atoms/ButtonGroup';
 import { BUILDING_INITIAL_VALUE, SIZE_OPTIONS, SIZE_OPTIONS_BTN } from 'utils/variables/form-const';
 import { IBuildingForm } from 'models/forms/building-form-models';
-import { Controller, useForm } from '../../../../node_modules/react-hook-form/dist';
+import { Controller, useForm } from 'react-hook-form';
 
 const BuildingWrapper = styled.section`
   display: flex;

@@ -1,13 +1,19 @@
 import { IPayload } from 'models';
 
 interface IClient {
+  type: string;
   name: string;
-  address: string;
+  phone: string;
+  email: string;
+  street: string;
+  city: string;
+  zipCode: string;
+  nip?: string;
   id: string;
 }
 
 interface IClientsPayload extends IPayload {
-  clients?: IClient[];
+  clients: IClient[];
 }
 
 interface IClientsActions {

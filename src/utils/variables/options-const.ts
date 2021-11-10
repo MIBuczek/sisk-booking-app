@@ -1,5 +1,10 @@
 import { IBuildingOptions, ISizeFieldOptions, TSelect } from 'models/components/select-model';
 
+const CLIENT_TYPE: TSelect[] = [
+  { label: 'Osoba prywatna', value: 'individual' },
+  { label: 'Firma', value: 'company' }
+];
+
 const SIZE_TYPE_HALF: TSelect[] = [
   { label: '1/2', value: '1/2' },
   { label: '2/2', value: '2/2' }
@@ -56,4 +61,4 @@ const SIZE_FIELD_OPTIONS: ISizeFieldOptions = {
   }
 };
 
-export { CITY_OPTIONS, BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS };
+export { CITY_OPTIONS, BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS, CLIENT_TYPE };

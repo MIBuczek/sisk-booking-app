@@ -4,6 +4,7 @@ import { paginationItems } from 'utils';
 
 const PaginationWrapper = styled.div`
   width: 100%;
+  min-height: 30px;
   height: auto;
   display: flex;
   margin: 0.5rem auto;

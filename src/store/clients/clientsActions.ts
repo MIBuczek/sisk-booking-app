@@ -9,7 +9,7 @@ export const fetchingClients = (): IClientsActions => ({
     isFetching: true,
     savingStage: SAVING_STAGE.INITIAL,
     errorMessage: '',
-    clients: undefined
+    clients: []
   }
 });
 
@@ -29,7 +29,7 @@ const fetchingClientsError = (errorMessage: string): IClientsActions => ({
     isFetching: false,
     savingStage: SAVING_STAGE.ERROR,
     errorMessage,
-    clients: undefined
+    clients: []
   }
 });
 
@@ -39,8 +39,14 @@ export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>):
     const resp = await db.collection('clients').get();
     const clients: IClient[] = resp.docs.map((doc) => {
       const client: IClient = {
+        type: doc.data().type,
         name: doc.data().name,
-        address: doc.data().address,
+        phone: doc.data().phone,
+        email: doc.data().email,
+        street: doc.data().street,
+        city: doc.data().city,
+        zipCode: doc.data().zipCode,
+        nip: doc.data().nip,
         id: doc.data().id
       };
       return client;
@@ -68,16 +74,16 @@ export const addClient = (clientData: IClient) => async (
   }
 };
 
-export const updateClient = (clientData: IClient, id: string) => async (
+export const updateClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions>,
   getStore: any
 ): Promise<void> => {
   dispatch(fetchingClients());
   try {
-    await db.collection('clients').doc(id).update(clientData);
+    await db.collection('clients').doc(clientData.id).update(clientData);
     const { clients } = getStore();
     const newClients: IClient[] = clients.map((client: IClient) =>
-      client.id === id ? clientData : client
+      client.id === clientData.id ? clientData : client
     );
     dispatch(fetchingClientsDone(COLLECTION_STATE.UPDATE, newClients));
   } catch (err) {

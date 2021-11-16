@@ -3,6 +3,7 @@ import { IPayload } from 'models';
 interface IClient {
   type: string;
   name: string;
+  contactPerson: string;
   phone: string;
   email: string;
   street: string;

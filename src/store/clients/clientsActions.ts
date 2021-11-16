@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
-import { IClient, IClientsActions } from 'models';
+import { IClient, IClientsActions, IReduxState } from 'models';
 import { db, COLLECTION_STATE, SAVING_STAGE } from 'utils';
 
 export const fetchingClients = (): IClientsActions => ({
@@ -41,6 +41,7 @@ export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>):
       const client: IClient = {
         type: doc.data().type,
         name: doc.data().name,
+        contactPerson: doc.data().contactPerson,
         phone: doc.data().phone,
         email: doc.data().email,
         street: doc.data().street,
@@ -60,14 +61,13 @@ export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>):
 
 export const addClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
   dispatch(fetchingClients());
   try {
-    await db.collection('clients').doc().set(clientData);
-    const { clients } = getStore();
-    const newClients: IClient[] = [...clients, clientData];
-    dispatch(fetchingClientsDone(COLLECTION_STATE.ADD, newClients));
+    // await db.collection('clients').doc().set(clientData);
+    const { clients } = getStore().clientStore;
+    dispatch(fetchingClientsDone(COLLECTION_STATE.ADD, [...clients, clientData]));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można dodać klienta do bazy danych'));
     throw new Error(JSON.stringify(err));
@@ -76,12 +76,12 @@ export const addClient = (clientData: IClient) => async (
 
 export const updateClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
   dispatch(fetchingClients());
   try {
-    await db.collection('clients').doc(clientData.id).update(clientData);
-    const { clients } = getStore();
+    // await db.collection('clients').doc(clientData.id).update(clientData);
+    const { clients } = getStore().clientStore;
     const newClients: IClient[] = clients.map((client: IClient) =>
       client.id === clientData.id ? clientData : client
     );
@@ -94,12 +94,12 @@ export const updateClient = (clientData: IClient) => async (
 
 export const deleteClient = (id: string) => async (
   dispatch: Dispatch<IClientsActions>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
   dispatch(fetchingClients());
   try {
     db.collection('clients').doc(id).delete();
-    const { clients } = getStore();
+    const { clients } = getStore().clientStore;
     const newClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
     dispatch(fetchingClientsDone(COLLECTION_STATE.DELETE, newClients));
   } catch (err) {

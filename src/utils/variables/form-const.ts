@@ -21,6 +21,7 @@ const BUILDING_INITIAL_VALUE: IBuildingForm = {
 const CLIENT_INITIAL_VALUE: IClientForm = {
   type: { value: 'individual', label: 'Osoba prywatna' },
   name: '',
+  contactPerson: '',
   phone: '',
   email: '',
   street: '',

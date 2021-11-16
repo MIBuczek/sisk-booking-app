@@ -9,8 +9,7 @@ import { closeModal } from '../../store/modal/modalAction';
 import { fadeIn } from '../../style/animation';
 
 const ModalWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -36,7 +35,7 @@ const CloseBtn = styled(Button)`
 
 const BGImage = styled.img`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   opacity: 0.5;
 `;
 

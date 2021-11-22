@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-alert */
-/* eslint-disable no-restricted-globals */
 import * as React from 'react';
 import styled from 'styled-components';
-import FullCalendar, { DateSelectArg, EventApi, EventClickArg } from '@fullcalendar/react';
+import FullCalendar, { EventClickArg, EventInput } from '@fullcalendar/react';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { createEventId, INITIAL_EVENTS } from '../../utils/calender-functions';
-import RenderEventContent from '../atoms/CalenderContentEvent';
+import { useDispatch, useSelector } from 'react-redux';
+import { prepareCalenderItem } from '../../utils/functions/calender-functions';
+import RenderEventContent from '../atoms/CalenderEvent';
+import { IReduxState } from '../../models/store/store-models';
+import { getCurrentBooking } from '../../store/bookings/bookingsAction';
 
 const CalenderWrapper = styled.section`
   width: 60%;
@@ -21,45 +21,80 @@ const CalenderWrapper = styled.section`
   z-index: 0;
   .fc-direction-ltr {
     width: 95%;
+    max-height: 580px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #454545;
+    .fc-day-today {
+      .fc-timegrid-col-frame {
+        background: #eeeeee;
+      }
+    }
+    .fc-timegrid-event.fc-v-event {
+      background-color: #afbf36;
+      border-color: #b9b8b8;
+    }
+    .fc-button-primary {
+      background-color: #eaeaea;
+      border-color: #afbf36;
+      color: #454545;
+      transition: 0.4s;
+      &:focus,
+      &:hover {
+        background-color: #afbf36;
+        border-color: #b9b8b8;
+        box-shadow: none;
+      }
+      &:not(:disabled):active {
+        background-color: #454545;
+        color: #b9b8b8;
+      }
+      &:disabled {
+        background-color: #b9b8b8;
+        border-color: #454545;
+        color: #454545;
+        &:hover {
+          background-color: #b9b8b8;
+          border-color: #454545;
+        }
+      }
+    }
+    .fc-button-primary.fc-next-button,
+    .fc-button-primary.fc-prev-button {
+      color: white;
+    }
+    .fc-button-primary.fc-timeGridWeek-button.fc-button-active,
+    .fc-button-primary.fc-listWeek-button.fc-button-active {
+      background-color: #454545;
+      color: #b9b8b8;
+      &:focus {
+        box-shadow: none;
+      }
+    }
+    .fc-list-day-cushion {
+      color: #454545;
+    }
+    .fc-button-group {
+      .fc-button {
+        background: #afbf36;
+        border-color: #eaeaea;
+      }
+      .fc-button-active {
+        background-color: #eaeaea;
+        border-color: #afbf36;
+      }
+    }
   }
 `;
 
-export interface IProps {}
+const BookingCalender: React.FunctionComponent = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
 
-const BookingCalender: React.FC<IProps> = (): JSX.Element => {
-  const [state, setState] = React.useState({
-    weekendsVisible: true,
-    currentEvents: [],
-  });
+  const createEvents = (): EventInput[] => bookings.map(prepareCalenderItem);
 
-  const handleDateSelect = (selectInfo: DateSelectArg) => {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect();
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
-  };
-
-  const handleEventClick = (clickInfo: EventClickArg) => {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
-  };
-
-  const handleEvents = (events: EventApi[]) => {
-    setState((prev: any) => ({
-      ...prev,
-      currentEvents: [...state.currentEvents, events],
-    }));
+  const handleEventClick = async (clickInfo: EventClickArg) => {
+    dispatch(getCurrentBooking(clickInfo.event._def.publicId));
   };
 
   return (
@@ -68,23 +103,20 @@ const BookingCalender: React.FC<IProps> = (): JSX.Element => {
         plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
           left: 'prev,next today',
-          right: 'timeGridWeek,listWeek',
+          right: 'timeGridWeek,listWeek'
         }}
         locale="pl"
         initialView="timeGridWeek"
         editable
-        selectable
         selectMirror
         dayMaxEvents
         slotMinTime="08:00:00"
         slotMaxTime="22:00:00"
         allDaySlot={false}
-        weekends={state.weekendsVisible}
-        initialEvents={INITIAL_EVENTS}
-        select={handleDateSelect}
+        weekends
+        events={createEvents()}
         eventContent={RenderEventContent}
         eventClick={handleEventClick}
-        eventsSet={handleEvents}
       />
     </CalenderWrapper>
   );

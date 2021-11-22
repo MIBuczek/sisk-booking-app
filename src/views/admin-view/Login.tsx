@@ -2,11 +2,12 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
-import Button from '../../components/atoms/Button';
-import TextInputField from '../../components/atoms/TextInputField';
-import { ICredencial } from '../../models/credencials-models';
-import { ReactComponent as AnimationImg } from '../../assets/images/animation2.svg';
-import ErrorMsg from '../../components/atoms/ErrorMsg';
+
+import TextInputField from 'components/atoms/TextInputField';
+import ErrorMsg from 'components/atoms/ErrorMsg';
+import Button from 'components/atoms/Button';
+import { ICredential } from 'models/auth/credentials-models';
+import { ReactComponent as AnimationImg } from 'assets/images/animation2.svg';
 
 const LoginWrapper = styled.section`
   width: 100%;
@@ -17,7 +18,7 @@ const LoginWrapper = styled.section`
   margin: 0.5rem 0;
 `;
 
-const LoginPannel = styled.form`
+const LoginPanel = styled.form`
   grid-column: 1 / 2;
   grid-row: 1 /2;
   display: flex;
@@ -33,7 +34,7 @@ const Header3 = styled.h3`
   text-transform: uppercase;
 `;
 
-const LoginAnimacion = styled.div`
+const LoginAnimation = styled.div`
   grid-column: 2 / 3;
   grid-row: 1 /2;
   display: flex;
@@ -48,9 +49,9 @@ const LoginAnimacion = styled.div`
 `;
 
 const Login: React.FC = (): JSX.Element => {
-  const [credencial, setCredencial] = React.useState<ICredencial>({
+  const [credentials, setCredentials] = React.useState<ICredential>({
     eMail: '',
-    passoword: '',
+    password: ''
   });
   const { register, handleSubmit, setValue, errors } = useForm();
 
@@ -64,10 +65,10 @@ const Login: React.FC = (): JSX.Element => {
     }
   }, [imgWrapper]);
 
-  const { eMail, passoword } = credencial;
+  const { eMail, password } = credentials;
 
   const stateHandler = (value: string, property: string): void => {
-    setCredencial((prev) => ({ ...prev, [property]: value }));
+    setCredentials((prev) => ({ ...prev, [property]: value }));
   };
 
   const onSubmit = handleSubmit((cred) => {
@@ -77,7 +78,7 @@ const Login: React.FC = (): JSX.Element => {
 
   return (
     <LoginWrapper>
-      <LoginPannel onSubmit={onSubmit}>
+      <LoginPanel onSubmit={onSubmit}>
         <Header3>Harmonogram Rezerwacji Obiektów</Header3>
         <TextInputField
           name="eMail"
@@ -92,13 +93,13 @@ const Login: React.FC = (): JSX.Element => {
           </ErrorMsg>
         )}
         <TextInputField
-          name="passoword"
+          name="password"
           placeholder="HASŁO"
-          value={passoword}
+          value={password}
           onChange={({ target }) => stateHandler(target.value, target.name)}
           ref={register({ required: true })}
         />
-        {errors.passoword && (
+        {errors.password && (
           <ErrorMsg>
             required field
             <BsExclamationCircle />
@@ -108,17 +109,17 @@ const Login: React.FC = (): JSX.Element => {
           role="button"
           onClick={() => {
             setValue('eMail', eMail);
-            setValue('passoword', passoword);
+            setValue('password', password);
           }}
           disabled={false}
           // size="SMALL"
         >
           ZALOGUJ SIE
         </Button>
-      </LoginPannel>
-      <LoginAnimacion ref={imgWrapper}>
+      </LoginPanel>
+      <LoginAnimation ref={imgWrapper}>
         <AnimationImg />
-      </LoginAnimacion>
+      </LoginAnimation>
     </LoginWrapper>
   );
 };

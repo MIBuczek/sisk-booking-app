@@ -1,64 +1,65 @@
 import { Dispatch } from 'react';
-import { IAuthAction, IAuth } from '../../models/store-models';
-import { LOG_IN_USER, LOG_OUT_USER, SAVING_STAGE } from '../../utils/store-data';
-import { auth } from '../../utils/firebase';
+import { IAuth, IAuthAction } from 'models';
+import { auth, LOGIN_STATE, SAVING_STAGE } from 'utils';
 
-const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
-
-export const fechingAuth = (): IAuthAction => ({
-  type: LOG_IN_USER,
+export const fetchingAuth = (): IAuthAction => ({
+  type: LOGIN_STATE.LOG_IN,
   payload: {
     isFetching: true,
-    savingStage: INITIAL,
+    savingStage: SAVING_STAGE.INITIAL,
     errorMessage: '',
-    auth: undefined,
-  },
+    auth: undefined
+  }
 });
 
-export const fechingAuthDone = (type: string, authData?: IAuth): IAuthAction => ({
+export const fetchingAuthDone = (type: string, authData?: IAuth): IAuthAction => ({
   type,
   payload: {
     isFetching: false,
-    savingStage: SUCCESS,
+    savingStage: SAVING_STAGE.SUCCESS,
     errorMessage: '',
-    auth: authData,
-  },
+    auth: authData
+  }
 });
 
-export const fechingAuthError = (errorMessage: string): IAuthAction => ({
-  type: LOG_IN_USER,
+export const fetchingAuthError = (errorMessage: string): IAuthAction => ({
+  type: LOGIN_STATE.LOG_IN,
   payload: {
     isFetching: false,
-    savingStage: ERROR,
+    savingStage: SAVING_STAGE.ERROR,
     errorMessage,
-    auth: undefined,
-  },
+    auth: undefined
+  }
 });
 
 export const logInUser = (email: string, password: string) => async (
   dispatch: Dispatch<IAuthAction>
 ): Promise<void> => {
-  dispatch(fechingAuth());
+  dispatch(fetchingAuth());
   try {
-    const resp = await auth.signInWithEmailAndPassword(email, password);
-    const credencials: IAuth = {
-      email,
-      uid: resp,
-    };
-    dispatch(fechingAuthDone(LOG_IN_USER, credencials));
+    const resp = (await auth.signInWithEmailAndPassword(email, password)).user?.uid;
+    if (resp) {
+      const credentials: IAuth = {
+        email,
+        uid: resp
+      };
+      dispatch(fetchingAuthDone(LOGIN_STATE.LOG_IN, credentials));
+    } else {
+      dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
+    }
   } catch (err) {
-    dispatch(fechingAuthError('Nie udane logowanie do aplikacji.'));
+    dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
     throw new Error(JSON.stringify(err));
   }
 };
 
 export const logOutUser = () => async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
-  dispatch(fechingAuth());
+  dispatch(fetchingAuth());
   try {
     await auth.signOut();
-    dispatch(fechingAuthDone(LOG_OUT_USER, undefined));
+    dispatch(fetchingAuthDone(LOGIN_STATE.LOG_OUT, undefined));
   } catch (err) {
-    dispatch(fechingAuthError('Problem z serwerem. Nieudane wylogowanie z aplikacji.'));
+    dispatch(fetchingAuthError('Problem z serwerem. Nieudane wylogowanie z aplikacji.'));
     throw new Error(JSON.stringify(err));
   }
 };

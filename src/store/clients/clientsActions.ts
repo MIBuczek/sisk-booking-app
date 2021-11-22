@@ -1,113 +1,109 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
-import { IClient, IClientsActions } from '../../models/store-models';
-import {
-  GET_CLIENTS,
-  ADD_CLIENT,
-  DELETE_CLIENT,
-  UPDATE_CLIENT,
-  ERROR_CLIENT,
-  SAVING_STAGE,
-} from '../../utils/store-data';
-import { db } from '../../utils/firebase';
+import { IClient, IClientsActions, IReduxState } from 'models';
+import { db, COLLECTION_STATE, SAVING_STAGE } from 'utils';
 
-const { INITIAL, SUCCESS, ERROR } = SAVING_STAGE;
-
-export const fechingClients = (): IClientsActions => ({
-  type: GET_CLIENTS,
+export const fetchingClients = (): IClientsActions => ({
+  type: COLLECTION_STATE.GET,
   payload: {
     isFetching: true,
-    savingStage: INITIAL,
+    savingStage: SAVING_STAGE.INITIAL,
     errorMessage: '',
-    clients: undefined,
-  },
+    clients: []
+  }
 });
 
-const fechingClientsDone = (type: string, clients: IClient[]): IClientsActions => ({
+const fetchingClientsDone = (type: string, clients: IClient[]): IClientsActions => ({
   type,
   payload: {
     isFetching: false,
-    savingStage: SUCCESS,
+    savingStage: SAVING_STAGE.SUCCESS,
     errorMessage: '',
-    clients,
-  },
+    clients
+  }
 });
 
-const fechingClientsError = (errorMessage: string): IClientsActions => ({
-  type: ERROR_CLIENT,
+const fetchingClientsError = (errorMessage: string): IClientsActions => ({
+  type: COLLECTION_STATE.ERROR,
   payload: {
     isFetching: false,
-    savingStage: ERROR,
+    savingStage: SAVING_STAGE.ERROR,
     errorMessage,
-    clients: undefined,
-  },
+    clients: []
+  }
 });
 
 export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>): Promise<void> => {
-  dispatch(fechingClients());
+  dispatch(fetchingClients());
   try {
     const resp = await db.collection('clients').get();
     const clients: IClient[] = resp.docs.map((doc) => {
       const client: IClient = {
+        type: doc.data().type,
         name: doc.data().name,
-        address: doc.data().address,
-        id: doc.data().id,
+        contactPerson: doc.data().contactPerson,
+        phone: doc.data().phone,
+        email: doc.data().email,
+        street: doc.data().street,
+        city: doc.data().city,
+        zipCode: doc.data().zipCode,
+        nip: doc.data().nip,
+        id: doc.data().id
       };
       return client;
     });
-    dispatch(fechingClientsDone(GET_CLIENTS, clients));
+    dispatch(fetchingClientsDone(COLLECTION_STATE.GET, clients));
   } catch (err) {
-    dispatch(fechingClientsError('Problem z serverem. Nie można pobrać bazy danych z klientami.'));
+    dispatch(fetchingClientsError('Problem z serverem. Nie można pobrać bazy danych z klientami.'));
     throw new Error(JSON.stringify(err));
   }
 };
 
 export const addClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fechingClients());
+  dispatch(fetchingClients());
   try {
-    await db.collection('clients').doc().set(clientData);
-    const { clients } = getStore();
-    const newClients: IClient[] = [...clients, clientData];
-    dispatch(fechingClientsDone(ADD_CLIENT, newClients));
+    // await db.collection('clients').doc().set(clientData);
+    const { clients } = getStore().clientStore;
+    dispatch(fetchingClientsDone(COLLECTION_STATE.ADD, [...clients, clientData]));
   } catch (err) {
-    dispatch(fechingClientsError('Problem z serverem. Nie można dodać klienta do bazy danych'));
+    dispatch(fetchingClientsError('Problem z serverem. Nie można dodać klienta do bazy danych'));
     throw new Error(JSON.stringify(err));
   }
 };
 
-export const updateClient = (clientData: IClient, id: string) => async (
+export const updateClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fechingClients());
+  dispatch(fetchingClients());
   try {
-    await db.collection('clients').doc(id).update(clientData);
-    const { clients } = getStore();
+    // await db.collection('clients').doc(clientData.id).update(clientData);
+    const { clients } = getStore().clientStore;
     const newClients: IClient[] = clients.map((client: IClient) =>
-      client.id === id ? clientData : client
+      client.id === clientData.id ? clientData : client
     );
-    dispatch(fechingClientsDone(UPDATE_CLIENT, newClients));
+    dispatch(fetchingClientsDone(COLLECTION_STATE.UPDATE, newClients));
   } catch (err) {
-    dispatch(fechingClientsError('Problem z serverem. Nie można zaktualizować danych klienta.'));
+    dispatch(fetchingClientsError('Problem z serverem. Nie można zaktualizować danych klienta.'));
     throw new Error(JSON.stringify(err));
   }
 };
 
 export const deleteClient = (id: string) => async (
   dispatch: Dispatch<IClientsActions>,
-  getStore: any
+  getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fechingClients());
+  dispatch(fetchingClients());
   try {
     db.collection('clients').doc(id).delete();
-    const { clients } = getStore();
+    const { clients } = getStore().clientStore;
     const newClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
-    dispatch(fechingClientsDone(DELETE_CLIENT, newClients));
+    dispatch(fetchingClientsDone(COLLECTION_STATE.DELETE, newClients));
   } catch (err) {
-    dispatch(fechingClientsError('Problem z serverem. Nie można skasować danych klienta.'));
+    dispatch(fetchingClientsError('Problem z serverem. Nie można skasować danych klienta.'));
     throw new Error(JSON.stringify(err));
   }
 };

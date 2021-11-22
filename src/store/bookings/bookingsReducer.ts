@@ -1,33 +1,52 @@
-import { IBookingsAction, IBookingsPayload } from '../../models/store-models';
-import {
-  SAVING_STAGE,
-  GET_BOOKINGS,
-  UPDATE_BOOKING,
-  ADD_BOOKING,
-  DELETE_BOOKING,
-  ERROR_BOOKING,
-} from '../../utils/store-data';
+import { IBooking, IBookingsAction, IBookingsPayload } from 'models';
+import { COLLECTION_STATE, SAVING_STAGE } from 'utils/variables/store-const';
 
-const { INITIAL } = SAVING_STAGE;
+const example: IBooking[] = [
+  {
+    city: {
+      label: 'Siechnice',
+      value: 'siechnice'
+    },
+    building: {
+      label: 'Obiekt 3',
+      value: 'obiekt-tree'
+    },
+    size: {
+      label: '2/2',
+      value: '2/2'
+    },
+    id: '#1234',
+    accepted: false,
+    regular: true,
+    person: 'Michał  Buczek',
+    email: 'mib@op.pl',
+    phone: '123-123-123',
+    when: new Date(),
+    start: new Date(),
+    end: new Date(),
+    message: 'Lorem ipsum',
+    whenEnd: new Date()
+  }
+];
 
 const INITIAL_STATE: IBookingsPayload = {
   isFetching: false,
-  savingStage: INITIAL,
+  savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  bookings: undefined,
+  bookings: example
 };
 
-export const bookings = (state = INITIAL_STATE, action: IBookingsAction) => {
+export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => {
   const { type, payload } = action;
   switch (type) {
-    case GET_BOOKINGS:
-    case ADD_BOOKING:
-    case DELETE_BOOKING:
-    case UPDATE_BOOKING:
-    case ERROR_BOOKING:
+    case COLLECTION_STATE.ADD:
+    case COLLECTION_STATE.GET:
+    case COLLECTION_STATE.UPDATE:
+    case COLLECTION_STATE.DELETE:
+    case COLLECTION_STATE.ERROR:
       return {
         ...state,
-        ...payload,
+        ...payload
       };
     default:
       return state;

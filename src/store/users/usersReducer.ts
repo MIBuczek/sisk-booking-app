@@ -1,23 +1,26 @@
-import { IUserAction } from '../../models/store-models';
-import { SAVING_STAGE, ERROR_USER, GET_USER } from '../../utils/store-data';
+import { IUserAction } from 'models';
+import { ADMIN_ROLE, SAVING_STAGE, USER_STATE } from 'utils';
 
-const { INITIAL } = SAVING_STAGE;
 const INITIAL_STATE = {
   isFetching: false,
-  savingStage: INITIAL,
+  savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
   auth: null,
-  user: {},
+  user: {
+    name: 'SARA BUCZEK',
+    role: ADMIN_ROLE.ADMIN,
+    id: '#12341'
+  }
 };
 
-export const currentUser = (state = INITIAL_STATE, action: IUserAction) => {
+export const currentUserStore = (state = INITIAL_STATE, action: IUserAction) => {
   const { type, payload } = action;
   switch (type) {
-    case GET_USER:
-    case ERROR_USER:
+    case USER_STATE.GET:
+    case USER_STATE.ERROR:
       return {
         ...state,
-        ...payload,
+        ...payload
       };
     default:
       return state;

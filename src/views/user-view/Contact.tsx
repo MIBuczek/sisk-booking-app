@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { BsEnvelope, BsPhone, BsHouseDoor } from 'react-icons/bs';
+import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
-import Anhore, { iconeNormal } from '../../components/atoms/Anhore';
-import Header from '../../components/atoms/Header';
-import Paragraph from '../../components/atoms/Paragrahp';
+
+import Anchor, { iconNormal } from 'components/atoms/Anchor';
+import Header from 'components/atoms/Header';
+import Paragraph from 'components/atoms/Paragraph';
 
 const ContactWrapper = styled.main`
   width: 100%;
@@ -14,18 +16,7 @@ const ContactWrapper = styled.main`
   align-items: flex-start;
   justify-content: space-evenly;
   flex-wrap: wrap;
-`;
-
-const ContactHeader = styled(Header)`
-  margin-bottom: 40px;
-  &:after {
-    position: absolute;
-    bottom: -14px;
-    left: 0;
-    content: '';
-    border-bottom: 5px solid #afbf36;
-    width: 110px;
-  }
+  animation: ${fadeIn} 0.5s linear;
 `;
 
 const ContactInfo = styled.section`
@@ -39,7 +30,7 @@ const ContactInfo = styled.section`
 const Contact = () => (
   <ContactWrapper>
     <ContactInfo>
-      <ContactHeader>DANE TELEADRESOWE</ContactHeader>
+      <Header>DANE TELEADRESOWE</Header>
       <Paragraph bold>Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.</Paragraph>
       <Paragraph>ul. Jana Pawła || 12 55-011 Siechnice</Paragraph>
       <br />
@@ -59,24 +50,24 @@ const Contact = () => (
       </Paragraph>
     </ContactInfo>
     <ContactInfo>
-      <ContactHeader>Biuro / Adres korespondencyjny</ContactHeader>
+      <Header>Biuro / Adres korespondencyjny</Header>
       <Paragraph>
         ul. Księżnej Anny z Przemyślidów 6a,
         <br />
         55-011 Siechnice
       </Paragraph>
-      <Anhore href="tel:+48718890023">
-        <BsEnvelope style={iconeNormal} />
+      <Anchor href="tel:+48718890023">
+        <BsPhone style={iconNormal} />
         tel. 71 889 00 23
-      </Anhore>
-      <Anhore href="biuro@sisk-siechnice.pl">
-        <BsPhone style={iconeNormal} />
+      </Anchor>
+      <Anchor href="biuro@sisk-siechnice.pl">
+        <BsEnvelope style={iconNormal} />
+        biuro@sisk-siechnice.pl
+      </Anchor>
+      <Anchor href="www.sisk-siechnice.pl">
+        <BsHouseDoor style={iconNormal} />
         www.sisk-siechnice.pl
-      </Anhore>
-      <Anhore href="www.sisk-siechnice.pl">
-        <BsHouseDoor style={iconeNormal} />
-        tel. 71 889 00 23
-      </Anhore>
+      </Anchor>
     </ContactInfo>
   </ContactWrapper>
 );

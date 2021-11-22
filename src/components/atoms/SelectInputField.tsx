@@ -8,36 +8,46 @@ export const SelectWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin: 10px 0;
+  min-width: 50%;
 `;
 
 const SelectInputField = styled(Select)`
-  width: 300px;
-  height: 40px;
+  width: 290px;
+  height: 33px;
 `;
 
-export const Label = styled.span`
-  color: ${({ theme }) => theme.darkGrey};
-  font-size: ${({ theme }) => theme.fontSize.s};
-  font-weight: ${({ theme }) => theme.bold};
-  margin: 8px 0;
-`;
-
-export const customStyles = {
+export const customStyles = (invalid: boolean) => ({
   control: (styles: { [x: string]: string }) => ({
     ...styles,
-    width: '300px',
-    height: '40px',
-    borderRadius: '10px',
-    border: '1px solid #afbf36',
+    width: '290px',
+    height: '35px',
+    minHeight: '35px',
+    borderRadius: '5px',
+    border: invalid ? '1px solid #cc0000' : '1px solid #afbf36',
     backgroundColor: '#eaeaea',
+    letterSpacing: '-0.5px',
+    fontSize: '1rem',
+    fontWeight: '600'
   }),
   option: (
     styles: { [x: string]: string },
     { isDisabled, isFocused, isSelected }: { [x: string]: string }
   ) => ({
     ...styles,
-    backgroundColor: isDisabled ? null : isSelected ? '#afbf36' : isFocused ? '#eaeaea' : null,
+    backgroundColor: isDisabled ? '#b9b8b8' : isSelected ? '#afbf36' : isFocused ? '#eaeaea' : null,
+    border: isDisabled
+      ? '1px solid #b9b8b8'
+      : isSelected
+      ? '1px solid #afbf36'
+      : isFocused
+      ? '#eaeaea'
+      : null
   }),
-};
+  placeholder: (styles: { [x: string]: string }) => ({ ...styles, left: '50%', color: '#b9b8b8' }),
+  singleValue: (provided: { [x: string]: string }) => {
+    const left = '50%';
+    return { ...provided, left };
+  }
+});
 
 export default SelectInputField;

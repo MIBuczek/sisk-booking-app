@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IReduxState, IBookingsPayload } from '../../models/store-models';
-import { getBookingsData } from '../../store/bookings/bookingsAction';
-import { SAVING_STAGE } from '../../utils/store-data';
+import { IBookingsPayload, IReduxState } from '../../models';
+import { SAVING_STAGE } from '../../utils/variables/store-const';
 import Loading from './Loading';
 
 export interface IProps {
@@ -13,16 +12,15 @@ export interface IProps {
 const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const [storeReady, setStoreReady] = React.useState(true);
 
-  const { INITIAL, SUCCESS } = SAVING_STAGE;
-  const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookings);
-  const distpatch = useDispatch();
+  const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (savingStage === INITIAL) {
-      // distpatch(getBookingsData());
+    if (savingStage === SAVING_STAGE.INITIAL) {
+      // dispatch(getBookingsData());
       // setStoreReady(false);
     }
-    if (savingStage === SUCCESS) {
+    if (savingStage === SAVING_STAGE.SUCCESS) {
       setStoreReady(true);
     }
   }, [savingStage]);

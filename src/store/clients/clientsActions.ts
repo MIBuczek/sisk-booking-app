@@ -13,7 +13,7 @@ export const fetchingClients = (): IClientsActions => ({
   }
 });
 
-const fetchingClientsDone = (type: string, clients: IClient[]): IClientsActions => ({
+const fetchingClientsDone = (type: string, clients: IClient[] = []): IClientsActions => ({
   type,
   payload: {
     isFetching: false,
@@ -63,7 +63,6 @@ export const addClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingClients());
   try {
     // await db.collection('clients').doc().set(clientData);
     const { clients } = getStore().clientStore;
@@ -78,7 +77,6 @@ export const updateClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingClients());
   try {
     // await db.collection('clients').doc(clientData.id).update(clientData);
     const { clients } = getStore().clientStore;
@@ -96,7 +94,6 @@ export const deleteClient = (id: string) => async (
   dispatch: Dispatch<IClientsActions>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingClients());
   try {
     db.collection('clients').doc(id).delete();
     const { clients } = getStore().clientStore;

@@ -1,5 +1,5 @@
 import { TSelect } from 'models';
-import { SIZE_OPTIONS } from 'utils/variables/form-const';
+import { SIZE_OPTIONS } from 'utils';
 
 interface IBuildingForm {
   name: string;

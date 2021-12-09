@@ -1,6 +1,8 @@
+import * as React from 'react';
+import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
 
-const ErrorMsg = styled.span`
+const ErrorTextContent = styled.span`
   font-size: 10px;
   color: ${({ theme }) => theme.error};
   font-weight: 600;
@@ -15,5 +17,15 @@ const ErrorMsg = styled.span`
     margin-left: 3px;
   }
 `;
+
+interface IProps {
+  innerText: string;
+}
+
+const ErrorMsg: React.FC<IProps> = ({ innerText }) => (
+  <ErrorTextContent>
+    Pole nie moze byc puste <BsExclamationCircle />
+  </ErrorTextContent>
+);
 
 export default ErrorMsg;

@@ -1,24 +1,14 @@
 import { IBuildingOptions, ISizeFieldOptions, TSelect } from 'models/components/select-model';
+import { CLIENT_TYPE, SIZE_OPTIONS } from './form-const';
 
-const CLIENT_TYPE: TSelect[] = [
-  { label: 'Osoba prywatna', value: 'individual' },
-  { label: 'Firma', value: 'company' }
-];
-
-const SIZE_TYPE_HALF: TSelect[] = [
-  { label: '1/2', value: '1/2' },
-  { label: '2/2', value: '2/2' }
-];
-
-const SIZE_TYPE_QUATRE: TSelect[] = [
-  { label: '1/4', value: '1/4' },
-  { label: '2/4', value: '2/4' },
-  { label: '4/4', value: '4/4' }
+const CLIENT_OPTIONS: TSelect[] = [
+  { label: 'Osoba prywatna', value: CLIENT_TYPE.CLIENT },
+  { label: 'Firma', value: CLIENT_TYPE.COMPANY }
 ];
 
 const CITY_OPTIONS: TSelect[] = [
-  { label: 'Radwanice', value: 'radwanice' },
   { label: 'Siechnice', value: 'siechnice' },
+  { label: 'Radwanice', value: 'radwanice' },
   { label: 'Świeta Katarzyna', value: 'swieta-katarzyna' },
   { label: 'Żerniki Wrocławskie', value: 'zerniki-wroclawskie' }
 ];
@@ -44,21 +34,21 @@ const BUILDINGS_OPTIONS: IBuildingOptions = {
 
 const SIZE_FIELD_OPTIONS: ISizeFieldOptions = {
   radwanice: {
-    'obiekt-one': SIZE_TYPE_HALF,
-    'obiekt-two': SIZE_TYPE_QUATRE
+    'obiekt-one': [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['2/2']],
+    'obiekt-two': [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['2/2']]
   },
   siechnice: {
-    'obiekt-tree': SIZE_TYPE_HALF,
-    'obiekt-four': SIZE_TYPE_HALF
+    'obiekt-tree': [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['2/2']],
+    'obiekt-four': [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['2/2'], SIZE_OPTIONS['4/4']]
   },
   'swieta-katarzyna': {
-    'obiekt-five': SIZE_TYPE_HALF,
-    'obiekt-six': SIZE_TYPE_QUATRE
+    'obiekt-five': [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['2/2'], SIZE_OPTIONS['3/3']],
+    'obiekt-six': [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['2/2'], SIZE_OPTIONS['4/4']]
   },
   'zerniki-wroclawskie': {
-    'obiekt-seven': SIZE_TYPE_HALF,
-    'obiekt-eight': SIZE_TYPE_HALF
+    'obiekt-seven': [SIZE_OPTIONS['1/1']],
+    'obiekt-eight': [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['2/2']]
   }
 };
 
-export { CITY_OPTIONS, BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS, CLIENT_TYPE };
+export { CITY_OPTIONS, BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS, CLIENT_OPTIONS };

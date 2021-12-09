@@ -1,21 +1,17 @@
-import Button from 'components/atoms/Button';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
-import TextInputField from 'components/atoms/TextInputField';
-import { IAdminState, IReduxState } from 'models';
+import { IAdminState, IReduxState, TSelect } from 'models';
 import * as React from 'react';
-import { BsExclamationCircle } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { addBuilding, deleteBuilding, updateBuilding } from 'store';
+import { deleteBuilding } from 'store';
 import styled from 'styled-components';
-import { CITY_OPTIONS, generateSelectDefaultValue } from 'utils';
+import { CITY_OPTIONS, RECORDS_BUILDINGS_HEADERS, RECORDS_BUILDINGS_ROW } from 'utils';
 import MultipleRecords from 'components/atoms/MultipleRecords';
-import ButtonGroup from 'components/atoms/ButtonGroup';
-import { BUILDING_INITIAL_VALUE, SIZE_OPTIONS, SIZE_OPTIONS_BTN } from 'utils/variables/form-const';
 import { IBuildingForm } from 'models/forms/building-form-models';
 import { Controller, useForm } from 'react-hook-form';
+import NewBuildingForm from '../forms/NewBuildingForm';
 
 const BuildingWrapper = styled.section`
   display: flex;
@@ -46,17 +42,6 @@ const BuildingInnerContent = styled.article`
   }
 `;
 
-const ButtonPanel = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-  margin-top: 1rem;
-  button {
-    margin-left: 0.8rem;
-  }
-`;
-
 const BuildingSelectWrapper = styled(SelectWrapper)`
   margin-top: 0;
 `;
@@ -66,55 +51,32 @@ interface IProps {
 }
 
 const ModalBuilding: React.FunctionComponent<IProps> = ({ adminState }) => {
-  const [selectedSize, setSelectedSize] = React.useState(SIZE_OPTIONS['1/1']);
   const [isEditing, setIsEditing] = React.useState(false);
-  const [editedItemId, setEditedItemId] = React.useState<string | undefined>(undefined);
+  const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
 
   const dispatch = useDispatch();
   const { buildings } = useSelector((state: IReduxState) => state.buildingStore);
 
-  const selectedSizeHandler = (value: SIZE_OPTIONS): void => {
-    setSelectedSize(value);
-  };
-
-  const { handleSubmit, errors, control, reset } = useForm<IBuildingForm>({
-    defaultValues: adminState
+  const { errors, control, watch } = useForm<{ city: TSelect }>({
+    defaultValues: { city: adminState.city }
   });
 
-  const onSubmit = handleSubmit<IBuildingForm>(async (cred) => {
-    const buildingData = {
-      ...cred,
-      city: cred.city.value,
-      size: selectedSize,
-      id: editedItemId || buildings.length.toString()
-    };
-
-    if (isEditing && editedItemId) {
-      dispatch(updateBuilding(buildingData));
-    } else dispatch(addBuilding(buildingData));
-
-    createInitialState();
-  });
+  const selectedCity = watch('city');
 
   const editBuildingHandler = (index: number) => {
-    const currentBuilding = buildings[index];
-    reset({ ...currentBuilding, city: generateSelectDefaultValue(currentBuilding.city) });
     setIsEditing(true);
-    setEditedItemId(currentBuilding.id);
-    setSelectedSize(currentBuilding.size);
+    setEditedItemIndex(index);
   };
 
   const deleteBuildingHandler = (index: number) => {
     const currentBuilding = buildings[index];
     if (currentBuilding.id) dispatch(deleteBuilding(currentBuilding.id));
-    createInitialState();
+    initialEditingState();
   };
 
-  const createInitialState = () => {
-    reset(BUILDING_INITIAL_VALUE);
-    setSelectedSize(SIZE_OPTIONS['1/1']);
+  const initialEditingState = () => {
     setIsEditing(false);
-    setEditedItemId(undefined);
+    setEditedItemIndex(undefined);
   };
 
   return (
@@ -141,100 +103,24 @@ const ModalBuilding: React.FunctionComponent<IProps> = ({ adminState }) => {
               />
             )}
           />
-          {errors.city && (
-            <ErrorMsg>
-              Pole nie moze byc puste <BsExclamationCircle />
-            </ErrorMsg>
-          )}
+          {errors.city && <ErrorMsg innerText="Pole nie moze byc puste" />}
         </BuildingSelectWrapper>
         <MultipleRecords
-          records={buildings?.map((b) => b.name)}
+          title="buildings"
+          headers={RECORDS_BUILDINGS_HEADERS}
+          dataProperty={RECORDS_BUILDINGS_ROW}
+          records={buildings}
           editHandler={editBuildingHandler}
           deleteHandler={deleteBuildingHandler}
           emptyText={`Nie został dodany żadny budynek w ${adminState.city?.label}`}
         />
       </BuildingInnerContent>
-      <BuildingInnerContent>
-        <BuildingSubHeader>Dodaj nowy obiekt</BuildingSubHeader>
-        <Label>Nazwa obiektu</Label>
-        <Controller
-          name="name"
-          defaultValue={''}
-          control={control}
-          rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
-            <TextInputField
-              onBlur={onBlur}
-              value={value}
-              onChange={onChange}
-              invalid={!!errors.name}
-              className="input"
-              placeholder="Wpisz"
-            />
-          )}
-        />
-        {errors.name && (
-          <ErrorMsg>
-            Pole nie moze byc puste <BsExclamationCircle />
-          </ErrorMsg>
-        )}
-        <Label>Telefon kontaktowy</Label>
-        <Controller
-          name="phone"
-          defaultValue={''}
-          control={control}
-          rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
-            <TextInputField
-              onBlur={onBlur}
-              value={value}
-              onChange={onChange}
-              invalid={!!errors.phone}
-              className="input"
-              placeholder="Wpisz"
-            />
-          )}
-        />
-        {errors.phone && (
-          <ErrorMsg>
-            Pole nie moze byc puste <BsExclamationCircle />
-          </ErrorMsg>
-        )}
-        <Label>Email</Label>
-        <Controller
-          name="email"
-          defaultValue={''}
-          control={control}
-          rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
-            <TextInputField
-              onBlur={onBlur}
-              value={value}
-              onChange={onChange}
-              invalid={!!errors.email}
-              className="input"
-              placeholder="Wpisz"
-            />
-          )}
-        />
-        {errors.email && (
-          <ErrorMsg>
-            Pole nie moze byc puste <BsExclamationCircle />
-          </ErrorMsg>
-        )}
-        <Label>Rodzaje powierzchni do wybory</Label>
-        <ButtonGroup
-          options={SIZE_OPTIONS_BTN}
-          value={selectedSize}
-          optionsHandler={selectedSizeHandler}
-        />
-        <ButtonPanel>
-          <Button secondary onClick={createInitialState}>
-            Anuluj
-          </Button>
-          <Button onClick={onSubmit}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>
-        </ButtonPanel>
-      </BuildingInnerContent>
+      <NewBuildingForm
+        isEditing={isEditing}
+        selectedCity={selectedCity}
+        editedItemIndex={editedItemIndex}
+        initialEditingState={initialEditingState}
+      />
     </BuildingWrapper>
   );
 };

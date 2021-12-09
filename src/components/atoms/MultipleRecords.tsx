@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import { IBooking, IBuilding, IClient } from 'models';
 import * as React from 'react';
 import { BsFillFileEarmarkTextFill, BsTrashFill } from 'react-icons/bs';
 import { fadeInLeft } from 'style/animation';
@@ -84,13 +85,19 @@ const ListItemBtn = styled(Button)`
 `;
 
 interface IProps {
-  records?: string[];
+  title: string;
+  headers: string[];
+  dataProperty: string[];
+  records?: (IBuilding | IClient | IBooking)[];
   emptyText: string;
   editHandler: (index: number) => void;
   deleteHandler: (index: number) => void;
 }
 
 const MultipleRecords: React.FunctionComponent<IProps> = ({
+  title,
+  headers,
+  dataProperty,
   records = [],
   emptyText,
   editHandler,
@@ -103,11 +110,12 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
 
   return (
     <RecordWrapper>
-      <RecordTable>
+      <RecordTable className={`${title}`}>
         <thead>
           <tr>
-            <RecordTableHeader>Nazwa obiektu</RecordTableHeader>
-            <RecordTableHeader>Edycja</RecordTableHeader>
+            {headers.map((h) => (
+              <RecordTableHeader key={h}>{h}</RecordTableHeader>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -117,8 +125,12 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
             </tr>
           ) : (
             pagination(records, currentPage, postPerPage).map((record, index) => (
-              <tr key={record}>
-                <RecordTableData>{record}</RecordTableData>
+              <tr key={`${record}`}>
+                <RecordTableData>{index}</RecordTableData>
+                {dataProperty.map((property) => {
+                  if (!record[property]) return null;
+                  return <RecordTableData key={property}>{record[property]}</RecordTableData>;
+                })}
                 <RecordTableData>
                   <ListItemBtn onClick={() => editHandler(index)}>
                     <BsFillFileEarmarkTextFill />

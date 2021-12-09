@@ -1,22 +1,25 @@
 // eslint-disable-next-line import/no-cycle
-import { IPayload, TSelect } from 'models';
+import { IPayload } from 'models';
+import { CLIENT_TYPE, SIZE_OPTIONS } from 'utils/variables/form-const';
 
 interface IBooking {
-  city: TSelect;
-  building: TSelect;
-  size: TSelect;
+  type: CLIENT_TYPE;
+  city: string;
+  building: string;
+  size: SIZE_OPTIONS;
   person: string;
   club?: string;
   email: string;
   phone: string;
-  regular?: boolean;
+  regular: boolean;
   when: Date | null;
   whenEnd?: Date | null;
   start: Date | null;
   end: Date | null;
   accepted: boolean;
   message: string;
-  id?: string;
+  id: string;
+  [x: string]: CLIENT_TYPE | SIZE_OPTIONS | string | boolean | Date | null | undefined;
 }
 
 interface IBookingsPayload extends IPayload {

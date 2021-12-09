@@ -1,8 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { BsExclamationCircle } from 'react-icons/bs';
-
 import TextInputField from 'components/atoms/TextInputField';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Button from 'components/atoms/Button';
@@ -87,11 +85,7 @@ const Login: React.FC = (): JSX.Element => {
           onChange={({ target }) => stateHandler(target.value, target.name)}
           ref={register({ required: true })}
         />
-        {errors.eMail && (
-          <ErrorMsg>
-            required field <BsExclamationCircle />
-          </ErrorMsg>
-        )}
+        {errors.eMail && <ErrorMsg innerText="Pole nie moze byc puste" />}
         <TextInputField
           name="password"
           placeholder="HASŁO"
@@ -99,12 +93,7 @@ const Login: React.FC = (): JSX.Element => {
           onChange={({ target }) => stateHandler(target.value, target.name)}
           ref={register({ required: true })}
         />
-        {errors.password && (
-          <ErrorMsg>
-            required field
-            <BsExclamationCircle />
-          </ErrorMsg>
-        )}
+        {errors.password && <ErrorMsg innerText="Pole nie moze byc puste" />}
         <Button
           role="button"
           onClick={() => {

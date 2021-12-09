@@ -55,7 +55,9 @@ const Admin = (): JSX.Element => {
           {type === MODAL_TYPES.CLIENT && <ModalClient />}
           {type === MODAL_TYPES.BUILDINGS && <ModalBuilding adminState={adminState} />}
           {type === MODAL_TYPES.SUMMARY && <ModalSummary />}
-          {type === MODAL_TYPES.ADMIN_RESERVATION && <ModalAdminReservation />}
+          {type === MODAL_TYPES.ADMIN_RESERVATION && (
+            <ModalAdminReservation adminState={adminState} />
+          )}
         </Modal>
       )}
     </AdminWrapper>

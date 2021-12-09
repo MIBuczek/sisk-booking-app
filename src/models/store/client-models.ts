@@ -11,6 +11,7 @@ interface IClient {
   zipCode: string;
   nip?: string;
   id: string;
+  [x: string]: string | undefined;
 }
 
 interface IClientsPayload extends IPayload {

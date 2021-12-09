@@ -1,20 +1,13 @@
 import { IBooking, IBookingsAction, IBookingsPayload } from 'models';
+import { CLIENT_TYPE, SIZE_OPTIONS } from 'utils/variables/form-const';
 import { COLLECTION_STATE, SAVING_STAGE } from 'utils/variables/store-const';
 
 const example: IBooking[] = [
   {
-    city: {
-      label: 'Siechnice',
-      value: 'siechnice'
-    },
-    building: {
-      label: 'Obiekt 3',
-      value: 'obiekt-tree'
-    },
-    size: {
-      label: '2/2',
-      value: '2/2'
-    },
+    type: CLIENT_TYPE.CLIENT,
+    city: 'siechnice',
+    building: 'obiekt-tree',
+    size: SIZE_OPTIONS['1/1'],
     id: '#1234',
     accepted: false,
     regular: true,

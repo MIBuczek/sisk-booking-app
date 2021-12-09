@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
 import Anchor from '../../atoms/Anchor';
 import Button from '../../atoms/Button';
@@ -63,11 +62,7 @@ const ModalMessage = () => {
           />
         )}
       />
-      {errors.person && (
-        <ErrorMsg>
-          Pole nie moze byc puste <BsExclamationCircle />
-        </ErrorMsg>
-      )}
+      {errors.person && <ErrorMsg innerText="Pole nie moze byc puste" />}
       <Label>Wpisz swoj adres e-mail</Label>
       <Controller
         name="email"
@@ -85,11 +80,8 @@ const ModalMessage = () => {
           />
         )}
       />
-      {errors.email && (
-        <ErrorMsg>
-          Pole nie moze byc puste <BsExclamationCircle />
-        </ErrorMsg>
-      )}
+      {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
+
       <Label>Numer kontaktowy</Label>
       <Controller
         name="phone"
@@ -107,11 +99,7 @@ const ModalMessage = () => {
           />
         )}
       />
-      {errors.phone && (
-        <ErrorMsg>
-          Prosze podać tylko liczby <BsExclamationCircle />
-        </ErrorMsg>
-      )}
+      {errors.phone && <ErrorMsg innerText="Pole nie moze byc puste" />}
       <Label>Wiadomość</Label>
       <Controller
         name="message"
@@ -129,11 +117,7 @@ const ModalMessage = () => {
           />
         )}
       />
-      {errors.message && (
-        <ErrorMsg>
-          Pole nie moze byc puste <BsExclamationCircle />
-        </ErrorMsg>
-      )}
+      {errors.message && <ErrorMsg innerText="Pole nie moze byc puste" />}
       <RodoWrapper>
         <Checkbox
           checked={police}

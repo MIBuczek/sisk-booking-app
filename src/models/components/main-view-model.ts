@@ -1,9 +1,9 @@
 import { TSelect } from 'models';
 
 interface IMainState {
-  city?: TSelect;
-  building?: TSelect;
-  [x: string]: TSelect | undefined;
+  city: TSelect;
+  building: TSelect;
+  [x: string]: TSelect;
 }
 
 interface IAdminState extends IMainState {}

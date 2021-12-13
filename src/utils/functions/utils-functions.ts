@@ -9,8 +9,8 @@ const generateSelectDefaultValue = (s: string): TSelect => ({
   label: firstLetterUpperCase(s)
 });
 
-const selectedClientType = (s: string): TSelect | undefined =>
-  CLIENT_OPTIONS.find((c) => c.value === s);
+const createSelectedOption = (value: string, options: TSelect[]): TSelect | undefined =>
+  options.find((c) => c.value === value);
 
 const pagination = (
   items: (IBuilding | IClient | IBooking)[],
@@ -29,4 +29,4 @@ const paginationItems = (totalPost: number, postPerPage: number) => {
   }
   return pageNumbers;
 };
-export { generateSelectDefaultValue, pagination, paginationItems, selectedClientType };
+export { generateSelectDefaultValue, pagination, paginationItems, createSelectedOption };

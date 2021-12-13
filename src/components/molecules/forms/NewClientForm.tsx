@@ -7,7 +7,7 @@ import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
 import TextInputField from 'components/atoms/TextInputField';
-import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, selectedClientType } from 'utils';
+import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, createSelectedOption } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { IClient, IReduxState } from 'models';
 import { IClientForm } from 'models/forms/client-form-model';
@@ -88,7 +88,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
 
   const editClientHandler = (index: number) => {
     const currentClient = clients[index];
-    reset({ ...currentClient, type: selectedClientType(currentClient.type) });
+    reset({ ...currentClient, type: createSelectedOption(currentClient.type, CLIENT_OPTIONS) });
     setClientId(currentClient.id);
   };
 

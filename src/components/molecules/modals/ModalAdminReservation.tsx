@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import {
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
-  generateSelectDefaultValue,
   RECORDS_BOOKING_HEADERS,
   RECORDS_BOOKING_ROW
 } from 'utils';
@@ -61,17 +60,12 @@ interface IProps {
 
 const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
   const [isEditing, setIsEditing] = React.useState(false);
-  // const [rowItemOpen, setRowItemOpen] = React.useState<toggleRow | undefined>(undefined);
-  const [editedItemId, setEditedItemId] = React.useState<string | undefined>(undefined);
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [postPerPage] = React.useState<number>(5);
-
-  const { city, building } = adminState;
+  const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
 
   const dispatch = useDispatch();
   const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
 
-  const { errors, control, reset, watch } = useForm<IBookingForm>({
+  const { errors, control, watch } = useForm<IBookingForm>({
     defaultValues: { ...BOOKING_INITIAL_VALUE, ...adminState }
   });
 
@@ -83,26 +77,19 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
   };
 
   const editReservationHandler = (index: number) => {
-    const currentReservation = bookings[index];
-    reset({
-      ...currentReservation,
-      city: generateSelectDefaultValue(currentReservation.city),
-      building: generateSelectDefaultValue(currentReservation.building)
-    });
     setIsEditing(true);
-    setEditedItemId(currentReservation.id);
+    setEditedItemIndex(index);
   };
 
   const deleteReservationHandler = (index: number) => {
     const currentReservation = bookings[index];
     if (currentReservation.id) dispatch(deleteBuilding(currentReservation.id));
-    createInitialState();
+    initialEditingState();
   };
 
-  const createInitialState = () => {
-    reset({ ...BOOKING_INITIAL_VALUE, ...adminState });
+  const initialEditingState = () => {
     setIsEditing(false);
-    setEditedItemId(undefined);
+    setEditedItemIndex(undefined);
   };
 
   return (
@@ -134,7 +121,7 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
           <Label>Obiekt</Label>
           <Controller
             name="building"
-            defaultValue={building}
+            defaultValue={adminState.building}
             control={control}
             rules={{ required: true }}
             render={({ onChange, onBlur, value }) => (
@@ -146,7 +133,7 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
                 onBlur={onBlur}
                 selected={value}
                 isDisabled={!cityValue}
-                defaultValue={building}
+                defaultValue={adminState.building}
               />
             )}
           />
@@ -162,7 +149,13 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
         />
       </ReservationInnerContent>
       <ReservationInnerContent>
-        <NewReservationForm mainState={adminState} isAdmin={true} />
+        <NewReservationForm
+          mainState={adminState}
+          isAdmin={true}
+          isEditing={isEditing}
+          editedItemIndex={editedItemIndex}
+          initialEditingState={initialEditingState}
+        />
       </ReservationInnerContent>
     </ReservationWrapper>
   );

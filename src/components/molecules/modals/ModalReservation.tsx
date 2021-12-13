@@ -7,7 +7,12 @@ interface IProps {
 }
 
 const ModalReservation: React.FunctionComponent<IProps> = ({ mainState }) => (
-  <NewReservationForm mainState={mainState} isAdmin={false} />
+  <NewReservationForm
+    mainState={mainState}
+    isAdmin={false}
+    isEditing={false}
+    initialEditingState={() => null}
+  />
 );
 
 export default ModalReservation;

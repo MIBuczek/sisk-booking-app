@@ -75,16 +75,16 @@ export const addBooking = (bookingData: IBooking) => async (
   }
 };
 
-export const updateBooking = (bookingData: IBooking, id: string) => async (
+export const updateBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   // dispatch(fetchingBookings());
   try {
-    await db.collection('bookings').doc(id).update(bookingData);
+    // await db.collection('bookings').doc(bookingData.id).update(bookingData);
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.map((booking: IBooking) =>
-      booking.id === id ? bookingData : booking
+      booking.id === bookingData.id ? bookingData : booking
     );
     dispatch(fetchingBookingsDone(COLLECTION_STATE.UPDATE, newBookings));
   } catch (err) {

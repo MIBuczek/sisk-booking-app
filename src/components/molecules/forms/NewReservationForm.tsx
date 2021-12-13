@@ -1,17 +1,18 @@
-import { IBooking, IMainState, TSelect } from 'models';
+import { IBooking, IMainState, IReduxState, TSelect } from 'models';
 import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
 import pl from 'date-fns/locale/pl';
 import { registerLocale } from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { addBooking, closeModal } from 'store';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBooking, closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
 import {
   BOOKING_INITIAL_VALUE,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
   CLIENT_TYPE,
+  createSelectedOption,
   SIZE_FIELD_OPTIONS,
   SIZE_OPTIONS,
   SIZE_OPTIONS_BTN
@@ -74,12 +75,19 @@ const ButtonWrapper = styled.div`
 interface NewReservationFormProps {
   mainState: IMainState;
   isAdmin: boolean;
+  isEditing: boolean;
+  editedItemIndex?: number;
+  initialEditingState: () => void;
 }
 
 const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
   mainState,
-  isAdmin
+  isAdmin,
+  isEditing,
+  editedItemIndex,
+  initialEditingState
 }) => {
+  const [bookingId, setBookingId] = React.useState<string | undefined>(undefined);
   const [selectedSize, setSelectedSize] = React.useState(SIZE_OPTIONS['1/1']);
   const [sizeOptions, setSizeOptions] = React.useState(SIZE_OPTIONS_BTN);
   const [police, setPolice] = React.useState<boolean>(false);
@@ -87,7 +95,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
   const { city, building } = mainState;
 
   const dispatch = useDispatch();
-
+  const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
   const { handleSubmit, errors, control, watch, reset } = useForm<IBookingForm>({
     defaultValues: { ...BOOKING_INITIAL_VALUE, ...mainState }
   });
@@ -122,15 +130,41 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
       building: cred.building.value,
       type: CLIENT_TYPE.CLIENT,
       size: selectedSize,
-      accepted: false
+      accepted: false,
+      id: bookingId || bookings?.length.toString()
     } as IBooking;
-    dispatch(addBooking(bookingData));
+    if (bookingId) dispatch(updateBooking(bookingData));
+    else dispatch(addBooking(bookingData));
     dispatch(closeModal());
   });
+
+  const editBookingHandler = (index: number) => {
+    const currentBooking = bookings[index];
+    reset({
+      ...currentBooking,
+      city: createSelectedOption(currentBooking.city, CITY_OPTIONS),
+      building: createSelectedOption(currentBooking.building, BUILDINGS_OPTIONS[city.value])
+    });
+    setBookingId(currentBooking.id);
+  };
+
+  const createInitialState = () => {
+    reset({ ...BOOKING_INITIAL_VALUE, ...mainState });
+    setBookingId(undefined);
+    initialEditingState();
+  };
 
   React.useEffect(() => {
     selectSizeFieldOptions();
   }, [cityValue, buildingValue]);
+
+  React.useEffect(() => {
+    if (isEditing && typeof editedItemIndex === 'number') {
+      editBookingHandler(editedItemIndex);
+    } else {
+      createInitialState();
+    }
+  }, [isEditing]);
 
   return (
     <ReservationWrapper onSubmit={onSubmit}>
@@ -374,23 +408,30 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
           />
         )}
       />
-      <RodoWrapper>
-        <Checkbox
-          checked={police}
-          className="checkbox"
-          name="police"
-          changeHandler={() => setPolice(!police)}
-        />
-        <Anchor
-          small
-          href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
-          target="_blank"
-        >
-          Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
-        </Anchor>
-      </RodoWrapper>
-      <Button role="button" onClick={onSubmit} disabled={!police}>
-        {isAdmin ? 'Dodaj rezerwacje' : 'Wyślij Rezerwacje'}
+      {!isAdmin && (
+        <RodoWrapper>
+          <Checkbox
+            checked={police}
+            className="checkbox"
+            name="police"
+            changeHandler={() => setPolice(!police)}
+          />
+          <Anchor
+            small
+            href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
+            target="_blank"
+          >
+            Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
+          </Anchor>
+        </RodoWrapper>
+      )}
+      <Button
+        role="button"
+        onClick={onSubmit}
+        disabled={isAdmin ? false : !police}
+        style={{ marginLeft: 'auto' }}
+      >
+        {isAdmin ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwacje` : 'Wyślij Rezerwacje'}
       </Button>
     </ReservationWrapper>
   );

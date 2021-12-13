@@ -27,7 +27,7 @@ const RecordTable = styled.table`
     display: inherit;
     width: 100%;
     tr {
-      display: inherit;
+      display: flex;
       width: 100%;
       &:first-of-type {
         border-top: ${({ theme }) => `1px solid ${theme.green}`};
@@ -48,11 +48,32 @@ const RecordTableHeader = styled.th`
   font-size: ${({ theme }) => theme.fontSize.s};
   color: ${({ theme }) => theme.darkGrey};
   text-align: start;
-  &:nth-child(odd) {
-    width: 80%;
+  &.clients,
+  &.buildings {
+    &:nth-of-type(1) {
+      width: 10%;
+    }
+    &:nth-of-type(2) {
+      width: 73%;
+    }
+    &:nth-of-type(3) {
+      width: 17%;
+    }
   }
-  &:nth-child(even) {
-    width: 150px;
+  &.bookings {
+    width: 10%;
+    &:nth-of-type(1) {
+      width: 8%;
+    }
+    &:nth-of-type(2) {
+      width: 28%;
+    }
+    &:nth-of-type(3) {
+      width: 11%;
+    }
+    &:nth-of-type(4) {
+      width: 11%;
+    }
   }
 `;
 
@@ -62,11 +83,32 @@ const RecordTableData = styled.td<RecordDataType>`
   color: ${({ theme }) => theme.darkGrey};
   text-align: ${({ empty }) => (empty ? 'center' : 'start')};
   animation: ${fadeInLeft} 0.5s linear;
-  &:nth-child(odd) {
-    width: 80%;
+  &.clients,
+  &.buildings {
+    &:nth-of-type(1) {
+      width: 10%;
+    }
+    &:nth-of-type(2) {
+      width: 73%;
+    }
+    &:nth-of-type(3) {
+      width: 17%;
+    }
   }
-  &:nth-child(even) {
-    width: 150px;
+  &.bookings {
+    width: 10%;
+    &:nth-of-type(1) {
+      width: 8%;
+    }
+    &:nth-of-type(2) {
+      width: 28%;
+    }
+    &:nth-of-type(3) {
+      width: 11%;
+    }
+    &:nth-of-type(4) {
+      width: 11%;
+    }
   }
 `;
 
@@ -110,11 +152,13 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
 
   return (
     <RecordWrapper>
-      <RecordTable className={`${title}`}>
+      <RecordTable>
         <thead>
           <tr>
             {headers.map((h) => (
-              <RecordTableHeader key={h}>{h}</RecordTableHeader>
+              <RecordTableHeader key={h} className={`${title}`}>
+                {h}
+              </RecordTableHeader>
             ))}
           </tr>
         </thead>
@@ -126,12 +170,16 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
           ) : (
             pagination(records, currentPage, postPerPage).map((record, index) => (
               <tr key={`${record}`}>
-                <RecordTableData>{index}</RecordTableData>
+                <RecordTableData className={`${title}`}>{index}</RecordTableData>
                 {dataProperty.map((property) => {
                   if (!record[property]) return null;
-                  return <RecordTableData key={property}>{record[property]}</RecordTableData>;
+                  return (
+                    <RecordTableData key={property} className={`${title}`}>
+                      {record[property]}
+                    </RecordTableData>
+                  );
                 })}
-                <RecordTableData>
+                <RecordTableData className={`${title}`}>
                   <ListItemBtn onClick={() => editHandler(index)}>
                     <BsFillFileEarmarkTextFill />
                   </ListItemBtn>

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import TextInputField from 'components/atoms/TextInputField';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Button from 'components/atoms/Button';
 import { ICredential } from 'models/auth/credentials-models';
 import { ReactComponent as AnimationImg } from 'assets/images/animation2.svg';
+import Label from 'components/atoms/Label';
 
 const LoginWrapper = styled.section`
   width: 100%;
@@ -23,6 +24,9 @@ const LoginPanel = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  span {
+    margin-bottom: 10px;
+  }
 `;
 
 const Header3 = styled.h3`
@@ -46,12 +50,12 @@ const LoginAnimation = styled.div`
   }
 `;
 
+const LoginTextInputs = styled(TextInputField)`
+  margin-bottom: 10px;
+`;
+
 const Login: React.FC = (): JSX.Element => {
-  const [credentials, setCredentials] = React.useState<ICredential>({
-    eMail: '',
-    password: ''
-  });
-  const { register, handleSubmit, setValue, errors } = useForm();
+  const { handleSubmit, errors, control } = useForm<ICredential>();
 
   const imgWrapper = React.useRef<HTMLDivElement>(null);
 
@@ -63,12 +67,6 @@ const Login: React.FC = (): JSX.Element => {
     }
   }, [imgWrapper]);
 
-  const { eMail, password } = credentials;
-
-  const stateHandler = (value: string, property: string): void => {
-    setCredentials((prev) => ({ ...prev, [property]: value }));
-  };
-
   const onSubmit = handleSubmit((cred) => {
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(cred));
@@ -76,30 +74,46 @@ const Login: React.FC = (): JSX.Element => {
 
   return (
     <LoginWrapper>
-      <LoginPanel onSubmit={onSubmit}>
+      <LoginPanel>
         <Header3>Harmonogram Rezerwacji Obiektów</Header3>
-        <TextInputField
+        <Label>Podaj numer telefonu</Label>
+        <Controller
           name="eMail"
-          placeholder="E-MAIL"
-          value={eMail}
-          onChange={({ target }) => stateHandler(target.value, target.name)}
-          ref={register({ required: true })}
+          defaultValue={''}
+          control={control}
+          rules={{ required: true }}
+          render={({ onChange, onBlur, value }) => (
+            <LoginTextInputs
+              onBlur={onBlur}
+              value={value}
+              onChange={onChange}
+              invalid={!!errors.eMail}
+              className="input"
+              placeholder="E-MAIL"
+            />
+          )}
         />
         {errors.eMail && <ErrorMsg innerText="Pole nie moze byc puste" />}
-        <TextInputField
+        <Controller
           name="password"
-          placeholder="HASŁO"
-          value={password}
-          onChange={({ target }) => stateHandler(target.value, target.name)}
-          ref={register({ required: true })}
+          defaultValue={''}
+          control={control}
+          rules={{ required: true }}
+          render={({ onChange, onBlur, value }) => (
+            <LoginTextInputs
+              onBlur={onBlur}
+              value={value}
+              onChange={onChange}
+              invalid={!!errors.password}
+              className="input"
+              placeholder="HASŁO"
+            />
+          )}
         />
         {errors.password && <ErrorMsg innerText="Pole nie moze byc puste" />}
         <Button
           role="button"
-          onClick={() => {
-            setValue('eMail', eMail);
-            setValue('password', password);
-          }}
+          onClick={onSubmit}
           disabled={false}
           // size="SMALL"
         >

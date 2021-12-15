@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { BsEnvelopeFill, BsFillHouseFill } from 'react-icons/bs';
+import { BsEnvelopeFill, BsFillHouseFill, BsPower } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { IReduxState } from 'models';
+import { logOutUser } from 'store';
 import Logo from '../atoms/Logo';
 import useScrollPosition from '../../hooks/useScrollPosition ';
 import Anchor from '../atoms/Anchor';
@@ -96,6 +98,7 @@ const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
 
   const dispatch = useDispatch();
+  const { auth } = useSelector((store: IReduxState) => store.authStore);
 
   const scrollPosition = useScrollPosition();
 
@@ -109,7 +112,7 @@ const TopNav = (): JSX.Element => {
         <StyledLinksList>
           <li>
             <NavigationLink to="/" exact activeStyle={active}>
-              Kalendarz Rezerwacji
+              Harmonogram Rezerwacji
             </NavigationLink>
           </li>
           <li>
@@ -127,6 +130,13 @@ const TopNav = (): JSX.Element => {
               <BsFillHouseFill />
             </NaviAnchor>
           </li>
+          {auth && (
+            <li>
+              <NavButton role="button" onClick={() => dispatch(logOutUser())}>
+                <BsPower />
+              </NavButton>
+            </li>
+          )}
         </StyledLinksList>
       </NavContent>
     </NavWrapper>

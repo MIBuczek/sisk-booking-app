@@ -43,7 +43,7 @@ const Admin = (): JSX.Element => {
   // }, []);
 
   if (!auth) {
-    return <Redirect to="/" />;
+    return <Redirect to="/login" />;
   }
   return (
     <AdminWrapper>

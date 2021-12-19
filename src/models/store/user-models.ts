@@ -3,9 +3,9 @@ import { IPayload } from './store-models';
 
 interface IUser {
   [x: string]: string;
+  email: string;
   name: string;
   role: ADMIN_ROLE;
-  id: string;
 }
 
 interface IUserPayload extends IPayload {

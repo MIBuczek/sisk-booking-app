@@ -5,10 +5,7 @@ const INITIAL_STATE = {
   isFetching: false,
   savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  auth: {
-    email: 'sara@sisk.pl',
-    uid: '#123123'
-  }
+  auth: undefined
 };
 
 export const authStore = (state = INITIAL_STATE, action: IAuthAction) => {

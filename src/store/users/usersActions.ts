@@ -40,21 +40,10 @@ export const getUserData = () => async (
   dispatch(fetchingUserStart());
   try {
     const { auth } = getState().authStore;
-    const resp = ((await db.collection('users').get()) as unknown) as IUser;
-    const [user]: IUser[] = ((resp.docs as unknown) as any[]).filter(
-      (doc: { data: () => { [x: string]: string | any } }) => {
-        if (auth?.uid === doc.data().id) {
-          const currentUser: IUser = {
-            name: doc.data().name,
-            id: doc.data().id,
-            role: doc.data().role
-          };
-          return currentUser;
-        }
-        return null;
-      }
-    );
-    dispatch(fetchingUserDone(user));
+    if (auth?.uid) {
+      const resp = await db.collection('users').doc(auth.uid).get();
+      dispatch(fetchingUserDone({ ...resp.data() } as IUser));
+    }
   } catch (err) {
     dispatch(fetchingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
     throw new Error(JSON.stringify(err));

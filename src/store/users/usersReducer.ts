@@ -1,16 +1,11 @@
 import { IUserAction } from 'models';
-import { ADMIN_ROLE, SAVING_STAGE, USER_STATE } from 'utils';
+import { SAVING_STAGE, USER_STATE } from 'utils';
 
 const INITIAL_STATE = {
   isFetching: false,
   savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  auth: null,
-  user: {
-    name: 'SARA BUCZEK',
-    role: ADMIN_ROLE.ADMIN,
-    id: '#12341'
-  }
+  user: undefined
 };
 
 export const currentUserStore = (state = INITIAL_STATE, action: IUserAction) => {

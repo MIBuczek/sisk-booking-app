@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IBookingsPayload, IReduxState } from '../../models';
+import { getBookingsData, getBuildingsData, getClientsData, getUserData } from 'store';
+import { IAuthPayload, IBookingsPayload, IReduxState } from '../../models';
 import { SAVING_STAGE } from '../../utils/variables/store-const';
 import Loading from './Loading';
 
@@ -12,18 +14,38 @@ export interface IProps {
 const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const [storeReady, setStoreReady] = React.useState(true);
 
-  const { savingStage } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
+  const { authStore, currentUserStore, bookingStore, buildingStore, clientStore } = useSelector(
+    (state: IReduxState): IReduxState => state
+  );
   const dispatch = useDispatch();
 
+  const adminStoreReady =
+    currentUserStore.savingStage === SAVING_STAGE.SUCCESS &&
+    bookingStore.savingStage === SAVING_STAGE.SUCCESS &&
+    buildingStore.savingStage === SAVING_STAGE.SUCCESS &&
+    clientStore.savingStage === SAVING_STAGE.SUCCESS;
+
+  console.log(adminStoreReady);
   React.useEffect(() => {
-    if (savingStage === SAVING_STAGE.INITIAL) {
-      // dispatch(getBookingsData());
-      // setStoreReady(false);
+    if (!isEmpty(authStore.auth)) {
+      dispatch(getUserData());
+      dispatch(getBookingsData());
+      dispatch(getBuildingsData());
+      dispatch(getClientsData());
+      setStoreReady(false);
     }
-    if (savingStage === SAVING_STAGE.SUCCESS) {
+  }, [authStore.savingStage]);
+
+  React.useEffect(() => {
+    if (adminStoreReady) {
       setStoreReady(true);
     }
-  }, [savingStage]);
+  }, [
+    currentUserStore.savingStage,
+    bookingStore.savingStage,
+    buildingStore.savingStage,
+    clientStore.savingStage
+  ]);
 
   if (storeReady) {
     return <>{children}</>;

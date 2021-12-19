@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBuildingsData } from 'store/building/buildingActions';
 import Header from 'components/atoms/Header';
 import { fadeIn } from 'style/animation';
 import SideNav from 'components/organisms/SideNav';
@@ -27,8 +26,6 @@ const AdminWrapper = styled.section`
 const Admin = (): JSX.Element => {
   const [adminState, setAdminState] = React.useState<IAdminState>({ ...initialAdminState });
 
-  const dispatch = useDispatch();
-
   const {
     authStore: { auth },
     modal: { isOpen, type }
@@ -38,13 +35,10 @@ const Admin = (): JSX.Element => {
     setAdminState((prev) => ({ ...prev, [field]: value }));
   };
 
-  // React.useEffect(() => {
-  //   dispatch(getBuildingsData());
-  // }, []);
-
   if (!auth) {
     return <Redirect to="/login" />;
   }
+
   return (
     <AdminWrapper>
       <Header>Panel Administratora</Header>

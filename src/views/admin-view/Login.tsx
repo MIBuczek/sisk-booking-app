@@ -43,7 +43,7 @@ const LoginTextInputs = styled(TextInputField)`
 `;
 
 const Login: React.FC = (): JSX.Element => {
-  const { handleSubmit, errors, control } = useForm<ICredential>();
+  const { handleSubmit, errors, control, getValues } = useForm<ICredential>();
 
   const dispatch = useDispatch();
   const { auth } = useSelector((store: IReduxState) => store.authStore);
@@ -55,6 +55,7 @@ const Login: React.FC = (): JSX.Element => {
   if (auth) {
     return <Redirect to={'/admin'} />;
   }
+
   return (
     <LoginWrapper>
       <LoginPanel>
@@ -64,7 +65,10 @@ const Login: React.FC = (): JSX.Element => {
           name="email"
           defaultValue={''}
           control={control}
-          rules={{ required: true }}
+          rules={{
+            required: true,
+            validate: () => getValues('email').includes('@')
+          }}
           render={({ onChange, onBlur, value }) => (
             <LoginTextInputs
               onBlur={onBlur}

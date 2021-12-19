@@ -1,6 +1,6 @@
 import { IBooking } from 'models';
 
-const formatDate = (date: Date): string => date.toISOString().replace(/T.*$/, '');
+const formatDate = (date: Date): string => date?.toISOString().replace(/T.*$/, '') ?? '';
 
 const prepareCalenderItem = (b: IBooking) => ({
   allDay: false,

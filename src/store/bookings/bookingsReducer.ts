@@ -26,7 +26,7 @@ const INITIAL_STATE: IBookingsPayload = {
   isFetching: false,
   savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
-  bookings: example
+  bookings: []
 };
 
 export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => {

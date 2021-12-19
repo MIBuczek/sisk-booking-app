@@ -52,7 +52,7 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
   try {
     const resp = await db.collection('bookings').get();
     const bookings: IBooking[] = resp.docs.map(parseFirebaseData);
-    dispatch(fetchingBookingsDone(COLLECTION_STATE.ADD, bookings));
+    dispatch(fetchingBookingsDone(COLLECTION_STATE.GET, bookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
     throw new Error(JSON.stringify(err));

@@ -1,5 +1,5 @@
 import { IClientsActions, IClientsPayload } from 'models';
-import { COLLECTION_STATE, SAVING_STAGE } from 'utils';
+import { CLIENTS_STATE, SAVING_STAGE } from 'utils';
 
 const INITIAL_STATE: IClientsPayload = {
   isFetching: false,
@@ -11,11 +11,11 @@ const INITIAL_STATE: IClientsPayload = {
 export const clientStore = (state = INITIAL_STATE, action: IClientsActions) => {
   const { type, payload } = action;
   switch (type) {
-    case COLLECTION_STATE.ADD:
-    case COLLECTION_STATE.GET:
-    case COLLECTION_STATE.UPDATE:
-    case COLLECTION_STATE.DELETE:
-    case COLLECTION_STATE.ERROR:
+    case CLIENTS_STATE.ADD_CLIENT:
+    case CLIENTS_STATE.GET_CLIENT:
+    case CLIENTS_STATE.UPDATE_CLIENT:
+    case CLIENTS_STATE.DELETE_CLIENT:
+    case CLIENTS_STATE.ERROR_CLIENT:
       return {
         ...state,
         ...payload

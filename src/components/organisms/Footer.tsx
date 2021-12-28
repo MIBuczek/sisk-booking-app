@@ -81,6 +81,7 @@ const FooterButton = styled(Button)`
   padding: 0;
   border: none;
   width: 150px;
+  color: white;
   &:hover {
     text-decoration: underline;
     box-shadow: none;
@@ -149,7 +150,7 @@ const Footer = (): JSX.Element => {
             Polityka prywatności
           </FooterAnchor>
           <FooterParagraph small>
-            © Copyright 2018 SISK / Created by GEKON Web Services
+            © Copyright 2018 SISK / Created by GECKO Web Services
           </FooterParagraph>
         </FooterCredits>
       </FooterWrapper>

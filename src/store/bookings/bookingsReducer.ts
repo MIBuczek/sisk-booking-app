@@ -1,6 +1,6 @@
 import { IBooking, IBookingsAction, IBookingsPayload } from 'models';
 import { CLIENT_TYPE, SIZE_OPTIONS } from 'utils/variables/form-const';
-import { COLLECTION_STATE, SAVING_STAGE } from 'utils/variables/store-const';
+import { BOOKING_STATE, SAVING_STAGE } from 'utils/variables/store-const';
 
 const example: IBooking[] = [
   {
@@ -32,11 +32,11 @@ const INITIAL_STATE: IBookingsPayload = {
 export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => {
   const { type, payload } = action;
   switch (type) {
-    case COLLECTION_STATE.ADD:
-    case COLLECTION_STATE.GET:
-    case COLLECTION_STATE.UPDATE:
-    case COLLECTION_STATE.DELETE:
-    case COLLECTION_STATE.ERROR:
+    case BOOKING_STATE.ADD_BOOKING:
+    case BOOKING_STATE.GET_BOOKING:
+    case BOOKING_STATE.UPDATE_BOOKING:
+    case BOOKING_STATE.DELETE_BOOKING:
+    case BOOKING_STATE.ERROR_BOOKING:
       return {
         ...state,
         ...payload

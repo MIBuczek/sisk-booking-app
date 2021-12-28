@@ -1,5 +1,5 @@
 import { IBuildingsAction, IBuildingsPayload } from 'models';
-import { COLLECTION_STATE, SAVING_STAGE } from 'utils/variables/store-const';
+import { BUILDING_STATE, SAVING_STAGE } from 'utils/variables/store-const';
 
 const INITIAL_STATE: IBuildingsPayload = {
   isFetching: false,
@@ -11,11 +11,11 @@ const INITIAL_STATE: IBuildingsPayload = {
 export const buildingStore = (state = INITIAL_STATE, action: IBuildingsAction) => {
   const { type, payload } = action;
   switch (type) {
-    case COLLECTION_STATE.ADD:
-    case COLLECTION_STATE.GET:
-    case COLLECTION_STATE.UPDATE:
-    case COLLECTION_STATE.DELETE:
-    case COLLECTION_STATE.ERROR:
+    case BUILDING_STATE.ADD_BUILDING:
+    case BUILDING_STATE.GET_BUILDING:
+    case BUILDING_STATE.UPDATE_BUILDING:
+    case BUILDING_STATE.DELETE_BUILDING:
+    case BUILDING_STATE.ERROR_BUILDING:
       return {
         ...state,
         ...payload

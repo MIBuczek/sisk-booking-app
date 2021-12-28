@@ -11,8 +11,8 @@ const INITIAL_STATE = {
 export const currentUserStore = (state = INITIAL_STATE, action: IUserAction) => {
   const { type, payload } = action;
   switch (type) {
-    case USER_STATE.GET:
-    case USER_STATE.ERROR:
+    case USER_STATE.GET_USER:
+    case USER_STATE.ERROR_USER:
       return {
         ...state,
         ...payload

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { db, parseFirebaseData, COLLECTION_STATE, SAVING_STAGE } from 'utils';
+import { db, parseFirebaseData, BOOKING_STATE, SAVING_STAGE } from 'utils';
 import { IBooking, IBookingsAction, IReduxState } from 'models';
 
 const fetchingBookings = (): IBookingsAction => ({
-  type: COLLECTION_STATE.GET,
+  type: BOOKING_STATE.INITIAL_BOOKING,
   payload: {
     isFetching: true,
     savingStage: SAVING_STAGE.INITIAL,
@@ -26,7 +26,7 @@ const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBookingsActi
 });
 
 const fetchingBookingsError = (errorMessage: string): IBookingsAction => ({
-  type: COLLECTION_STATE.ERROR,
+  type: BOOKING_STATE.ERROR_BOOKING,
   payload: {
     isFetching: false,
     savingStage: SAVING_STAGE.ERROR,
@@ -37,7 +37,7 @@ const fetchingBookingsError = (errorMessage: string): IBookingsAction => ({
 });
 
 const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBookingsAction => ({
-  type: COLLECTION_STATE.GET,
+  type: BOOKING_STATE.GET_BOOKING,
   payload: {
     isFetching: false,
     savingStage: SAVING_STAGE.SUCCESS,
@@ -52,7 +52,7 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
   try {
     const resp = await db.collection('bookings').get();
     const bookings: IBooking[] = resp.docs.map(parseFirebaseData);
-    dispatch(fetchingBookingsDone(COLLECTION_STATE.GET, bookings));
+    dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
     throw new Error(JSON.stringify(err));
@@ -63,12 +63,11 @@ export const addBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  // dispatch(fetchingBookings());
   try {
-    // await db.collection('bookings').doc().set(bookingData);
+    await db.collection('bookings').doc().set(bookingData);
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = [...bookings, bookingData];
-    dispatch(fetchingBookingsDone(COLLECTION_STATE.ADD, newBookings));
+    dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można dodać nowej rezerwacji.'));
     throw new Error(JSON.stringify(err));
@@ -86,7 +85,7 @@ export const updateBooking = (bookingData: IBooking) => async (
     const newBookings: IBooking[] = bookings.map((booking: IBooking) =>
       booking.id === bookingData.id ? bookingData : booking
     );
-    dispatch(fetchingBookingsDone(COLLECTION_STATE.UPDATE, newBookings));
+    dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, newBookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można zaktualizować rezerwacji.'));
     throw new Error(JSON.stringify(err));
@@ -123,7 +122,7 @@ export const deleteBooking = (id: string) => async (
     db.collection('bookings').doc(id).delete();
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
-    dispatch(fetchingBookingsDone(COLLECTION_STATE.DELETE, newBookings));
+    dispatch(fetchingBookingsDone(BOOKING_STATE.DELETE_BOOKING, newBookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można skasować rezerwacji.'));
     throw new Error(JSON.stringify(err));

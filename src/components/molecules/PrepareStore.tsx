@@ -12,7 +12,8 @@ export interface IProps {
 }
 
 const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
-  const [storeReady, setStoreReady] = React.useState(true);
+  const [isUserPage] = React.useState<boolean>(window.location.hash.length === 2);
+  const [storeReady, setStoreReady] = React.useState<boolean>(true);
 
   const { authStore, currentUserStore, bookingStore, buildingStore, clientStore } = useSelector(
     (state: IReduxState): IReduxState => state
@@ -25,19 +26,26 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
     buildingStore.savingStage === SAVING_STAGE.SUCCESS &&
     clientStore.savingStage === SAVING_STAGE.SUCCESS;
 
-  console.log(adminStoreReady);
+  const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
+
   React.useEffect(() => {
-    if (!isEmpty(authStore.auth)) {
+    if (!isEmpty(authStore.auth) && !isUserPage) {
       dispatch(getUserData());
       dispatch(getBookingsData());
       dispatch(getBuildingsData());
       dispatch(getClientsData());
       setStoreReady(false);
     }
-  }, [authStore.savingStage]);
+    if (isUserPage) {
+      dispatch(getBookingsData());
+    }
+  }, [authStore.savingStage, isUserPage]);
 
   React.useEffect(() => {
-    if (adminStoreReady) {
+    if (adminStoreReady && !isUserPage) {
+      setStoreReady(true);
+    }
+    if (userStoreReady && userStoreReady) {
       setStoreReady(true);
     }
   }, [

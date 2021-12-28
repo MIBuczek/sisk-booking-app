@@ -1,7 +1,7 @@
+/* eslint-disable import/no-duplicates */
 import { IBooking, IMainState, IReduxState, TSelect } from 'models';
 import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
-import pl from 'date-fns/locale/pl';
 import { registerLocale } from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +28,9 @@ import TextInputField from 'components/atoms/TextInputField';
 import { DataPickerField } from 'components/atoms/DatapickerField';
 import Anchor from 'components/atoms/Anchor';
 import Button from 'components/atoms/Button';
+import pl from 'date-fns/locale/pl';
+import setHours from 'date-fns/setHours';
+import setMinutes from 'date-fns/setMinutes';
 
 registerLocale('pl', pl);
 
@@ -91,7 +94,6 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
   const [selectedSize, setSelectedSize] = React.useState(SIZE_OPTIONS['1/1']);
   const [sizeOptions, setSizeOptions] = React.useState(SIZE_OPTIONS_BTN);
   const [police, setPolice] = React.useState<boolean>(false);
-
   const { city, building } = mainState;
 
   const dispatch = useDispatch();
@@ -309,6 +311,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               shouldCloseOnSelect
               placeholderText="Wybierz"
               locale="pl"
+              minDate={new Date()}
               invalid={!!errors.when}
               onChange={onChange}
               onBlur={onBlur}
@@ -332,6 +335,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
                   shouldCloseOnSelect
                   placeholderText="Wybierz"
                   locale="pl"
+                  minDate={new Date()}
                   invalid={!!errors.whenEnd}
                   onChange={onChange}
                   onBlur={onBlur}
@@ -355,6 +359,8 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               showTimeSelectOnly
               isClearable
               shouldCloseOnSelect
+              minTime={setHours(setMinutes(new Date(), 0), 9)}
+              maxTime={setHours(setMinutes(new Date(), 30), 22)}
               invalid={!!errors.start}
               timeIntervals={15}
               timeCaption="Godzina"
@@ -380,6 +386,8 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               showTimeSelectOnly
               isClearable
               shouldCloseOnSelect
+              minTime={setHours(setMinutes(new Date(), 0), 9)}
+              maxTime={setHours(setMinutes(new Date(), 30), 22)}
               invalid={!!errors.end}
               timeIntervals={15}
               timeCaption="Godzina"

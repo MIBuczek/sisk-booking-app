@@ -4,7 +4,7 @@ import { IReduxState, IUser, IUserAction } from 'models';
 import { ADMIN_ROLE, db, SAVING_STAGE, USER_STATE } from 'utils';
 
 export const fetchingUserStart = (): IUserAction => ({
-  type: USER_STATE.GET,
+  type: USER_STATE.GET_USER,
   payload: {
     isFetching: true,
     savingStage: SAVING_STAGE.INITIAL,
@@ -14,7 +14,7 @@ export const fetchingUserStart = (): IUserAction => ({
 });
 
 const fetchingUserDone = (user: IUser): IUserAction => ({
-  type: USER_STATE.GET,
+  type: USER_STATE.GET_USER,
   payload: {
     isFetching: false,
     savingStage: SAVING_STAGE.SUCCESS,
@@ -24,7 +24,7 @@ const fetchingUserDone = (user: IUser): IUserAction => ({
 });
 
 const fetchingUserError = (errorMessage: string): IUserAction => ({
-  type: USER_STATE.ERROR,
+  type: USER_STATE.ERROR_USER,
   payload: {
     isFetching: false,
     savingStage: SAVING_STAGE.ERROR,

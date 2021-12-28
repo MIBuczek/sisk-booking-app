@@ -17,6 +17,7 @@ const MainWrapper = styled.section`
   min-height: 82vh;
   margin-top: 13vh;
   display: flex;
+  align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
   animation: ${fadeIn} 0.5s linear;
@@ -37,7 +38,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
     <MainWrapper>
       <Header>HARMONOGRAM REZERWACJI OBIEKTÓW</Header>
       <SideNav state={mainState} stateHandler={mainStateHandler} />
-      <BookingCalender />
+      <BookingCalender mainState={mainState} />
       {isOpen && (
         <Modal>
           {type === MODAL_TYPES.MESSAGE && <ModalMessage />}

@@ -5,6 +5,9 @@ import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useDispatch, useSelector } from 'react-redux';
+import Paragraph from 'components/atoms/Paragraph';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import { IAdminState, IBooking, IMainState } from 'models';
 import { prepareCalenderItem } from '../../utils/functions/calender-functions';
 import RenderEventContent from '../atoms/CalenderEvent';
 import { IReduxState } from '../../models/store/store-models';
@@ -87,15 +90,47 @@ const CalenderWrapper = styled.section`
   }
 `;
 
-const BookingCalender: React.FunctionComponent = (): JSX.Element => {
+const UserInfo = styled(Paragraph)`
+  font-size: 12px;
+  width: 95%;
+  svg {
+    margin-right: 10px;
+    color: #afbf36;
+  }
+`;
+
+interface IProps {
+  mainState?: IMainState | IAdminState;
+  isAdmin?: boolean;
+}
+
+const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }): JSX.Element => {
+  const [events, setEvents] = React.useState<EventInput[]>([]);
+
   const dispatch = useDispatch();
   const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
 
-  const createEvents = (): EventInput[] => bookings.map(prepareCalenderItem);
+  const createEvents = (): void =>
+    setEvents(
+      bookings.reduce((acc: EventInput[], b: IBooking) => {
+        if (
+          mainState &&
+          mainState.city.value === b.city &&
+          mainState.building.value === b.building
+        ) {
+          acc.push(prepareCalenderItem(b));
+        }
+        return acc;
+      }, [])
+    );
 
   const handleEventClick = async (clickInfo: EventClickArg) => {
     dispatch(getCurrentBooking(clickInfo.event._def.publicId));
   };
+
+  React.useEffect(() => {
+    createEvents();
+  }, [mainState]);
 
   return (
     <CalenderWrapper>
@@ -114,10 +149,16 @@ const BookingCalender: React.FunctionComponent = (): JSX.Element => {
         slotMaxTime="22:00:00"
         allDaySlot={false}
         weekends
-        events={createEvents()}
+        events={events}
         eventContent={RenderEventContent}
         eventClick={handleEventClick}
       />
+      {!isAdmin && (
+        <UserInfo>
+          <BsFillExclamationCircleFill />W kalendarzu sa widoczne tylko zatwierdzone przez
+          administratora rezerwacje.
+        </UserInfo>
+      )}
     </CalenderWrapper>
   );
 };

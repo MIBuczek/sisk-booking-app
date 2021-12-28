@@ -13,7 +13,7 @@ interface IBooking {
   phone: string;
   regular: boolean;
   when: Date | null;
-  whenEnd?: Date | null;
+  whenEnd: Date | null;
   start: Date | null;
   end: Date | null;
   accepted: boolean;

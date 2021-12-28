@@ -10,9 +10,9 @@ const parseFirebaseData = (doc: any) =>
     club: doc.data().club,
     email: doc.data().email,
     phone: doc.data().phone,
-    when: doc.data().when,
-    start: doc.data().start,
-    end: doc.data().end,
+    when: doc.data().when.toDate(),
+    start: doc.data().start.toDate(),
+    end: doc.data().end.toDate(),
     message: doc.data().message,
     accepted: doc.data().accepted,
     id: doc.data().id

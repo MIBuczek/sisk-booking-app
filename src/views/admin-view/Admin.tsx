@@ -43,7 +43,7 @@ const Admin = (): JSX.Element => {
     <AdminWrapper>
       <Header>Panel Administratora</Header>
       <SideNav admin state={adminState} stateHandler={stateHandler} />
-      <BookingCalender />
+      <BookingCalender mainState={adminState} isAdmin />
       {isOpen && (
         <Modal>
           {type === MODAL_TYPES.CLIENT && <ModalClient />}

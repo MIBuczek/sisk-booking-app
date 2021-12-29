@@ -20,7 +20,7 @@ const RecordWrapper = styled.div`
 
 const RecordTable = styled.table`
   width: 100%;
-  min-height: 230px;
+  min-height: 430px;
   display: block;
   padding: 0;
   thead {
@@ -38,7 +38,18 @@ const RecordTable = styled.table`
   tbody {
     display: inherit;
     width: 100%;
-    min-height: 205px;
+    min-height: 430px;
+    tr.empty {
+      width: 100%;
+      text-align: center;
+      margin: auto;
+      display: block;
+      /* width: 100%;
+      height: 100%;
+      display: block;
+      align-items: center;
+      justify-content: center; */
+    }
   }
 `;
 
@@ -78,6 +89,7 @@ const RecordTableHeader = styled.th`
 `;
 
 const RecordTableData = styled.td<RecordDataType>`
+  display: inline-block;
   padding: 0.5rem 0.8rem;
   font-size: ${({ theme }) => theme.fontSize.s};
   color: ${({ theme }) => theme.darkGrey};
@@ -164,7 +176,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
         </thead>
         <tbody>
           {isEmpty(records) ? (
-            <tr>
+            <tr className="empty">
               <RecordTableData empty>{emptyText}</RecordTableData>
             </tr>
           ) : (

@@ -19,6 +19,9 @@ const BuildingWrapper = styled.section`
   padding: 20px 40px;
   justify-content: space-between;
   max-width: 920px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 95vh;
 `;
 
 const BuildingHeader = styled(Header)`

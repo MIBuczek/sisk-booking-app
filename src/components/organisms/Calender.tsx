@@ -130,7 +130,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
 
   React.useEffect(() => {
     createEvents();
-  }, [mainState]);
+  }, [mainState, bookings]);
 
   return (
     <CalenderWrapper>

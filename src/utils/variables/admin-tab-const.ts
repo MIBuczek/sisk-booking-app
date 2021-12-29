@@ -1,0 +1,9 @@
+enum ADMIN_TABS {
+  CALENDER,
+  BOOKINGS,
+  CLIENTS,
+  BUILDINGS,
+  SUMMARY
+}
+
+export { ADMIN_TABS };

@@ -14,6 +14,9 @@ const MessageWrapper = styled.form`
   padding: 20px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 95vh;
   button {
     align-self: flex-end;
   }

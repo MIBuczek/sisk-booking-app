@@ -33,6 +33,18 @@ const DetailsSpan = styled.span`
   margin-left: 0.5rem;
 `;
 
+const ClearButton = styled(Button)`
+  background-color: #eaeaea;
+  border-color: #afbf36;
+  color: #454545;
+  &:hover {
+    background-color: #afbf36;
+    border-color: #b9b8b8;
+    box-shadow: none;
+    opacity: 1;
+  }
+`;
+
 const ReservationDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const { booking } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
@@ -64,7 +76,7 @@ const ReservationDetails = (): JSX.Element => {
           <DetailsParagraph bold>
             Do godziny : <DetailsSpan>14:00</DetailsSpan>
           </DetailsParagraph>
-          <Button onClick={clear}>Wyczyść</Button>
+          <ClearButton onClick={clear}>Wyczyść</ClearButton>
         </>
       ) : (
         <>

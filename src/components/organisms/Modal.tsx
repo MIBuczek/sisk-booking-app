@@ -10,6 +10,9 @@ import { fadeIn } from '../../style/animation';
 
 const ModalWrapper = styled.div`
   width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: fix-content;
   position: fixed;
   top: 0;
   left: 0;
@@ -49,7 +52,7 @@ const ModalContent = styled.div`
 `;
 
 export interface IProps {
-  children: (JSX.Element | boolean)[];
+  children: JSX.Element | boolean | (JSX.Element | boolean)[];
 }
 
 const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {

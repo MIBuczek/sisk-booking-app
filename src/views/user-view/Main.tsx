@@ -21,6 +21,7 @@ const MainWrapper = styled.section`
   justify-content: center;
   flex-wrap: wrap;
   animation: ${fadeIn} 0.5s linear;
+  padding-bottom: 60px;
 `;
 
 export interface IProps {}
@@ -37,7 +38,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
   return (
     <MainWrapper>
       <Header>HARMONOGRAM REZERWACJI OBIEKTÓW</Header>
-      <SideNav state={mainState} stateHandler={mainStateHandler} />
+      <SideNav state={mainState} stateHandler={mainStateHandler} tabHandler={() => null} />
       <BookingCalender mainState={mainState} />
       {isOpen && (
         <Modal>

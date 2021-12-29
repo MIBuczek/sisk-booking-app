@@ -24,6 +24,9 @@ const ReservationWrapper = styled.section`
   padding: 20px 40px 80px;
   justify-content: space-between;
   max-width: 1820px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 95vh;
 `;
 
 const ReservationHeader = styled(Header)`

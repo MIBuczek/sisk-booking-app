@@ -8,15 +8,13 @@ import {
 } from 'react-icons/bs';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { BUILDINGS_OPTIONS, CITY_OPTIONS, MODAL_TYPES } from 'utils';
+import { ADMIN_TABS, BUILDINGS_OPTIONS, CITY_OPTIONS, MODAL_TYPES } from 'utils';
 import { openModal } from 'store';
 import { IAdminState, IMainState, TSelect } from 'models';
 import Label from 'components/atoms/Label';
 import ButtonIcon, { iconStyle } from 'components/atoms/ButtonIcon';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
 import ReservationDetails from '../molecules/ReservationDetails';
-
-// const { LARGE } = SIZE;
 
 const SideWrapper = styled.aside`
   width: 30%;
@@ -33,9 +31,15 @@ interface IProps {
   admin?: boolean;
   state: IMainState | IAdminState;
   stateHandler: (value: TSelect, field: string) => void;
+  tabHandler: (currentTab: ADMIN_TABS) => void;
 }
 
-const SideNav: React.FunctionComponent<IProps> = ({ admin, state, stateHandler }): JSX.Element => {
+const SideNav: React.FunctionComponent<IProps> = ({
+  admin,
+  state,
+  stateHandler,
+  tabHandler
+}): JSX.Element => {
   const dispatch = useDispatch();
 
   const { city, building } = state;
@@ -72,19 +76,16 @@ const SideNav: React.FunctionComponent<IProps> = ({ admin, state, stateHandler }
       </SelectWrapper>
       {admin ? (
         <>
-          <ButtonIcon
-            role="button"
-            onClick={() => dispatch(openModal(MODAL_TYPES.ADMIN_RESERVATION))}
-          >
+          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CALENDER)}>
             <BsFillPinFill style={iconStyle} /> REZERWACJE
           </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
+          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CLIENTS)}>
             <BsFileEarmarkPersonFill style={iconStyle} /> NAJEMCY
           </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BUILDINGS))}>
+          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.BUILDINGS)}>
             <BsBuilding style={iconStyle} /> OBIEKTY
           </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.SUMMARY))}>
+          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.SUMMARY)}>
             <BsFileEarmarkBarGraphFill style={iconStyle} /> PODSUMOWANIE NAJMÓW
           </ButtonIcon>
         </>

@@ -8,11 +8,12 @@ import SideNav from 'components/organisms/SideNav';
 import BookingCalender from 'components/organisms/Calender';
 import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
-import { initialAdminState, MODAL_TYPES } from 'utils';
+import { ADMIN_TABS, initialAdminState, MODAL_TYPES } from 'utils';
 import ModalClient from 'components/molecules/modals/ModalAdminClient';
 import ModalBuilding from 'components/molecules/modals/ModalAdminBuilding';
 import ModalAdminReservation from 'components/molecules/modals/ModalAdminReservation';
 import ModalSummary from 'components/molecules/modals/ModalSummary';
+import Clients from 'components/organisms/Clients';
 
 const AdminWrapper = styled.section`
   width: 100%;
@@ -22,9 +23,12 @@ const AdminWrapper = styled.section`
   justify-content: center;
   flex-wrap: wrap;
   animation: ${fadeIn} 0.5s linear;
+  padding-bottom: 60px;
 `;
+
 const Admin = (): JSX.Element => {
   const [adminState, setAdminState] = React.useState<IAdminState>({ ...initialAdminState });
+  const [tab, setTab] = React.useState<ADMIN_TABS>(ADMIN_TABS.CALENDER);
 
   const {
     authStore: { auth },
@@ -35,25 +39,30 @@ const Admin = (): JSX.Element => {
     setAdminState((prev) => ({ ...prev, [field]: value }));
   };
 
-  if (!auth) {
-    return <Redirect to="/login" />;
-  }
+  const tabHandler = (currentTab: ADMIN_TABS): void => {
+    setTab(currentTab);
+  };
+  // if (!auth) {
+  //   return <Redirect to="/login" />;
+  // }
+
+  React.useEffect(() => undefined, [tab]);
 
   return (
     <AdminWrapper>
       <Header>Panel Administratora</Header>
-      <SideNav admin state={adminState} stateHandler={stateHandler} />
-      <BookingCalender mainState={adminState} isAdmin />
-      {isOpen && (
+      <SideNav admin state={adminState} stateHandler={stateHandler} tabHandler={tabHandler} />
+      {tab === ADMIN_TABS.CALENDER && <BookingCalender mainState={adminState} isAdmin />}
+      {tab === ADMIN_TABS.CLIENTS && <Clients mainState={adminState} />}
+      {/* {isOpen && (
         <Modal>
-          {type === MODAL_TYPES.CLIENT && <ModalClient />}
           {type === MODAL_TYPES.BUILDINGS && <ModalBuilding adminState={adminState} />}
           {type === MODAL_TYPES.SUMMARY && <ModalSummary />}
           {type === MODAL_TYPES.ADMIN_RESERVATION && (
             <ModalAdminReservation adminState={adminState} />
           )}
         </Modal>
-      )}
+      )} */}
     </AdminWrapper>
   );
 };

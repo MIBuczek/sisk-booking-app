@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IClient } from 'models';
 import { IBooking } from 'models/store/booking-models';
 
-const parseFirebaseData = (doc: any) =>
+const parseFirebaseBookingData = (doc: any) =>
   ({
     city: doc.data().city,
     building: doc.data().building,
@@ -18,4 +19,18 @@ const parseFirebaseData = (doc: any) =>
     id: doc.data().id
   } as IBooking);
 
-export { parseFirebaseData };
+const parseFirebaseClientData = (doc: any) =>
+  ({
+    type: doc.data().type,
+    name: doc.data().name,
+    contactPerson: doc.data().contactPerson,
+    phone: doc.data().phone,
+    email: doc.data().email,
+    street: doc.data().street,
+    city: doc.data().city,
+    zipCode: doc.data().zipCode,
+    nip: doc.data().nip,
+    id: doc.data().id
+  } as IClient);
+
+export { parseFirebaseBookingData, parseFirebaseClientData };

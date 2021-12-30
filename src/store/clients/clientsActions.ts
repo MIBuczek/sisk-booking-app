@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
 import { IClient, IClientsActions, IReduxState } from 'models';
-import { db, CLIENTS_STATE, SAVING_STAGE } from 'utils';
+import { db, CLIENTS_STATE, SAVING_STAGE, parseFirebaseClientData } from 'utils';
 
 export const fetchingClients = (): IClientsActions => ({
   type: CLIENTS_STATE.GET_CLIENT,
@@ -37,21 +37,7 @@ export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>):
   dispatch(fetchingClients());
   try {
     const resp = await db.collection('clients').get();
-    const clients: IClient[] = resp.docs.map((doc) => {
-      const client: IClient = {
-        type: doc.data().type,
-        name: doc.data().name,
-        contactPerson: doc.data().contactPerson,
-        phone: doc.data().phone,
-        email: doc.data().email,
-        street: doc.data().street,
-        city: doc.data().city,
-        zipCode: doc.data().zipCode,
-        nip: doc.data().nip,
-        id: doc.data().id
-      };
-      return client;
-    });
+    const clients: IClient[] = resp.docs.map(parseFirebaseClientData);
     dispatch(fetchingClientsDone(CLIENTS_STATE.GET_CLIENT, clients));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można pobrać bazy danych z klientami.'));
@@ -64,7 +50,7 @@ export const addClient = (clientData: IClient) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    // await db.collection('clients').doc().set(clientData);
+    await db.collection('clients').doc().set(clientData);
     const { clients } = getStore().clientStore;
     dispatch(fetchingClientsDone(CLIENTS_STATE.ADD_CLIENT, [...clients, clientData]));
   } catch (err) {
@@ -78,7 +64,7 @@ export const updateClient = (clientData: IClient) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    // await db.collection('clients').doc(clientData.id).update(clientData);
+    await db.collection('clients').doc(clientData.id).update(clientData);
     const { clients } = getStore().clientStore;
     const newClients: IClient[] = clients.map((client: IClient) =>
       client.id === clientData.id ? clientData : client

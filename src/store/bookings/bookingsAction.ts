@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { db, parseFirebaseData, BOOKING_STATE, SAVING_STAGE } from 'utils';
+import { db, parseFirebaseBookingData, BOOKING_STATE, SAVING_STAGE } from 'utils';
 import { IBooking, IBookingsAction, IReduxState } from 'models';
 
 const fetchingBookings = (): IBookingsAction => ({
@@ -51,7 +51,7 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
   dispatch(fetchingBookings());
   try {
     const resp = await db.collection('bookings').get();
-    const bookings: IBooking[] = resp.docs.map(parseFirebaseData);
+    const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));

@@ -4,7 +4,8 @@ import {
   BsFileEarmarkBarGraph,
   BsFileEarmarkPersonFill,
   BsBuilding,
-  BsFillPinFill
+  BsFillPinFill,
+  BsFillCalendar2DateFill
 } from 'react-icons/bs';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -77,6 +78,9 @@ const SideNav: React.FunctionComponent<IProps> = ({
       {admin ? (
         <>
           <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CALENDER)}>
+            <BsFillCalendar2DateFill style={iconStyle} /> KALENDARZ
+          </ButtonIcon>
+          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.BOOKINGS)}>
             <BsFillPinFill style={iconStyle} /> REZERWACJE
           </ButtonIcon>
           <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CLIENTS)}>

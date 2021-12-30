@@ -11,19 +11,27 @@ import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, createSelectedOption
 import { useDispatch, useSelector } from 'react-redux';
 import { IClient, IReduxState } from 'models';
 import { IClientForm } from 'models/forms/client-form-model';
-import { addClient, updateClient } from 'store';
+import { addClient, closeModal, updateClient } from 'store';
+
+const ClientWrapper = styled.section`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 40px 80px;
+  justify-content: center;
+`;
 
 const ClientSubHeader = styled(Header)`
   font-size: ${({ theme }) => theme.fontSize.m};
-  width: 100%;
+  width: 85%;
   margin: 15px 0 25px;
 `;
 
 const ClientInnerContent = styled.article`
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   padding: 0 40px 0 20px;
   &:first-of-type {
     border-right: ${({ theme }) => `1px solid ${theme.green}`};
@@ -38,8 +46,8 @@ const ButtonPanel = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 100%;
-  margin-top: 1rem;
+  width: 85%;
+  margin-top: 3rem;
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -84,6 +92,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
     } else dispatch(addClient(clientData));
 
     createInitialState();
+    dispatch(closeModal());
   });
 
   const editClientHandler = (index: number) => {
@@ -99,9 +108,11 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   };
 
   return (
-    <>
+    <ClientWrapper>
+      <ClientSubHeader>
+        {isEditing ? 'Edytuj istniejeacego najemce' : 'Dodaj nowy najemce'}
+      </ClientSubHeader>
       <ClientInnerContent>
-        <ClientSubHeader>Dodaj nowy klienta</ClientSubHeader>
         <ClientSelectWrapper>
           <Label>Typ klienta</Label>
           <Controller
@@ -279,14 +290,14 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
           )}
         />
         {errors.zipCode && <ErrorMsg innerText="Pole nie moze byc puste" />}
-        <ButtonPanel>
-          <Button secondary onClick={createInitialState}>
-            Anuluj
-          </Button>
-          <Button onClick={onSubmit}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>
-        </ButtonPanel>
       </ClientInnerContent>
-    </>
+      <ButtonPanel>
+        <Button secondary onClick={createInitialState}>
+          Anuluj
+        </Button>
+        <Button onClick={onSubmit}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>
+      </ButtonPanel>
+    </ClientWrapper>
   );
 };
 

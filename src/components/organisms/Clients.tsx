@@ -2,13 +2,14 @@ import Button from 'components/atoms/Button';
 import Header from 'components/atoms/Header';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import NewClientForm from 'components/molecules/forms/NewClientForm';
-import { IAdminState, IReduxState } from 'models';
+import { IAdminState, IClient, IReduxState } from 'models';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, openModal } from 'store';
 import styled from 'styled-components';
 import { MODAL_TYPES, RECORDS_CLIENTS_HEADERS, RECORDS_CLIENTS_ROW } from 'utils';
 import Modal from 'components/organisms/Modal';
+import SearchInputField from 'components/atoms/SearchInputField';
 
 const CalenderWrapper = styled.section`
   width: 60%;
@@ -17,20 +18,21 @@ const CalenderWrapper = styled.section`
   display: block;
   padding: 30px 0;
   z-index: 0;
-  position: relative;
 `;
 
 const ClientHeader = styled(Header)`
   margin: 20px 0 40px 20px;
 `;
 
+const RecordsActionContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 const OpenClientModalButton = styled(Button)`
   background-color: #eaeaea;
   border-color: #afbf36;
   color: #454545;
-  position: absolute;
-  top: 40px;
-  right: 0;
   &:hover {
     background-color: #afbf36;
     border-color: #b9b8b8;
@@ -44,6 +46,7 @@ interface IProps {
 }
 
 const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
+  const [clientList, setClientList] = React.useState<IClient[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
 
@@ -70,17 +73,31 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
     setEditedItemIndex(undefined);
   };
 
+  const clientListHandler = (searchResults: IClient[]): void => {
+    setClientList(searchResults);
+  };
+
+  React.useEffect(() => undefined, [clientList]);
+
   return (
     <CalenderWrapper>
-      <ClientHeader>Najemcy</ClientHeader>
-      <OpenClientModalButton onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
-        Dodaj nowego najemce
-      </OpenClientModalButton>
+      <ClientHeader>Lista Najemcy</ClientHeader>
+      <RecordsActionContent>
+        <SearchInputField
+          type="clients"
+          placeholder="Wyszukaj najemce"
+          searchContent={clients}
+          searchContentHandler={clientListHandler}
+        />
+        <OpenClientModalButton onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
+          Dodaj nowego najemce
+        </OpenClientModalButton>
+      </RecordsActionContent>
       <MultipleRecords
         title="clients"
         headers={RECORDS_CLIENTS_HEADERS}
         dataProperty={RECORDS_CLIENTS_ROW}
-        records={clients}
+        records={clientList}
         editHandler={editClientHandler}
         deleteHandler={deleteClientHandler}
         emptyText="Nie został dodany żaden klient do bazy danych"

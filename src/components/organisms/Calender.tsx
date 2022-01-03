@@ -142,11 +142,10 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
         }}
         locale="pl"
         initialView="timeGridWeek"
-        editable
         selectMirror
         dayMaxEvents
         slotMinTime="08:00:00"
-        slotMaxTime="22:00:00"
+        slotMaxTime="24:00:00"
         allDaySlot={false}
         weekends
         events={events}

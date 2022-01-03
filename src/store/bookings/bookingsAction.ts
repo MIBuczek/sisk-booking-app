@@ -3,7 +3,7 @@ import { Dispatch } from 'react';
 import { db, parseFirebaseBookingData, BOOKING_STATE, SAVING_STAGE } from 'utils';
 import { IBooking, IBookingsAction, IReduxState } from 'models';
 
-const fetchingBookings = (): IBookingsAction => ({
+export const fetchingBookings = (): IBookingsAction => ({
   type: BOOKING_STATE.INITIAL_BOOKING,
   payload: {
     isFetching: true,
@@ -14,7 +14,7 @@ const fetchingBookings = (): IBookingsAction => ({
   }
 });
 
-const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBookingsAction => ({
+export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBookingsAction => ({
   type,
   payload: {
     isFetching: false,
@@ -25,7 +25,7 @@ const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBookingsActi
   }
 });
 
-const fetchingBookingsError = (errorMessage: string): IBookingsAction => ({
+export const fetchingBookingsError = (errorMessage: string): IBookingsAction => ({
   type: BOOKING_STATE.ERROR_BOOKING,
   payload: {
     isFetching: false,
@@ -36,7 +36,7 @@ const fetchingBookingsError = (errorMessage: string): IBookingsAction => ({
   }
 });
 
-const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBookingsAction => ({
+export const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBookingsAction => ({
   type: BOOKING_STATE.GET_BOOKING,
   payload: {
     isFetching: false,
@@ -47,12 +47,18 @@ const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBookingsAc
   }
 });
 
-export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
+export const getBookingsData = (isUser: boolean) => async (
+  dispatch: Dispatch<IBookingsAction>
+): Promise<void> => {
   dispatch(fetchingBookings());
   try {
     const resp = await db.collection('bookings').get();
     const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
+    if (isUser) {
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      localStorage.setItem('lastUpdate', `${Date.now()}`);
+    }
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
     throw new Error(JSON.stringify(err));

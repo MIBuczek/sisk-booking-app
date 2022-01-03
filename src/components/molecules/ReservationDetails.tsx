@@ -1,7 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { isEmpty } from 'lodash';
+import {
+  BUILDINGS_OPTIONS,
+  createSelectedOption,
+  firstLetterUpperCase,
+  formatDate,
+  displayTime
+} from 'utils';
 import Paragraph from '../atoms/Paragraph';
 import Header from '../atoms/Header';
 import Button from '../atoms/Button';
@@ -56,25 +62,28 @@ const ReservationDetails = (): JSX.Element => {
   return (
     <ReservationDetailsWrapper>
       <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
-      {!isEmpty(booking) ? (
+      {typeof booking !== 'undefined' ? (
         <>
           <DetailsParagraph bold>
-            Dzień : <DetailsSpan>10.05.2020</DetailsSpan>
+            Dzień :<DetailsSpan>{formatDate(booking.when)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Miejscowość : <DetailsSpan>Radwanice</DetailsSpan>
+            Miejscowość :<DetailsSpan>{firstLetterUpperCase(booking.city)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Obiekt : <DetailsSpan>Obiekt 1</DetailsSpan>
+            Obiekt :
+            <DetailsSpan>
+              {createSelectedOption(booking.building, BUILDINGS_OPTIONS[booking.city])?.label}
+            </DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Zajmowana powierzchnia : <DetailsSpan>1/2</DetailsSpan>
+            Zajmowana powierzchnia : <DetailsSpan>{booking.size}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Od godziny : <DetailsSpan>12:00</DetailsSpan>
+            Od godziny : <DetailsSpan>{displayTime(booking.start)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Do godziny : <DetailsSpan>14:00</DetailsSpan>
+            Do godziny : <DetailsSpan>{displayTime(booking.end)}</DetailsSpan>
           </DetailsParagraph>
           <ClearButton onClick={clear}>Wyczyść</ClearButton>
         </>

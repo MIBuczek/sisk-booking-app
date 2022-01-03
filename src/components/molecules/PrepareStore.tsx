@@ -2,9 +2,9 @@
 import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBookingsData, getBuildingsData, getClientsData, getUserData } from 'store';
-import { IAuthPayload, IBookingsPayload, IReduxState } from '../../models';
-import { SAVING_STAGE } from '../../utils/variables/store-const';
+import * as StoreActions from 'store';
+import { IBooking, IReduxState } from '../../models';
+import { BOOKING_STATE, SAVING_STAGE } from '../../utils/variables/store-const';
 import Loading from './Loading';
 
 export interface IProps {
@@ -15,10 +15,24 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const [isUserPage] = React.useState<boolean>(window.location.hash.length === 2);
   const [storeReady, setStoreReady] = React.useState<boolean>(true);
 
+  const dispatch = useDispatch();
   const { authStore, currentUserStore, bookingStore, buildingStore, clientStore } = useSelector(
     (state: IReduxState): IReduxState => state
   );
-  const dispatch = useDispatch();
+
+  const checkLocalStorage = (): boolean => {
+    const lastUpdate = localStorage.getItem('lastUpdate');
+    if (!lastUpdate) {
+      return true;
+    }
+    if (Number(lastUpdate) + 900000 < Date.now()) {
+      return true;
+    }
+    const bookingData = JSON.parse(localStorage.getItem('bookings') || '[]') as IBooking[];
+    console.log(bookingData);
+    dispatch(StoreActions.fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookingData));
+    return false;
+  };
 
   const adminStoreReady =
     currentUserStore.savingStage === SAVING_STAGE.SUCCESS &&
@@ -29,16 +43,16 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
 
   React.useEffect(() => {
-    // if (!isEmpty(authStore.auth) && !isUserPage) {
-    dispatch(getUserData());
-    dispatch(getBookingsData());
-    dispatch(getBuildingsData());
-    dispatch(getClientsData());
-    setStoreReady(false);
-    // }
-    // if (isUserPage) {
-    //   dispatch(getBookingsData());
-    // }
+    if (!isEmpty(authStore.auth) && !isUserPage) {
+      dispatch(StoreActions.getUserData());
+      dispatch(StoreActions.getBookingsData(false));
+      dispatch(StoreActions.getBuildingsData());
+      dispatch(StoreActions.getClientsData());
+      setStoreReady(false);
+    }
+    if (isUserPage && checkLocalStorage()) {
+      dispatch(StoreActions.getBookingsData(true));
+    }
   }, [authStore.savingStage, isUserPage]);
 
   React.useEffect(() => {

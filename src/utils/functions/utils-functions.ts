@@ -1,5 +1,4 @@
 import { IBooking, IBuilding, IClient, TSelect } from 'models';
-import { CLIENT_OPTIONS } from 'utils';
 
 const firstLetterUpperCase = (s: string): string =>
   s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
@@ -29,4 +28,11 @@ const paginationItems = (totalPost: number, postPerPage: number) => {
   }
   return pageNumbers;
 };
-export { generateSelectDefaultValue, pagination, paginationItems, createSelectedOption };
+
+export {
+  generateSelectDefaultValue,
+  pagination,
+  paginationItems,
+  createSelectedOption,
+  firstLetterUpperCase
+};

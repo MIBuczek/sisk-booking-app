@@ -16,7 +16,7 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const [storeReady, setStoreReady] = React.useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const { authStore, currentUserStore, bookingStore, buildingStore, clientStore } = useSelector(
+  const { authStore, currentUserStore, bookingStore, clientStore } = useSelector(
     (state: IReduxState): IReduxState => state
   );
 
@@ -29,7 +29,6 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
       return true;
     }
     const bookingData = JSON.parse(localStorage.getItem('bookings') || '[]') as IBooking[];
-    console.log(bookingData);
     dispatch(StoreActions.fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookingData));
     return false;
   };
@@ -37,7 +36,6 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const adminStoreReady =
     currentUserStore.savingStage === SAVING_STAGE.SUCCESS &&
     bookingStore.savingStage === SAVING_STAGE.SUCCESS &&
-    buildingStore.savingStage === SAVING_STAGE.SUCCESS &&
     clientStore.savingStage === SAVING_STAGE.SUCCESS;
 
   const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
@@ -46,7 +44,6 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
     if (!isEmpty(authStore.auth) && !isUserPage) {
       dispatch(StoreActions.getUserData());
       dispatch(StoreActions.getBookingsData(false));
-      dispatch(StoreActions.getBuildingsData());
       dispatch(StoreActions.getClientsData());
       setStoreReady(false);
     }
@@ -62,12 +59,7 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
     if (userStoreReady && userStoreReady) {
       setStoreReady(true);
     }
-  }, [
-    currentUserStore.savingStage,
-    bookingStore.savingStage,
-    buildingStore.savingStage,
-    clientStore.savingStage
-  ]);
+  }, [currentUserStore.savingStage, bookingStore.savingStage, clientStore.savingStage]);
 
   if (storeReady) {
     return <>{children}</>;

@@ -1,11 +1,4 @@
-import {
-  IModal,
-  IAuthPayload,
-  IBookingsPayload,
-  IBuildingsPayload,
-  IClientsPayload,
-  IUserPayload
-} from 'models';
+import { IModal, IAuthPayload, IBookingsPayload, IClientsPayload, IUserPayload } from 'models';
 
 interface IPayload {
   isFetching: boolean;
@@ -16,7 +9,6 @@ interface IPayload {
 interface IReduxState {
   authStore: IAuthPayload;
   clientStore: IClientsPayload;
-  buildingStore: IBuildingsPayload;
   bookingStore: IBookingsPayload;
   currentUserStore: IUserPayload;
   modal: IModal;

@@ -7,7 +7,7 @@ import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteBuilding } from 'store';
+import { deleteBooking } from 'store';
 import styled from 'styled-components';
 import {
   BUILDINGS_OPTIONS,
@@ -86,7 +86,7 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
 
   const deleteReservationHandler = (index: number) => {
     const currentReservation = bookings[index];
-    if (currentReservation.id) dispatch(deleteBuilding(currentReservation.id));
+    if (currentReservation.id) dispatch(deleteBooking(currentReservation.id));
     initialEditingState();
   };
 

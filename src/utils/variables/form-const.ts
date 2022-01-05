@@ -1,11 +1,13 @@
 import { IBookingForm } from 'models/forms/booking-form-models';
-import { IBuildingForm } from 'models/forms/building-form-models';
 import { IClientForm } from 'models/forms/client-form-model';
-import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils';
+// import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils';
 
 // Form Buildings
 export enum SIZE_OPTIONS {
   '1/1' = '1/1',
+  '1/2' = '1/2',
+  '1/3' = '1/3',
+  '1/4' = '1/4',
   '2/2' = '2/2',
   '3/3' = '3/3',
   '4/4' = '4/4'
@@ -15,14 +17,6 @@ export enum CLIENT_TYPE {
   CLIENT = 'CLIENT',
   COMPANY = 'COMPANY'
 }
-
-const BUILDING_INITIAL_VALUE: IBuildingForm = {
-  name: '',
-  city: { label: 'Siechnice', value: 'siechnice' },
-  phone: '',
-  email: '',
-  size: SIZE_OPTIONS['1/1']
-};
 
 // Form Clients
 const CLIENT_INITIAL_VALUE: IClientForm = {
@@ -56,4 +50,4 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
 
 const SIZE_OPTIONS_BTN = Object.values(SIZE_OPTIONS);
 
-export { BUILDING_INITIAL_VALUE, CLIENT_INITIAL_VALUE, BOOKING_INITIAL_VALUE, SIZE_OPTIONS_BTN };
+export { CLIENT_INITIAL_VALUE, BOOKING_INITIAL_VALUE, SIZE_OPTIONS_BTN };

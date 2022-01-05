@@ -2,8 +2,6 @@ export * from 'store/auth/authAction';
 export * from 'store/auth/authReducer';
 export * from 'store/bookings/bookingsAction';
 export * from 'store/bookings/bookingsReducer';
-export * from 'store/building/buildingActions';
-export * from 'store/building/buildingReducer';
 export * from 'store/clients/clientsActions';
 export * from 'store/clients/clientsReducer';
 export * from 'store/modal/modalAction';

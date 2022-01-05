@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { IBooking, IBuilding, IClient } from 'models';
+import { IBooking, IClient } from 'models';
 import * as React from 'react';
 import { BsFillFileEarmarkTextFill, BsTrashFill } from 'react-icons/bs';
 import { fadeInLeft } from 'style/animation';
@@ -59,8 +59,7 @@ const RecordTableHeader = styled.th`
   font-size: ${({ theme }) => theme.fontSize.s};
   color: ${({ theme }) => theme.darkGrey};
   text-align: start;
-  &.clients,
-  &.buildings {
+  &.clients {
     &:nth-of-type(1) {
       width: 10%;
     }
@@ -95,8 +94,7 @@ const RecordTableData = styled.td<RecordDataType>`
   color: ${({ theme }) => theme.darkGrey};
   text-align: ${({ empty }) => (empty ? 'center' : 'start')};
   animation: ${fadeInLeft} 0.5s linear;
-  &.clients,
-  &.buildings {
+  &.clients {
     &:nth-of-type(1) {
       width: 10%;
     }
@@ -142,7 +140,7 @@ interface IProps {
   title: string;
   headers: string[];
   dataProperty: string[];
-  records?: (IBuilding | IClient | IBooking)[];
+  records?: (IClient | IBooking)[];
   emptyText: string;
   editHandler: (index: number) => void;
   deleteHandler: (index: number) => void;

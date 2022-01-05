@@ -61,6 +61,7 @@ const SelectRecord: React.FunctionComponent<IProps> = ({ title, options = [], in
           placeholder="Wybierz"
           onChange={(val: TSelect) => recordStateHandler(recordProperty, val)}
           selected={recordState[recordProperty]}
+          value={recordState[recordProperty]}
         />
         <Button onClick={() => console.log(recordState[recordProperty])}>
           <BsFillPlusCircleFill />

@@ -8,7 +8,7 @@ import SideNav from 'components/organisms/SideNav';
 import BookingCalender from 'components/organisms/Calender';
 import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
-import { ADMIN_TABS, initialAdminState, MODAL_TYPES } from 'utils';
+import { ADMIN_TABS, BUILDINGS_OPTIONS, initialAdminState, MODAL_TYPES } from 'utils';
 import ModalClient from 'components/molecules/modals/ModalClient';
 import ModalAdminReservation from 'components/molecules/modals/ModalAdminReservation';
 import ModalSummary from 'components/molecules/modals/ModalSummary';
@@ -36,7 +36,11 @@ const Admin = (): JSX.Element => {
   } = useSelector((state: IReduxState) => state);
 
   const stateHandler = (value: TSelect, field: string) => {
-    setAdminState((prev) => ({ ...prev, [field]: value }));
+    if (field === 'city') {
+      setAdminState(() => ({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
+    } else {
+      setAdminState((prev) => ({ ...prev, building: value }));
+    }
   };
 
   const tabHandler = (currentTab: ADMIN_TABS): void => {

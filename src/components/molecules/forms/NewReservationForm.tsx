@@ -188,6 +188,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              value={value}
               defaultValue={city}
             />
           )}
@@ -209,6 +210,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              value={value}
               isDisabled={!cityValue}
               defaultValue={building}
             />

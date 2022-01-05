@@ -50,6 +50,8 @@ const SideNav: React.FunctionComponent<IProps> = ({
     return BUILDINGS_OPTIONS[city.value];
   };
 
+  React.useLayoutEffect(() => {}, [state]);
+
   return (
     <SideWrapper>
       <SelectWrapper>
@@ -67,6 +69,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
         <Label>Obiekt</Label>
         <SelectInputField
           defaultValue={building}
+          value={building}
           options={selectBuilding()}
           styles={customStyles(false)}
           placeholder="Wybierz"

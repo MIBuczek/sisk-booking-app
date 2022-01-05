@@ -115,6 +115,7 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
                 onChange={onChange}
                 onBlur={onBlur}
                 selected={value}
+                value={value}
                 defaultValue={adminState.city}
               />
             )}
@@ -135,6 +136,7 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
                 onChange={onChange}
                 onBlur={onBlur}
                 selected={value}
+                value={value}
                 isDisabled={!cityValue}
                 defaultValue={adminState.building}
               />

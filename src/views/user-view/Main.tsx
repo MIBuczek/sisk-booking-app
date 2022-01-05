@@ -5,7 +5,7 @@ import BookingCalender from 'components/organisms/Calender';
 import SideNav from 'components/organisms/SideNav';
 import { fadeIn } from 'style/animation';
 import { IMainState, IReduxState, TSelect } from 'models';
-import { initialMainState, MODAL_TYPES } from 'utils';
+import { BUILDINGS_OPTIONS, initialMainState, MODAL_TYPES } from 'utils';
 import { cloneDeep } from 'lodash';
 import { useSelector } from 'react-redux';
 import Modal from 'components/organisms/Modal';
@@ -30,7 +30,11 @@ const Main: React.FC<IProps> = (): JSX.Element => {
   const [mainState, setNavState] = React.useState<IMainState>(cloneDeep(initialMainState));
 
   const mainStateHandler = (value: TSelect, field: string) => {
-    setNavState((prev) => ({ ...prev, [field]: value }));
+    if (field === 'city') {
+      setNavState(() => ({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
+    } else {
+      setNavState((prev) => ({ ...prev, building: value }));
+    }
   };
 
   const { isOpen, type } = useSelector((state: IReduxState) => state.modal);

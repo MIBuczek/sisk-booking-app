@@ -128,6 +128,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
                 onChange={onChange}
                 onBlur={onBlur}
                 selected={value}
+                value={value}
                 defaultValue={CLIENT_OPTIONS[0]}
               />
             )}

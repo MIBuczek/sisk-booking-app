@@ -70,7 +70,6 @@ const ModalClient = (): JSX.Element => {
       <ClientInnerContent>
         <ClientSubHeader>Lista klientow</ClientSubHeader>
         <MultipleRecords
-          title="clients"
           headers={RECORDS_CLIENTS_HEADERS}
           dataProperty={RECORDS_CLIENTS_ROW}
           dataPropertyDetails={[]}

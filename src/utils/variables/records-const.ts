@@ -1,5 +1,5 @@
-const RECORDS_CLIENTS_HEADERS = ['Lp.', 'Nazwa klienta', 'Akcja'];
-const RECORDS_CLIENTS_ROW = ['name'];
+const RECORDS_CLIENTS_HEADERS = ['Lp.', 'Nazwa klienta', 'Telefon', 'E-mail', 'Akcja'];
+const RECORDS_CLIENTS_ROW = ['name', 'phone', 'email'];
 const RECORDS_CLIENTS_ROW_DETAILS = [
   'id',
   'name',

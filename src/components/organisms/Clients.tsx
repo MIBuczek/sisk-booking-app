@@ -65,6 +65,7 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
   const editClientHandler = (index: number) => {
     setIsEditing(true);
     setEditedItemIndex(index);
+    dispatch(openModal(MODAL_TYPES.CLIENT));
   };
 
   const deleteClientHandler = (index: number) => {
@@ -99,7 +100,6 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
         </OpenClientModalButton>
       </RecordsActionContent>
       <MultipleRecords
-        title="clients"
         headers={RECORDS_CLIENTS_HEADERS}
         dataProperty={RECORDS_CLIENTS_ROW}
         dataPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}

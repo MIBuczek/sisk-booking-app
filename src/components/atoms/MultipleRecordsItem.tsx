@@ -12,7 +12,22 @@ const RecordTableData = styled.td`
   font-size: ${({ theme }) => theme.fontSize.s};
   color: ${({ theme }) => theme.darkGrey};
   animation: ${fadeInLeft} 0.5s linear;
-  &.clients {
+  &:nth-of-type(1) {
+    width: 10%;
+  }
+  &:nth-of-type(2) {
+    width: 35%;
+  }
+  &:nth-of-type(3) {
+    width: 20%;
+  }
+  &:nth-of-type(4) {
+    width: 20%;
+  }
+  &:nth-of-type(5) {
+    width: 15%;
+  }
+  /* &.clients {
     &:nth-of-type(1) {
       width: 10%;
     }
@@ -37,7 +52,7 @@ const RecordTableData = styled.td`
     &:nth-of-type(4) {
       width: 11%;
     }
-  }
+  } */
 `;
 
 const ListItemBtn = styled(Button)`
@@ -80,7 +95,6 @@ const ChevronIcon = styled(BsChevronDown)`
 `;
 
 interface MultipleRecordItemProps {
-  className: string;
   index: number;
   recordProperty: string[];
   recordPropertyDetails: string[];
@@ -90,7 +104,6 @@ interface MultipleRecordItemProps {
 }
 
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
-  className,
   index,
   recordProperty,
   recordPropertyDetails,
@@ -102,16 +115,12 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
     render={({ isCollapsed, toggle }: IRenderProps) => (
       <>
         <tr>
-          <RecordTableData className={className}>{index}</RecordTableData>
+          <RecordTableData>{index}</RecordTableData>
           {recordProperty.map((property) => {
             if (!currentRecord[property]) return null;
-            return (
-              <RecordTableData key={property} className={className}>
-                {currentRecord[property]}
-              </RecordTableData>
-            );
+            return <RecordTableData key={property}>{currentRecord[property]}</RecordTableData>;
           })}
-          <RecordTableData className={className}>
+          <RecordTableData>
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
             </ListItemBtn>

@@ -21,7 +21,7 @@ const ClientWrapper = styled.section`
 `;
 
 const ClientSubHeader = styled(Header)`
-  font-size: ${({ theme }) => theme.fontSize.m};
+  font-size: ${({ theme }) => theme.fontSize.l};
   width: 85%;
   margin: 15px 0 25px;
 `;
@@ -105,6 +105,11 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
     reset(CLIENT_INITIAL_VALUE);
     setClientId(undefined);
     initialEditingState();
+  };
+
+  const cancelHandler = () => {
+    createInitialState();
+    dispatch(closeModal());
   };
 
   return (
@@ -293,7 +298,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
         {errors.zipCode && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </ClientInnerContent>
       <ButtonPanel>
-        <Button secondary onClick={createInitialState}>
+        <Button secondary onClick={cancelHandler}>
           Anuluj
         </Button>
         <Button onClick={onSubmit}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>

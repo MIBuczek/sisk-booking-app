@@ -15,15 +15,15 @@ import { MODAL_TYPES } from '../../utils/variables/store-const';
 
 type Navigation = {
   isTop: boolean;
+  isOpen: boolean;
 };
 
 const NavWrapper = styled.nav<Navigation>`
   width: 100%;
   min-height: 12vh;
-  background: transparent;
   padding: ${({ isTop }) => (isTop ? '22px 60px' : '10px 60px')};
   background: ${({ isTop }) => (isTop ? 'transparent' : 'white')};
-  position: fixed;
+  position: ${({ isOpen }) => (isOpen ? 'static' : 'fixed')};
   top: 0;
   left: 0;
   z-index: 100;
@@ -98,15 +98,18 @@ const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const { auth } = useSelector((store: IReduxState) => store.authStore);
+  const {
+    authStore: auth,
+    modal: { isOpen }
+  } = useSelector((store: IReduxState): IReduxState => store);
 
   const scrollPosition = useScrollPosition();
 
-  if (scrollPosition > 30 && isTop) setIsTop(false);
+  if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
   else if (scrollPosition < 30 && !isTop) setIsTop(true);
 
   return (
-    <NavWrapper isTop={isTop}>
+    <NavWrapper isTop={isTop} isOpen={isOpen}>
       <NavContent>
         <Logo />
         <StyledLinksList>

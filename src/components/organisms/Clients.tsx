@@ -7,7 +7,12 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, openModal } from 'store';
 import styled from 'styled-components';
-import { MODAL_TYPES, RECORDS_CLIENTS_HEADERS, RECORDS_CLIENTS_ROW } from 'utils';
+import {
+  MODAL_TYPES,
+  RECORDS_CLIENTS_HEADERS,
+  RECORDS_CLIENTS_ROW,
+  RECORDS_CLIENTS_ROW_DETAILS
+} from 'utils';
 import Modal from 'components/organisms/Modal';
 import SearchInputField from 'components/atoms/SearchInputField';
 
@@ -97,6 +102,7 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
         title="clients"
         headers={RECORDS_CLIENTS_HEADERS}
         dataProperty={RECORDS_CLIENTS_ROW}
+        dataPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}
         records={clientList}
         editHandler={editClientHandler}
         deleteHandler={deleteClientHandler}

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
-import { db, parseFirebaseBookingData, BOOKING_STATE, SAVING_STAGE } from 'utils';
-import { IBooking, IBookingsAction, IReduxState } from 'models';
+import { db, parseFirebaseBookingData, BOOKING_STATE, SAVING_STAGE, MODAL_TYPES } from 'utils';
+import { IBooking, IBookingsAction, IModalAction, IReduxState } from 'models';
+import { openModal } from 'store';
 
 export const fetchingBookings = (): IBookingsAction => ({
   type: BOOKING_STATE.INITIAL_BOOKING,
@@ -66,7 +67,7 @@ export const getBookingsData = (isUser: boolean) => async (
 };
 
 export const addBooking = (bookingData: IBooking) => async (
-  dispatch: Dispatch<IBookingsAction>,
+  dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
@@ -74,26 +75,31 @@ export const addBooking = (bookingData: IBooking) => async (
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = [...bookings, bookingData];
     dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));
+    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
   } catch (err) {
-    dispatch(fetchingBookingsError('Problem z serverem. Nie można dodać nowej rezerwacji.'));
+    dispatch(
+      openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie można dodac Twojej rezerwacji.')
+    );
     throw new Error(JSON.stringify(err));
   }
 };
 
 export const updateBooking = (bookingData: IBooking) => async (
-  dispatch: Dispatch<IBookingsAction>,
+  dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  // dispatch(fetchingBookings());
   try {
-    // await db.collection('bookings').doc(bookingData.id).update(bookingData);
+    await db.collection('bookings').doc(bookingData.id).update(bookingData);
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.map((booking: IBooking) =>
       booking.id === bookingData.id ? bookingData : booking
     );
     dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, newBookings));
+    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została zaktualizowana pomyślnie'));
   } catch (err) {
-    dispatch(fetchingBookingsError('Problem z serverem. Nie można zaktualizować rezerwacji.'));
+    dispatch(
+      openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie można zaktualizować rezerwacji.')
+    );
     throw new Error(JSON.stringify(err));
   }
 };
@@ -120,17 +126,17 @@ export const clearCurrentBooking = () => async (
 };
 
 export const deleteBooking = (id: string) => async (
-  dispatch: Dispatch<IBookingsAction>,
+  dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
-  dispatch(fetchingBookings());
   try {
     db.collection('bookings').doc(id).delete();
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
     dispatch(fetchingBookingsDone(BOOKING_STATE.DELETE_BOOKING, newBookings));
+    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Kasowanie elementu przebiegło pomyślnie'));
   } catch (err) {
-    dispatch(fetchingBookingsError('Problem z serverem. Nie można skasować rezerwacji.'));
+    dispatch(openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie można skasować rezerwacji.'));
     throw new Error(JSON.stringify(err));
   }
 };

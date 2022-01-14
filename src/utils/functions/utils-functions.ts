@@ -12,10 +12,10 @@ const createSelectedOption = (value: string, options: TSelect[]): TSelect | unde
   options.find((c) => c.value === value);
 
 const pagination = (
-  items: (IBuilding | IClient | IBooking)[],
+  items: (IClient | IBooking)[],
   currentPage: number,
   postPerPage: number
-): (IBuilding | IClient | IBooking)[] => {
+): (IClient | IBooking)[] => {
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   return items.slice(indexOfFirstPost, indexOfLastPost);

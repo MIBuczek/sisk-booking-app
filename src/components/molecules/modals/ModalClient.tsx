@@ -73,6 +73,7 @@ const ModalClient = (): JSX.Element => {
           title="clients"
           headers={RECORDS_CLIENTS_HEADERS}
           dataProperty={RECORDS_CLIENTS_ROW}
+          dataPropertyDetails={[]}
           records={clients}
           editHandler={editClientHandler}
           deleteHandler={deleteClientHandler}

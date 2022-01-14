@@ -1,11 +1,10 @@
 import { isEmpty } from 'lodash';
 import { IBooking, IClient } from 'models';
 import * as React from 'react';
-import { BsFillFileEarmarkTextFill, BsTrashFill } from 'react-icons/bs';
 import { fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
 import { pagination } from 'utils';
-import Button from './Button';
+import MultipleRecordItem from './MultipleRecordsItem';
 import Pagination from './Pagination';
 
 type RecordDataType = {
@@ -39,16 +38,13 @@ const RecordTable = styled.table`
     display: inherit;
     width: 100%;
     min-height: 430px;
+    tr {
+      display: block;
+    }
     tr.empty {
       width: 100%;
       text-align: center;
       margin: auto;
-      display: block;
-      /* width: 100%;
-      height: 100%;
-      display: block;
-      align-items: center;
-      justify-content: center; */
     }
   }
 `;
@@ -122,24 +118,11 @@ const RecordTableData = styled.td<RecordDataType>`
   }
 `;
 
-const ListItemBtn = styled(Button)`
-  background: white;
-  color: ${({ theme }) => theme.green};
-  font-size: ${({ theme }) => theme.fontSize.m};
-  border: none;
-  border-bottom: 1px solid white;
-  padding: 5px;
-  margin: 0;
-  &:hover {
-    box-shadow: none;
-    border-color: ${({ theme }) => theme.middleGray};
-  }
-`;
-
 interface IProps {
   title: string;
   headers: string[];
   dataProperty: string[];
+  dataPropertyDetails: string[];
   records?: (IClient | IBooking)[];
   emptyText: string;
   editHandler: (index: number) => void;
@@ -150,6 +133,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   title,
   headers,
   dataProperty,
+  dataPropertyDetails,
   records = [],
   emptyText,
   editHandler,
@@ -179,25 +163,16 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
             </tr>
           ) : (
             pagination(records, currentPage, postPerPage).map((record, index) => (
-              <tr key={`${record}`}>
-                <RecordTableData className={`${title}`}>{index}</RecordTableData>
-                {dataProperty.map((property) => {
-                  if (!record[property]) return null;
-                  return (
-                    <RecordTableData key={property} className={`${title}`}>
-                      {record[property]}
-                    </RecordTableData>
-                  );
-                })}
-                <RecordTableData className={`${title}`}>
-                  <ListItemBtn onClick={() => editHandler(index)}>
-                    <BsFillFileEarmarkTextFill />
-                  </ListItemBtn>
-                  <ListItemBtn onClick={() => deleteHandler(index)}>
-                    <BsTrashFill />
-                  </ListItemBtn>
-                </RecordTableData>
-              </tr>
+              <MultipleRecordItem
+                key={record.id}
+                className={title}
+                index={index}
+                recordProperty={dataProperty}
+                recordPropertyDetails={dataPropertyDetails}
+                currentRecord={record}
+                editHandler={editHandler}
+                deleteHandler={deleteHandler}
+              />
             ))
           )}
         </tbody>

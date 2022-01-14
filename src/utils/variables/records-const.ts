@@ -1,10 +1,17 @@
-const RECORDS_BUILDINGS_HEADERS = ['Lp.', 'Nazwa obiektu', 'Akcja'];
-
-const RECORDS_BUILDINGS_ROW = ['name'];
-
 const RECORDS_CLIENTS_HEADERS = ['Lp.', 'Nazwa klienta', 'Akcja'];
-
 const RECORDS_CLIENTS_ROW = ['name'];
+const RECORDS_CLIENTS_ROW_DETAILS = [
+  'id',
+  'name',
+  'type',
+  'contactPerson',
+  'phone',
+  'email',
+  'street',
+  'city',
+  'zipCode',
+  'nip'
+];
 
 const RECORDS_BOOKING_HEADERS = [
   'Lp.',
@@ -20,10 +27,9 @@ const RECORDS_BOOKING_HEADERS = [
 const RECORDS_BOOKING_ROW = ['name', 'person', 'club', 'city', 'building', 'size', 'accepted'];
 
 export {
-  RECORDS_BUILDINGS_HEADERS,
   RECORDS_CLIENTS_HEADERS,
   RECORDS_BOOKING_HEADERS,
-  RECORDS_BUILDINGS_ROW,
   RECORDS_CLIENTS_ROW,
-  RECORDS_BOOKING_ROW
+  RECORDS_BOOKING_ROW,
+  RECORDS_CLIENTS_ROW_DETAILS
 };

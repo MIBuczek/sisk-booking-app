@@ -143,7 +143,7 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
             )}
           />
         </ReservationSelectWrapper>
-        <MultipleRecords
+        {/* <MultipleRecords
           title="bookings"
           headers={RECORDS_BOOKING_HEADERS}
           dataProperty={RECORDS_BOOKING_ROW}
@@ -151,7 +151,7 @@ const ModalAdminReservation: React.FC<IProps> = ({ adminState }) => {
           editHandler={editReservationHandler}
           deleteHandler={deleteReservationHandler}
           emptyText={`Nie został dodany żadny budynek w ${adminState.city?.label}`}
-        />
+        /> */}
       </ReservationInnerContent>
       <ReservationInnerContent>
         <NewReservationForm

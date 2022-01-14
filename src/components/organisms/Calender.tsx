@@ -24,7 +24,7 @@ const CalenderWrapper = styled.section`
   z-index: 0;
   .fc-direction-ltr {
     width: 95%;
-    max-height: 580px;
+    max-height: 650px;
     font-size: 12px;
     font-weight: 500;
     color: #454545;

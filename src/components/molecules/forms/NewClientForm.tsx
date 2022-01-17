@@ -12,12 +12,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IClient, IReduxState } from 'models';
 import { IClientForm } from 'models/forms/client-form-model';
 import { addClient, closeModal, updateClient } from 'store';
+import ConfirmAction from '../ConfirmAction';
 
 const ClientWrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
-  padding: 20px 40px 80px;
   justify-content: center;
+  padding-top: 20px;
+  max-width: 1200px;
 `;
 
 const ClientSubHeader = styled(Header)`
@@ -47,7 +49,7 @@ const ButtonPanel = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 85%;
-  margin-top: 3rem;
+  margin: 3rem 0;
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -64,7 +66,9 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   editedItemIndex,
   initialEditingState
 }) => {
+  const [clientData, setClientData] = React.useState<IClient | undefined>(undefined);
   const [clientId, setClientId] = React.useState<string | undefined>(undefined);
+  const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
 
   const dispatch = useDispatch();
   const { clients } = useSelector((state: IReduxState) => state.clientStore);
@@ -81,19 +85,23 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   }, [isEditing]);
 
   const onSubmit = handleSubmit<IClientForm>(async (cred) => {
-    const clientData = {
+    setClientData({
       ...cred,
       type: cred.type.value,
       id: clientId || clients?.length.toString()
-    } as IClient;
+    } as IClient);
+    setDisplayConfirmation(true);
+  });
 
+  const confirmSubmit = () => {
+    if (!clientData) return;
     if (clientId) {
       dispatch(updateClient(clientData));
     } else dispatch(addClient(clientData));
 
     createInitialState();
     dispatch(closeModal());
-  });
+  };
 
   const editClientHandler = (index: number) => {
     const currentClient = clients[index];
@@ -104,7 +112,9 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   const createInitialState = () => {
     reset(CLIENT_INITIAL_VALUE);
     setClientId(undefined);
+    setClientData(undefined);
     initialEditingState();
+    setDisplayConfirmation(false);
   };
 
   const cancelHandler = () => {
@@ -135,6 +145,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
                 selected={value}
                 value={value}
                 defaultValue={CLIENT_OPTIONS[0]}
+                isDisabled={displayConfirmation}
               />
             )}
           />
@@ -156,6 +167,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
               invalid={!!errors.name}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -176,6 +188,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
                   invalid={!!errors.nip}
                   className="input"
                   placeholder="Wpisz"
+                  disabled={displayConfirmation}
                 />
               )}
             />
@@ -196,6 +209,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
               invalid={!!errors.phone}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -214,6 +228,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
               invalid={!!errors.email}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -236,6 +251,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
                   invalid={!!errors.contactPerson}
                   className="input"
                   placeholder="Wpisz"
+                  disabled={displayConfirmation}
                 />
               )}
             />
@@ -256,6 +272,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
               invalid={!!errors.street}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -274,6 +291,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
               invalid={!!errors.city}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -292,17 +310,26 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
               invalid={!!errors.zipCode}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
         {errors.zipCode && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </ClientInnerContent>
-      <ButtonPanel>
-        <Button secondary onClick={cancelHandler}>
-          Anuluj
-        </Button>
-        <Button onClick={onSubmit}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>
-      </ButtonPanel>
+      {displayConfirmation ? (
+        <ConfirmAction
+          message="Czy napewno chcesz dodac nowego klienta do bazy ?"
+          callback={confirmSubmit}
+          cancelCallback={() => setDisplayConfirmation(false)}
+        />
+      ) : (
+        <ButtonPanel>
+          <Button secondary onClick={cancelHandler}>
+            Anuluj
+          </Button>
+          <Button onClick={onSubmit}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>
+        </ButtonPanel>
+      )}
     </ClientWrapper>
   );
 };

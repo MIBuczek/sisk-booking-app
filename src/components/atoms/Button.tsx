@@ -14,7 +14,7 @@ const Button = styled.button<ButtonProps>`
   font-family: inherit;
   margin: 1rem 0;
   cursor: pointer;
-  padding: ${({ large }) => (large ? '12px 20px' : '8px 6px')};
+  padding: ${({ large }) => (large ? '12px 20px' : '8px 14px')};
   border-radius: 3px;
   letter-spacing: -0.5px;
   transition: 0.4s;

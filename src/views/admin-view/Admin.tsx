@@ -11,7 +11,6 @@ import { IAdminState, IReduxState, TSelect } from 'models';
 import { ADMIN_TABS, BUILDINGS_OPTIONS, initialAdminState, MODAL_TYPES } from 'utils';
 import ModalClient from 'components/molecules/modals/ModalClient';
 import ModalAdminReservation from 'components/molecules/modals/ModalAdminReservation';
-import ModalSummary from 'components/molecules/modals/ModalSummary';
 import Clients from 'components/organisms/Clients';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
 
@@ -64,7 +63,6 @@ const Admin = (): JSX.Element => {
         <Modal>
           <ModalMessage />
           {/* {type === MODAL_TYPES.BUILDINGS && <ModalBuilding adminState={adminState} />}
-          {type === MODAL_TYPES.SUMMARY && <ModalSummary />}
           {type === MODAL_TYPES.ADMIN_RESERVATION && (
             <ModalAdminReservation adminState={adminState} />
           )} */}

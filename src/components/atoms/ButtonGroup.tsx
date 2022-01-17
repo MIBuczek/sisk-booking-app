@@ -25,10 +25,16 @@ const GroupBtn = styled(Button)<GroupBtnProps>`
 interface IProps {
   value: SIZE_OPTIONS;
   options: SIZE_OPTIONS[];
+  disabled: boolean;
   optionsHandler: (e: Event, value: SIZE_OPTIONS) => void;
 }
 
-const ButtonGroup: React.FunctionComponent<IProps> = ({ value, options, optionsHandler }) => (
+const ButtonGroup: React.FunctionComponent<IProps> = ({
+  value,
+  options,
+  disabled,
+  optionsHandler
+}) => (
   <ButtonGroupWrapper>
     {!isEmpty(options)
       ? options.map(
@@ -37,6 +43,7 @@ const ButtonGroup: React.FunctionComponent<IProps> = ({ value, options, optionsH
               key={option}
               active={value === option}
               onClick={(e) => optionsHandler((e as unknown) as Event, option)}
+              disabled={disabled}
             >
               {option}
             </GroupBtn>

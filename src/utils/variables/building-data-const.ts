@@ -7,7 +7,7 @@ const RADWANICE_BUILDINGS: IBuilding[] = [
     name: 'Hala sportowa',
     property: 'hala-sportowa',
     city: 'radwanice',
-    size: [SIZE_OPTIONS['1/2'], SIZE_OPTIONS['2/2']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
     extra: {
       lighting: false,
       toilets: false
@@ -30,7 +30,7 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     name: 'Hala sportowa',
     property: 'hala-sportowa',
     city: 'siechnice',
-    size: [SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4'], SIZE_OPTIONS['4/4']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
     extra: {
       lighting: false,
       toilets: false
@@ -50,7 +50,7 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     name: 'Boisko ze sztuczną nawierzchnią',
     property: 'boisko-sztuczna-nawierzchnia',
     city: 'siechnice',
-    size: [SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4'], SIZE_OPTIONS['4/4']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
     extra: {
       lighting: true,
       toilets: true
@@ -60,7 +60,7 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     name: 'Boisko trawiaste stadionie LA',
     property: 'boisko-trawiaste-stadionie-la',
     city: 'siechnice',
-    size: [SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4'], SIZE_OPTIONS['4/4']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
     extra: {
       lighting: false,
       toilets: false
@@ -73,7 +73,7 @@ const SWIETA_KATARZYNA_BUILDING: IBuilding[] = [
     name: 'Hala sportowa ',
     property: 'hala-sportowa',
     city: 'swieta-katarzyna',
-    size: [SIZE_OPTIONS['1/2'], SIZE_OPTIONS['2/2']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
     extra: {
       lighting: false,
       toilets: false
@@ -86,7 +86,7 @@ const ZERNIKI_WROCLAWSKIE_BUILDING: IBuilding[] = [
     name: 'Hala sportowa',
     property: 'hala-sportowa',
     city: 'zerniki-wroclawskie',
-    size: [SIZE_OPTIONS['1/2'], SIZE_OPTIONS['2/2']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
     extra: {
       lighting: false,
       toilets: false

@@ -318,7 +318,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
       </ClientInnerContent>
       {displayConfirmation ? (
         <ConfirmAction
-          message="Czy napewno chcesz dodac nowego klienta do bazy ?"
+          message="Czy napewno chcesz dodac nowego klienta do bazy"
           callback={confirmSubmit}
           cancelCallback={() => setDisplayConfirmation(false)}
         />

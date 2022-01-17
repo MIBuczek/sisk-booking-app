@@ -31,11 +31,11 @@ import Button from 'components/atoms/Button';
 import pl from 'date-fns/locale/pl';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
+import ConfirmAction from '../ConfirmAction';
 
 registerLocale('pl', pl);
 
 const ReservationWrapper = styled.form`
-  padding: 20px;
   max-width: 670px;
   display: flex;
   flex-wrap: wrap;
@@ -47,6 +47,10 @@ const ReservationWrapper = styled.form`
 const ReservationHeader = styled(Header)`
   width: 100%;
   margin: 20px 0 40px;
+  padding: 0 20px;
+  &:after {
+    left: 20px;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -61,18 +65,33 @@ const RodoWrapper = styled.div`
   height: auto;
   display: flex;
   align-items: center;
-  margin: 10px;
+  margin: 10px 20px;
+`;
+
+const TextAreaLabel = styled(Label)`
+  margin: 10px 20px;
 `;
 
 const MessageTextArea = styled(TextAreaField)`
   width: 100%;
-  margin: 10px;
+  margin: 10px 20px;
 `;
 
 const ButtonWrapper = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
+`;
+
+const ButtonPanel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 3rem 20px;
+  button {
+    margin: 0 0 0 0.8rem;
+  }
 `;
 
 interface NewReservationFormProps {
@@ -90,14 +109,18 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
   editedItemIndex,
   initialEditingState
 }) => {
+  const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
   const [bookingId, setBookingId] = React.useState<string | undefined>(undefined);
   const [selectedSize, setSelectedSize] = React.useState(SIZE_OPTIONS['1/1']);
   const [sizeOptions, setSizeOptions] = React.useState(SIZE_OPTIONS_BTN);
+  const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
   const [police, setPolice] = React.useState<boolean>(false);
+
   const { city, building } = mainState;
 
   const dispatch = useDispatch();
   const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
+
   const { handleSubmit, errors, control, watch, reset } = useForm<IBookingForm>({
     defaultValues: { ...BOOKING_INITIAL_VALUE, ...mainState }
   });
@@ -113,10 +136,6 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
 
   const selectBuildingOptions = (): TSelect[] => {
     if (!cityValue) return [building];
-    // reset({
-    //   ...BOOKING_INITIAL_VALUE,
-    //   building: BUILDINGS_OPTIONS[cityValue.value][0]
-    // });
     return BUILDINGS_OPTIONS[cityValue.value];
   };
 
@@ -126,7 +145,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
   };
 
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
-    const bookingData = {
+    setBookingData({
       ...cred,
       city: cred.city.value,
       building: cred.building.value,
@@ -134,11 +153,20 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
       size: selectedSize,
       accepted: false,
       id: bookingId || bookings?.length.toString()
-    } as IBooking;
+    } as IBooking);
+    setDisplayConfirmation(true);
+  });
+
+  const confirmSubmit = () => {
+    if (!bookingData) return;
+
     if (bookingId) dispatch(updateBooking(bookingData));
     else dispatch(addBooking(bookingData));
     dispatch(closeModal());
-  });
+
+    createInitialState();
+    dispatch(closeModal());
+  };
 
   const editBookingHandler = (index: number) => {
     const currentBooking = bookings[index];
@@ -154,6 +182,13 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
     reset({ ...BOOKING_INITIAL_VALUE, ...mainState });
     setBookingId(undefined);
     initialEditingState();
+    setDisplayConfirmation(false);
+    setBookingData(undefined);
+  };
+
+  const cancelHandler = () => {
+    createInitialState();
+    dispatch(closeModal());
   };
 
   React.useEffect(() => {
@@ -190,6 +225,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               selected={value}
               value={value}
               defaultValue={city}
+              isDisabled={displayConfirmation}
             />
           )}
         />
@@ -211,7 +247,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               onBlur={onBlur}
               selected={value}
               value={value}
-              isDisabled={!cityValue}
+              isDisabled={!cityValue || displayConfirmation}
               defaultValue={building}
             />
           )}
@@ -223,6 +259,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
           options={sizeOptions}
           value={selectedSize}
           optionsHandler={selectedSizeHandler}
+          disabled={displayConfirmation}
         />
       </ButtonWrapper>
       <SelectWrapper>
@@ -238,6 +275,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
                 className="checkbox"
                 name="regular"
                 changeHandler={onChange}
+                disabled={displayConfirmation}
               />
             )}
           />
@@ -258,6 +296,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               invalid={!!errors.person}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -276,6 +315,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               invalid={!!errors.email}
               className="input"
               placeholder="Wpisz"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -294,6 +334,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               invalid={!!errors.phone}
               className="input"
               placeholder="000-000-000"
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -318,6 +359,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -342,6 +384,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
                   onChange={onChange}
                   onBlur={onBlur}
                   selected={value}
+                  disabled={displayConfirmation}
                 />
               )}
             />
@@ -371,6 +414,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              disabled={displayConfirmation}
             />
           )}
         />
@@ -398,12 +442,13 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              disabled={displayConfirmation}
             />
           )}
         />
         {errors.end && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </InputContainer>
-      <Label>Chciałbyś przesłać dodatkowe informacje </Label>
+      <TextAreaLabel>Chciałbyś przesłać dodatkowe informacje</TextAreaLabel>
       <Controller
         name="message"
         defaultValue={''}
@@ -415,6 +460,7 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
             onChange={onChange}
             onBlur={onBlur}
             value={value}
+            disabled={displayConfirmation}
           />
         )}
       />
@@ -424,7 +470,8 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
             checked={police}
             className="checkbox"
             name="police"
-            changeHandler={() => setPolice(!police)}
+            changeHandler={() => setPolice(displayConfirmation ? police : !police)}
+            disabled={displayConfirmation}
           />
           <Anchor
             small
@@ -435,14 +482,30 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
           </Anchor>
         </RodoWrapper>
       )}
-      <Button
+      {displayConfirmation ? (
+        <ConfirmAction
+          message="Czy napewno chcesz wysłać prośbe o rezerwacje"
+          callback={confirmSubmit}
+          cancelCallback={() => setDisplayConfirmation(false)}
+        />
+      ) : (
+        <ButtonPanel>
+          <Button role="button" secondary onClick={cancelHandler}>
+            Anuluj
+          </Button>
+          <Button role="button" onClick={onSubmit} disabled={isAdmin ? false : !police}>
+            {isAdmin ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwacje` : 'Wyślij Rezerwacje'}
+          </Button>
+        </ButtonPanel>
+      )}
+      {/* <Button
         role="button"
         onClick={onSubmit}
         disabled={isAdmin ? false : !police}
         style={{ marginLeft: 'auto' }}
       >
         {isAdmin ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwacje` : 'Wyślij Rezerwacje'}
-      </Button>
+      </Button> */}
     </ReservationWrapper>
   );
 };

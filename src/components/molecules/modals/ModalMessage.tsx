@@ -126,6 +126,7 @@ const ModalMessage = () => {
           checked={police}
           className="checkbox"
           name="police"
+          disabled={false}
           changeHandler={() => setPolice(!police)}
         />
         <Anchor

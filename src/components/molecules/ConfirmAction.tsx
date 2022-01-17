@@ -1,6 +1,7 @@
 import Button from 'components/atoms/Button';
 import Paragraph from 'components/atoms/Paragraph';
 import * as React from 'react';
+import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
 
@@ -22,7 +23,7 @@ const ConfirmationContent = styled.div`
 `;
 
 const ConfirmationParagraph = styled(Paragraph)`
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   color: white;
   position: relative;
   font-size: 16px;
@@ -34,6 +35,11 @@ const ConfirmationParagraph = styled(Paragraph)`
     border-bottom: 5px solid white;
     width: 110px;
   }
+`;
+
+const QuestionIcon = styled(BsFillQuestionCircleFill)`
+  color: white;
+  margin: 5px 0 0 5px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -55,7 +61,10 @@ interface IProps {
 const ConfirmAction: React.FunctionComponent<IProps> = ({ message, callback, cancelCallback }) => (
   <ConfirmationWrapper>
     <ConfirmationContent>
-      <ConfirmationParagraph>{message}</ConfirmationParagraph>
+      <ConfirmationParagraph>
+        {message}
+        <QuestionIcon />
+      </ConfirmationParagraph>
       <ButtonWrapper>
         <ConfirmationBtn role="button" secondary onClick={cancelCallback}>
           Nie

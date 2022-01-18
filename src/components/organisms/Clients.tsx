@@ -79,6 +79,7 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
     if (typeof deleteItemIndex === 'undefined') return;
     const currentClient = clients[deleteItemIndex];
     if (currentClient.id) dispatch(deleteClient(currentClient.id));
+    clientListHandler(clients.filter((c) => c.id !== currentClient.id));
     initialClientState();
     dispatch(closeModal());
   };
@@ -98,7 +99,7 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
     setClientList(searchResults);
   };
 
-  React.useEffect(() => undefined, [clients, clientList]);
+  React.useEffect(() => undefined, [clientList]);
 
   return (
     <CalenderWrapper>

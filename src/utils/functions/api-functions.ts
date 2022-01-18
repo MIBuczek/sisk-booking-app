@@ -19,8 +19,9 @@ const parseFirebaseBookingData = (doc: any) =>
     id: doc.data().id
   } as IBooking);
 
-const parseFirebaseClientData = (doc: any) =>
-  ({
+const parseFirebaseClientData = (doc: any) => {
+  console.log(doc.id);
+  return {
     type: doc.data().type,
     name: doc.data().name,
     contactPerson: doc.data().contactPerson,
@@ -30,7 +31,8 @@ const parseFirebaseClientData = (doc: any) =>
     city: doc.data().city,
     zipCode: doc.data().zipCode,
     nip: doc.data().nip,
-    id: doc.data().id
-  } as IClient);
+    id: doc.id
+  } as IClient;
+};
 
 export { parseFirebaseBookingData, parseFirebaseClientData };

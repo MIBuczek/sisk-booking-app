@@ -83,8 +83,9 @@ export const deleteClient = (id: string) => async (
   try {
     db.collection('clients').doc(id).delete();
     const { clients } = getStore().clientStore;
-    const newClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
-    dispatch(fetchingClientsDone(CLIENTS_STATE.DELETE_CLIENT, newClients));
+    const updatedClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
+    console.log(updatedClients);
+    dispatch(fetchingClientsDone(CLIENTS_STATE.DELETE_CLIENT, updatedClients));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można skasować danych klienta.'));
     throw new Error(JSON.stringify(err));

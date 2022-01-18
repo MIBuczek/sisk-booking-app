@@ -5,7 +5,7 @@ import NewClientForm from 'components/molecules/forms/NewClientForm';
 import { IAdminState, IClient, IReduxState } from 'models';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteClient, openModal } from 'store';
+import { closeModal, deleteClient, openModal } from 'store';
 import styled from 'styled-components';
 import {
   MODAL_TYPES,
@@ -15,6 +15,7 @@ import {
 } from 'utils';
 import Modal from 'components/organisms/Modal';
 import SearchInputField from 'components/atoms/SearchInputField';
+import ModalDelete from 'components/molecules/modals/ModalDelete';
 
 const CalenderWrapper = styled.section`
   width: 60%;
@@ -54,6 +55,7 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
   const [clientList, setClientList] = React.useState<IClient[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
+  const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
 
   const dispatch = useDispatch();
 
@@ -69,21 +71,34 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
   };
 
   const deleteClientHandler = (index: number) => {
-    const currentClient = clients[index];
-    if (currentClient.id) dispatch(deleteClient(currentClient.id));
-    initialEditingState();
+    setDeleteItemIndex(index);
+    dispatch(openModal(MODAL_TYPES.DELETE));
   };
 
-  const initialEditingState = () => {
+  const deleteClientAction = () => {
+    if (typeof deleteItemIndex === 'undefined') return;
+    const currentClient = clients[deleteItemIndex];
+    if (currentClient.id) dispatch(deleteClient(currentClient.id));
+    initialClientState();
+    dispatch(closeModal());
+  };
+
+  const cancelDeleteClientAction = () => {
+    initialClientState();
+    dispatch(closeModal());
+  };
+
+  const initialClientState = () => {
     setIsEditing(false);
     setEditedItemIndex(undefined);
+    setDeleteItemIndex(undefined);
   };
 
   const clientListHandler = (searchResults: IClient[]): void => {
     setClientList(searchResults);
   };
 
-  React.useEffect(() => undefined, [clientList]);
+  React.useEffect(() => undefined, [clients, clientList]);
 
   return (
     <CalenderWrapper>
@@ -114,7 +129,14 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
             <NewClientForm
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}
-              initialEditingState={initialEditingState}
+              initialEditingState={initialClientState}
+            />
+          )}
+          {type === MODAL_TYPES.DELETE && (
+            <ModalDelete
+              message="Czy na pewno chcesz chcesz skazować tego clienta"
+              callback={deleteClientAction}
+              cancelCallback={cancelDeleteClientAction}
             />
           )}
         </Modal>

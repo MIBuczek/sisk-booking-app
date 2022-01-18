@@ -87,8 +87,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   const onSubmit = handleSubmit<IClientForm>(async (cred) => {
     setClientData({
       ...cred,
-      type: cred.type.value,
-      id: clientId || clients?.length.toString()
+      type: cred.type.value
     } as IClient);
     setDisplayConfirmation(true);
   });

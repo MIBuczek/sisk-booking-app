@@ -4,9 +4,6 @@ import styled from 'styled-components';
 
 import Cookies from 'components/molecules/Cookies';
 import Loading from 'components/molecules/Loading';
-import Footer from 'components/organisms/Footer';
-import TopNav from 'components/organisms/TopNav';
-import bgMain from 'assets/images/background.jpg';
 import ServerError from 'views/user-view/ServerError';
 
 const Main = React.lazy(() => import('./user-view/Main'));
@@ -14,6 +11,8 @@ const Login = React.lazy(() => import('./admin-view/Login'));
 const Admin = React.lazy(() => import('./admin-view/Admin'));
 const NoMatch = React.lazy(() => import('./user-view/NoMatch'));
 const Contact = React.lazy(() => import('./user-view/Contact'));
+const TopNav = React.lazy(() => import('components/organisms/TopNav'));
+const Footer = React.lazy(() => import('components/organisms/Footer'));
 
 const AppWrapper = styled.div`
   width: 100%;
@@ -24,19 +23,12 @@ const AppWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const BGImage = styled.img`
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  position: fixed;
-  z-index: -1;
-`;
-
 const App: React.FC = (): JSX.Element => (
   <HashRouter>
     <AppWrapper>
-      {/* <BGImage src={bgMain} alt="bgMain" /> */}
-      <TopNav />
+      <Suspense fallback={<Loading />}>
+        <TopNav />
+      </Suspense>
       <Switch>
         <Route exact path="/">
           <Suspense fallback={<Loading />}>
@@ -70,7 +62,9 @@ const App: React.FC = (): JSX.Element => (
         </Route>
       </Switch>
       <Cookies />
-      <Footer />
+      <Suspense fallback={<Loading />}>
+        <Footer />
+      </Suspense>
     </AppWrapper>
   </HashRouter>
 );

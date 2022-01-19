@@ -9,7 +9,6 @@ import BookingCalender from 'components/organisms/Calender';
 import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
 import { ADMIN_TABS, BUILDINGS_OPTIONS, initialAdminState, MODAL_TYPES } from 'utils';
-import ModalClient from 'components/molecules/modals/ModalClient';
 import ModalAdminReservation from 'components/molecules/modals/ModalAdminReservation';
 import Clients from 'components/organisms/Clients';
 import ModalMessage from 'components/molecules/modals/ModalMessage';

@@ -9,3 +9,4 @@ export * from 'models/store/modal-models';
 export * from 'models/store/store-models';
 export * from 'models/store/user-models';
 export * from 'models/components/main-view-model';
+export * from 'models/modals/modal-message';

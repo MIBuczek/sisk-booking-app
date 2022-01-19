@@ -49,7 +49,6 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
     }
     if (isUserPage) {
       dispatch(StoreActions.getBookingsData(true));
-      dispatch(StoreActions.getClientsData());
     }
   }, [authStore.savingStage, isUserPage]);
 

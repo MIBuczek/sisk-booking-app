@@ -102,6 +102,7 @@ interface IProps {
   headers: string[];
   dataProperty: string[];
   dataPropertyDetails: string[];
+  dataPropertyDisplayMap: { [x: string]: string };
   records?: (IClient | IBooking)[];
   emptyText: string;
   editHandler: (index: number) => void;
@@ -112,6 +113,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   headers,
   dataProperty,
   dataPropertyDetails,
+  dataPropertyDisplayMap,
   records = [],
   emptyText,
   editHandler,
@@ -144,6 +146,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 index={index}
                 recordProperty={dataProperty}
                 recordPropertyDetails={dataPropertyDetails}
+                recordPropertyDisplayMap={dataPropertyDisplayMap}
                 currentRecord={record}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}

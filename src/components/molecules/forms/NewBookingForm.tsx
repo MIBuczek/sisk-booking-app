@@ -150,9 +150,10 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       city: cred.city.value,
       building: cred.building.value,
       type: CLIENT_TYPE.CLIENT,
+      dateStart: cred.dateStart,
+      dateEnd: cred.dateEnd || cred.dateStart,
       size: selectedSize,
-      accepted: false,
-      id: bookingId || bookings?.length.toString()
+      accepted: false
     } as IBooking);
     setDisplayConfirmation(true);
   });
@@ -162,7 +163,6 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
 
     if (bookingId) dispatch(updateBooking(bookingData));
     else dispatch(addBooking(bookingData));
-    dispatch(closeModal());
 
     createInitialState();
     dispatch(closeModal());
@@ -343,7 +343,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       <InputContainer>
         <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałby zarezerwować obiekt`}</Label>
         <Controller
-          name="when"
+          name="dateStart"
           defaultValue={new Date()}
           control={control}
           rules={{ required: true }}
@@ -355,7 +355,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               placeholderText="Wybierz"
               locale="pl"
               minDate={new Date()}
-              invalid={!!errors.when}
+              invalid={!!errors.dateStart}
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
@@ -363,12 +363,12 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.when && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.dateStart && <ErrorMsg innerText="Pole nie moze byc puste" />}
         {regularValue && (
           <>
             <Label>Do kiedy chciałby zarezerwować obiekt</Label>
             <Controller
-              name="whenEnd"
+              name="dateEnd"
               defaultValue={new Date()}
               control={control}
               rules={{ required: true }}
@@ -380,7 +380,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
                   placeholderText="Wybierz"
                   locale="pl"
                   minDate={new Date()}
-                  invalid={!!errors.whenEnd}
+                  invalid={!!errors.dateEnd}
                   onChange={onChange}
                   onBlur={onBlur}
                   selected={value}
@@ -388,12 +388,12 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
                 />
               )}
             />
-            {errors.whenEnd && <ErrorMsg innerText="Pole nie moze byc puste" />}
+            {errors.dateEnd && <ErrorMsg innerText="Pole nie moze byc puste" />}
           </>
         )}
         <Label>Od której godziny</Label>
         <Controller
-          name="start"
+          name="hourStart"
           defaultValue={null}
           control={control}
           rules={{ required: true }}
@@ -406,7 +406,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               shouldCloseOnSelect
               minTime={setHours(setMinutes(new Date(), 0), 9)}
               maxTime={setHours(setMinutes(new Date(), 30), 22)}
-              invalid={!!errors.start}
+              invalid={!!errors.hourStart}
               timeIntervals={15}
               timeCaption="Godzina"
               dateFormat="h:mm aa"
@@ -418,10 +418,10 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.start && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.hourStart && <ErrorMsg innerText="Pole nie moze byc puste" />}
         <Label>Do której godziny</Label>
         <Controller
-          name="end"
+          name="hourEnd"
           defaultValue={null}
           control={control}
           rules={{ required: true }}
@@ -434,7 +434,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               shouldCloseOnSelect
               minTime={setHours(setMinutes(new Date(), 0), 9)}
               maxTime={setHours(setMinutes(new Date(), 30), 22)}
-              invalid={!!errors.end}
+              invalid={!!errors.hourEnd}
               timeIntervals={15}
               timeCaption="Godzina"
               dateFormat="h:mm aa"
@@ -446,7 +446,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.end && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.hourEnd && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </InputContainer>
       <TextAreaLabel>Chciałbyś przesłać dodatkowe informacje</TextAreaLabel>
       <Controller

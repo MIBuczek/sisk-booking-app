@@ -2,6 +2,8 @@ import { IBookingForm } from 'models/forms/booking-form-models';
 import { IClientForm } from 'models/forms/client-form-model';
 // import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils';
 
+const today = new Date();
+
 // Form Buildings
 export enum SIZE_OPTIONS {
   '1/1' = '1/1',
@@ -37,10 +39,10 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
   email: '',
   phone: '',
   regular: false,
-  when: null,
-  whenEnd: null,
-  start: null,
-  end: null,
+  dateStart: today,
+  dateEnd: today,
+  hourStart: today,
+  hourEnd: today,
   accepted: false,
   message: ''
 };

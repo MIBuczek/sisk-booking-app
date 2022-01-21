@@ -65,7 +65,7 @@ const BookingDetails = (): JSX.Element => {
       {typeof booking !== 'undefined' ? (
         <>
           <DetailsParagraph bold>
-            Dzień :<DetailsSpan>{formatDate(booking.when)}</DetailsSpan>
+            Dzień :<DetailsSpan>{formatDate(booking.dateStart)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
             Miejscowość :<DetailsSpan>{firstLetterUpperCase(booking.city)}</DetailsSpan>
@@ -80,10 +80,10 @@ const BookingDetails = (): JSX.Element => {
             Zajmowana powierzchnia : <DetailsSpan>{booking.size}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Od godziny : <DetailsSpan>{displayTime(booking.start)}</DetailsSpan>
+            Od godziny : <DetailsSpan>{displayTime(booking.hourStart)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Do godziny : <DetailsSpan>{displayTime(booking.end)}</DetailsSpan>
+            Do godziny : <DetailsSpan>{displayTime(booking.hourEnd)}</DetailsSpan>
           </DetailsParagraph>
           <ClearButton onClick={clear}>Wyczyść</ClearButton>
         </>

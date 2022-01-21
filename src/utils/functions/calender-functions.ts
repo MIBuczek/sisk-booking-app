@@ -39,8 +39,8 @@ const prepareCalenderItem = (b: IBooking) => ({
   allDay: false,
   id: b.id,
   title: 'Rezerwacja',
-  start: `${formatDate(b.when)}${getTime(b.start)}`,
-  end: `${formatDate(b.when)}${getTime(b.end)}`
+  start: `${formatDate(b.dateStart)}${getTime(b.hourStart)}`,
+  end: `${formatDate(b.dateStart)}${getTime(b.hourEnd)}`
 });
 
 export { formatDate, prepareCalenderItem, getTime, displayTime };

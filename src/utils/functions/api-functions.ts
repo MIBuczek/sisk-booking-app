@@ -4,6 +4,7 @@ import { IBooking } from 'models/store/booking-models';
 
 const parseFirebaseBookingData = (doc: any) =>
   ({
+    type: doc.data().type,
     city: doc.data().city,
     building: doc.data().building,
     size: doc.data().size,
@@ -11,17 +12,17 @@ const parseFirebaseBookingData = (doc: any) =>
     club: doc.data().club,
     email: doc.data().email,
     phone: doc.data().phone,
-    when: doc.data().when.toDate(),
-    start: doc.data().start.toDate(),
-    end: doc.data().end.toDate(),
+    regular: doc.data().regular,
+    dateStart: doc.data().dateStart.toDate(),
+    hourStart: doc.data().hourStart.toDate(),
+    hourEnd: doc.data().hourEnd.toDate(),
     message: doc.data().message,
     accepted: doc.data().accepted,
-    id: doc.data().id
+    id: doc.id
   } as IBooking);
 
-const parseFirebaseClientData = (doc: any) => {
-  console.log(doc.id);
-  return {
+const parseFirebaseClientData = (doc: any) =>
+  ({
     type: doc.data().type,
     name: doc.data().name,
     contactPerson: doc.data().contactPerson,
@@ -32,7 +33,6 @@ const parseFirebaseClientData = (doc: any) => {
     zipCode: doc.data().zipCode,
     nip: doc.data().nip,
     id: doc.id
-  } as IClient;
-};
+  } as IClient);
 
 export { parseFirebaseBookingData, parseFirebaseClientData };

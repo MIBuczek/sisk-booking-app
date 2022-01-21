@@ -10,7 +10,8 @@ import {
   MODAL_TYPES,
   RECORDS_BOOKINGS_HEADERS,
   RECORDS_BOOKINGS_ROW,
-  RECORDS_BOOKING_ROW_DETAILS
+  RECORDS_BOOKING_ROW_DETAILS,
+  RECORDS_BOOKING_DETAILS_PROPERTY_MAP
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import NewBookingForm from 'components/molecules/forms/NewBookingForm';
@@ -112,7 +113,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           searchContent={bookings}
           searchContentHandler={bookingListHandler}
         />
-        <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
+        <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
           Dodaj nowa rezerwace
         </OpenBookingsModalButton>
       </RecordsActionContent>
@@ -120,6 +121,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         headers={RECORDS_BOOKINGS_HEADERS}
         dataProperty={RECORDS_BOOKINGS_ROW}
         dataPropertyDetails={RECORDS_BOOKING_ROW_DETAILS}
+        dataPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
         records={bookingsList}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}

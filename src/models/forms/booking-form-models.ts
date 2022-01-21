@@ -10,10 +10,10 @@ interface IBookingForm {
   email: string;
   phone: string;
   regular?: boolean;
-  when: Date | null;
-  whenEnd?: Date | null;
-  start: Date | null;
-  end: Date | null;
+  dateStart: Date | null;
+  dateEnd?: Date | null;
+  hourStart: Date | null;
+  hourEnd: Date | null;
   accepted: boolean;
   message: string;
   id?: string;

@@ -9,6 +9,7 @@ import { closeModal, deleteClient, openModal } from 'store';
 import styled from 'styled-components';
 import {
   MODAL_TYPES,
+  RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
   RECORDS_CLIENTS_HEADERS,
   RECORDS_CLIENTS_ROW,
   RECORDS_CLIENTS_ROW_DETAILS
@@ -118,6 +119,7 @@ const Clients = () => {
         headers={RECORDS_CLIENTS_HEADERS}
         dataProperty={RECORDS_CLIENTS_ROW}
         dataPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}
+        dataPropertyDisplayMap={RECORDS_CLIENTS_DETAILS_PROPERTY_MAP}
         records={clientList}
         editHandler={editClientHandler}
         deleteHandler={deleteClientHandler}

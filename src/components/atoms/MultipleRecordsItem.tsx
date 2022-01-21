@@ -3,6 +3,7 @@ import * as React from 'react';
 import { BsChevronDown, BsFillFileEarmarkTextFill, BsTrashFill } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
+import { modelDisplayValue } from 'utils';
 import Collapse, { IRenderProps } from '../../providers/Collapse';
 import Button from './Button';
 
@@ -98,6 +99,7 @@ interface MultipleRecordItemProps {
   index: number;
   recordProperty: string[];
   recordPropertyDetails: string[];
+  recordPropertyDisplayMap: { [x: string]: string };
   currentRecord: IClient | IBooking;
   editHandler: (index: number) => void;
   deleteHandler: (index: number) => void;
@@ -107,6 +109,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   index,
   recordProperty,
   recordPropertyDetails,
+  recordPropertyDisplayMap,
   currentRecord,
   editHandler,
   deleteHandler
@@ -116,10 +119,11 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
       <>
         <tr>
           <RecordTableData>{index}</RecordTableData>
-          {recordProperty.map((property) => {
-            if (!currentRecord[property]) return null;
-            return <RecordTableData key={property}>{currentRecord[property]}</RecordTableData>;
-          })}
+          {recordProperty.map((property) => (
+            <RecordTableData key={property}>
+              {modelDisplayValue(currentRecord[property])}
+            </RecordTableData>
+          ))}
           <RecordTableData>
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
@@ -135,15 +139,12 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
         {isCollapsed ? (
           <tr>
             <RecordDetail>
-              {recordPropertyDetails.map((property) => {
-                if (!currentRecord[property]) return null;
-                return (
-                  <RecordDetailSpan key={JSON.stringify(currentRecord[property])}>
-                    <strong>{property} : </strong>
-                    {currentRecord[property]}
-                  </RecordDetailSpan>
-                );
-              })}
+              {recordPropertyDetails.map((property) => (
+                <RecordDetailSpan key={currentRecord.id}>
+                  <strong>{recordPropertyDisplayMap[property]} : </strong>
+                  {modelDisplayValue(currentRecord[property])}{' '}
+                </RecordDetailSpan>
+              ))}
             </RecordDetail>
           </tr>
         ) : null}

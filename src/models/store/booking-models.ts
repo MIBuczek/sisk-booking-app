@@ -12,14 +12,14 @@ interface IBooking {
   email: string;
   phone: string;
   regular: boolean;
-  when: Date | null;
-  whenEnd: Date | null;
-  start: Date | null;
-  end: Date | null;
+  dateStart: Date;
+  dateEnd: Date;
+  hourStart: Date;
+  hourEnd: Date;
   accepted: boolean;
   message: string;
   id: string;
-  [x: string]: CLIENT_TYPE | SIZE_OPTIONS | string | boolean | Date | null | undefined;
+  [x: string]: CLIENT_TYPE | SIZE_OPTIONS | string | boolean | Date | undefined;
 }
 
 interface IBookingsPayload extends IPayload {

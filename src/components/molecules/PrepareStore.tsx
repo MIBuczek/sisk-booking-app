@@ -41,13 +41,13 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
 
   React.useEffect(() => {
-    if (!isEmpty(authStore.auth) && !isUserPage) {
-      dispatch(StoreActions.getUserData());
-      dispatch(StoreActions.getBookingsData(false));
-      dispatch(StoreActions.getClientsData());
-      setStoreReady(false);
-    }
-    if (isUserPage) {
+    // if (!isEmpty(authStore.auth) && !isUserPage) {
+    dispatch(StoreActions.getUserData());
+    dispatch(StoreActions.getBookingsData(false));
+    dispatch(StoreActions.getClientsData());
+    setStoreReady(false);
+    // }
+    if (isUserPage && checkLocalStorage) {
       dispatch(StoreActions.getBookingsData(true));
     }
   }, [authStore.savingStage, isUserPage]);

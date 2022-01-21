@@ -1,26 +1,5 @@
-import { IBooking, IBookingsAction, IBookingsPayload } from 'models';
-import { CLIENT_TYPE, SIZE_OPTIONS } from 'utils/variables/form-const';
+import { IBookingsAction, IBookingsPayload } from 'models';
 import { BOOKING_STATE, SAVING_STAGE } from 'utils/variables/store-const';
-
-const example: IBooking[] = [
-  {
-    type: CLIENT_TYPE.CLIENT,
-    city: 'siechnice',
-    building: 'obiekt-tree',
-    size: SIZE_OPTIONS['1/1'],
-    id: '#1234',
-    accepted: false,
-    regular: true,
-    person: 'Michał  Buczek',
-    email: 'mib@op.pl',
-    phone: '123-123-123',
-    when: new Date(),
-    start: new Date(),
-    end: new Date(),
-    message: 'Lorem ipsum',
-    whenEnd: new Date()
-  }
-];
 
 const INITIAL_STATE: IBookingsPayload = {
   isFetching: false,

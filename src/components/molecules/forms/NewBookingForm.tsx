@@ -35,7 +35,7 @@ import ConfirmAction from '../ConfirmAction';
 
 registerLocale('pl', pl);
 
-const ReservationWrapper = styled.form`
+const BookingWrapper = styled.form`
   max-width: 670px;
   display: flex;
   flex-wrap: wrap;
@@ -44,7 +44,7 @@ const ReservationWrapper = styled.form`
   }
 `;
 
-const ReservationHeader = styled(Header)`
+const BookingHeader = styled(Header)`
   width: 100%;
   margin: 20px 0 40px;
   padding: 0 20px;
@@ -94,7 +94,7 @@ const ButtonPanel = styled.div`
   }
 `;
 
-interface NewReservationFormProps {
+interface NewBookingFormProps {
   mainState: IMainState;
   isAdmin: boolean;
   isEditing: boolean;
@@ -102,7 +102,7 @@ interface NewReservationFormProps {
   initialEditingState: () => void;
 }
 
-const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
+const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   mainState,
   isAdmin,
   isEditing,
@@ -204,10 +204,10 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
   }, [isEditing]);
 
   return (
-    <ReservationWrapper onSubmit={onSubmit}>
-      <ReservationHeader>
+    <BookingWrapper onSubmit={onSubmit}>
+      <BookingHeader>
         {isAdmin ? 'Dodaj nowa rezerwacje' : ' Wyślij prośbę o rezerwacje'}
-      </ReservationHeader>
+      </BookingHeader>
       <SelectWrapper>
         <Label>Miejscowość</Label>
         <Controller
@@ -498,16 +498,8 @@ const NewReservationForm: React.FunctionComponent<NewReservationFormProps> = ({
           </Button>
         </ButtonPanel>
       )}
-      {/* <Button
-        role="button"
-        onClick={onSubmit}
-        disabled={isAdmin ? false : !police}
-        style={{ marginLeft: 'auto' }}
-      >
-        {isAdmin ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwacje` : 'Wyślij Rezerwacje'}
-      </Button> */}
-    </ReservationWrapper>
+    </BookingWrapper>
   );
 };
 
-export default NewReservationForm;
+export default NewBookingForm;

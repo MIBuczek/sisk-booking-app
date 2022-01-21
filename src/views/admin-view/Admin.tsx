@@ -9,9 +9,9 @@ import BookingCalender from 'components/organisms/Calender';
 import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
 import { ADMIN_TABS, BUILDINGS_OPTIONS, initialAdminState, MODAL_TYPES } from 'utils';
-import ModalAdminReservation from 'components/molecules/modals/ModalAdminReservation';
 import Clients from 'components/organisms/Clients';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
+import Bookings from 'components/organisms/Bookings';
 
 const AdminWrapper = styled.section`
   width: 100%;
@@ -44,6 +44,7 @@ const Admin = (): JSX.Element => {
   const tabHandler = (currentTab: ADMIN_TABS): void => {
     setTab(currentTab);
   };
+
   // if (!auth) {
   //   return <Redirect to="/login" />;
   // }
@@ -56,15 +57,12 @@ const Admin = (): JSX.Element => {
       <SideNav admin state={adminState} stateHandler={stateHandler} tabHandler={tabHandler} />
       {/* admin inner content */}
       {tab === ADMIN_TABS.CALENDER && <BookingCalender mainState={adminState} isAdmin />}
-      {tab === ADMIN_TABS.CLIENTS && <Clients mainState={adminState} />}
+      {tab === ADMIN_TABS.CLIENTS && <Clients />}
+      {tab === ADMIN_TABS.BOOKINGS && <Bookings mainState={adminState} />}
       {/* modal content */}
       {isOpen && type === MODAL_TYPES.MESSAGE && (
         <Modal>
           <ModalMessage />
-          {/* {type === MODAL_TYPES.BUILDINGS && <ModalBuilding adminState={adminState} />}
-          {type === MODAL_TYPES.ADMIN_RESERVATION && (
-            <ModalAdminReservation adminState={adminState} />
-          )} */}
         </Modal>
       )}
     </AdminWrapper>

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { IMainState } from 'models/components/main-view-model';
-import NewReservationForm from '../forms/NewReservationForm';
+import NewBookingForm from '../forms/NewBookingForm';
 
 interface IProps {
   mainState: IMainState;
 }
 
-const ModalReservation: React.FunctionComponent<IProps> = ({ mainState }) => (
-  <NewReservationForm
+const ModalBooking: React.FunctionComponent<IProps> = ({ mainState }) => (
+  <NewBookingForm
     mainState={mainState}
     isAdmin={false}
     isEditing={false}
@@ -15,4 +15,4 @@ const ModalReservation: React.FunctionComponent<IProps> = ({ mainState }) => (
   />
 );
 
-export default ModalReservation;
+export default ModalBooking;

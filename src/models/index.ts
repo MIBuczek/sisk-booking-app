@@ -1,6 +1,5 @@
 export * from 'models/auth/credentials-models';
 export * from 'models/components/select-model';
-export * from 'models/modals/types-models';
 export * from 'models/store/auth-models';
 export * from 'models/store/booking-models';
 export * from 'models/store/building-models';
@@ -10,3 +9,5 @@ export * from 'models/store/store-models';
 export * from 'models/store/user-models';
 export * from 'models/components/main-view-model';
 export * from 'models/modals/modal-message';
+export * from 'models/types-guards/client-guard';
+export * from 'models/types-guards/booking-guard';

@@ -15,7 +15,7 @@ import { IAdminState, IMainState, TSelect } from 'models';
 import Label from 'components/atoms/Label';
 import ButtonIcon, { iconStyle } from 'components/atoms/ButtonIcon';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
-import ReservationDetails from '../molecules/ReservationDetails';
+import BookingDetails from '../molecules/BookingDetails';
 
 const SideWrapper = styled.aside`
   width: 30%;
@@ -97,11 +97,11 @@ const SideNav: React.FunctionComponent<IProps> = ({
           </ButtonIcon>
         </>
       ) : (
-        <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.RESERVATION))}>
+        <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
           <BsFileEarmarkBarGraph style={iconStyle} /> DODAJ REZERWACJE
         </ButtonIcon>
       )}
-      <ReservationDetails />
+      <BookingDetails />
     </SideWrapper>
   );
 };

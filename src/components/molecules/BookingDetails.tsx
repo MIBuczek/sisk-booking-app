@@ -15,7 +15,7 @@ import { clearCurrentBooking } from '../../store/bookings/bookingsAction';
 import { fadeIn } from '../../style/animation';
 import { IBookingsPayload, IReduxState } from '../../models';
 
-const ReservationDetailsWrapper = styled.article`
+const BookingDetailsWrapper = styled.article`
   width: 290px;
   height: auto;
   display: flex;
@@ -51,7 +51,7 @@ const ClearButton = styled(Button)`
   }
 `;
 
-const ReservationDetails = (): JSX.Element => {
+const BookingDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const { booking } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
 
@@ -60,7 +60,7 @@ const ReservationDetails = (): JSX.Element => {
   };
 
   return (
-    <ReservationDetailsWrapper>
+    <BookingDetailsWrapper>
       <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
       {typeof booking !== 'undefined' ? (
         <>
@@ -94,8 +94,8 @@ const ReservationDetails = (): JSX.Element => {
           </DetailsParagraph>
         </>
       )}
-    </ReservationDetailsWrapper>
+    </BookingDetailsWrapper>
   );
 };
 
-export default ReservationDetails;
+export default BookingDetails;

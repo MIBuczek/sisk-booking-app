@@ -13,23 +13,33 @@ const RECORDS_CLIENTS_ROW_DETAILS = [
   'nip'
 ];
 
-const RECORDS_BOOKING_HEADERS = [
-  'Lp.',
-  'Nazwa klienta / klubu',
-  'Miasto',
-  'Obiekt',
-  'Powierzchnia',
-  'Konflikty',
-  'Status',
-  'Akcja'
-];
+const RECORDS_BOOKINGS_HEADERS = ['Lp.', 'Nazwa klienta', 'Telefon', 'E-mail', 'Status', 'Akcja'];
 
-const RECORDS_BOOKING_ROW = ['name', 'person', 'club', 'city', 'building', 'size', 'accepted'];
+const RECORDS_BOOKINGS_ROW = ['person', 'phone', 'email', 'accepted'];
+
+const RECORDS_BOOKING_ROW_DETAILS = [
+  'type',
+  'city',
+  'building',
+  'size',
+  'person',
+  'club',
+  'email',
+  'phone',
+  'regular',
+  'when',
+  'whenEnd',
+  'start',
+  'end',
+  'accepted',
+  'message'
+];
 
 export {
   RECORDS_CLIENTS_HEADERS,
-  RECORDS_BOOKING_HEADERS,
+  RECORDS_BOOKINGS_HEADERS,
   RECORDS_CLIENTS_ROW,
-  RECORDS_BOOKING_ROW,
-  RECORDS_CLIENTS_ROW_DETAILS
+  RECORDS_BOOKINGS_ROW,
+  RECORDS_CLIENTS_ROW_DETAILS,
+  RECORDS_BOOKING_ROW_DETAILS
 };

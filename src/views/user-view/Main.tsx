@@ -10,7 +10,7 @@ import { cloneDeep } from 'lodash';
 import { useSelector } from 'react-redux';
 import Modal from 'components/organisms/Modal';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
-import ModalReservation from 'components/molecules/modals/ModalReservation';
+import ModalBooking from 'components/molecules/modals/ModalBooking';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
 
 const MainWrapper = styled.section`
@@ -48,7 +48,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
       {isOpen && (
         <Modal>
           {type === MODAL_TYPES.MESSAGE && <ModalMessage />}
-          {type === MODAL_TYPES.RESERVATION && <ModalReservation mainState={mainState} />}
+          {type === MODAL_TYPES.BOOKINGS && <ModalBooking mainState={mainState} />}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
           {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}
         </Modal>

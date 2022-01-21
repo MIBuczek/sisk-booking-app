@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import { IClient } from 'models';
+import { IBooking, IClient } from 'models';
 import * as React from 'react';
 import { BsSearch } from 'react-icons/bs';
 import styled from 'styled-components';
@@ -19,8 +19,8 @@ const SearchInputWrapper = styled.div`
 interface IProps {
   type: string;
   placeholder: string;
-  searchContent: IClient[];
-  searchContentHandler: (searchResults: IClient[]) => void;
+  searchContent: (IClient | IBooking)[];
+  searchContentHandler: (searchResults: (IClient | IBooking)[]) => void;
 }
 
 const SearchInputField: React.FunctionComponent<IProps> = ({
@@ -37,7 +37,14 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
     if (!searchPhase) searchContentHandler(searchContent);
     else
       searchContentHandler(
-        searchContent.filter((c) => formatData(c.name).includes(formatData(searchPhase)))
+        // eslint-disable-next-line array-callback-return
+        searchContent.filter((c) => {
+          if (c.name && typeof c.name === 'string') {
+            formatData(c.name).includes(formatData(searchPhase));
+          } else if (c.person && typeof c.person === 'string') {
+            formatData(c.person).includes(formatData(searchPhase));
+          }
+        })
       );
   };
 

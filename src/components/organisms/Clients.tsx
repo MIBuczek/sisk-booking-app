@@ -2,7 +2,7 @@ import Button from 'components/atoms/Button';
 import Header from 'components/atoms/Header';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import NewClientForm from 'components/molecules/forms/NewClientForm';
-import { IAdminState, IClient, IReduxState } from 'models';
+import { IBooking, IClient, instanceOfClients, IReduxState } from 'models';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, deleteClient, openModal } from 'store';
@@ -35,6 +35,7 @@ const RecordsActionContent = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
 const OpenClientModalButton = styled(Button)`
   background-color: #eaeaea;
   border-color: #afbf36;
@@ -47,11 +48,7 @@ const OpenClientModalButton = styled(Button)`
   }
 `;
 
-interface IProps {
-  mainState: IAdminState;
-}
-
-const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
+const Clients = () => {
   const [clientList, setClientList] = React.useState<IClient[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
@@ -95,8 +92,10 @@ const Clients: React.FunctionComponent<IProps> = ({ mainState }) => {
     setDeleteItemIndex(undefined);
   };
 
-  const clientListHandler = (searchResults: IClient[]): void => {
-    setClientList(searchResults);
+  const clientListHandler = (searchResults: (IClient | IBooking)[]): void => {
+    if (searchResults.length && instanceOfClients(searchResults)) {
+      setClientList(searchResults);
+    }
   };
 
   React.useEffect(() => undefined, [clientList]);

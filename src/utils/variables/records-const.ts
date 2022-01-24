@@ -24,7 +24,15 @@ const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP = {
   nip: 'NIP'
 };
 
-const RECORDS_BOOKINGS_HEADERS = ['Lp.', 'Nazwa klienta', 'Telefon', 'E-mail', 'Status', 'Akcja'];
+const RECORDS_BOOKINGS_HEADERS = [
+  'Lp.',
+  'Nazwa klienta',
+  'Telefon',
+  'E-mail',
+  'Zakceptowana',
+  'Konflikty',
+  'Akcja'
+];
 
 const RECORDS_BOOKINGS_ROW = ['person', 'phone', 'email', 'accepted'];
 

@@ -153,7 +153,8 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       dateStart: cred.dateStart,
       dateEnd: cred.dateEnd || cred.dateStart,
       size: selectedSize,
-      accepted: false
+      accepted: false,
+      id: bookingId
     } as IBooking);
     setDisplayConfirmation(true);
   });
@@ -484,7 +485,11 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       )}
       {displayConfirmation ? (
         <ConfirmAction
-          message="Czy napewno chcesz wysłać prośbe o rezerwacje"
+          message={
+            isEditing
+              ? 'Czy napewno chcesz zaktualizowac rezerwacje'
+              : 'Czy napewno chcesz wysłać prośbe o rezerwacje'
+          }
           callback={confirmSubmit}
           cancelCallback={() => setDisplayConfirmation(false)}
         />

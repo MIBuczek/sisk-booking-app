@@ -13,47 +13,17 @@ const RecordTableData = styled.td`
   font-size: ${({ theme }) => theme.fontSize.s};
   color: ${({ theme }) => theme.darkGrey};
   animation: ${fadeInLeft} 0.5s linear;
+  width: 15%;
   &:nth-of-type(1) {
-    width: 10%;
+    width: 5%;
   }
   &:nth-of-type(2) {
-    width: 35%;
+    width: 22%;
   }
-  &:nth-of-type(3) {
-    width: 20%;
-  }
-  &:nth-of-type(4) {
-    width: 20%;
-  }
-  &:nth-of-type(5) {
+  &:last-of-type {
     width: 15%;
+    margin-left: auto;
   }
-  /* &.clients {
-    &:nth-of-type(1) {
-      width: 10%;
-    }
-    &:nth-of-type(2) {
-      width: 73%;
-    }
-    &:nth-of-type(3) {
-      width: 17%;
-    }
-  }
-  &.bookings {
-    width: 10%;
-    &:nth-of-type(1) {
-      width: 8%;
-    }
-    &:nth-of-type(2) {
-      width: 28%;
-    }
-    &:nth-of-type(3) {
-      width: 11%;
-    }
-    &:nth-of-type(4) {
-      width: 11%;
-    }
-  } */
 `;
 
 const ListItemBtn = styled(Button)`
@@ -124,6 +94,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
               {modelDisplayValue(currentRecord[property])}
             </RecordTableData>
           ))}
+          <RecordTableData> Nie </RecordTableData>
           <RecordTableData>
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
@@ -140,9 +111,9 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
           <tr>
             <RecordDetail>
               {recordPropertyDetails.map((property) => (
-                <RecordDetailSpan key={currentRecord.id}>
+                <RecordDetailSpan key={property}>
                   <strong>{recordPropertyDisplayMap[property]} : </strong>
-                  {modelDisplayValue(currentRecord[property])}{' '}
+                  {modelDisplayValue(currentRecord[property])}
                 </RecordDetailSpan>
               ))}
             </RecordDetail>

@@ -16,6 +16,7 @@ import {
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import NewBookingForm from 'components/molecules/forms/NewBookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
+import ModalInfo from 'components/molecules/modals/ModalInfo';
 import Modal from './Modal';
 
 const BookingsWrapper = styled.section`
@@ -69,13 +70,15 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   const bookingListHandler = (searchResults: (IClient | IBooking)[]): void => {
     if (searchResults.length && instanceOfBookings(searchResults)) {
       setBookingsList(searchResults);
+    } else {
+      setBookingsList([]);
     }
   };
 
   const editBookingHandler = (index: number) => {
     setIsEditing(true);
     setEditedItemIndex(index);
-    dispatch(openModal(MODAL_TYPES.CLIENT));
+    dispatch(openModal(MODAL_TYPES.BOOKINGS));
   };
 
   const deleteBookingHandler = (index: number) => {
@@ -103,6 +106,8 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     setDeleteItemIndex(undefined);
   };
 
+  React.useEffect(() => setBookingsList(bookings), [bookings]);
+
   return (
     <BookingsWrapper>
       <BookingsHeader>Lista Rezerwacji</BookingsHeader>
@@ -111,6 +116,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           type="bookings"
           placeholder="Wyszukaj rezerwacje"
           searchContent={bookings}
+          searchProperty="person"
           searchContentHandler={bookingListHandler}
         />
         <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
@@ -145,6 +151,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
               cancelCallback={cancelDeleteBookingAction}
             />
           )}
+          {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
         </Modal>
       )}
     </BookingsWrapper>

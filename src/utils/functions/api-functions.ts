@@ -14,6 +14,7 @@ const parseFirebaseBookingData = (doc: any) =>
     phone: doc.data().phone,
     regular: doc.data().regular,
     dateStart: doc.data().dateStart.toDate(),
+    dateEnd: doc.data().dateEnd.toDate(),
     hourStart: doc.data().hourStart.toDate(),
     hourEnd: doc.data().hourEnd.toDate(),
     message: doc.data().message,

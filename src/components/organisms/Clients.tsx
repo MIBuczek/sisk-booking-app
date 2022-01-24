@@ -99,7 +99,7 @@ const Clients = () => {
     }
   };
 
-  React.useEffect(() => undefined, [clientList]);
+  React.useEffect(() => setClientList(clients), [clients]);
 
   return (
     <CalenderWrapper>
@@ -109,6 +109,7 @@ const Clients = () => {
           type="clients"
           placeholder="Wyszukaj najemce"
           searchContent={clients}
+          searchProperty="name"
           searchContentHandler={clientListHandler}
         />
         <OpenClientModalButton onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>

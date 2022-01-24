@@ -8,7 +8,7 @@ import Button from 'components/atoms/Button';
 import { closeModal } from 'store';
 
 const InfoWrapper = styled.div`
-  padding: 20px;
+  padding: 0 20px 20px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

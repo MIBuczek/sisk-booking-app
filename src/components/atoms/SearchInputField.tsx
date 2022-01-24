@@ -20,6 +20,7 @@ interface IProps {
   type: string;
   placeholder: string;
   searchContent: (IClient | IBooking)[];
+  searchProperty: string;
   searchContentHandler: (searchResults: (IClient | IBooking)[]) => void;
 }
 
@@ -27,6 +28,7 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
   type,
   placeholder,
   searchContent,
+  searchProperty,
   searchContentHandler
 }) => {
   const [searchPhase, setSearchPhase] = React.useState('');
@@ -37,14 +39,9 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
     if (!searchPhase) searchContentHandler(searchContent);
     else
       searchContentHandler(
-        // eslint-disable-next-line array-callback-return
-        searchContent.filter((c) => {
-          if (c.name && typeof c.name === 'string') {
-            formatData(c.name).includes(formatData(searchPhase));
-          } else if (c.person && typeof c.person === 'string') {
-            formatData(c.person).includes(formatData(searchPhase));
-          }
-        })
+        searchContent.filter((c) =>
+          formatData(c[searchProperty] as string).includes(formatData(searchPhase))
+        )
       );
   };
 

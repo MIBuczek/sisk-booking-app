@@ -34,7 +34,7 @@ const ClientInnerContent = styled.article`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 40px 0 20px;
+  padding: 0 40px 20px 20px;
   &:first-of-type {
     border-right: ${({ theme }) => `1px solid ${theme.green}`};
   }
@@ -87,7 +87,8 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   const onSubmit = handleSubmit<IClientForm>(async (cred) => {
     setClientData({
       ...cred,
-      type: cred.type.value
+      type: cred.type.value,
+      id: clientId
     } as IClient);
     setDisplayConfirmation(true);
   });

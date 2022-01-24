@@ -17,6 +17,7 @@ import {
 import Modal from 'components/organisms/Modal';
 import SearchInputField from 'components/atoms/SearchInputField';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
+import ModalInfo from 'components/molecules/modals/ModalInfo';
 
 const CalenderWrapper = styled.section`
   width: 60%;
@@ -142,6 +143,7 @@ const Clients = () => {
               cancelCallback={cancelDeleteClientAction}
             />
           )}
+          {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Klienci" />}
         </Modal>
       )}
     </CalenderWrapper>

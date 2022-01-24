@@ -68,6 +68,14 @@ const RodoWrapper = styled.div`
   margin: 10px 20px;
 `;
 
+const AcceptWrapper = styled.div`
+  width: 100%;
+  background: ${({ theme }) => theme.green};
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+`;
+
 const TextAreaLabel = styled(Label)`
   margin: 10px 20px;
 `;
@@ -153,7 +161,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       dateStart: cred.dateStart,
       dateEnd: cred.dateEnd || cred.dateStart,
       size: selectedSize,
-      accepted: false,
+      accepted: cred.accepted || false,
       id: bookingId
     } as IBooking);
     setDisplayConfirmation(true);
@@ -209,6 +217,26 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       <BookingHeader>
         {isAdmin ? 'Dodaj nowa rezerwacje' : ' Wyślij prośbę o rezerwacje'}
       </BookingHeader>
+      {isAdmin && (
+        <AcceptWrapper>
+          <Label>Zakceptuj rezerwacje</Label>
+          <Controller
+            name="accepted"
+            defaultValue={false}
+            control={control}
+            rules={{ required: true }}
+            render={({ onChange, value }) => (
+              <Checkbox
+                checked={value}
+                className="checkbox"
+                name="accepted"
+                changeHandler={onChange}
+                disabled={displayConfirmation}
+              />
+            )}
+          />
+        </AcceptWrapper>
+      )}
       <SelectWrapper>
         <Label>Miejscowość</Label>
         <Controller

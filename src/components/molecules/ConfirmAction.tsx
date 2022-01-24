@@ -7,11 +7,10 @@ import styled from 'styled-components';
 
 const ConfirmationWrapper = styled.div`
   width: 100%;
-  padding: 20px;
+  padding: 10px 20px;
   background-color: #afbf36;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
   animation: ${fadeIn} 0.5s linear;
 `;
 

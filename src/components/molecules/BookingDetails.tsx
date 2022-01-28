@@ -26,6 +26,7 @@ const DetailsHeader = styled(Header)`
   font-size: 18px;
   margin: 60px 0 20px;
 `;
+
 const DetailsParagraph = styled(Paragraph)`
   font-size: 12px;
   animation: ${fadeIn} 0.5s linear;
@@ -41,10 +42,10 @@ const DetailsSpan = styled.span`
 
 const ClearButton = styled(Button)`
   background-color: #eaeaea;
-  border-color: #afbf36;
+  border-color: ${({ theme }) => theme.green};
   color: #454545;
   &:hover {
-    background-color: #afbf36;
+    background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;
     box-shadow: none;
     opacity: 1;

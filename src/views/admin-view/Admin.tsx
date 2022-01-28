@@ -12,6 +12,7 @@ import { ADMIN_TABS, BUILDINGS_OPTIONS, initialAdminState, MODAL_TYPES } from 'u
 import Clients from 'components/organisms/Clients';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
 import Bookings from 'components/organisms/Bookings';
+import Building from 'components/organisms/Building';
 
 const AdminWrapper = styled.section`
   width: 100%;
@@ -59,6 +60,7 @@ const Admin = (): JSX.Element => {
       {tab === ADMIN_TABS.CALENDER && <BookingCalender mainState={adminState} isAdmin />}
       {tab === ADMIN_TABS.CLIENTS && <Clients />}
       {tab === ADMIN_TABS.BOOKINGS && <Bookings mainState={adminState} />}
+      {tab === ADMIN_TABS.BUILDINGS && <Building mainState={adminState} />}
       {/* modal content */}
       {isOpen && type === MODAL_TYPES.MESSAGE && (
         <Modal>

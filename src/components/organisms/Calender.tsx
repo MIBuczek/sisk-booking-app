@@ -34,17 +34,17 @@ const CalenderWrapper = styled.section`
       }
     }
     .fc-timegrid-event.fc-v-event {
-      background-color: #afbf36;
+      background-color: ${({ theme }) => theme.green};
       border-color: #b9b8b8;
     }
     .fc-button-primary {
       background-color: #eaeaea;
-      border-color: #afbf36;
+      border-color: ${({ theme }) => theme.green};
       color: #454545;
       transition: 0.4s;
       &:focus,
       &:hover {
-        background-color: #afbf36;
+        background-color: ${({ theme }) => theme.green};
         border-color: #b9b8b8;
         box-shadow: none;
       }

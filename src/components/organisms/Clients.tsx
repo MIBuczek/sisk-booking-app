@@ -40,10 +40,10 @@ const RecordsActionContent = styled.div`
 
 const OpenClientModalButton = styled(Button)`
   background-color: #eaeaea;
-  border-color: #afbf36;
+  border-color: ${({ theme }) => theme.green};
   color: #454545;
   &:hover {
-    background-color: #afbf36;
+    background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;
     box-shadow: none;
     opacity: 1;

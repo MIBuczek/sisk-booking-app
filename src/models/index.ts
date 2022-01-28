@@ -11,3 +11,4 @@ export * from 'models/components/main-view-model';
 export * from 'models/modals/modal-message';
 export * from 'models/types-guards/client-guard';
 export * from 'models/types-guards/booking-guard';
+export * from 'models/forms/employee-message-models';

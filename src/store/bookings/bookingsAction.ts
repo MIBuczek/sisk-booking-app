@@ -71,9 +71,9 @@ export const addBooking = (bookingData: IBooking) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    await db.collection('bookings').doc().set(bookingData);
+    const resp = await db.collection('bookings').add(bookingData);
     const { bookings } = getStore().bookingStore;
-    const newBookings: IBooking[] = [...bookings, bookingData];
+    const newBookings: IBooking[] = [...bookings, { ...bookingData, id: resp.id }];
     dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
   } catch (err) {

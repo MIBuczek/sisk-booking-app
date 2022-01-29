@@ -25,7 +25,7 @@ const ModalWrapper = styled.div`
 
 const CloseBtn = styled(Button)`
   display: block;
-  margin: 10px 10px 0 auto;
+  margin: 10px 10px 10px auto;
   color: ${({ theme }) => theme.white};
   padding: 0;
   svg {

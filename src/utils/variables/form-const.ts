@@ -18,7 +18,7 @@ export enum CLIENT_TYPE {
 
 // Form Clients
 const CLIENT_INITIAL_VALUE: IClientForm = {
-  type: { label: CLIENT_TYPE.CLIENT, value: CLIENT_TYPE.CLIENT },
+  type: { label: 'Osoba prywatna', value: CLIENT_TYPE.CLIENT },
   name: '',
   contactPerson: '',
   phone: '',

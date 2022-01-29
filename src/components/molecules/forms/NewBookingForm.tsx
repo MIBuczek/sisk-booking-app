@@ -161,8 +161,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       dateStart: cred.dateStart,
       dateEnd: cred.dateEnd || cred.dateStart,
       size: selectedSize,
-      accepted: cred.accepted || false,
-      id: bookingId
+      accepted: cred.accepted || false
     } as IBooking);
     setDisplayConfirmation(true);
   });
@@ -170,7 +169,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   const confirmSubmit = () => {
     if (!bookingData) return;
 
-    if (bookingId) dispatch(updateBooking(bookingData));
+    if (bookingId) dispatch(updateBooking({ ...bookingData, id: bookingId }));
     else dispatch(addBooking(bookingData));
 
     createInitialState();

@@ -37,11 +37,23 @@ const BuildingHeader = styled(Header)`
   margin: 20px 0 40px 20px;
 `;
 
+const BuildingSubHeader = styled(Header)`
+  font-size: ${({ theme }) => theme.fontSize.ml};
+  width: 85%;
+  margin: 0 0 25px;
+`;
+
 const InnerContent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 45%;
   height: 80%;
+  padding: 20px 0 40px 40px;
+  &:first-of-type {
+    width: 35%;
+    border-right: ${({ theme }) => `1px solid ${theme.green}`};
+    padding: 20px 0 40px 20px;
+  }
 `;
 
 const DetailsParagraph = styled(Paragraph)`
@@ -49,9 +61,6 @@ const DetailsParagraph = styled(Paragraph)`
   animation: ${fadeIn} 0.5s linear;
   color: ${({ theme }) => theme.green};
   padding: 10px 0;
-  &:first-of-type {
-    padding-top: 30px;
-  }
 `;
 
 const DetailsSpan = styled.span`
@@ -60,13 +69,20 @@ const DetailsSpan = styled.span`
   font-size: 14px;
 `;
 
+const EmployeeInput = styled(TextInputField)`
+  width: 100%;
+`;
+
+const EmployeeTextArea = styled(TextAreaField)`
+  width: 100%;
+`;
+
 const ButtonPanel = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
   width: 100%;
   margin: 3rem 0;
-  padding: 0 20px;
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -115,7 +131,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
   const initialState = (): void => {
     setMessage(undefined);
     setDisplayConfirmation(false);
-    reset(INITIAL_EMPLOYEE_MESSAGE);
+    reset({ ...INITIAL_EMPLOYEE_MESSAGE });
   };
 
   React.useEffect(() => {
@@ -130,6 +146,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
     <BuildingWrapper>
       <BuildingHeader>Obiekty sportowe</BuildingHeader>
       <InnerContent>
+        <BuildingSubHeader>Dane o obiekcie</BuildingSubHeader>
         <DetailsParagraph bold>Miejscowość</DetailsParagraph>
         <DetailsSpan>{city.label}</DetailsSpan>
         <DetailsParagraph bold>Nazwa obiektu</DetailsParagraph>
@@ -138,16 +155,19 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
         <DetailsSpan>{currentCity.phone}</DetailsSpan>
         <DetailsParagraph bold>Email</DetailsParagraph>
         <DetailsSpan>{currentCity.email}</DetailsSpan>
+        <DetailsParagraph bold>Pracownicy</DetailsParagraph>
+        <DetailsSpan>1. Lorem Ipsum</DetailsSpan>
       </InnerContent>
       <InnerContent>
-        <Label>Adres e-mail pracownika</Label>
+        <BuildingSubHeader>Wyślij wiadomość pracownikowi</BuildingSubHeader>
+        <Label>E-mail</Label>
         <Controller
           name="email"
           defaultValue={''}
           control={control}
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
-            <TextInputField
+            <EmployeeInput
               onBlur={onBlur}
               value={value}
               onChange={onChange}
@@ -158,14 +178,15 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             />
           )}
         />
-        <Label>Imie i nazwisko pracownika</Label>
+        {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        <Label>Imie i nazwisko</Label>
         <Controller
           name="person"
           defaultValue={''}
           control={control}
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
-            <TextInputField
+            <EmployeeInput
               onBlur={onBlur}
               value={value}
               onChange={onChange}
@@ -184,7 +205,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           control={control}
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
-            <TextAreaField
+            <EmployeeTextArea
               onBlur={onBlur}
               value={value}
               onChange={onChange}
@@ -192,6 +213,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
               className="input"
               placeholder="Wiadomość"
               disabled={displayConfirmation}
+              style={{ marginBottom: displayConfirmation ? '20px' : '0px' }}
             />
           )}
         />
@@ -205,7 +227,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
         ) : (
           <ButtonPanel>
             <Button secondary onClick={initialState}>
-              Anuluj
+              Wyczyść
             </Button>
             <Button onClick={onSubmit}>Wyślij</Button>
           </ButtonPanel>

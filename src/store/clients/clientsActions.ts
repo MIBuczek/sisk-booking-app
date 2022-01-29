@@ -51,9 +51,11 @@ export const addClient = (clientData: IClient) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    await db.collection('clients').doc().set(clientData);
+    const resp = await db.collection('clients').add(clientData);
     const { clients } = getStore().clientStore;
-    dispatch(fetchingClientsDone(CLIENTS_STATE.ADD_CLIENT, [...clients, clientData]));
+    dispatch(
+      fetchingClientsDone(CLIENTS_STATE.ADD_CLIENT, [...clients, { ...clientData, id: resp.id }])
+    );
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Klient został dodany pomyślnie do bazy danych'));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można dodać klienta do bazy danych'));

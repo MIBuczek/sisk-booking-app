@@ -87,8 +87,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   const onSubmit = handleSubmit<IClientForm>(async (cred) => {
     setClientData({
       ...cred,
-      type: cred.type.value,
-      id: clientId
+      type: cred.type.value
     } as IClient);
     setDisplayConfirmation(true);
   });
@@ -96,7 +95,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   const confirmSubmit = () => {
     if (!clientData) return;
     if (clientId) {
-      dispatch(updateClient(clientData));
+      dispatch(updateClient({ ...clientData, id: clientId }));
     } else dispatch(addClient(clientData));
 
     createInitialState();

@@ -1,6 +1,7 @@
+import { TBooking } from 'models';
 import { formatDate } from './calender-functions';
 
-const modelDisplayValue = (currentValue?: string | Date | boolean): null | string => {
+const modelDisplayValue = (currentValue?: TBooking): null | string => {
   if (typeof currentValue === 'undefined') {
     return null;
   }
@@ -10,7 +11,7 @@ const modelDisplayValue = (currentValue?: string | Date | boolean): null | strin
   if (currentValue instanceof Date) {
     return formatDate(currentValue);
   }
-  return currentValue;
+  return currentValue.toString();
 };
 
 export { modelDisplayValue };

@@ -118,7 +118,9 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
           mainState.city.value === b.city &&
           mainState.building.value === b.building
         ) {
-          acc.push(prepareCalenderItem(b));
+          b.bookingTime.forEach((bt) => {
+            acc.push(prepareCalenderItem(b.id, bt.day, bt.startHour, bt.endHour));
+          });
         }
         return acc;
       }, [])

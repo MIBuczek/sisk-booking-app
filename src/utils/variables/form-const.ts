@@ -38,10 +38,10 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
   email: '',
   phone: '',
   regular: false,
-  dateStart: today,
-  dateEnd: today,
-  hourStart: today,
-  hourEnd: today,
+  startDate: today,
+  endDate: today,
+  startHour: today,
+  endHour: today,
   accepted: false,
   message: ''
 };

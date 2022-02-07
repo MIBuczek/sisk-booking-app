@@ -72,6 +72,7 @@ export const addBooking = (bookingData: IBooking) => async (
 ): Promise<void> => {
   try {
     const resp = await db.collection('bookings').add(bookingData);
+    console.log(resp);
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = [...bookings, { ...bookingData, id: resp.id }];
     dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));

@@ -2,23 +2,28 @@
 import { IClient } from 'models';
 import { IBooking } from 'models/store/booking-models';
 
+const transformFirebaseDate = (item: any) => ({
+  day: item.day.toDate(),
+  startHour: item.startHour.toDate(),
+  endHour: item.endHour.toDate()
+});
+
 const parseFirebaseBookingData = (doc: any) =>
   ({
     type: doc.data().type,
     city: doc.data().city,
     building: doc.data().building,
     size: doc.data().size,
+    clientId: doc.data().clientId,
     person: doc.data().person,
     club: doc.data().club,
     email: doc.data().email,
     phone: doc.data().phone,
     regular: doc.data().regular,
-    dateStart: doc.data().dateStart.toDate(),
-    dateEnd: doc.data().dateEnd.toDate(),
-    hourStart: doc.data().hourStart.toDate(),
-    hourEnd: doc.data().hourEnd.toDate(),
-    message: doc.data().message,
+    month: doc.data().month,
+    bookingTime: doc.data().bookingTime.map(transformFirebaseDate),
     accepted: doc.data().accepted,
+    message: doc.data().message,
     id: doc.id
   } as IBooking);
 

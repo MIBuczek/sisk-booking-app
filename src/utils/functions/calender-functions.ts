@@ -35,12 +35,12 @@ const displayTime = (time: Date | string | null): string => {
   return time?.substring(index + 1, lastIndex);
 };
 
-const prepareCalenderItem = (b: IBooking) => ({
+const prepareCalenderItem = (id: string, startDay: Date, startHour: Date, endHour: Date) => ({
+  id,
   allDay: false,
-  id: b.id,
   title: 'Rezerwacja',
-  start: `${formatDate(b.dateStart)}${getTime(b.hourStart)}`,
-  end: `${formatDate(b.dateStart)}${getTime(b.hourEnd)}`
+  start: `${formatDate(startDay)}${getTime(startHour)}`,
+  end: `${formatDate(startDay)}${getTime(endHour)}`
 });
 
 export { formatDate, prepareCalenderItem, getTime, displayTime };

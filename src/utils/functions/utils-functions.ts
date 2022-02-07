@@ -1,4 +1,4 @@
-import { IBooking, IBuilding, IClient, TSelect } from 'models';
+import { IBooking, IClient, TSelect } from 'models';
 
 const firstLetterUpperCase = (s: string): string =>
   s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
@@ -8,8 +8,11 @@ const generateSelectDefaultValue = (s: string): TSelect => ({
   label: firstLetterUpperCase(s)
 });
 
-const createSelectedOption = (value: string, options: TSelect[]): TSelect | undefined =>
-  options.find((c) => c.value === value);
+const createSelectedOption = (value: string, options: TSelect[]): TSelect => {
+  const selectedOption = options.find((c) => c.value === value);
+  if (selectedOption) return selectedOption;
+  return options[0];
+};
 
 const pagination = (
   items: (IClient | IBooking)[],

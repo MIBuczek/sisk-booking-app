@@ -12,3 +12,4 @@ export * from 'utils/variables/records-const';
 export * from 'utils/variables/admin-tab-const';
 export * from 'utils/functions/modeling-data-value';
 export * from 'utils/variables/building-data-const';
+export * from 'utils/functions/generate-booking-function';

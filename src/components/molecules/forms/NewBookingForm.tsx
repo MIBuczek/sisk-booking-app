@@ -13,6 +13,8 @@ import {
   CITY_OPTIONS,
   CLIENT_TYPE,
   createSelectedOption,
+  generateBookingDetails,
+  generateBookingFormDetails,
   SIZE_FIELD_OPTIONS,
   SIZE_OPTIONS,
   SIZE_OPTIONS_BTN
@@ -127,7 +129,10 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   const { city, building } = mainState;
 
   const dispatch = useDispatch();
-  const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
+  const {
+    bookingStore: { bookings },
+    clientStore: { clients }
+  } = useSelector((state: IReduxState): IReduxState => state);
 
   const { handleSubmit, errors, control, watch, reset } = useForm<IBookingForm>({
     defaultValues: { ...BOOKING_INITIAL_VALUE, ...mainState }
@@ -136,6 +141,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   const cityValue = watch('city');
   const buildingValue = watch('building');
   const regularValue = watch('regular');
+  const selectedClientId = watch('clientId');
 
   const selectedSizeHandler = (e: Event, value: SIZE_OPTIONS): void => {
     e.preventDefault();
@@ -152,17 +158,13 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       setSizeOptions(SIZE_FIELD_OPTIONS[cityValue.value][buildingValue.value]);
   };
 
+  const selectClientOptions = (): TSelect[] => {
+    if (!clients) return [];
+    return clients.map((c) => ({ label: c.name, value: c.id || '' }));
+  };
+
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
-    setBookingData({
-      ...cred,
-      city: cred.city.value,
-      building: cred.building.value,
-      type: CLIENT_TYPE.CLIENT,
-      dateStart: cred.dateStart,
-      dateEnd: cred.dateEnd || cred.dateStart,
-      size: selectedSize,
-      accepted: cred.accepted || false
-    } as IBooking);
+    setBookingData(generateBookingDetails(cred, selectedSize, bookingId));
     setDisplayConfirmation(true);
   });
 
@@ -178,11 +180,8 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
 
   const editBookingHandler = (index: number) => {
     const currentBooking = bookings[index];
-    reset({
-      ...currentBooking,
-      city: createSelectedOption(currentBooking.city, CITY_OPTIONS),
-      building: createSelectedOption(currentBooking.building, BUILDINGS_OPTIONS[city.value])
-    });
+    const clientId = selectClientOptions().find((o) => o.value === currentBooking.clientId);
+    reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
   };
 
@@ -197,6 +196,21 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   const cancelHandler = () => {
     createInitialState();
     dispatch(closeModal());
+  };
+
+  const fillUpFormWithClientData = (cID?: string): void => {
+    const selectedClient = clients.find((c) => c.id === cID);
+    if (!selectedClient) return;
+    if (typeof editedItemIndex === 'number') {
+      const currentBooking = bookings[editedItemIndex];
+      const clientId = selectClientOptions().find((o) => o.value === currentBooking.clientId);
+      reset({
+        ...generateBookingFormDetails(currentBooking, clientId, city),
+        person: selectedClient?.name,
+        email: selectedClient?.email,
+        phone: selectedClient?.phone
+      });
+    }
   };
 
   React.useEffect(() => {
@@ -218,22 +232,43 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       </BookingHeader>
       {isAdmin && (
         <AcceptWrapper>
-          <Label>Zakceptuj rezerwacje</Label>
-          <Controller
-            name="accepted"
-            defaultValue={false}
-            control={control}
-            rules={{ required: true }}
-            render={({ onChange, value }) => (
-              <Checkbox
-                checked={value}
-                className="checkbox"
-                name="accepted"
-                changeHandler={onChange}
-                disabled={displayConfirmation}
-              />
-            )}
-          />
+          <SelectWrapper>
+            <Label>Dodaj najemce</Label>
+            <Controller
+              name="clientId"
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <SelectInputField
+                  options={selectClientOptions()}
+                  placeholder="Wybierz"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                  value={value}
+                  isDisabled={displayConfirmation}
+                />
+              )}
+            />
+          </SelectWrapper>
+          <SelectWrapper>
+            <Label>Zakceptuj rezerwacje</Label>
+            <Controller
+              name="accepted"
+              defaultValue={false}
+              control={control}
+              rules={{ required: true }}
+              render={({ onChange, value }) => (
+                <Checkbox
+                  checked={value}
+                  className="checkbox"
+                  name="accepted"
+                  changeHandler={onChange}
+                  disabled={displayConfirmation}
+                />
+              )}
+            />
+            {errors.accepted && <ErrorMsg innerText="Pole nie moze byc nie zaznaczone" />}
+          </SelectWrapper>
         </AcceptWrapper>
       )}
       <SelectWrapper>
@@ -371,7 +406,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       <InputContainer>
         <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałby zarezerwować obiekt`}</Label>
         <Controller
-          name="dateStart"
+          name="startDate"
           defaultValue={new Date()}
           control={control}
           rules={{ required: true }}
@@ -383,7 +418,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               placeholderText="Wybierz"
               locale="pl"
               minDate={new Date()}
-              invalid={!!errors.dateStart}
+              invalid={!!errors.startDate}
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
@@ -391,12 +426,12 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.dateStart && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.startDate && <ErrorMsg innerText="Pole nie moze byc puste" />}
         {regularValue && (
           <>
             <Label>Do kiedy chciałby zarezerwować obiekt</Label>
             <Controller
-              name="dateEnd"
+              name="endDate"
               defaultValue={new Date()}
               control={control}
               rules={{ required: true }}
@@ -408,7 +443,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
                   placeholderText="Wybierz"
                   locale="pl"
                   minDate={new Date()}
-                  invalid={!!errors.dateEnd}
+                  invalid={!!errors.endDate}
                   onChange={onChange}
                   onBlur={onBlur}
                   selected={value}
@@ -416,12 +451,12 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
                 />
               )}
             />
-            {errors.dateEnd && <ErrorMsg innerText="Pole nie moze byc puste" />}
+            {errors.endDate && <ErrorMsg innerText="Pole nie moze byc puste" />}
           </>
         )}
         <Label>Od której godziny</Label>
         <Controller
-          name="hourStart"
+          name="startHour"
           defaultValue={null}
           control={control}
           rules={{ required: true }}
@@ -434,7 +469,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               shouldCloseOnSelect
               minTime={setHours(setMinutes(new Date(), 0), 9)}
               maxTime={setHours(setMinutes(new Date(), 30), 22)}
-              invalid={!!errors.hourStart}
+              invalid={!!errors.startHour}
               timeIntervals={15}
               timeCaption="Godzina"
               dateFormat="h:mm aa"
@@ -446,10 +481,10 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.hourStart && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.startHour && <ErrorMsg innerText="Pole nie moze byc puste" />}
         <Label>Do której godziny</Label>
         <Controller
-          name="hourEnd"
+          name="endHour"
           defaultValue={null}
           control={control}
           rules={{ required: true }}
@@ -462,7 +497,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               shouldCloseOnSelect
               minTime={setHours(setMinutes(new Date(), 0), 9)}
               maxTime={setHours(setMinutes(new Date(), 30), 22)}
-              invalid={!!errors.hourEnd}
+              invalid={!!errors.endHour}
               timeIntervals={15}
               timeCaption="Godzina"
               dateFormat="h:mm aa"
@@ -474,7 +509,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.hourEnd && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.endHour && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </InputContainer>
       <TextAreaLabel>Chciałbyś przesłać dodatkowe informacje</TextAreaLabel>
       <Controller

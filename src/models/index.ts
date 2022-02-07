@@ -12,3 +12,5 @@ export * from 'models/modals/modal-message';
 export * from 'models/types-guards/client-guard';
 export * from 'models/types-guards/booking-guard';
 export * from 'models/forms/employee-message-models';
+export * from 'models/forms/booking-form-models';
+export * from 'models/forms/client-form-model';

@@ -26,7 +26,7 @@ const NavWrapper = styled.nav<Navigation>`
   position: ${({ isOpen }) => (isOpen ? 'static' : 'fixed')};
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 0;
   transition-property: all;
   transition-duration: 0.3s;
   transition-timing-function: ease;

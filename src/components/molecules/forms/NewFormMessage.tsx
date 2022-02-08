@@ -17,8 +17,6 @@ import ConfirmAction from '../ConfirmAction';
 const MessageWrapper = styled.form`
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
   min-width: 500px;
   button {
     align-self: flex-end;

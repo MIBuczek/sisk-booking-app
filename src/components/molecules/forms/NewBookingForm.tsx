@@ -33,6 +33,7 @@ import Button from 'components/atoms/Button';
 import pl from 'date-fns/locale/pl';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
+import { isEmpty } from 'lodash';
 import ConfirmAction from '../ConfirmAction';
 
 registerLocale('pl', pl);
@@ -76,6 +77,13 @@ const AcceptWrapper = styled.div`
   padding: 10px 20px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+`;
+
+const AutoFillContent = styled(SelectWrapper)`
+  border: 1px solid white;
+  flex-direction: row;
+  width: 100%;
 `;
 
 const TextAreaLabel = styled(Label)`
@@ -198,17 +206,33 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
     dispatch(closeModal());
   };
 
-  const fillUpFormWithClientData = (cID?: string): void => {
+  const fillUpFormWithClientData = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    cID?: string
+  ): void => {
+    e.preventDefault();
     const selectedClient = clients.find((c) => c.id === cID);
+
     if (!selectedClient) return;
+
+    const formClientData = {
+      person: selectedClient?.name,
+      email: selectedClient?.email,
+      phone: selectedClient?.phone
+    };
+
     if (typeof editedItemIndex === 'number') {
       const currentBooking = bookings[editedItemIndex];
       const clientId = selectClientOptions().find((o) => o.value === currentBooking.clientId);
       reset({
         ...generateBookingFormDetails(currentBooking, clientId, city),
-        person: selectedClient?.name,
-        email: selectedClient?.email,
-        phone: selectedClient?.phone
+        ...formClientData
+      });
+    } else {
+      reset({
+        ...BOOKING_INITIAL_VALUE,
+        ...mainState,
+        ...formClientData
       });
     }
   };
@@ -269,6 +293,18 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
             {errors.accepted && <ErrorMsg innerText="Pole nie moze byc nie zaznaczone" />}
           </SelectWrapper>
+          {!isEmpty(selectedClientId?.value) && (
+            <AutoFillContent>
+              <Label>Czy chcesz autouzupełnić dane klienta</Label>
+              <Button
+                role="button"
+                secondary
+                onClick={(e) => fillUpFormWithClientData(e, selectedClientId?.value)}
+              >
+                Tak
+              </Button>
+            </AutoFillContent>
+          )}
         </AcceptWrapper>
       )}
       <SelectWrapper>

@@ -5,8 +5,6 @@ import ConfirmAction from '../ConfirmAction';
 const DeleteWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
   min-width: 500px;
   button {
     align-self: flex-end;

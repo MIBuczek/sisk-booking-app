@@ -46,11 +46,8 @@ const RECORDS_BOOKING_ROW_DETAILS = [
   'email',
   'phone',
   'regular',
-  'dateStart',
-  'dateEnd',
-  'hourStart',
-  'hourEnd',
   'accepted',
+  'bookingTime',
   'message'
 ];
 
@@ -58,17 +55,14 @@ const RECORDS_BOOKING_DETAILS_PROPERTY_MAP = {
   type: 'Typ klienta',
   city: ' Miasto',
   building: 'Budynek',
-  size: 'Wynamowana powierzchnia',
+  size: 'Powierzchnia',
   person: 'Najemca',
   club: 'Klub sportowy',
   email: 'E-mail',
   phone: 'Telefon',
-  regular: 'Cykliczy Wynajem',
-  dateStart: 'Od kiedy',
-  dateEnd: 'Do Kiedy',
-  hourStart: 'Od Godziny',
-  hourEnd: 'Do Godziny',
+  regular: 'Wynajem cykliczy ',
   accepted: 'Zakceptowana',
+  bookingTime: 'Szczegóły rezerwacji',
   message: 'Wiadomość'
 };
 

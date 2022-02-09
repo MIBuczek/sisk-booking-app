@@ -1,4 +1,4 @@
-import { IClient, IBooking } from 'models';
+import { IClient, IBooking, ISingleBookingDate } from 'models';
 import * as React from 'react';
 import { BsChevronDown, BsFillFileEarmarkTextFill, BsTrashFill } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
@@ -26,6 +26,12 @@ const RecordTableData = styled.td`
   }
 `;
 
+const BookingDetailWrapper = styled.tr`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 100%;
+`;
+
 const ListItemBtn = styled(Button)`
   background: white;
   color: ${({ theme }) => theme.green};
@@ -49,6 +55,24 @@ const RecordDetail = styled.td`
   border: ${({ theme }) => `1px solid ${theme.green}`};
   background: ${({ theme }) => theme.lightGray};
   animation: ${fadeIn} 0.5s linear;
+`;
+
+const BookingTimeWrapper = styled.div`
+  width: 100%;
+  border-top: ${({ theme }) => `1px solid ${theme.middleGray}`};
+  border-bottom: ${({ theme }) => `1px solid ${theme.middleGray}`};
+  padding: 3px 2px;
+  span {
+    padding: 2px;
+  }
+`;
+
+const SingleBookingTime = styled.div`
+  display: flex;
+  justify-content: space-between;
+  span {
+    padding: 5px 3px;
+  }
 `;
 
 const RecordDetailSpan = styled.span`
@@ -108,16 +132,43 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
           </RecordTableData>
         </tr>
         {isCollapsed ? (
-          <tr>
+          <BookingDetailWrapper>
             <RecordDetail>
-              {recordPropertyDetails.map((property) => (
-                <RecordDetailSpan key={property}>
-                  <strong>{recordPropertyDisplayMap[property]} : </strong>
-                  {modelDisplayValue(currentRecord[property])}
-                </RecordDetailSpan>
-              ))}
+              {recordPropertyDetails.map((property) => {
+                if (property === 'bookingTime') {
+                  return (
+                    <BookingTimeWrapper key={property}>
+                      <RecordDetailSpan>
+                        <strong>{recordPropertyDisplayMap[property]} : </strong>
+                      </RecordDetailSpan>
+                      {(currentRecord[property] as ISingleBookingDate[]).map((sb) => (
+                        <SingleBookingTime key={sb.day.getTime()}>
+                          <RecordDetailSpan>
+                            <strong>Dzień: </strong>
+                            {modelDisplayValue(sb.day)}
+                          </RecordDetailSpan>
+                          <RecordDetailSpan>
+                            <strong>Godzina rozpoczecia: </strong>
+                            {modelDisplayValue(sb.startHour)}
+                          </RecordDetailSpan>
+                          <RecordDetailSpan>
+                            <strong>Godzina zakończenia: </strong>
+                            {modelDisplayValue(sb.endHour)}
+                          </RecordDetailSpan>
+                        </SingleBookingTime>
+                      ))}
+                    </BookingTimeWrapper>
+                  );
+                }
+                return (
+                  <RecordDetailSpan key={property}>
+                    <strong>{recordPropertyDisplayMap[property]} : </strong>
+                    {modelDisplayValue(currentRecord[property])}
+                  </RecordDetailSpan>
+                );
+              })}
             </RecordDetail>
-          </tr>
+          </BookingDetailWrapper>
         ) : null}
       </>
     )}

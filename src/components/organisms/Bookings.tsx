@@ -17,6 +17,7 @@ import ModalDelete from 'components/molecules/modals/ModalDelete';
 import NewBookingForm from 'components/molecules/forms/NewBookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
+import BookingStatusForm from 'components/molecules/forms/BookingStatusForm';
 import Modal from './Modal';
 
 const BookingsWrapper = styled.section`
@@ -75,10 +76,10 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     }
   };
 
-  const editBookingHandler = (index: number) => {
-    setIsEditing(true);
+  const editBookingHandler = (index: number, isEditor: boolean) => {
+    setIsEditing(isEditor);
     setEditedItemIndex(index);
-    dispatch(openModal(MODAL_TYPES.BOOKINGS));
+    dispatch(openModal(isEditor ? MODAL_TYPES.BOOKINGS : MODAL_TYPES.BOOKINGS_STATUS));
   };
 
   const deleteBookingHandler = (index: number) => {
@@ -143,6 +144,9 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
               initialEditingState={initialBookingState}
               isAdmin
             />
+          )}
+          {type === MODAL_TYPES.BOOKINGS_STATUS && (
+            <BookingStatusForm editedItemIndex={editedItemIndex} />
           )}
           {type === MODAL_TYPES.DELETE && (
             <ModalDelete

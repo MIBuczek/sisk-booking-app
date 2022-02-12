@@ -1,6 +1,11 @@
 import { IClient, IBooking, ISingleBookingDate } from 'models';
 import * as React from 'react';
-import { BsChevronDown, BsFillFileEarmarkTextFill, BsTrashFill } from 'react-icons/bs';
+import {
+  BsChevronDown,
+  BsFillCheckSquareFill,
+  BsFillFileEarmarkTextFill,
+  BsTrashFill
+} from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
 import { modelDisplayValue } from 'utils';
@@ -95,7 +100,7 @@ interface MultipleRecordItemProps {
   recordPropertyDetails: string[];
   recordPropertyDisplayMap: { [x: string]: string };
   currentRecord: IClient | IBooking;
-  editHandler: (index: number) => void;
+  editHandler: (index: number, isEditor: boolean) => void;
   deleteHandler: (index: number) => void;
 }
 
@@ -123,7 +128,10 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
             </ListItemBtn>
-            <ListItemBtn onClick={() => editHandler(index)}>
+            <ListItemBtn onClick={() => editHandler(index, false)}>
+              <BsFillCheckSquareFill />
+            </ListItemBtn>
+            <ListItemBtn onClick={() => editHandler(index, true)}>
               <BsFillFileEarmarkTextFill />
             </ListItemBtn>
             <ListItemBtn onClick={() => deleteHandler(index)}>

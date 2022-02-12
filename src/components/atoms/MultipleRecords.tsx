@@ -86,7 +86,7 @@ interface IProps {
   dataPropertyDisplayMap: { [x: string]: string };
   records?: (IClient | IBooking)[];
   emptyText: string;
-  editHandler: (index: number) => void;
+  editHandler: (index: number, isEditor: boolean) => void;
   deleteHandler: (index: number) => void;
 }
 

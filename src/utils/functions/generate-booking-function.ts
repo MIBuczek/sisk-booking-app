@@ -1,5 +1,7 @@
-import { IBooking, IBookingForm, ISingleBookingDate, TSelect } from 'models';
+import { IBooking, IBookingForm, IBookingStatusForm, ISingleBookingDate, TSelect } from 'models';
 import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_TYPE, SIZE_OPTIONS } from 'utils';
+import { BOOKING_STATUS } from 'utils/variables/booking-status-const';
+import { BOOKING_STATE } from 'utils/variables/store-const';
 import { createSelectedOption } from './utils-functions';
 
 function calculateWeeksBetween(d1: number, d2: number): number {
@@ -54,10 +56,18 @@ const generateBookingDetails = (
     month: cred.startDate.getMonth(),
     accepted: cred.accepted || false,
     message: cred.message,
+    bookingStatus: BOOKING_STATUS.INITIAL,
+    bookingComments: '',
     bookingTime,
     id
   };
 };
+
+const generateBookingStatusDate = (cred: IBookingStatusForm, currentBooking: IBooking) => ({
+  ...currentBooking,
+  bookingStatus: cred.bookingStatus.value,
+  bookingComments: cred.bookingComments
+});
 
 const generateBookingFormDetails = (
   currentBooking: IBooking,
@@ -77,4 +87,4 @@ const generateBookingFormDetails = (
   clientId
 });
 
-export { generateBookingDetails, generateBookingFormDetails };
+export { generateBookingDetails, generateBookingFormDetails, generateBookingStatusDate };

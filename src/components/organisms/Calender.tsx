@@ -116,7 +116,8 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
         if (
           mainState &&
           mainState.city.value === b.city &&
-          mainState.building.value === b.building
+          mainState.building.value === b.building &&
+          (isAdmin || b.accepted)
         ) {
           b.bookingTime.forEach((bt) => {
             acc.push(prepareCalenderItem(b.id, bt.day, bt.startHour, bt.endHour));

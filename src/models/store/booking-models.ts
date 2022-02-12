@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { IPayload } from 'models';
+import { BOOKING_STATUS } from 'utils';
 import { CLIENT_TYPE, SIZE_OPTIONS } from 'utils/variables/form-const';
 
 interface ISingleBookingDate {
@@ -33,6 +34,8 @@ interface IBooking {
   bookingTime: ISingleBookingDate[];
   accepted: boolean;
   message: string;
+  bookingStatus: string;
+  bookingComments: string;
   id: string;
   [x: string]: TBooking;
 }

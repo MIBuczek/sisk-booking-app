@@ -1,5 +1,4 @@
 export * from 'models/auth/credentials-models';
-export * from 'models/components/select-model';
 export * from 'models/store/auth-models';
 export * from 'models/store/booking-models';
 export * from 'models/store/building-models';
@@ -14,3 +13,5 @@ export * from 'models/types-guards/booking-guard';
 export * from 'models/forms/employee-message-models';
 export * from 'models/forms/booking-form-models';
 export * from 'models/forms/client-form-model';
+export * from 'models/forms/booking-status-form-models';
+export * from 'models/components/select-model';

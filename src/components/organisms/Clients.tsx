@@ -63,7 +63,7 @@ const Clients = () => {
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
-  const editClientHandler = (index: number) => {
+  const editClientHandler = (index: number, editHandler: boolean) => {
     setIsEditing(true);
     setEditedItemIndex(index);
     dispatch(openModal(MODAL_TYPES.CLIENT));

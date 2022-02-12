@@ -11,8 +11,6 @@ import {
   BOOKING_INITIAL_VALUE,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
-  CLIENT_TYPE,
-  createSelectedOption,
   generateBookingDetails,
   generateBookingFormDetails,
   SIZE_FIELD_OPTIONS,
@@ -280,7 +278,6 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               name="accepted"
               defaultValue={false}
               control={control}
-              rules={{ required: true }}
               render={({ onChange, value }) => (
                 <Checkbox
                   checked={value}
@@ -291,7 +288,6 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
                 />
               )}
             />
-            {errors.accepted && <ErrorMsg innerText="Pole nie moze byc nie zaznaczone" />}
           </SelectWrapper>
           {!isEmpty(selectedClientId?.value) && (
             <AutoFillContent>

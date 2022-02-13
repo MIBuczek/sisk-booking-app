@@ -5,7 +5,6 @@ export interface HeaderProps {
 }
 
 const Header = styled.h1`
-  line-height: 1.2;
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.l};
   font-weight: ${({ theme }) => theme.middle};

@@ -35,6 +35,7 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { isEmpty } from 'lodash';
 import ConfirmAction from '../ConfirmAction';
+import BookingExtraOptions from '../BookingExtraOptions';
 
 registerLocale('pl', pl);
 
@@ -531,6 +532,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
         />
         {errors.endHour && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </InputContainer>
+      <BookingExtraOptions />
       <TextAreaLabel>Chciałbyś przesłać dodatkowe informacje</TextAreaLabel>
       <Controller
         name="message"

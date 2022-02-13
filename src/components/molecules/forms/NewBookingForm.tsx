@@ -1,5 +1,5 @@
 /* eslint-disable import/no-duplicates */
-import { IBooking, IMainState, IReduxState, TSelect } from 'models';
+import { IBooking, IMainState, IReduxState } from 'models';
 import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
 import { registerLocale } from 'react-datepicker';
@@ -9,11 +9,13 @@ import { addBooking, closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
 import {
   BOOKING_INITIAL_VALUE,
-  BUILDINGS_OPTIONS,
   CITY_OPTIONS,
   generateBookingDetails,
   generateBookingFormDetails,
-  SIZE_FIELD_OPTIONS,
+  selectBuildingOptions,
+  selectClientOptions,
+  selectedClientIdOption,
+  selectSizeFieldOptions,
   SIZE_OPTIONS,
   SIZE_OPTIONS_BTN
 } from 'utils';
@@ -154,21 +156,6 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
     setSelectedSize(value);
   };
 
-  const selectBuildingOptions = (): TSelect[] => {
-    if (!cityValue) return [building];
-    return BUILDINGS_OPTIONS[cityValue.value];
-  };
-
-  const selectSizeFieldOptions = (): void => {
-    if (buildingValue && cityValue)
-      setSizeOptions(SIZE_FIELD_OPTIONS[cityValue.value][buildingValue.value]);
-  };
-
-  const selectClientOptions = (): TSelect[] => {
-    if (!clients) return [];
-    return clients.map((c) => ({ label: c.name, value: c.id || '' }));
-  };
-
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
     setBookingData(generateBookingDetails(cred, selectedSize, bookingId));
     setDisplayConfirmation(true);
@@ -186,7 +173,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
 
   const editBookingHandler = (index: number) => {
     const currentBooking = bookings[index];
-    const clientId = selectClientOptions().find((o) => o.value === currentBooking.clientId);
+    const clientId = selectedClientIdOption(clients, currentBooking.clientId);
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
   };
@@ -221,7 +208,8 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
 
     if (typeof editedItemIndex === 'number') {
       const currentBooking = bookings[editedItemIndex];
-      const clientId = selectClientOptions().find((o) => o.value === currentBooking.clientId);
+      const clientId = selectedClientIdOption(clients, currentBooking.clientId);
+
       reset({
         ...generateBookingFormDetails(currentBooking, clientId, city),
         ...formClientData
@@ -236,7 +224,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   };
 
   React.useEffect(() => {
-    selectSizeFieldOptions();
+    setSizeOptions(selectSizeFieldOptions(cityValue.value, buildingValue.value));
   }, [cityValue, buildingValue]);
 
   React.useEffect(() => {
@@ -261,7 +249,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               control={control}
               render={({ onChange, onBlur, value }) => (
                 <SelectInputField
-                  options={selectClientOptions()}
+                  options={selectClientOptions(clients)}
                   placeholder="Wybierz"
                   onChange={onChange}
                   onBlur={onBlur}
@@ -335,7 +323,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
             <SelectInputField
-              options={selectBuildingOptions()}
+              options={selectBuildingOptions(cityValue.value, building)}
               styles={customStyles(!!errors.building)}
               placeholder="Wybierz"
               onChange={onChange}

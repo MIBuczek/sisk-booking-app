@@ -1,4 +1,6 @@
 import { IBooking, IClient, TSelect } from 'models';
+import { SIZE_OPTIONS, SIZE_OPTIONS_BTN } from 'utils/variables/form-const';
+import { BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils/variables/options-const';
 
 const firstLetterUpperCase = (s: string): string =>
   s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
@@ -32,8 +34,30 @@ const paginationItems = (totalPost: number, postPerPage: number) => {
   return pageNumbers;
 };
 
+const selectSizeFieldOptions = (buildingValue: string, cityValue: string): SIZE_OPTIONS[] => {
+  if (buildingValue && cityValue) return SIZE_FIELD_OPTIONS[buildingValue][cityValue];
+  return SIZE_OPTIONS_BTN;
+};
+
+const selectBuildingOptions = (cityValue: string, building: TSelect): TSelect[] => {
+  if (!cityValue) return [building];
+  return BUILDINGS_OPTIONS[cityValue];
+};
+
+const selectClientOptions = (clients: IClient[]): TSelect[] => {
+  if (!clients) return [];
+  return clients.map((c) => ({ label: c.name, value: c.id || '' }));
+};
+
+const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect | undefined =>
+  selectClientOptions(clients).find((o) => o.value === clientId);
+
 export {
   generateSelectDefaultValue,
+  selectSizeFieldOptions,
+  selectBuildingOptions,
+  selectClientOptions,
+  selectedClientIdOption,
   pagination,
   paginationItems,
   createSelectedOption,

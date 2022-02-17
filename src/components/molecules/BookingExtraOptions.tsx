@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-duplicates */
 import { DataPickerField } from 'components/atoms/DatapickerField';
 import Label from 'components/atoms/Label';
@@ -7,12 +8,12 @@ import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
-import ErrorMsg from 'components/atoms/ErrorMsg';
 import Checkbox from 'components/atoms/Checkbox';
 import Button from 'components/atoms/Button';
-import { BsFillPlusCircleFill, BsXLg } from 'react-icons/bs';
+import { BsFillFileTextFill, BsTrashFill, BsXLg } from 'react-icons/bs';
 import { isEmpty } from 'lodash';
-import { modelDisplayValue } from 'utils';
+import { INITIAL_EXTRA_OPTIONS, modelDisplayValue } from 'utils';
+import { ExtraOptions, IExtraOptionForm, ISelectedExtraOptions } from 'models';
 
 const ExtraOptionsWrapper = styled.section`
   width: 100%;
@@ -73,11 +74,21 @@ const ButtonWrapper = styled.div`
   align-items: center;
 `;
 
-const AddBtn = styled(Button)`
+const RoundBtn = styled(Button)`
   margin: 0;
   border-radius: 50%;
   width: 30px;
   height: 30px;
+  padding: 0;
+  display: flex;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  svg {
+    transform: rotate(45deg);
+    width: 14px;
+    height: 14px;
+  }
 `;
 
 const DisplaySelectedOptions = styled.ul`
@@ -87,7 +98,13 @@ const DisplaySelectedOptions = styled.ul`
   border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.s};
-  li.empty {
+`;
+
+const DisplaySelectedOptionElement = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  &.empty {
     text-align: center;
   }
 `;
@@ -97,32 +114,67 @@ const RecordDetailSpan = styled.span`
   padding: 10px 5px;
   min-width: 20%;
   width: auto;
+  &:first-of-type {
+    min-width: 30%;
+  }
 `;
 
-interface ExtraOptions {
-  lights: boolean;
-  toilets: boolean;
+const RecordDetailsBtnPanel = styled.div`
+  min-width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  button {
+    margin-left: 1rem;
+    svg {
+      transform: rotate(0deg);
+    }
+  }
+`;
+
+interface BookingExtraOptionsProps {
+  extraOptions: ISelectedExtraOptions[];
+  setExtraOptions: React.Dispatch<React.SetStateAction<ISelectedExtraOptions[]>>;
 }
 
-interface ISelectedExtraOptions {
-  options: ExtraOptions[];
-  fromHour: Date;
-  toHour: Date;
-}
+const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = ({
+  extraOptions,
+  setExtraOptions
+}) => {
+  const { handleSubmit, control, watch, reset } = useForm<IExtraOptionForm>();
 
-interface BookingExtraOptionsProps {}
-
-const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [extraOptions, setExtraOptions] = React.useState<ISelectedExtraOptions[]>([]);
-
-  const { handleSubmit, errors, control, watch, reset } = useForm();
+  const lightValue = watch('lights');
+  const toiletsValue = watch('toilets');
 
   const onSubmit = handleSubmit(async (cred) => {
     const { fromHour, toHour, lights, toilets } = cred;
-    const singleRecord = { options: [lights, toilets], fromHour, toHour };
+    const singleRecord = { options: [{ lights }, { toilets }], fromHour, toHour };
     setExtraOptions([...extraOptions, singleRecord]);
+    reset({ ...INITIAL_EXTRA_OPTIONS });
   });
+
+  const editExtraOption = (e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+    const { options, fromHour, toHour } = extraOptions[index];
+    reset({ fromHour, toHour, lights: options[0].lights, toilets: options[1].toilets });
+    deleteExtraOption(e, index);
+  };
+
+  const deleteExtraOption = (e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+    setExtraOptions(extraOptions.filter((o, i) => i !== index));
+  };
+
+  const checkSelectedOption = (options: ExtraOptions[]): string =>
+    options.reduce((acc: string, opt) => {
+      if (opt.lights) acc += 'Światła, ';
+      if (opt.toilets) acc += 'Zaplecze sanitarne';
+      return acc;
+    }, '');
+
+  const disabledBtn = !(lightValue || toiletsValue);
+
+  React.useEffect(() => undefined, [extraOptions]);
 
   return (
     <ExtraOptionsWrapper>
@@ -167,7 +219,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
             <Label>Od której godziny</Label>
             <Controller
               name="fromHour"
-              defaultValue={null}
+              defaultValue={new Date()}
               control={control}
               render={({ onChange, onBlur, value }) => (
                 <HourPickerField
@@ -193,7 +245,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
             <Label>Do której godziny</Label>
             <Controller
               name="toHour"
-              defaultValue={null}
+              defaultValue={new Date()}
               control={control}
               rules={{ required: true }}
               render={({ onChange, onBlur, value }) => (
@@ -217,15 +269,19 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
             />
           </InputWrapper>
           <ButtonWrapper>
-            <AddBtn role="button" onClick={onSubmit}>
-              Add
-            </AddBtn>
+            <RoundBtn role="button" onClick={onSubmit} disabled={disabledBtn}>
+              <BsXLg />
+            </RoundBtn>
           </ButtonWrapper>
         </ExtraOptionsForm>
         <DisplaySelectedOptions>
           {!isEmpty(extraOptions) ? (
-            extraOptions.map(({ fromHour, toHour, options }) => (
-              <li key={fromHour.getTime()}>
+            extraOptions.map(({ fromHour, toHour, options }, index) => (
+              <DisplaySelectedOptionElement key={fromHour.getTime()}>
+                <RecordDetailSpan>
+                  <strong>Opcje : </strong>
+                  {checkSelectedOption(options)}
+                </RecordDetailSpan>
                 <RecordDetailSpan>
                   <strong>Od godziny : </strong>
                   {modelDisplayValue(toHour)}
@@ -234,10 +290,20 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                   <strong>Do godziny: </strong>
                   {modelDisplayValue(toHour)}
                 </RecordDetailSpan>
-              </li>
+                <RecordDetailsBtnPanel>
+                  <RoundBtn>
+                    <BsFillFileTextFill role="button" onClick={(e) => editExtraOption(e, index)} />
+                  </RoundBtn>
+                  <RoundBtn>
+                    <BsTrashFill role="button" onClick={(e) => deleteExtraOption(e, index)} />
+                  </RoundBtn>
+                </RecordDetailsBtnPanel>
+              </DisplaySelectedOptionElement>
             ))
           ) : (
-            <li className="empty">Nie zostały dodane żadne dodatkowe opcje</li>
+            <DisplaySelectedOptionElement className="empty">
+              Nie zostały dodane żadne dodatkowe opcje
+            </DisplaySelectedOptionElement>
           )}
         </DisplaySelectedOptions>
       </ExtraOptionsContent>

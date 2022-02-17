@@ -1,5 +1,5 @@
 /* eslint-disable import/no-duplicates */
-import { IBooking, IMainState, IReduxState } from 'models';
+import { IBooking, IMainState, IReduxState, ISelectedExtraOptions } from 'models';
 import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
 import { registerLocale } from 'react-datepicker';
@@ -129,6 +129,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   initialEditingState
 }) => {
   const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
+  const [extraOptions, setExtraOptions] = React.useState<ISelectedExtraOptions[]>([]);
   const [bookingId, setBookingId] = React.useState<string | undefined>(undefined);
   const [selectedSize, setSelectedSize] = React.useState(SIZE_OPTIONS['1/1']);
   const [sizeOptions, setSizeOptions] = React.useState(SIZE_OPTIONS_BTN);
@@ -532,7 +533,9 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
         />
         {errors.endHour && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </InputContainer>
-      <BookingExtraOptions />
+      {buildingValue.value === 'boisko-sztuczna-nawierzchnia' && (
+        <BookingExtraOptions extraOptions={extraOptions} setExtraOptions={setExtraOptions} />
+      )}
       <TextAreaLabel>Chciałbyś przesłać dodatkowe informacje</TextAreaLabel>
       <Controller
         name="message"

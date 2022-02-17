@@ -15,3 +15,4 @@ export * from 'models/forms/booking-form-models';
 export * from 'models/forms/client-form-model';
 export * from 'models/forms/booking-status-form-models';
 export * from 'models/components/select-model';
+export * from 'models/forms/booking-extra-options-models';

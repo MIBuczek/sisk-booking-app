@@ -13,6 +13,7 @@ import Clients from 'components/organisms/Clients';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
 import Bookings from 'components/organisms/Bookings';
 import Building from 'components/organisms/Building';
+import Summary from 'components/organisms/Summary';
 
 const AdminWrapper = styled.section`
   width: 100%;
@@ -61,6 +62,7 @@ const Admin = (): JSX.Element => {
       {tab === ADMIN_TABS.CLIENTS && <Clients />}
       {tab === ADMIN_TABS.BOOKINGS && <Bookings mainState={adminState} />}
       {tab === ADMIN_TABS.BUILDINGS && <Building mainState={adminState} />}
+      {tab === ADMIN_TABS.SUMMARY && <Summary />}
       {/* modal content */}
       {isOpen && type === MODAL_TYPES.MESSAGE && (
         <Modal>

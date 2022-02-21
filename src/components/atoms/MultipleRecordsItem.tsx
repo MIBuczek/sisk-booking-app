@@ -1,4 +1,5 @@
-import { IClient, IBooking, ISingleBookingDate } from 'models';
+import { isEmpty } from 'lodash';
+import { IClient, IBooking, ISingleBookingDate, ISelectedExtraOptions } from 'models';
 import * as React from 'react';
 import {
   BsChevronDown,
@@ -8,7 +9,7 @@ import {
 } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { modelDisplayValue } from 'utils';
+import { checkSelectedOption, modelDisplayValue } from 'utils';
 import Collapse, { IRenderProps } from '../../providers/Collapse';
 import Button from './Button';
 
@@ -76,7 +77,9 @@ const SingleBookingTime = styled.div`
   display: flex;
   justify-content: space-between;
   span {
+    display: inline-block;
     padding: 5px 3px;
+    width: 33%;
   }
 `;
 
@@ -165,6 +168,33 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                           </RecordDetailSpan>
                         </SingleBookingTime>
                       ))}
+                    </BookingTimeWrapper>
+                  );
+                }
+                if (property === 'selectedOptions' && !isEmpty(currentRecord[property])) {
+                  return (
+                    <BookingTimeWrapper key={property}>
+                      <RecordDetailSpan>
+                        <strong>{recordPropertyDisplayMap[property]} : </strong>
+                      </RecordDetailSpan>
+                      {(currentRecord[property] as ISelectedExtraOptions[]).map(
+                        ({ options, fromHour, toHour }) => (
+                          <SingleBookingTime key={fromHour.getTime()}>
+                            <RecordDetailSpan>
+                              <strong>Opcje : </strong>
+                              {checkSelectedOption(options)}
+                            </RecordDetailSpan>
+                            <RecordDetailSpan>
+                              <strong>Od godziny : </strong>
+                              {modelDisplayValue(fromHour)}
+                            </RecordDetailSpan>
+                            <RecordDetailSpan>
+                              <strong>Do godziny: </strong>
+                              {modelDisplayValue(toHour)}
+                            </RecordDetailSpan>
+                          </SingleBookingTime>
+                        )
+                      )}
                     </BookingTimeWrapper>
                   );
                 }

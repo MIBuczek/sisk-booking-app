@@ -48,6 +48,7 @@ const RECORDS_BOOKING_ROW_DETAILS = [
   'regular',
   'accepted',
   'bookingTime',
+  'selectedOptions',
   'message'
 ];
 
@@ -63,6 +64,7 @@ const RECORDS_BOOKING_DETAILS_PROPERTY_MAP = {
   regular: 'Wynajem cykliczy ',
   accepted: 'Zakceptowana',
   bookingTime: 'Szczegóły rezerwacji',
+  selectedOptions: 'Wybrane dodatkowe opcje',
   message: 'Wiadomość'
 };
 

@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { IPayload } from 'models';
-import { BOOKING_STATUS } from 'utils';
+import { IPayload, ISelectedExtraOptions } from 'models';
 import { CLIENT_TYPE, SIZE_OPTIONS } from 'utils/variables/form-const';
 
 interface ISingleBookingDate {
@@ -17,6 +16,7 @@ type TBooking =
   | Date
   | number
   | ISingleBookingDate[]
+  | ISelectedExtraOptions[]
   | undefined;
 
 interface IBooking {
@@ -36,6 +36,8 @@ interface IBooking {
   message: string;
   bookingStatus: string;
   bookingComments: string;
+  extraOptions: boolean;
+  selectedOptions: ISelectedExtraOptions[];
   id: string;
   [x: string]: TBooking;
 }

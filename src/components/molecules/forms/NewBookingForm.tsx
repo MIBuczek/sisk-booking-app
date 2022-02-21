@@ -159,7 +159,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   };
 
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
-    setBookingData(generateBookingDetails(cred, selectedSize, bookingId));
+    setBookingData(generateBookingDetails(cred, selectedSize, extraOptions, bookingId));
     setDisplayConfirmation(true);
   });
 

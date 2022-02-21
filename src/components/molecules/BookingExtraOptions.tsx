@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-duplicates */
 import { DataPickerField } from 'components/atoms/DatapickerField';
 import Label from 'components/atoms/Label';
@@ -12,8 +11,8 @@ import Checkbox from 'components/atoms/Checkbox';
 import Button from 'components/atoms/Button';
 import { BsFillFileTextFill, BsTrashFill, BsXLg } from 'react-icons/bs';
 import { isEmpty } from 'lodash';
-import { INITIAL_EXTRA_OPTIONS, modelDisplayValue } from 'utils';
-import { ExtraOptions, IExtraOptionForm, ISelectedExtraOptions } from 'models';
+import { checkSelectedOption, INITIAL_EXTRA_OPTIONS, modelDisplayValue } from 'utils';
+import { IExtraOptionForm, ISelectedExtraOptions } from 'models';
 
 const ExtraOptionsWrapper = styled.section`
   width: 100%;
@@ -165,13 +164,6 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     setExtraOptions(extraOptions.filter((o, i) => i !== index));
   };
 
-  const checkSelectedOption = (options: ExtraOptions[]): string =>
-    options.reduce((acc: string, opt) => {
-      if (opt.lights) acc += 'Światła, ';
-      if (opt.toilets) acc += 'Zaplecze sanitarne';
-      return acc;
-    }, '');
-
   const disabledBtn = !(lightValue || toiletsValue);
 
   React.useEffect(() => undefined, [extraOptions]);
@@ -284,7 +276,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                 </RecordDetailSpan>
                 <RecordDetailSpan>
                   <strong>Od godziny : </strong>
-                  {modelDisplayValue(toHour)}
+                  {modelDisplayValue(fromHour)}
                 </RecordDetailSpan>
                 <RecordDetailSpan>
                   <strong>Do godziny: </strong>

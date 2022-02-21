@@ -1,4 +1,5 @@
-import { IBooking, IClient, TSelect } from 'models';
+/* eslint-disable no-param-reassign */
+import { ExtraOptions, IBooking, IClient, TSelect } from 'models';
 import { SIZE_OPTIONS, SIZE_OPTIONS_BTN } from 'utils/variables/form-const';
 import { BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils/variables/options-const';
 
@@ -52,6 +53,13 @@ const selectClientOptions = (clients: IClient[]): TSelect[] => {
 const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect | undefined =>
   selectClientOptions(clients).find((o) => o.value === clientId);
 
+const checkSelectedOption = (options: ExtraOptions[]): string =>
+  options.reduce((acc: string, opt) => {
+    if (opt.lights) acc += 'Światła, ';
+    if (opt.toilets) acc += 'Zaplecze sanitarne';
+    return acc;
+  }, '');
+
 export {
   generateSelectDefaultValue,
   selectSizeFieldOptions,
@@ -61,5 +69,6 @@ export {
   pagination,
   paginationItems,
   createSelectedOption,
-  firstLetterUpperCase
+  firstLetterUpperCase,
+  checkSelectedOption
 };

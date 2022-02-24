@@ -6,19 +6,18 @@ import Paragraph from 'components/atoms/Paragraph';
 import TextAreaField from 'components/atoms/TextAreaField';
 import TextInputField from 'components/atoms/TextInputField';
 import ConfirmAction from 'components/molecules/ConfirmAction';
-import NewFormMessage from 'components/molecules/forms/NewFormMessage';
 import { IAdminState, IBuilding, IEmployeeMessage } from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
 import {
+  INITIAL_EMPLOYEE_MESSAGE,
   RADWANICE_BUILDINGS,
   SIECHNICE_BUILDINGS,
   SWIETA_KATARZYNA_BUILDING,
   ZERNIKI_WROCLAWSKIE_BUILDING
 } from 'utils';
-import { INITIAL_EMPLOYEE_MESSAGE } from 'utils/variables/eployee-message-const';
 
 const BuildingWrapper = styled.article`
   width: 60%;

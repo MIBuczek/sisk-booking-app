@@ -1,5 +1,3 @@
-import { IBooking } from 'models';
-
 const formatDate = (date: Date | string | null): string => {
   if (!date) return '';
   if (date instanceof Date) {

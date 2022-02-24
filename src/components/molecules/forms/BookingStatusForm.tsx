@@ -2,7 +2,7 @@ import Button from 'components/atoms/Button';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
-import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
+import SelectInputField, { customStyles } from 'components/atoms/SelectInputField';
 import TextAreaField from 'components/atoms/TextAreaField';
 import { IBooking, IBookingsPayload, IBookingStatusForm, IReduxState } from 'models';
 import * as React from 'react';

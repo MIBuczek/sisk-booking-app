@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Header from 'components/atoms/Header';
 import { fadeIn } from 'style/animation';
 import SideNav from 'components/organisms/SideNav';

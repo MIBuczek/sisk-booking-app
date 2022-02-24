@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IClient } from 'models';
+import { IBuilding, IClient } from 'models';
 import { IBooking } from 'models/store/booking-models';
 
 const transformFirebaseBookingTimeData = (item: any) => ({
@@ -49,4 +49,15 @@ const parseFirebaseClientData = (doc: any) =>
     id: doc.id
   } as IClient);
 
-export { parseFirebaseBookingData, parseFirebaseClientData };
+const parseFirebaseBuildingData = (doc: any) =>
+  ({
+    name: doc.data().name,
+    city: doc.data().city,
+    property: doc.data().property,
+    size: doc.data().size,
+    extra: doc.data().extra,
+    phone: doc.data().phone,
+    email: doc.data().email
+  } as IBuilding);
+
+export { parseFirebaseBookingData, parseFirebaseClientData, parseFirebaseBuildingData };

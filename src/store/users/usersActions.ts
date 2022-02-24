@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
 import { IReduxState, IUser, IUserAction } from 'models';
-import { ADMIN_ROLE, db, SAVING_STAGE, USER_STATE } from 'utils';
+import { db, SAVING_STAGE, USER_STATE } from 'utils';
 
-export const fetchingUserStart = (): IUserAction => ({
+const fetchingUserStart = (): IUserAction => ({
   type: USER_STATE.GET_USER,
   payload: {
     isFetching: true,
@@ -33,7 +33,7 @@ const fetchingUserError = (errorMessage: string): IUserAction => ({
   }
 });
 
-export const getUserData = () => async (
+const getUserData = () => async (
   dispatch: Dispatch<IUserAction>,
   getState: () => IReduxState
 ): Promise<void> => {
@@ -49,3 +49,5 @@ export const getUserData = () => async (
     throw new Error(JSON.stringify(err));
   }
 };
+
+export { fetchingUserStart, getUserData };

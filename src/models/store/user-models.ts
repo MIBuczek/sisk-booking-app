@@ -1,11 +1,11 @@
-import { ADMIN_ROLE } from 'utils';
 import { IPayload } from './store-models';
 
 interface IUser {
-  [x: string]: string;
+  [x: string]: string | boolean;
   email: string;
   name: string;
-  role: ADMIN_ROLE;
+  isAdmin: boolean;
+  isEmployee: boolean;
 }
 
 interface IUserPayload extends IPayload {

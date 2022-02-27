@@ -21,9 +21,12 @@ type Navigation = {
 const NavWrapper = styled.nav<Navigation>`
   width: 100%;
   min-height: 12vh;
-  padding: ${({ isTop }) => (isTop ? '22px 60px' : '10px 60px')};
+  /* padding: ${({ isTop }) => (isTop ? '22px 60px' : '10px 60px')};
   background: ${({ isTop }) => (isTop ? 'transparent' : 'white')};
-  position: ${({ isOpen }) => (isOpen ? 'static' : 'fixed')};
+  position: ${({ isOpen }) => (isOpen ? 'static' : 'fixed')}; */
+  padding: 22px 60px;
+  background: transparent;
+  position: static;
   top: 0;
   left: 0;
   z-index: 0;

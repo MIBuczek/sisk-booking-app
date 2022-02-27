@@ -99,6 +99,7 @@ const ChevronIcon = styled(BsChevronDown)`
 
 interface MultipleRecordItemProps {
   index: number;
+  isAdmin: boolean;
   recordProperty: string[];
   recordPropertyDetails: string[];
   recordPropertyDisplayMap: { [x: string]: string };
@@ -109,6 +110,7 @@ interface MultipleRecordItemProps {
 
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   index,
+  isAdmin,
   recordProperty,
   recordPropertyDetails,
   recordPropertyDisplayMap,
@@ -134,12 +136,16 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
             <ListItemBtn onClick={() => editHandler(index, false)}>
               <BsFillCheckSquareFill />
             </ListItemBtn>
-            <ListItemBtn onClick={() => editHandler(index, true)}>
-              <BsFillFileEarmarkTextFill />
-            </ListItemBtn>
-            <ListItemBtn onClick={() => deleteHandler(index)}>
-              <BsTrashFill />
-            </ListItemBtn>
+            {isAdmin && (
+              <>
+                <ListItemBtn onClick={() => editHandler(index, true)}>
+                  <BsFillFileEarmarkTextFill />
+                </ListItemBtn>
+                <ListItemBtn onClick={() => deleteHandler(index)}>
+                  <BsTrashFill />
+                </ListItemBtn>
+              </>
+            )}
           </RecordTableData>
         </tr>
         {isCollapsed ? (

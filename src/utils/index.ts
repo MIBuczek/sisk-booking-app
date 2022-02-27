@@ -17,3 +17,4 @@ export * from 'utils/functions/calender-functions';
 export * from 'utils/functions/utils-functions';
 export * from 'utils/functions/modeling-value-function';
 export * from 'utils/functions/generate-booking-function';
+export * from 'utils/functions/credentials-function';

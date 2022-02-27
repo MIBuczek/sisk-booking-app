@@ -8,7 +8,13 @@ import SideNav from 'components/organisms/SideNav';
 import BookingCalender from 'components/organisms/Calender';
 import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
-import { ADMIN_TABS, BUILDINGS_OPTIONS, initialAdminState, MODAL_TYPES } from 'utils';
+import {
+  adminCredentials,
+  ADMIN_TABS,
+  BUILDINGS_OPTIONS,
+  initialAdminState,
+  MODAL_TYPES
+} from 'utils';
 import Clients from 'components/organisms/Clients';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
 import Bookings from 'components/organisms/Bookings';
@@ -18,7 +24,7 @@ import Summary from 'components/organisms/Summary';
 const AdminWrapper = styled.section`
   width: 100%;
   min-height: 82vh;
-  margin-top: 13vh;
+  margin-top: 5vh;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -32,6 +38,7 @@ const Admin = (): JSX.Element => {
 
   const {
     authStore: { auth },
+    currentUserStore: { user },
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
@@ -47,22 +54,32 @@ const Admin = (): JSX.Element => {
     setTab(currentTab);
   };
 
+  React.useEffect(() => undefined, [tab]);
+
   // if (!auth) {
   //   return <Redirect to="/login" />;
   // }
 
-  React.useEffect(() => undefined, [tab]);
-
   return (
     <AdminWrapper>
       <Header>Panel Administratora</Header>
-      <SideNav admin state={adminState} stateHandler={stateHandler} tabHandler={tabHandler} />
+      <SideNav
+        admin
+        state={adminState}
+        stateHandler={stateHandler}
+        tabHandler={tabHandler}
+        isAdmin={adminCredentials(user)}
+      />
       {/* admin inner content */}
       {tab === ADMIN_TABS.CALENDER && <BookingCalender mainState={adminState} isAdmin />}
-      {tab === ADMIN_TABS.CLIENTS && <Clients />}
       {tab === ADMIN_TABS.BOOKINGS && <Bookings mainState={adminState} />}
-      {tab === ADMIN_TABS.BUILDINGS && <Building mainState={adminState} />}
-      {tab === ADMIN_TABS.SUMMARY && <Summary />}
+      {adminCredentials(user) && (
+        <>
+          {tab === ADMIN_TABS.CLIENTS && <Clients />}
+          {tab === ADMIN_TABS.BUILDINGS && <Building mainState={adminState} />}
+          {tab === ADMIN_TABS.SUMMARY && <Summary />}
+        </>
+      )}
       {/* modal content */}
       {isOpen && type === MODAL_TYPES.MESSAGE && (
         <Modal>

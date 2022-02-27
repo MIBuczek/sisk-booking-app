@@ -30,6 +30,7 @@ const SideWrapper = styled.aside`
 
 interface IProps {
   admin?: boolean;
+  isAdmin: boolean;
   state: IMainState | IAdminState;
   stateHandler: (value: TSelect, field: string) => void;
   tabHandler: (currentTab: ADMIN_TABS) => void;
@@ -37,6 +38,7 @@ interface IProps {
 
 const SideNav: React.FunctionComponent<IProps> = ({
   admin,
+  isAdmin,
   state,
   stateHandler,
   tabHandler
@@ -86,15 +88,19 @@ const SideNav: React.FunctionComponent<IProps> = ({
           <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.BOOKINGS)}>
             <BsFillPinFill style={iconStyle} /> REZERWACJE
           </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CLIENTS)}>
-            <BsFileEarmarkPersonFill style={iconStyle} /> NAJEMCY
-          </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.BUILDINGS)}>
-            <BsBuilding style={iconStyle} /> OBIEKTY
-          </ButtonIcon>
-          <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.SUMMARY)}>
-            <BsFileEarmarkBarGraphFill style={iconStyle} /> PODSUMOWANIE NAJMÓW
-          </ButtonIcon>
+          {isAdmin && (
+            <>
+              <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CLIENTS)}>
+                <BsFileEarmarkPersonFill style={iconStyle} /> NAJEMCY
+              </ButtonIcon>
+              <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.BUILDINGS)}>
+                <BsBuilding style={iconStyle} /> OBIEKTY
+              </ButtonIcon>
+              <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.SUMMARY)}>
+                <BsFileEarmarkBarGraphFill style={iconStyle} /> PODSUMOWANIE NAJMÓW
+              </ButtonIcon>
+            </>
+          )}
         </>
       ) : (
         <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>

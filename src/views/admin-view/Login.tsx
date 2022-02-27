@@ -15,7 +15,7 @@ import { fadeIn } from 'style/animation';
 const LoginWrapper = styled.section`
   width: 100%;
   min-height: 83vh;
-  margin-right: 13vh;
+  margin-top: 5vh;
   display: grid;
   grid-template-columns: 1fr;
   margin: 0.5rem 0;
@@ -59,7 +59,7 @@ const Login: React.FC = (): JSX.Element => {
   return (
     <LoginWrapper>
       <LoginPanel>
-        <Header3>Panel logowania do harmonogram rezerwacji obiektów</Header3>
+        <Header3>Panel logowania dla administratora harmonogramu rezerwacji obiektów</Header3>
         <Label>Adres E-mail</Label>
         <Controller
           name="email"

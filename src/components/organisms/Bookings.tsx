@@ -11,7 +11,8 @@ import {
   RECORDS_BOOKINGS_HEADERS,
   RECORDS_BOOKINGS_ROW,
   RECORDS_BOOKING_ROW_DETAILS,
-  RECORDS_BOOKING_DETAILS_PROPERTY_MAP
+  RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
+  adminCredentials
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import NewBookingForm from 'components/molecules/forms/NewBookingForm';
@@ -65,6 +66,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
 
   const {
     bookingStore: { bookings },
+    currentUserStore: { user },
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
@@ -120,15 +122,18 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           searchProperty="person"
           searchContentHandler={bookingListHandler}
         />
-        <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-          Dodaj nowa rezerwace
-        </OpenBookingsModalButton>
+        {adminCredentials(user) && (
+          <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
+            Dodaj nowa rezerwace
+          </OpenBookingsModalButton>
+        )}
       </RecordsActionContent>
       <MultipleRecords
         headers={RECORDS_BOOKINGS_HEADERS}
         dataProperty={RECORDS_BOOKINGS_ROW}
         dataPropertyDetails={RECORDS_BOOKING_ROW_DETAILS}
         dataPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
+        isAdmin={adminCredentials(user)}
         records={bookingsList}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}

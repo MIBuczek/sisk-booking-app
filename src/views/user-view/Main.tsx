@@ -16,7 +16,7 @@ import ModalInfo from 'components/molecules/modals/ModalInfo';
 const MainWrapper = styled.section`
   width: 100%;
   min-height: 82vh;
-  margin-top: 13vh;
+  margin-top: 5vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -43,7 +43,12 @@ const Main: React.FC<IProps> = (): JSX.Element => {
   return (
     <MainWrapper>
       <Header>HARMONOGRAM REZERWACJI OBIEKTÓW</Header>
-      <SideNav state={mainState} stateHandler={mainStateHandler} tabHandler={() => null} />
+      <SideNav
+        state={mainState}
+        stateHandler={mainStateHandler}
+        tabHandler={() => null}
+        isAdmin={false}
+      />
       <BookingCalender mainState={mainState} />
       {isOpen && (
         <Modal>

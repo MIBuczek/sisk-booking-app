@@ -118,6 +118,7 @@ const Clients = () => {
         </OpenClientModalButton>
       </RecordsActionContent>
       <MultipleRecords
+        isAdmin
         headers={RECORDS_CLIENTS_HEADERS}
         dataProperty={RECORDS_CLIENTS_ROW}
         dataPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}

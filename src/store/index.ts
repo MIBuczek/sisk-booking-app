@@ -8,4 +8,6 @@ export * from 'store/modal/modalAction';
 export * from 'store/modal/modalReducer';
 export * from 'store/users/usersActions';
 export * from 'store/users/usersReducer';
+export * from 'store/buildings/buildingActions';
+export * from 'store/buildings/buildingReducer';
 export * from 'store/rootReducer';

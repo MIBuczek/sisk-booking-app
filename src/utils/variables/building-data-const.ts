@@ -8,6 +8,8 @@ const RADWANICE_BUILDINGS: IBuilding[] = [
     property: 'hala-sportowa',
     city: 'radwanice',
     size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false
@@ -18,6 +20,8 @@ const RADWANICE_BUILDINGS: IBuilding[] = [
     property: 'sala-fitness',
     city: 'radwanice',
     size: [SIZE_OPTIONS['1/1']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false
@@ -31,6 +35,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     property: 'hala-sportowa',
     city: 'siechnice',
     size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false
@@ -41,6 +47,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     property: 'sala-fitness',
     city: 'siechnice',
     size: [SIZE_OPTIONS['1/1']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false
@@ -51,6 +59,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     property: 'boisko-sztuczna-nawierzchnia',
     city: 'siechnice',
     size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: true,
       toilets: true
@@ -61,6 +71,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     property: 'boisko-trawiaste-stadionie-la',
     city: 'siechnice',
     size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false
@@ -74,6 +86,8 @@ const SWIETA_KATARZYNA_BUILDING: IBuilding[] = [
     property: 'hala-sportowa',
     city: 'swieta-katarzyna',
     size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false
@@ -87,6 +101,8 @@ const ZERNIKI_WROCLAWSKIE_BUILDING: IBuilding[] = [
     property: 'hala-sportowa',
     city: 'zerniki-wroclawskie',
     size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false
@@ -97,6 +113,8 @@ const ZERNIKI_WROCLAWSKIE_BUILDING: IBuilding[] = [
     property: 'sala-fitness',
     city: 'zerniki-wroclawskie',
     size: [SIZE_OPTIONS['1/1']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
     extra: {
       lighting: false,
       toilets: false

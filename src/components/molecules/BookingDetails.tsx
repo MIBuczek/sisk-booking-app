@@ -15,7 +15,7 @@ import { clearCurrentBooking } from '../../store/bookings/bookingsAction';
 import { fadeIn } from '../../style/animation';
 import { IBookingsPayload, IReduxState } from '../../models';
 
-const ReservationDetailsWrapper = styled.article`
+const BookingDetailsWrapper = styled.article`
   width: 290px;
   height: auto;
   display: flex;
@@ -26,6 +26,7 @@ const DetailsHeader = styled(Header)`
   font-size: 18px;
   margin: 60px 0 20px;
 `;
+
 const DetailsParagraph = styled(Paragraph)`
   font-size: 12px;
   animation: ${fadeIn} 0.5s linear;
@@ -41,17 +42,17 @@ const DetailsSpan = styled.span`
 
 const ClearButton = styled(Button)`
   background-color: #eaeaea;
-  border-color: #afbf36;
+  border-color: ${({ theme }) => theme.green};
   color: #454545;
   &:hover {
-    background-color: #afbf36;
+    background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;
     box-shadow: none;
     opacity: 1;
   }
 `;
 
-const ReservationDetails = (): JSX.Element => {
+const BookingDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const { booking } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
 
@@ -60,12 +61,12 @@ const ReservationDetails = (): JSX.Element => {
   };
 
   return (
-    <ReservationDetailsWrapper>
+    <BookingDetailsWrapper>
       <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
       {typeof booking !== 'undefined' ? (
         <>
           <DetailsParagraph bold>
-            Dzień :<DetailsSpan>{formatDate(booking.when)}</DetailsSpan>
+            Dzień :<DetailsSpan>{formatDate(booking.bookingTime[0].day)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
             Miejscowość :<DetailsSpan>{firstLetterUpperCase(booking.city)}</DetailsSpan>
@@ -80,10 +81,10 @@ const ReservationDetails = (): JSX.Element => {
             Zajmowana powierzchnia : <DetailsSpan>{booking.size}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Od godziny : <DetailsSpan>{displayTime(booking.start)}</DetailsSpan>
+            Od godziny : <DetailsSpan>{displayTime(booking.bookingTime[0].startHour)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Do godziny : <DetailsSpan>{displayTime(booking.end)}</DetailsSpan>
+            Do godziny : <DetailsSpan>{displayTime(booking.bookingTime[0].endHour)}</DetailsSpan>
           </DetailsParagraph>
           <ClearButton onClick={clear}>Wyczyść</ClearButton>
         </>
@@ -94,8 +95,8 @@ const ReservationDetails = (): JSX.Element => {
           </DetailsParagraph>
         </>
       )}
-    </ReservationDetailsWrapper>
+    </BookingDetailsWrapper>
   );
 };
 
-export default ReservationDetails;
+export default BookingDetails;

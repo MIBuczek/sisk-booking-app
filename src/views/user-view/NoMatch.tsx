@@ -8,7 +8,7 @@ import RedirectLink from 'components/atoms/RedirectLink';
 
 const NoMatchWrapper = styled.main`
   width: 100%;
-  margin-top: 13vh;
+  margin-top: 5vh;
   min-height: 72vh;
   display: flex;
   align-items: center;

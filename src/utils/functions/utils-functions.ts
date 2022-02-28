@@ -1,4 +1,7 @@
-import { IBooking, IBuilding, IClient, TSelect } from 'models';
+/* eslint-disable no-param-reassign */
+import { ExtraOptions, IBooking, IClient, TSelect } from 'models';
+import { SIZE_OPTIONS, SIZE_OPTIONS_BTN } from 'utils/variables/form-const';
+import { BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils/variables/options-const';
 
 const firstLetterUpperCase = (s: string): string =>
   s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
@@ -8,8 +11,11 @@ const generateSelectDefaultValue = (s: string): TSelect => ({
   label: firstLetterUpperCase(s)
 });
 
-const createSelectedOption = (value: string, options: TSelect[]): TSelect | undefined =>
-  options.find((c) => c.value === value);
+const createSelectedOption = (value: string, options: TSelect[]): TSelect => {
+  const selectedOption = options.find((c) => c.value === value);
+  if (selectedOption) return selectedOption;
+  return options[0];
+};
 
 const pagination = (
   items: (IClient | IBooking)[],
@@ -29,10 +35,40 @@ const paginationItems = (totalPost: number, postPerPage: number) => {
   return pageNumbers;
 };
 
+const selectSizeFieldOptions = (buildingValue: string, cityValue: string): SIZE_OPTIONS[] => {
+  if (buildingValue && cityValue) return SIZE_FIELD_OPTIONS[buildingValue][cityValue];
+  return SIZE_OPTIONS_BTN;
+};
+
+const selectBuildingOptions = (cityValue: string, building: TSelect): TSelect[] => {
+  if (!cityValue) return [building];
+  return BUILDINGS_OPTIONS[cityValue];
+};
+
+const selectClientOptions = (clients: IClient[]): TSelect[] => {
+  if (!clients) return [];
+  return clients.map((c) => ({ label: c.name, value: c.id || '' }));
+};
+
+const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect | undefined =>
+  selectClientOptions(clients).find((o) => o.value === clientId);
+
+const checkSelectedOption = (options: ExtraOptions[]): string =>
+  options.reduce((acc: string, opt) => {
+    if (opt.lights) acc += 'Światła, ';
+    if (opt.toilets) acc += 'Zaplecze sanitarne';
+    return acc;
+  }, '');
+
 export {
   generateSelectDefaultValue,
+  selectSizeFieldOptions,
+  selectBuildingOptions,
+  selectClientOptions,
+  selectedClientIdOption,
   pagination,
   paginationItems,
   createSelectedOption,
-  firstLetterUpperCase
+  firstLetterUpperCase,
+  checkSelectedOption
 };

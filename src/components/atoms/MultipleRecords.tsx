@@ -39,7 +39,9 @@ const RecordTable = styled.table`
     width: 100%;
     min-height: 430px;
     tr {
-      display: block;
+      display: flex;
+      align-items: center;
+      width: 100%;
     }
     tr.empty {
       width: 100%;
@@ -55,38 +57,17 @@ const RecordTableHeader = styled.th`
   font-size: ${({ theme }) => theme.fontSize.s};
   color: ${({ theme }) => theme.darkGrey};
   text-align: start;
-  /* &.clients { */
+  width: 15%;
   &:nth-of-type(1) {
-    width: 10%;
+    width: 5%;
   }
   &:nth-of-type(2) {
-    width: 35%;
+    width: 22%;
   }
-  &:nth-of-type(3) {
-    width: 20%;
-  }
-  &:nth-of-type(4) {
-    width: 20%;
-  }
-  &:nth-of-type(5) {
+  &:last-of-type {
     width: 15%;
+    margin-left: auto;
   }
-  /* }
-  &.bookings {
-    width: 10%;
-    &:nth-of-type(1) {
-      width: 8%;
-    }
-    &:nth-of-type(2) {
-      width: 28%;
-    }
-    &:nth-of-type(3) {
-      width: 11%;
-    }
-    &:nth-of-type(4) {
-      width: 11%;
-    }
-  } */
 `;
 
 const RecordTableData = styled.td<RecordDataType>`
@@ -102,9 +83,11 @@ interface IProps {
   headers: string[];
   dataProperty: string[];
   dataPropertyDetails: string[];
+  dataPropertyDisplayMap: { [x: string]: string };
+  isAdmin: boolean;
   records?: (IClient | IBooking)[];
   emptyText: string;
-  editHandler: (index: number) => void;
+  editHandler: (index: number, isEditor: boolean) => void;
   deleteHandler: (index: number) => void;
 }
 
@@ -112,6 +95,8 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   headers,
   dataProperty,
   dataPropertyDetails,
+  dataPropertyDisplayMap,
+  isAdmin,
   records = [],
   emptyText,
   editHandler,
@@ -121,6 +106,8 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   const [postPerPage] = React.useState<number>(5);
 
   const nextPage = (num: number): void => setCurrentPage(num);
+
+  React.useEffect(() => undefined, [records]);
 
   return (
     <RecordWrapper>
@@ -144,6 +131,8 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 index={index}
                 recordProperty={dataProperty}
                 recordPropertyDetails={dataPropertyDetails}
+                recordPropertyDisplayMap={dataPropertyDisplayMap}
+                isAdmin={isAdmin}
                 currentRecord={record}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}

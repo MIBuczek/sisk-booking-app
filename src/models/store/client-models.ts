@@ -10,7 +10,7 @@ interface IClient {
   city: string;
   zipCode: string;
   nip?: string;
-  id: string;
+  id?: string;
   [x: string]: string | undefined;
 }
 

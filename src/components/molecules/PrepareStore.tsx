@@ -16,7 +16,7 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const [storeReady, setStoreReady] = React.useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const { authStore, currentUserStore, bookingStore, clientStore } = useSelector(
+  const { authStore, currentUserStore, bookingStore, clientStore, buildingStore } = useSelector(
     (state: IReduxState): IReduxState => state
   );
 
@@ -36,17 +36,19 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const adminStoreReady =
     currentUserStore.savingStage === SAVING_STAGE.SUCCESS &&
     bookingStore.savingStage === SAVING_STAGE.SUCCESS &&
-    clientStore.savingStage === SAVING_STAGE.SUCCESS;
+    clientStore.savingStage === SAVING_STAGE.SUCCESS &&
+    buildingStore.savingStage === SAVING_STAGE.SUCCESS;
 
   const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
 
   React.useEffect(() => {
-    if (!isEmpty(authStore.auth) && !isUserPage) {
-      dispatch(StoreActions.getUserData());
-      dispatch(StoreActions.getBookingsData(false));
-      dispatch(StoreActions.getClientsData());
-      setStoreReady(false);
-    }
+    // if (!isEmpty(authStore.auth) && !isUserPage) {
+    dispatch(StoreActions.getUserData());
+    dispatch(StoreActions.getBookingsData(false));
+    dispatch(StoreActions.getClientsData());
+    dispatch(StoreActions.getBuildingsData());
+    setStoreReady(false);
+    // }
     if (isUserPage && checkLocalStorage()) {
       dispatch(StoreActions.getBookingsData(true));
     }
@@ -59,7 +61,12 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
     if (userStoreReady && userStoreReady) {
       setStoreReady(true);
     }
-  }, [currentUserStore.savingStage, bookingStore.savingStage, clientStore.savingStage]);
+  }, [
+    currentUserStore.savingStage,
+    bookingStore.savingStage,
+    clientStore.savingStage,
+    buildingStore.savingStage
+  ]);
 
   if (storeReady) {
     return <>{children}</>;

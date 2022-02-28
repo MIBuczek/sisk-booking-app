@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
-import { IClient, IClientsActions, IReduxState } from 'models';
-import { db, CLIENTS_STATE, SAVING_STAGE, parseFirebaseClientData } from 'utils';
+import { IClient, IClientsActions, IModalAction, IReduxState } from 'models';
+import { db, CLIENTS_STATE, SAVING_STAGE, parseFirebaseClientData, MODAL_TYPES } from 'utils';
+import { openModal } from 'store';
 
 export const fetchingClients = (): IClientsActions => ({
   type: CLIENTS_STATE.GET_CLIENT,
@@ -46,13 +47,16 @@ export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>):
 };
 
 export const addClient = (clientData: IClient) => async (
-  dispatch: Dispatch<IClientsActions>,
+  dispatch: Dispatch<IClientsActions | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    await db.collection('clients').doc().set(clientData);
+    const resp = await db.collection('clients').add(clientData);
     const { clients } = getStore().clientStore;
-    dispatch(fetchingClientsDone(CLIENTS_STATE.ADD_CLIENT, [...clients, clientData]));
+    dispatch(
+      fetchingClientsDone(CLIENTS_STATE.ADD_CLIENT, [...clients, { ...clientData, id: resp.id }])
+    );
+    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Klient został dodany pomyślnie do bazy danych'));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można dodać klienta do bazy danych'));
     throw new Error(JSON.stringify(err));
@@ -60,7 +64,7 @@ export const addClient = (clientData: IClient) => async (
 };
 
 export const updateClient = (clientData: IClient) => async (
-  dispatch: Dispatch<IClientsActions>,
+  dispatch: Dispatch<IClientsActions | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
@@ -70,6 +74,7 @@ export const updateClient = (clientData: IClient) => async (
       client.id === clientData.id ? clientData : client
     );
     dispatch(fetchingClientsDone(CLIENTS_STATE.UPDATE_CLIENT, newClients));
+    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Dane klienta zostały zmienione pomuślnie'));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można zaktualizować danych klienta.'));
     throw new Error(JSON.stringify(err));
@@ -77,14 +82,15 @@ export const updateClient = (clientData: IClient) => async (
 };
 
 export const deleteClient = (id: string) => async (
-  dispatch: Dispatch<IClientsActions>,
+  dispatch: Dispatch<IClientsActions | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
     db.collection('clients').doc(id).delete();
     const { clients } = getStore().clientStore;
-    const newClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
-    dispatch(fetchingClientsDone(CLIENTS_STATE.DELETE_CLIENT, newClients));
+    const updatedClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
+    dispatch(fetchingClientsDone(CLIENTS_STATE.DELETE_CLIENT, updatedClients));
+    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Klient został pomyślnie skasowany z bazy danych'));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można skasować danych klienta.'));
     throw new Error(JSON.stringify(err));

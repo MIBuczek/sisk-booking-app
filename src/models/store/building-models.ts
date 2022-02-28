@@ -1,4 +1,5 @@
 import { SIZE_OPTIONS } from 'utils/variables/form-const';
+import { IPayload } from './store-models';
 
 interface IExtraBuilding {
   lighting: boolean;
@@ -10,7 +11,18 @@ interface IBuilding {
   property: string;
   size: SIZE_OPTIONS[];
   extra: IExtraBuilding;
-  [x: string]: string | SIZE_OPTIONS[] | IExtraBuilding;
+  phone: string;
+  email: string;
+  [x: string]: string | string[] | SIZE_OPTIONS[] | IExtraBuilding;
 }
 
-export type { IBuilding };
+interface IBuildingPayload extends IPayload {
+  buildings?: IBuilding[];
+}
+
+interface IBuildingAction {
+  type: string;
+  payload: IBuildingPayload;
+}
+
+export type { IBuilding, IBuildingPayload, IBuildingAction };

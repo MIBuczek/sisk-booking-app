@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components';
 type CheckboxInput = {
   checked: boolean;
   disabled: boolean;
+  isAccepted: boolean;
 };
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -45,6 +46,13 @@ const uncheckedStyles = css`
   background: none;
 `;
 
+const acceptedStyles = css`
+  width: 15px;
+  height: 15px;
+  border: 1px solid white;
+  background: none;
+`;
+
 const StyledCheckbox = styled.div<CheckboxInput>`
   display: inline-block;
   margin-right: 5px;
@@ -59,8 +67,18 @@ const StyledCheckbox = styled.div<CheckboxInput>`
   ${Icon} {
     visibility: ${({ checked }) => (checked ? 'visible' : 'hidden')};
   }
-  ${({ checked, disabled }) =>
-    disabled ? disabledStyles : checked ? checkedStyles : uncheckedStyles};
+  ${({ checked, disabled, isAccepted }) => {
+    if (disabled) {
+      return disabledStyles;
+    }
+    if (isAccepted) {
+      return acceptedStyles;
+    }
+    if (checked) {
+      return checkedStyles;
+    }
+    return uncheckedStyles;
+  }}
 `;
 
 const CheckboxContainer = styled.div`
@@ -81,7 +99,7 @@ const Checkbox: React.FC<ICheckbox> = ({ className, checked, name, disabled, cha
     onClick={() => changeHandler(disabled ? checked : !checked, name)}
   >
     <HiddenCheckbox checked={checked} disabled={disabled} name={name} type="checkbox" readOnly />
-    <StyledCheckbox checked={checked} disabled={disabled}>
+    <StyledCheckbox isAccepted={name === 'accepted'} checked={checked} disabled={disabled}>
       <Icon viewBox="0 0 24 24">
         <polyline points="20 6 9 17 4 12" />
       </Icon>

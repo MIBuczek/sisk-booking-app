@@ -10,7 +10,7 @@ import Paragraph from 'components/atoms/Paragraph';
 const ContactWrapper = styled.main`
   width: 100%;
   max-width: 1470px;
-  margin-top: 13vh;
+  margin-top: 5vh;
   min-height: 78vh;
   display: flex;
   align-items: flex-start;

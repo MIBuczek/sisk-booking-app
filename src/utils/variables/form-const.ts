@@ -1,6 +1,7 @@
 import { IBookingForm } from 'models/forms/booking-form-models';
 import { IClientForm } from 'models/forms/client-form-model';
-// import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils';
+
+const today = new Date();
 
 // Form Buildings
 export enum SIZE_OPTIONS {
@@ -11,8 +12,8 @@ export enum SIZE_OPTIONS {
 }
 
 export enum CLIENT_TYPE {
-  CLIENT = 'CLIENT',
-  COMPANY = 'COMPANY'
+  CLIENT = 'Indywidualny',
+  COMPANY = 'Firma'
 }
 
 // Form Clients
@@ -30,17 +31,17 @@ const CLIENT_INITIAL_VALUE: IClientForm = {
 
 const BOOKING_INITIAL_VALUE: IBookingForm = {
   city: { label: 'Siechnice', value: 'siechnice' },
-  building: { label: 'Obiekt 3', value: 'obiekt-tree' },
+  building: { label: 'Hala sportowa', value: 'hala-sportowa' },
   size: SIZE_OPTIONS['1/1'],
   person: '',
   club: '',
   email: '',
   phone: '',
   regular: false,
-  when: null,
-  whenEnd: null,
-  start: null,
-  end: null,
+  startDate: today,
+  endDate: today,
+  startHour: today,
+  endHour: today,
   accepted: false,
   message: ''
 };

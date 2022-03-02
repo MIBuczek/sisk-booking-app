@@ -6,6 +6,7 @@ interface ISingleBookingDate {
   day: Date;
   startHour: Date;
   endHour: Date;
+  [x: string]: Date;
 }
 
 type TBooking =

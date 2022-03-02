@@ -64,7 +64,7 @@ const Admin = (): JSX.Element => {
     <AdminWrapper>
       <Header>Panel Administratora</Header>
       <SideNav
-        admin
+        isAdminPanel
         state={adminState}
         stateHandler={stateHandler}
         tabHandler={tabHandler}

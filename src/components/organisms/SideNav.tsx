@@ -29,16 +29,16 @@ const SideWrapper = styled.aside`
 `;
 
 interface IProps {
-  admin?: boolean;
   isAdmin: boolean;
+  isAdminPanel?: boolean;
   state: IMainState | IAdminState;
   stateHandler: (value: TSelect, field: string) => void;
   tabHandler: (currentTab: ADMIN_TABS) => void;
 }
 
 const SideNav: React.FunctionComponent<IProps> = ({
-  admin,
   isAdmin,
+  isAdminPanel,
   state,
   stateHandler,
   tabHandler
@@ -80,7 +80,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
           isDisabled={!city}
         />
       </SelectWrapper>
-      {admin ? (
+      {isAdminPanel ? (
         <>
           <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CALENDER)}>
             <BsFillCalendar2DateFill style={iconStyle} /> KALENDARZ

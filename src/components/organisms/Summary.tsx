@@ -16,6 +16,9 @@ import {
   INITIAL_CLIENT_BOOKING_DETAILS
 } from 'utils';
 import { cloneDeep } from 'lodash';
+import Paragraph from 'components/atoms/Paragraph';
+import { fadeInLeft } from 'style/animation';
+import SummaryDetailsItem from 'components/atoms/SummaryDetailItem';
 
 registerLocale('pl', pl);
 
@@ -38,17 +41,20 @@ const SummaryHeader = styled(Header)`
 const SummaryInputContent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30%;
-  height: 100%;
-  max-height: 350px;
+  width: 35%;
+  min-height: 90%;
   align-items: center;
+  padding: 20px 40px 20px 0;
+  border-right: ${({ theme }) => `1px solid ${theme.green}`};
 `;
 
 const SummaryDetailContent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
-  height: 100%;
+  width: 65%;
+  min-height: 90%;
+  padding: 20px 40px;
+  animation: ${fadeInLeft} 0.5s linear;
 `;
 
 const MonthPickerWrapper = styled(SelectWrapper)`
@@ -73,6 +79,20 @@ const MonthPicker = styled(DataPickerField)`
 const SummaryBtn = styled(Button)`
   width: 290px;
   margin-top: auto;
+`;
+
+const DetailsParagraph = styled(Paragraph)`
+  font-size: 12px;
+  padding-top: 5px;
+  &.empty {
+    text-align: center;
+  }
+`;
+
+const DetailsSpan = styled.span`
+  font-weight: 400;
+  font-weight: 400;
+  margin: 0 4rem 0 0.5rem;
 `;
 
 const Summary = () => {
@@ -121,6 +141,7 @@ const Summary = () => {
           <Label>Wybrany klient</Label>
           <Controller
             name="client"
+            defaultValue={{ label: '', value: '' }}
             control={control}
             rules={{ required: true }}
             render={({ onChange, onBlur, value }) => (
@@ -161,9 +182,50 @@ const Summary = () => {
           Generuj podsumowanie
         </SummaryBtn>
       </SummaryInputContent>
-      <SummaryDetailContent>h1</SummaryDetailContent>
+      <SummaryDetailContent>
+        {clientSummary.clientName ? (
+          <>
+            <DetailsParagraph bold>
+              Nazwa klienta : <DetailsSpan>{clientSummary.clientName}</DetailsSpan>
+            </DetailsParagraph>
+            <DetailsParagraph bold>
+              Radwanice :<DetailsSpan>{clientSummary.radwanice.length} rezerwacji.</DetailsSpan>
+            </DetailsParagraph>
+            {clientSummary.radwanice.length ? (
+              <SummaryDetailsItem bookingCityDetails={clientSummary.radwanice} />
+            ) : null}
+            <DetailsParagraph bold>
+              Siechnice:
+              <DetailsSpan>{clientSummary.siechnice.length} rezerwacji.</DetailsSpan>
+            </DetailsParagraph>
+            {clientSummary.siechnice.length ? (
+              <SummaryDetailsItem bookingCityDetails={clientSummary.siechnice} />
+            ) : null}
+            <DetailsParagraph bold>
+              Świeta Katarzyna :
+              <DetailsSpan>{clientSummary['swieta-katarzyna'].length} rezerwacji.</DetailsSpan>
+            </DetailsParagraph>
+            {clientSummary['swieta-katarzyna'].length ? (
+              <SummaryDetailsItem bookingCityDetails={clientSummary['swieta-katarzyna']} />
+            ) : null}
+            <DetailsParagraph bold>
+              Żerniki Wrocławskie :
+              <DetailsSpan>{clientSummary['zerniki-wroclawskie'].length} rezerwacji.</DetailsSpan>
+            </DetailsParagraph>
+            {clientSummary['zerniki-wroclawskie'].length ? (
+              <SummaryDetailsItem bookingCityDetails={clientSummary['zerniki-wroclawskie']} />
+            ) : null}
+          </>
+        ) : (
+          <DetailsParagraph bold className="empty">
+            Aby zobaczyc posumowanie wybierz klienta oraz miesiac
+          </DetailsParagraph>
+        )}
+      </SummaryDetailContent>
     </SummaryWrapper>
   );
 };
 
 export default Summary;
+
+// Miejscowosc , ilość rezerwacji

@@ -1,12 +1,17 @@
 import { ISingleBookingDate } from 'models/store/booking-models';
 
-interface ISummaryClientBookings {
-  clientName: string;
-  radwanice: ISingleBookingDate[];
-  siechnice: ISingleBookingDate[];
-  'swieta-katarzyna': ISingleBookingDate[];
-  'zerniki-wroclawskie': ISingleBookingDate[];
-  [x: string]: string | ISingleBookingDate[];
+interface IBookedTime extends ISingleBookingDate {
+  building: string;
+  size: string;
 }
 
-export type { ISummaryClientBookings };
+interface ISummaryClientBookings {
+  clientName: string;
+  radwanice: IBookedTime[];
+  siechnice: IBookedTime[];
+  'swieta-katarzyna': IBookedTime[];
+  'zerniki-wroclawskie': IBookedTime[];
+  [x: string]: string | IBookedTime[];
+}
+
+export type { ISummaryClientBookings, IBookedTime };

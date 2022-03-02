@@ -7,7 +7,6 @@ const findAllClientReservation = (
   monthValue: Date
 ): IBooking[] =>
   bookings.filter((b) => {
-    console.log(b.month === new Date(monthValue).getMonth());
     if (b.clientId === clientValue.value && b.month === new Date(monthValue).getMonth()) {
       return true;
     }
@@ -23,7 +22,7 @@ const generateReservationSummary = (
     // @ts-ignore
     initialAllReservationsState[`${r.city}`] = [
       ...initialAllReservationsState[r.city],
-      ...r.bookingTime
+      ...r.bookingTime.map((bt) => ({ ...bt, building: r.building, size: r.size }))
     ];
   });
 

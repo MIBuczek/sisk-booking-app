@@ -97,6 +97,7 @@ interface IProps {
   dataPropertyDetails: string[];
   dataPropertyDisplayMap: { [x: string]: string };
   isAdmin: boolean;
+  isEmployee: boolean;
   records?: (IClient | IBooking)[];
   emptyText: string;
   editHandler: (index: number, isEditor: boolean) => void;
@@ -109,6 +110,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   dataPropertyDetails,
   dataPropertyDisplayMap,
   isAdmin,
+  isEmployee,
   records = [],
   emptyText,
   editHandler,
@@ -145,6 +147,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 recordPropertyDetails={dataPropertyDetails}
                 recordPropertyDisplayMap={dataPropertyDisplayMap}
                 isAdmin={isAdmin}
+                isEmployee={isEmployee}
                 currentRecord={record}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}

@@ -58,6 +58,7 @@ export const logOutUser = () => async (dispatch: Dispatch<IAuthAction>): Promise
   try {
     await auth.signOut();
     dispatch(fetchingAuthDone(LOGIN_STATE.LOG_OUT, undefined));
+    window.location.reload();
   } catch (err) {
     dispatch(fetchingAuthError('Problem z serwerem. Nieudane wylogowanie z aplikacji.'));
     throw new Error(JSON.stringify(err));

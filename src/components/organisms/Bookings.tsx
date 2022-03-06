@@ -141,6 +141,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         dataPropertyDetails={RECORDS_BOOKING_ROW_DETAILS}
         dataPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
         isAdmin={adminCredentials(user)}
+        isEmployee={user?.isEmployee || false}
         records={bookingsList}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}

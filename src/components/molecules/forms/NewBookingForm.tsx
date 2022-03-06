@@ -208,6 +208,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
     cID?: string
   ): void => {
     e.preventDefault();
+    e.stopPropagation();
     const selectedClient = clients.find((c) => c.id === cID);
 
     if (!selectedClient) return;
@@ -259,6 +260,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             <Controller
               name="clientId"
               control={control}
+              defaultValue={{ label: '', value: '' }}
               render={({ onChange, onBlur, value }) => (
                 <SelectInputField
                   options={selectClientOptions(clients)}

@@ -56,9 +56,9 @@ const Admin = (): JSX.Element => {
 
   React.useEffect(() => undefined, [tab]);
 
-  // if (!auth) {
-  //   return <Redirect to="/login" />;
-  // }
+  if (!auth) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <AdminWrapper>

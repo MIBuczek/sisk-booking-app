@@ -6,6 +6,7 @@ interface IUser {
   name: string;
   isAdmin: boolean;
   isEmployee: boolean;
+  isOffice: boolean;
 }
 
 interface IUserPayload extends IPayload {

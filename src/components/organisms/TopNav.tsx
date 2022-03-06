@@ -120,7 +120,7 @@ const TopNav = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const {
-    authStore: auth,
+    authStore,
     modal: { isOpen }
   } = useSelector((store: IReduxState): IReduxState => store);
 
@@ -154,7 +154,7 @@ const TopNav = (): JSX.Element => {
               <BsFillHouseFill />
             </NaviAnchor>
           </li>
-          {auth && (
+          {authStore.auth && (
             <li>
               <NavButton role="button" onClick={() => dispatch(logOutUser())}>
                 <BsPower />

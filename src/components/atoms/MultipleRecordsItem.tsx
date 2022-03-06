@@ -30,6 +30,10 @@ const RecordTableData = styled.td`
     width: 15%;
     margin-left: auto;
   }
+  @media (max-width: 890px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 `;
 
 const BookingDetailWrapper = styled.tr`

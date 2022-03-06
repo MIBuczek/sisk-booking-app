@@ -9,7 +9,6 @@ const DetailsList = styled.ul`
   height: auto;
   list-style: none;
   padding: 0px 10px;
-  margin: 5px;
   border: ${({ theme }) => `1px solid ${theme.green}`};
   background: ${({ theme }) => theme.lightGray};
 `;

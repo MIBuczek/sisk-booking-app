@@ -9,6 +9,10 @@ export const SelectWrapper = styled.div`
   justify-content: center;
   margin: 10px 0;
   min-width: 50%;
+  @media (max-width: 1400px) {
+    min-width: 30%;
+    margin: 10px 10px;
+  }
 `;
 
 const SelectInputField = styled(Select)`

@@ -20,6 +20,9 @@ const LoginWrapper = styled.section`
   grid-template-columns: 1fr;
   margin: 0.5rem 0;
   animation: ${fadeIn} 0.5s linear;
+  @media (max-width: 890px) {
+    min-height: 63vh;
+  }
 `;
 
 const LoginPanel = styled.form`
@@ -31,11 +34,15 @@ const LoginPanel = styled.form`
   justify-content: center;
 `;
 
-const Header3 = styled.h3`
+const LoginHeader = styled.h3`
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.bold};
   text-transform: uppercase;
+  @media (max-width: 890px) {
+    padding: 30px 40px;
+    text-align: center;
+  }
 `;
 
 const LoginTextInputs = styled(TextInputField)`
@@ -59,7 +66,9 @@ const Login: React.FC = (): JSX.Element => {
   return (
     <LoginWrapper>
       <LoginPanel>
-        <Header3>Panel logowania dla administratora harmonogramu rezerwacji obiektów</Header3>
+        <LoginHeader>
+          Panel logowania dla administratora harmonogramu rezerwacji obiektów
+        </LoginHeader>
         <Label>Adres E-mail</Label>
         <Controller
           name="email"

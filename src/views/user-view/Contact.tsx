@@ -25,6 +25,9 @@ const ContactInfo = styled.section`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  @media (max-width: 890px) {
+    padding: 30px 40px;
+  }
 `;
 
 const Contact = () => (

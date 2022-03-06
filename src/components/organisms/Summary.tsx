@@ -30,12 +30,20 @@ const SummaryWrapper = styled.section`
   flex-wrap: wrap;
   padding: 30px 0;
   z-index: 0;
+  @media (max-width: 1400px) {
+    width: 95%;
+    height: fit-content;
+  }
 `;
 
 const SummaryHeader = styled(Header)`
   margin: 20px 0 40px 20px;
   width: 100%;
   height: 40px;
+  @media (max-width: 1400px) {
+    width: 90%;
+    margin: 20px 40px;
+  }
 `;
 
 const SummaryInputContent = styled.div`
@@ -46,6 +54,15 @@ const SummaryInputContent = styled.div`
   align-items: center;
   padding: 20px 40px 20px 0;
   border-right: ${({ theme }) => `1px solid ${theme.green}`};
+  @media (max-width: 1200px) {
+    width: 45%;
+  }
+  @media (max-width: 890px) {
+    width: 90%;
+    border-right-color: transparent;
+    align-items: flex-start;
+    padding: 20px 40px;
+  }
 `;
 
 const SummaryDetailContent = styled.div`
@@ -55,6 +72,12 @@ const SummaryDetailContent = styled.div`
   min-height: 90%;
   padding: 20px 40px;
   animation: ${fadeInLeft} 0.5s linear;
+  @media (max-width: 1200px) {
+    width: 55%;
+  }
+  @media (max-width: 890px) {
+    width: 90%;
+  }
 `;
 
 const MonthPickerWrapper = styled(SelectWrapper)`
@@ -79,11 +102,14 @@ const MonthPicker = styled(DataPickerField)`
 const SummaryBtn = styled(Button)`
   width: 290px;
   margin-top: auto;
+  @media (max-width: 890px) {
+    margin: 20px 10px;
+  }
 `;
 
 const DetailsParagraph = styled(Paragraph)`
   font-size: 12px;
-  padding-top: 5px;
+  padding-top: 12px;
   &.empty {
     text-align: center;
   }

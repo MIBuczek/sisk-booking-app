@@ -87,6 +87,13 @@ const CalenderWrapper = styled.section`
         border-color: #afbf36;
       }
     }
+    @media (max-width: 1400px) {
+      height: 950px;
+    }
+  }
+  @media (max-width: 1400px) {
+    width: 95%;
+    padding: 30px 20px;
   }
 `;
 

@@ -21,19 +21,31 @@ const MessageWrapper = styled.form`
   button {
     align-self: flex-end;
   }
+  @media (max-width: 890px) {
+    min-width: 300px;
+  }
 `;
 
 const MessageContent = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 40px;
+  @media (max-width: 890px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 `;
 
 const MessageHeader = styled(Header)`
   width: 100%;
   padding: 20px 40px;
+  display: flex;
+  flex-wrap: wrap;
   &:after {
     left: 40px;
+  }
+  @media (max-width: 890px) {
+    padding: 10px 40px;
   }
 `;
 

@@ -26,6 +26,19 @@ const SideWrapper = styled.aside`
   justify-content: center;
   background: transparent;
   padding: 30px 80px 0;
+  @media (max-width: 1400px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 95%;
+    padding: 30px 20px;
+  }
+  @media (max-width: 799px) {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 interface IProps {

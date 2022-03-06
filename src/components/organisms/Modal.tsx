@@ -52,6 +52,9 @@ const ModalContent = styled.div`
   border-radius: 5px;
   background: white;
   position: absolute;
+  @media (max-width: 890px) {
+    min-width: 95%;
+  }
 `;
 
 export interface IProps {

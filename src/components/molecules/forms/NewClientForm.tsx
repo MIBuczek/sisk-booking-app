@@ -20,6 +20,9 @@ const ClientWrapper = styled.section`
   justify-content: center;
   padding-top: 20px;
   max-width: 1200px;
+  @media (max-width: 890px) {
+    width: 90%;
+  }
 `;
 
 const ClientSubHeader = styled(Header)`
@@ -37,6 +40,13 @@ const ClientInnerContent = styled.article`
   padding: 0 40px 20px 20px;
   &:first-of-type {
     border-right: ${({ theme }) => `1px solid ${theme.green}`};
+    @media (max-width: 890px) {
+      border-right-color: transparent;
+    }
+  }
+  @media (max-width: 890px) {
+    width: 100%;
+    border-right-color: transparent;
   }
 `;
 

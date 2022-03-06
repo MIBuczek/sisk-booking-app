@@ -20,11 +20,22 @@ const BookingDetailsWrapper = styled.article`
   height: auto;
   display: flex;
   flex-direction: column;
+  @media (max-width: 1400px) {
+    width: 85%;
+    padding: 30px 20px;
+  }
+  @media (max-width: 890px) {
+    width: 75%;
+  }
 `;
 
 const DetailsHeader = styled(Header)`
   font-size: 18px;
   margin: 60px 0 20px;
+  @media (max-width: 1400px) {
+    margin: 20px 0;
+    width: 100%;
+  }
 `;
 
 const DetailsParagraph = styled(Paragraph)`

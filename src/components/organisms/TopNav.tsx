@@ -42,6 +42,10 @@ const NavContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media (max-width: 889px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const StyledLinksList = styled.ul`
@@ -51,6 +55,14 @@ const StyledLinksList = styled.ul`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  li {
+    @media (max-width: 889px) {
+      font-size: ${({ theme }) => theme.fontSize.m};
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
 `;
 
 const NavigationLink = styled(NavLink)`
@@ -64,6 +76,9 @@ const NavigationLink = styled(NavLink)`
   transition: 0.4s;
   &:hover {
     color: ${({ theme }) => theme.green};
+  }
+  @media (max-width: 889px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
   }
 `;
 
@@ -92,6 +107,9 @@ const NaviAnchor = styled(Anchor)`
   }
   svg {
     display: block;
+  }
+  @media (max-width: 889px) {
+    padding: 5px 10px;
   }
 `;
 

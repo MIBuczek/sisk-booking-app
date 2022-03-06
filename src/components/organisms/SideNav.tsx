@@ -26,19 +26,32 @@ const SideWrapper = styled.aside`
   justify-content: center;
   background: transparent;
   padding: 30px 80px 0;
+  @media (max-width: 1400px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 95%;
+    padding: 30px 20px;
+  }
+  @media (max-width: 799px) {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 interface IProps {
-  admin?: boolean;
   isAdmin: boolean;
+  isAdminPanel?: boolean;
   state: IMainState | IAdminState;
   stateHandler: (value: TSelect, field: string) => void;
   tabHandler: (currentTab: ADMIN_TABS) => void;
 }
 
 const SideNav: React.FunctionComponent<IProps> = ({
-  admin,
   isAdmin,
+  isAdminPanel,
   state,
   stateHandler,
   tabHandler
@@ -80,7 +93,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
           isDisabled={!city}
         />
       </SelectWrapper>
-      {admin ? (
+      {isAdminPanel ? (
         <>
           <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CALENDER)}>
             <BsFillCalendar2DateFill style={iconStyle} /> KALENDARZ

@@ -28,16 +28,23 @@ const BookingsWrapper = styled.section`
   display: block;
   padding: 30px 0;
   z-index: 0;
+  @media (max-width: 1400px) {
+    width: 95%;
+  }
 `;
 
 const BookingsHeader = styled(Header)`
   margin: 20px 0 40px 20px;
+  @media (max-width: 890px) {
+    width: 80%;
+  }
 `;
 
 const RecordsActionContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const OpenBookingsModalButton = styled(Button)`
@@ -134,6 +141,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         dataPropertyDetails={RECORDS_BOOKING_ROW_DETAILS}
         dataPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
         isAdmin={adminCredentials(user)}
+        isEmployee={user?.isEmployee || false}
         records={bookingsList}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}

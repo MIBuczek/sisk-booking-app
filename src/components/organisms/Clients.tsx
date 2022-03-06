@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, deleteClient, openModal } from 'store';
 import styled from 'styled-components';
 import {
+  adminCredentials,
   MODAL_TYPES,
   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
   RECORDS_CLIENTS_HEADERS,
@@ -26,16 +27,23 @@ const CalenderWrapper = styled.section`
   display: block;
   padding: 30px 0;
   z-index: 0;
+  @media (max-width: 1400px) {
+    width: 95%;
+  }
 `;
 
 const ClientHeader = styled(Header)`
   margin: 20px 0 40px 20px;
+  @media (max-width: 890px) {
+    width: 80%;
+  }
 `;
 
 const RecordsActionContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const OpenClientModalButton = styled(Button)`
@@ -60,6 +68,7 @@ const Clients = () => {
 
   const {
     clientStore: { clients },
+    currentUserStore: { user },
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
@@ -113,12 +122,15 @@ const Clients = () => {
           searchProperty="name"
           searchContentHandler={clientListHandler}
         />
-        <OpenClientModalButton onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
-          Dodaj nowego najemce
-        </OpenClientModalButton>
+        {adminCredentials(user) && (
+          <OpenClientModalButton onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
+            Dodaj nowego najemce
+          </OpenClientModalButton>
+        )}
       </RecordsActionContent>
       <MultipleRecords
-        isAdmin
+        isAdmin={adminCredentials(user)}
+        isEmployee={user?.isEmployee || false}
         headers={RECORDS_CLIENTS_HEADERS}
         dataProperty={RECORDS_CLIENTS_ROW}
         dataPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}

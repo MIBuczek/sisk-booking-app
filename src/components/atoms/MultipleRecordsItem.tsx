@@ -30,6 +30,10 @@ const RecordTableData = styled.td`
     width: 15%;
     margin-left: auto;
   }
+  @media (max-width: 890px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 `;
 
 const BookingDetailWrapper = styled.tr`
@@ -100,6 +104,7 @@ const ChevronIcon = styled(BsChevronDown)`
 interface MultipleRecordItemProps {
   index: number;
   isAdmin: boolean;
+  isEmployee: boolean;
   recordProperty: string[];
   recordPropertyDetails: string[];
   recordPropertyDisplayMap: { [x: string]: string };
@@ -111,6 +116,7 @@ interface MultipleRecordItemProps {
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   index,
   isAdmin,
+  isEmployee,
   recordProperty,
   recordPropertyDetails,
   recordPropertyDisplayMap,
@@ -133,9 +139,11 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
             </ListItemBtn>
-            <ListItemBtn onClick={() => editHandler(index, false)}>
-              <BsFillCheckSquareFill />
-            </ListItemBtn>
+            {(isAdmin || isEmployee) && (
+              <ListItemBtn onClick={() => editHandler(index, false)}>
+                <BsFillCheckSquareFill />
+              </ListItemBtn>
+            )}
             {isAdmin && (
               <>
                 <ListItemBtn onClick={() => editHandler(index, true)}>

@@ -15,6 +15,9 @@ const RecordWrapper = styled.div`
   width: 100%;
   min-width: 400px;
   margin-top: 1.4rem;
+  @media (max-width: 890px) {
+    min-width: 350px;
+  }
 `;
 
 const RecordTable = styled.table`
@@ -68,6 +71,11 @@ const RecordTableHeader = styled.th`
     width: 15%;
     margin-left: auto;
   }
+  @media (max-width: 890px) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    padding: 0.2rem 0.8rem;
+    word-break: break-all;
+  }
 `;
 
 const RecordTableData = styled.td<RecordDataType>`
@@ -77,6 +85,10 @@ const RecordTableData = styled.td<RecordDataType>`
   color: ${({ theme }) => theme.darkGrey};
   text-align: ${({ empty }) => (empty ? 'center' : 'start')};
   animation: ${fadeInLeft} 0.5s linear;
+  @media (max-width: 890px) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    word-break: break-all;
+  }
 `;
 
 interface IProps {
@@ -85,6 +97,7 @@ interface IProps {
   dataPropertyDetails: string[];
   dataPropertyDisplayMap: { [x: string]: string };
   isAdmin: boolean;
+  isEmployee: boolean;
   records?: (IClient | IBooking)[];
   emptyText: string;
   editHandler: (index: number, isEditor: boolean) => void;
@@ -97,6 +110,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   dataPropertyDetails,
   dataPropertyDisplayMap,
   isAdmin,
+  isEmployee,
   records = [],
   emptyText,
   editHandler,
@@ -133,6 +147,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 recordPropertyDetails={dataPropertyDetails}
                 recordPropertyDisplayMap={dataPropertyDisplayMap}
                 isAdmin={isAdmin}
+                isEmployee={isEmployee}
                 currentRecord={record}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}

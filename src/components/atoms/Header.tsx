@@ -26,6 +26,9 @@ const Header = styled.h1`
     color: #afbf36;
     margin-left: 2rem;
   }
+  @media (max-width: 1400px) {
+    width: 85%;
+  }
 `;
 
 export default Header;

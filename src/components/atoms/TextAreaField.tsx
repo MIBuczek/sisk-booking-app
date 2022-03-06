@@ -27,6 +27,9 @@ const TextAreaField = styled.textarea<TextAreaType>`
     text-align: left;
     font-family: 'Oswald', sans-serif;
   }
+  @media (max-width: 890px) {
+    width: 320px;
+  }
 `;
 
 export default TextAreaField;

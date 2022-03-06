@@ -46,6 +46,10 @@ const BookingWrapper = styled.form`
   button {
     align-self: flex-end;
   }
+  @media (max-width: 890px) {
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const BookingHeader = styled(Header)`
@@ -63,6 +67,9 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 890px) {
+    width: 100%;
+  }
 `;
 
 const RodoWrapper = styled.div`
@@ -79,6 +86,9 @@ const AcceptWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  @media (max-width: 890px) {
+    justify-content: center;
+  }
 `;
 
 const AutoFillContent = styled(SelectWrapper)`
@@ -198,6 +208,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
     cID?: string
   ): void => {
     e.preventDefault();
+    e.stopPropagation();
     const selectedClient = clients.find((c) => c.id === cID);
 
     if (!selectedClient) return;
@@ -249,6 +260,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             <Controller
               name="clientId"
               control={control}
+              defaultValue={{ label: '', value: '' }}
               render={({ onChange, onBlur, value }) => (
                 <SelectInputField
                   options={selectClientOptions(clients)}

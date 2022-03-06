@@ -24,6 +24,9 @@ const TextInputField = styled.input<InputType>`
     color: #b9b8b8;
     text-align: center;
   }
+  @media (max-width: 890px) {
+    width: 240px;
+  }
 `;
 
 export default TextInputField;

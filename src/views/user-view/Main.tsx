@@ -23,6 +23,11 @@ const MainWrapper = styled.section`
   flex-wrap: wrap;
   animation: ${fadeIn} 0.5s linear;
   padding-bottom: 60px;
+  @media (max-width: 1400px) {
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
 `;
 
 export interface IProps {}

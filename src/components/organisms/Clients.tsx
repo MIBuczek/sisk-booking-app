@@ -138,7 +138,7 @@ const Clients = () => {
         records={clientList}
         editHandler={editClientHandler}
         deleteHandler={deleteClientHandler}
-        emptyText="Nie został dodany żaden klient do bazy danych"
+        emptyText="Nie ma żadnego dodanego klient do bazy danych."
       />
       {isOpen && (
         <Modal>
@@ -151,7 +151,7 @@ const Clients = () => {
           )}
           {type === MODAL_TYPES.DELETE && (
             <ModalDelete
-              message="Czy na pewno chcesz chcesz skazować tego clienta"
+              message="Czy na pewno chcesz skazować tego klienta"
               callback={deleteClientAction}
               cancelCallback={cancelDeleteClientAction}
             />

@@ -351,14 +351,17 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
         />
         {errors.building && <ErrorMsg innerText="Pole nie moze byc puste" />}
       </SelectWrapper>
-      <ButtonWrapper>
-        <ButtonGroup
-          options={sizeOptions}
-          value={selectedSize}
-          optionsHandler={selectedSizeHandler}
-          disabled={displayConfirmation}
-        />
-      </ButtonWrapper>
+      <SelectWrapper>
+        <Label>Rezerwowana powierzchnia</Label>
+        <ButtonWrapper>
+          <ButtonGroup
+            options={sizeOptions}
+            value={selectedSize}
+            optionsHandler={selectedSizeHandler}
+            disabled={displayConfirmation}
+          />
+        </ButtonWrapper>
+      </SelectWrapper>
       <SelectWrapper>
         <RodoWrapper>
           <Label>Czy jest to rezerwacja cykliczna</Label>
@@ -379,7 +382,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
         </RodoWrapper>
       </SelectWrapper>
       <InputContainer>
-        <Label>Imie i nazwisko</Label>
+        <Label>Imię i nazwisko</Label>
         <Controller
           name="person"
           defaultValue={''}
@@ -548,7 +551,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
       {buildingValue.value === 'boisko-sztuczna-nawierzchnia' && (
         <BookingExtraOptions extraOptions={extraOptions} setExtraOptions={setExtraOptions} />
       )}
-      <TextAreaLabel>Chciałbyś przesłać dodatkowe informacje</TextAreaLabel>
+      <TextAreaLabel>Dodatkowe informacje</TextAreaLabel>
       <Controller
         name="message"
         defaultValue={''}
@@ -578,7 +581,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
             target="_blank"
           >
-            Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych
+            Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.
           </Anchor>
         </RodoWrapper>
       )}

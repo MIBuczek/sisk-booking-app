@@ -102,7 +102,7 @@ const BookingDetails = (): JSX.Element => {
       ) : (
         <>
           <DetailsParagraph bold>
-            Aby zobaczyc szczegóły, kliknij na kalendarzu na wybrana rezerwacje.
+            Aby zobaczyć szczegóły, kliknij kalendarzu na wybraną rezerwację.
           </DetailsParagraph>
         </>
       )}

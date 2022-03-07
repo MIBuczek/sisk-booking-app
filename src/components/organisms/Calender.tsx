@@ -164,7 +164,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
       />
       {!isAdmin && (
         <UserInfo>
-          <BsFillExclamationCircleFill />W kalendarzu sa widoczne tylko zatwierdzone przez
+          <BsFillExclamationCircleFill />W kalendarzu są widoczne tylko zatwierdzone przez
           administratora rezerwacje.
         </UserInfo>
       )}

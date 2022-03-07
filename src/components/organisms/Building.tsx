@@ -165,15 +165,15 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
       <BuildingHeader>Obiekty sportowe</BuildingHeader>
       <InnerContent>
         <BuildingSubHeader>Dane o obiekcie</BuildingSubHeader>
-        <DetailsParagraph bold>Miejscowość</DetailsParagraph>
+        <DetailsParagraph bold>Miejscowość :</DetailsParagraph>
         <DetailsSpan>{city.label}</DetailsSpan>
-        <DetailsParagraph bold>Nazwa obiektu</DetailsParagraph>
+        <DetailsParagraph bold>Nazwa obiektu :</DetailsParagraph>
         <DetailsSpan>{currentCity.name}</DetailsSpan>
-        <DetailsParagraph bold>Telefon Kontaktowy</DetailsParagraph>
+        <DetailsParagraph bold>Telefon Kontaktowy :</DetailsParagraph>
         <DetailsSpan>{currentCity.phone}</DetailsSpan>
-        <DetailsParagraph bold>Email</DetailsParagraph>
+        <DetailsParagraph bold>Email :</DetailsParagraph>
         <DetailsSpan>{currentCity.email}</DetailsSpan>
-        <DetailsParagraph bold>Pracownicy</DetailsParagraph>
+        <DetailsParagraph bold>Pracownicy :</DetailsParagraph>
         <DetailsSpan>1. Lorem Ipsum</DetailsSpan>
       </InnerContent>
       <InnerContent>

@@ -124,7 +124,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
       <RecordsActionContent>
         <SearchInputField
           type="bookings"
-          placeholder="Wyszukaj rezerwacje"
+          placeholder="Wyszukaj rezerwację"
           searchContent={bookings}
           searchProperty="person"
           searchContentHandler={bookingListHandler}
@@ -145,7 +145,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         records={bookingsList}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}
-        emptyText="Nie został dodana żadna rezerwacja do bazy danych"
+        emptyText="Nie ma żadnej dodanej rezerwacja do bazy danych."
       />
       {isOpen && (
         <Modal>

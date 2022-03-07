@@ -69,7 +69,7 @@ const Login: React.FC = (): JSX.Element => {
         <LoginHeader>
           Panel logowania dla administratora harmonogramu rezerwacji obiektów
         </LoginHeader>
-        <Label>Adres E-mail</Label>
+        <Label>Adres e-mail</Label>
         <Controller
           name="email"
           defaultValue={''}
@@ -115,7 +115,7 @@ const Login: React.FC = (): JSX.Element => {
           disabled={false}
           // size="SMALL"
         >
-          ZALOGUJ SIE
+          Zaloguj się
         </Button>
       </LoginPanel>
     </LoginWrapper>

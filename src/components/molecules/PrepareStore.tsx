@@ -42,7 +42,7 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
 
   React.useEffect(() => {
-    if (!isEmpty(authStore.auth) && !isUserPage) {
+    if (!isEmpty(authStore.auth)) {
       dispatch(StoreActions.getUserData());
       dispatch(StoreActions.getBookingsData(false));
       dispatch(StoreActions.getClientsData());

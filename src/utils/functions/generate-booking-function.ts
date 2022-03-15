@@ -7,7 +7,15 @@ import {
   TSelect
 } from 'models';
 import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_TYPE, SIZE_OPTIONS, BOOKING_STATUS } from 'utils';
+import { formatDate, getTime } from './calender-functions';
 import { createSelectedOption } from './utils-functions';
+
+const overwriteDate = (day: Date, hour: Date) => {
+  const convertedDay = formatDate(day);
+  const convertedHour = getTime(hour);
+
+  return new Date(`${convertedDay}${convertedHour}`);
+};
 
 function calculateWeeksBetween(d1: number, d2: number): number {
   return Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
@@ -18,8 +26,8 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   const bookingArray: ISingleBookingDate[] = [
     {
       day: startDate,
-      startHour,
-      endHour
+      startHour: overwriteDate(startDate, startHour),
+      endHour: overwriteDate(startDate, endHour)
     }
   ];
 
@@ -31,10 +39,11 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   let index = 1;
   const weeksBetween = calculateWeeksBetween(startDate.getTime(), endDate.getTime());
   do {
+    const day = new Date(startDate.getTime() + weekInMilliseconds * index);
     bookingArray.push({
-      day: new Date(startDate.getTime() + weekInMilliseconds * index),
-      startHour,
-      endHour
+      day,
+      startHour: overwriteDate(day, startHour),
+      endHour: overwriteDate(day, endHour)
     });
     index += 1;
   } while (index <= weeksBetween);
@@ -95,4 +104,9 @@ const generateBookingFormDetails = (
   clientId
 });
 
-export { generateBookingDetails, generateBookingFormDetails, generateBookingStatusDate };
+export {
+  generateBookingDetails,
+  generateBookingFormDetails,
+  generateBookingStatusDate,
+  overwriteDate
+};

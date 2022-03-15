@@ -50,6 +50,7 @@ const RecordTable = styled.table`
       width: 100%;
       text-align: center;
       margin: auto;
+      display: block;
     }
   }
 `;
@@ -93,9 +94,9 @@ const RecordTableData = styled.td<RecordDataType>`
 
 interface IProps {
   headers: string[];
-  dataProperty: string[];
-  dataPropertyDetails: string[];
-  dataPropertyDisplayMap: { [x: string]: string };
+  recordProperty: string[];
+  recordPropertyDetails: string[];
+  recordPropertyDisplayMap: { [x: string]: string };
   isAdmin: boolean;
   isEmployee: boolean;
   records?: (IClient | IBooking)[];
@@ -106,9 +107,9 @@ interface IProps {
 
 const MultipleRecords: React.FunctionComponent<IProps> = ({
   headers,
-  dataProperty,
-  dataPropertyDetails,
-  dataPropertyDisplayMap,
+  recordProperty,
+  recordPropertyDetails,
+  recordPropertyDisplayMap,
   isAdmin,
   isEmployee,
   records = [],
@@ -143,12 +144,13 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
               <MultipleRecordItem
                 key={record.id}
                 index={index}
-                recordProperty={dataProperty}
-                recordPropertyDetails={dataPropertyDetails}
-                recordPropertyDisplayMap={dataPropertyDisplayMap}
+                recordProperty={recordProperty}
+                recordPropertyDetails={recordPropertyDetails}
+                recordPropertyDisplayMap={recordPropertyDisplayMap}
                 isAdmin={isAdmin}
                 isEmployee={isEmployee}
                 currentRecord={record}
+                allRecords={records}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}
               />

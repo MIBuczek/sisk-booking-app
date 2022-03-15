@@ -1,15 +1,24 @@
 import { isEmpty } from 'lodash';
-import { IClient, IBooking, ISingleBookingDate, ISelectedExtraOptions } from 'models';
+import {
+  IClient,
+  IBooking,
+  ISingleBookingDate,
+  ISelectedExtraOptions,
+  instanceOfBookings,
+  singleInstanceOfBookings
+} from 'models';
 import * as React from 'react';
 import {
   BsChevronDown,
+  BsFillCheckCircleFill,
   BsFillCheckSquareFill,
   BsFillFileEarmarkTextFill,
-  BsTrashFill
+  BsTrashFill,
+  BsXCircleFill
 } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { checkSelectedOption, modelDisplayValue } from 'utils';
+import { checkConflicts, checkSelectedOption, modelDisplayValue } from 'utils';
 import Collapse, { IRenderProps } from '../../providers/Collapse';
 import Button from './Button';
 
@@ -109,6 +118,7 @@ interface MultipleRecordItemProps {
   recordPropertyDetails: string[];
   recordPropertyDisplayMap: { [x: string]: string };
   currentRecord: IClient | IBooking;
+  allRecords: (IClient | IBooking)[];
   editHandler: (index: number, isEditor: boolean) => void;
   deleteHandler: (index: number) => void;
 }
@@ -121,6 +131,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   recordPropertyDetails,
   recordPropertyDisplayMap,
   currentRecord,
+  allRecords,
   editHandler,
   deleteHandler
 }) => (
@@ -134,7 +145,15 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
               {modelDisplayValue(currentRecord[property])}
             </RecordTableData>
           ))}
-          <RecordTableData> Nie </RecordTableData>
+          {instanceOfBookings(allRecords) && singleInstanceOfBookings(currentRecord) && (
+            <RecordTableData>
+              {checkConflicts(currentRecord, allRecords) ? (
+                <BsXCircleFill style={{ color: '#cc0000', marginLeft: '1rem' }} />
+              ) : (
+                <BsFillCheckCircleFill style={{ color: '#AFBF36', marginLeft: '1rem' }} />
+              )}
+            </RecordTableData>
+          )}
           <RecordTableData>
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
@@ -174,11 +193,11 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                           </RecordDetailSpan>
                           <RecordDetailSpan>
                             <strong>Godzina rozpoczecia: </strong>
-                            {modelDisplayValue(sb.startHour)}
+                            {modelDisplayValue(sb.startHour, true)}
                           </RecordDetailSpan>
                           <RecordDetailSpan>
                             <strong>Godzina zakończenia: </strong>
-                            {modelDisplayValue(sb.endHour)}
+                            {modelDisplayValue(sb.endHour, true)}
                           </RecordDetailSpan>
                         </SingleBookingTime>
                       ))}
@@ -200,11 +219,11 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                             </RecordDetailSpan>
                             <RecordDetailSpan>
                               <strong>Od godziny : </strong>
-                              {modelDisplayValue(fromHour)}
+                              {modelDisplayValue(fromHour, true)}
                             </RecordDetailSpan>
                             <RecordDetailSpan>
                               <strong>Do godziny: </strong>
-                              {modelDisplayValue(toHour)}
+                              {modelDisplayValue(toHour, true)}
                             </RecordDetailSpan>
                           </SingleBookingTime>
                         )
@@ -226,5 +245,4 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
     )}
   />
 );
-
 export default MultipleRecordItem;

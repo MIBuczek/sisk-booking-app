@@ -12,13 +12,16 @@ import {
   RECORDS_BOOKINGS_ROW,
   RECORDS_BOOKING_ROW_DETAILS,
   RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
-  adminCredentials
+  adminCredentials,
+  checkAllBookingsConflicts
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
-import NewBookingForm from 'components/molecules/forms/NewBookingForm';
+import BookingForm from 'components/molecules/forms/BookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
 import BookingStatusForm from 'components/molecules/forms/BookingStatusForm';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import Paragraph from 'components/atoms/Paragraph';
 import Modal from './Modal';
 
 const BookingsWrapper = styled.section`
@@ -59,6 +62,14 @@ const OpenBookingsModalButton = styled(Button)`
   }
 `;
 
+const ConflictParagraph = styled(Paragraph)`
+  color: ${({ theme, conflict }) => (conflict ? theme.error : theme.darkGrey)};
+  svg {
+    color: ${({ theme, conflict }) => (conflict ? theme.error : theme.green)};
+    margin-right: 8px;
+  }
+`;
+
 interface BookingsProps {
   mainState: IAdminState;
 }
@@ -68,6 +79,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
   const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
+  const [conflicts, setConflicts] = React.useState<string[]>([]);
 
   const dispatch = useDispatch();
 
@@ -116,7 +128,10 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     setDeleteItemIndex(undefined);
   };
 
-  React.useEffect(() => setBookingsList(bookings), [bookings]);
+  React.useEffect(() => {
+    setBookingsList(bookings);
+    setConflicts(checkAllBookingsConflicts(bookings));
+  }, [bookings]);
 
   return (
     <BookingsWrapper>
@@ -137,9 +152,9 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
       </RecordsActionContent>
       <MultipleRecords
         headers={RECORDS_BOOKINGS_HEADERS}
-        dataProperty={RECORDS_BOOKINGS_ROW}
-        dataPropertyDetails={RECORDS_BOOKING_ROW_DETAILS}
-        dataPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
+        recordProperty={RECORDS_BOOKINGS_ROW}
+        recordPropertyDetails={RECORDS_BOOKING_ROW_DETAILS}
+        recordPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
         isAdmin={adminCredentials(user)}
         isEmployee={user?.isEmployee || false}
         records={bookingsList}
@@ -147,10 +162,14 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         deleteHandler={deleteBookingHandler}
         emptyText="Nie ma żadnej dodanej rezerwacja do bazy danych."
       />
+      <ConflictParagraph small bold conflict={!!conflicts.length}>
+        <BsFillExclamationCircleFill />
+        {`Aktualna liczba konfliktów: ${conflicts.length}`}
+      </ConflictParagraph>
       {isOpen && (
         <Modal>
           {type === MODAL_TYPES.BOOKINGS && (
-            <NewBookingForm
+            <BookingForm
               mainState={mainState}
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import NewFormMessage from '../forms/NewFormMessage';
+import FormMessage from '../forms/FormMessage';
 
-const ModalMessage = () => <NewFormMessage />;
+const ModalMessage = () => <FormMessage />;
 
 export default ModalMessage;

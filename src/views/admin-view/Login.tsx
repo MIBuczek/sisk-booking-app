@@ -89,7 +89,7 @@ const Login: React.FC = (): JSX.Element => {
             />
           )}
         />
-        {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Hasło</Label>
         <Controller
           name="password"
@@ -108,7 +108,7 @@ const Login: React.FC = (): JSX.Element => {
             />
           )}
         />
-        {errors.password && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.password && <ErrorMsg innerText="Pole nie może być puste" />}
         <Button
           role="button"
           onClick={onSubmit}

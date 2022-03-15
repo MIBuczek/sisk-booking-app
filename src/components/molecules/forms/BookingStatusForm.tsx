@@ -119,7 +119,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
             />
           )}
         />
-        {errors.bookingStatus && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.bookingStatus && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Uwagi</Label>
         <Controller
           name="message"

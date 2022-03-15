@@ -9,9 +9,11 @@ import { addBooking, closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
 import {
   BOOKING_INITIAL_VALUE,
+  checkConflicts,
   CITY_OPTIONS,
   generateBookingDetails,
   generateBookingFormDetails,
+  overwriteDate,
   selectBuildingOptions,
   selectClientOptions,
   selectedClientIdOption,
@@ -34,6 +36,8 @@ import pl from 'date-fns/locale/pl';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { isEmpty } from 'lodash';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from '../ConfirmAction';
 import BookingExtraOptions from '../BookingExtraOptions';
 
@@ -123,7 +127,17 @@ const ButtonPanel = styled.div`
   }
 `;
 
-interface NewBookingFormProps {
+const ConflictParagraph = styled(Paragraph)`
+  width: 100%;
+  text-align: center;
+  color: ${({ theme }) => theme.error};
+  margin: 10px 20px;
+  svg {
+    margin-right: 8px;
+  }
+`;
+
+interface BookingFormProps {
   mainState: IMainState;
   isAdmin: boolean;
   isEditing: boolean;
@@ -131,7 +145,7 @@ interface NewBookingFormProps {
   initialEditingState: () => void;
 }
 
-const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
+const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   mainState,
   isAdmin,
   isEditing,
@@ -145,10 +159,12 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   const [sizeOptions, setSizeOptions] = React.useState(SIZE_OPTIONS_BTN);
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
   const [police, setPolice] = React.useState<boolean>(false);
+  const [conflict, setConflict] = React.useState<boolean>(false);
 
   const { city, building } = mainState;
 
   const dispatch = useDispatch();
+
   const {
     bookingStore: { bookings },
     clientStore: { clients }
@@ -169,8 +185,10 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   };
 
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
-    setBookingData(generateBookingDetails(cred, selectedSize, extraOptions, bookingId));
+    const bookingToApprove = generateBookingDetails(cred, selectedSize, extraOptions, bookingId);
+    setBookingData(bookingToApprove);
     setDisplayConfirmation(true);
+    setConflict(checkConflicts(bookingToApprove, bookings));
   });
 
   const confirmSubmit = () => {
@@ -188,6 +206,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
     const clientId = selectedClientIdOption(clients, currentBooking.clientId);
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
+    setConflict(checkConflicts(currentBooking, bookings));
   };
 
   const createInitialState = () => {
@@ -196,6 +215,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
     initialEditingState();
     setDisplayConfirmation(false);
     setBookingData(undefined);
+    setConflict(false);
   };
 
   const cancelHandler = () => {
@@ -326,7 +346,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.city && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.city && <ErrorMsg innerText="Pole nie może być puste" />}
       </SelectWrapper>
       <SelectWrapper>
         <Label>Obiekt</Label>
@@ -349,7 +369,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.building && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.building && <ErrorMsg innerText="Pole nie może być puste" />}
       </SelectWrapper>
       <SelectWrapper>
         <Label>Rezerwowana powierzchnia</Label>
@@ -400,7 +420,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.person && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Adres e-mail</Label>
         <Controller
           name="email"
@@ -419,7 +439,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Podaj numer telefonu</Label>
         <Controller
           name="phone"
@@ -438,7 +458,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.phone && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
       </InputContainer>
       <InputContainer>
         <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałby zarezerwować obiekt`}</Label>
@@ -463,7 +483,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.startDate && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.startDate && <ErrorMsg innerText="Pole nie może być puste" />}
         {regularValue && (
           <>
             <Label>Do kiedy chciałby zarezerwować obiekt</Label>
@@ -488,7 +508,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
                 />
               )}
             />
-            {errors.endDate && <ErrorMsg innerText="Pole nie moze byc puste" />}
+            {errors.endDate && <ErrorMsg innerText="Pole nie może być puste" />}
           </>
         )}
         <Label>Od której godziny</Label>
@@ -509,7 +529,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               invalid={!!errors.startHour}
               timeIntervals={15}
               timeCaption="Godzina"
-              dateFormat="h:mm aa"
+              dateFormat="HH:mm"
               locale="pl"
               onChange={onChange}
               onBlur={onBlur}
@@ -518,7 +538,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.startHour && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.startHour && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Do której godziny</Label>
         <Controller
           name="endHour"
@@ -537,7 +557,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               invalid={!!errors.endHour}
               timeIntervals={15}
               timeCaption="Godzina"
-              dateFormat="h:mm aa"
+              dateFormat="HH:mm"
               locale="pl"
               onChange={onChange}
               onBlur={onBlur}
@@ -546,7 +566,7 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
             />
           )}
         />
-        {errors.endHour && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.endHour && <ErrorMsg innerText="Pole nie może być puste" />}
       </InputContainer>
       {buildingValue.value === 'boisko-sztuczna-nawierzchnia' && (
         <BookingExtraOptions extraOptions={extraOptions} setExtraOptions={setExtraOptions} />
@@ -567,6 +587,12 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
           />
         )}
       />
+      {conflict && (
+        <ConflictParagraph small bold conflict={conflict}>
+          <BsFillExclamationCircleFill />
+          Ta rezerwacja ma konflikt z innymi rezerwacjami , czy napewno chcesz ja zatwierdzić
+        </ConflictParagraph>
+      )}
       {!isAdmin && (
         <RodoWrapper>
           <Checkbox
@@ -593,7 +619,10 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
               : 'Czy napewno chcesz wysłać prośbe o rezerwacje'
           }
           callback={confirmSubmit}
-          cancelCallback={() => setDisplayConfirmation(false)}
+          cancelCallback={() => {
+            setDisplayConfirmation(false);
+            setConflict(false);
+          }}
         />
       ) : (
         <ButtonPanel>
@@ -609,4 +638,4 @@ const NewBookingForm: React.FunctionComponent<NewBookingFormProps> = ({
   );
 };
 
-export default NewBookingForm;
+export default BookingForm;

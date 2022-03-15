@@ -196,7 +196,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             />
           )}
         />
-        {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Imie i nazwisko</Label>
         <Controller
           name="person"
@@ -215,7 +215,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             />
           )}
         />
-        {errors.person && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Wiadomość</Label>
         <Controller
           name="message"
@@ -235,7 +235,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             />
           )}
         />
-        {errors.message && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.message && <ErrorMsg innerText="Pole nie może być puste" />}
         {displayConfirmation ? (
           <ConfirmAction
             message="Czy napewno chcesz wysłać wiadomość"

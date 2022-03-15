@@ -69,7 +69,7 @@ const ButtonPanel = styled.div`
   }
 `;
 
-const NewFormMessage = () => {
+const FormMessage = () => {
   const [message, setMessage] = React.useState<IMessageForm | undefined>();
   const [police, setPolice] = React.useState<boolean>(false);
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
@@ -116,7 +116,7 @@ const NewFormMessage = () => {
             />
           )}
         />
-        {errors.person && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Wpisz swoj adres e-mail</Label>
         <Controller
           name="email"
@@ -135,7 +135,7 @@ const NewFormMessage = () => {
             />
           )}
         />
-        {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Numer kontaktowy</Label>
         <Controller
           name="phone"
@@ -154,7 +154,7 @@ const NewFormMessage = () => {
             />
           )}
         />
-        {errors.phone && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Wiadomość</Label>
         <Controller
           name="message"
@@ -173,7 +173,7 @@ const NewFormMessage = () => {
             />
           )}
         />
-        {errors.message && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.message && <ErrorMsg innerText="Pole nie może być puste" />}
         <RodoWrapper>
           <Checkbox
             checked={police}
@@ -211,4 +211,4 @@ const NewFormMessage = () => {
   );
 };
 
-export default NewFormMessage;
+export default FormMessage;

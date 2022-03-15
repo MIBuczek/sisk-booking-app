@@ -65,13 +65,13 @@ const ButtonPanel = styled.div`
   }
 `;
 
-interface NewClientFormProps {
+interface ClientFormProps {
   isEditing: boolean;
   editedItemIndex?: number;
   initialEditingState: () => void;
 }
 
-const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
+const ClientForm: React.FunctionComponent<ClientFormProps> = ({
   isEditing,
   editedItemIndex,
   initialEditingState
@@ -180,7 +180,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
             />
           )}
         />
-        {errors.name && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.name && <ErrorMsg innerText="Pole nie może być puste" />}
         {clientType?.value === CLIENT_TYPE.COMPANY && (
           <>
             <Label>NIP</Label>
@@ -201,7 +201,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
                 />
               )}
             />
-            {errors.nip && <ErrorMsg innerText="Pole nie moze byc puste" />}
+            {errors.nip && <ErrorMsg innerText="Pole nie może być puste" />}
           </>
         )}
         <Label>Telefon</Label>
@@ -222,7 +222,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
             />
           )}
         />
-        {errors.phone && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>E-mail</Label>
         <Controller
           name="email"
@@ -241,7 +241,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
             />
           )}
         />
-        {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
       </ClientInnerContent>
       <ClientInnerContent>
         {clientType?.value === CLIENT_TYPE.COMPANY && (
@@ -264,7 +264,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
                 />
               )}
             />
-            {errors.contactPerson && <ErrorMsg innerText="Pole nie moze byc puste" />}
+            {errors.contactPerson && <ErrorMsg innerText="Pole nie może być puste" />}
           </>
         )}
         <Label>Ulica</Label>
@@ -285,7 +285,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
             />
           )}
         />
-        {errors.street && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.street && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Miasto</Label>
         <Controller
           name="city"
@@ -304,7 +304,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
             />
           )}
         />
-        {errors.city && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.city && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Kod pocztowy</Label>
         <Controller
           name="zipCode"
@@ -323,7 +323,7 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
             />
           )}
         />
-        {errors.zipCode && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.zipCode && <ErrorMsg innerText="Pole nie może być puste" />}
       </ClientInnerContent>
       {displayConfirmation ? (
         <ConfirmAction
@@ -343,4 +343,4 @@ const NewClientForm: React.FunctionComponent<NewClientFormProps> = ({
   );
 };
 
-export default NewClientForm;
+export default ClientForm;

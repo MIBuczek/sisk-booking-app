@@ -8,8 +8,8 @@ https://sisk-booking-tool.netlify.app/#/
 
 React <br/>
 Redux <br/>
-Typescritpt <br/>
-Style components <br/>
+Typescript <br/>
+Style Components <br/>
 React Hook Form <br/>
 Husky <br/>
 

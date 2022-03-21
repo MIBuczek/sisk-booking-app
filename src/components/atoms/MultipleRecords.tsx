@@ -118,7 +118,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   deleteHandler
 }) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [postPerPage] = React.useState<number>(5);
+  const [postPerPage] = React.useState<number>(20);
 
   const nextPage = (num: number): void => setCurrentPage(num);
 
@@ -144,6 +144,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
               <MultipleRecordItem
                 key={record.id}
                 index={index}
+                currentPage={currentPage}
                 recordProperty={recordProperty}
                 recordPropertyDetails={recordPropertyDetails}
                 recordPropertyDisplayMap={recordPropertyDisplayMap}

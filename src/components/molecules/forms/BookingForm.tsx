@@ -13,7 +13,6 @@ import {
   CITY_OPTIONS,
   generateBookingDetails,
   generateBookingFormDetails,
-  overwriteDate,
   selectBuildingOptions,
   selectClientOptions,
   selectedClientIdOption,
@@ -35,7 +34,7 @@ import Button from 'components/atoms/Button';
 import pl from 'date-fns/locale/pl';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
-import { isEmpty } from 'lodash';
+import { cloneDeep, cloneDeepWith, isEmpty } from 'lodash';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from '../ConfirmAction';
@@ -171,7 +170,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   } = useSelector((state: IReduxState): IReduxState => state);
 
   const { handleSubmit, errors, control, watch, reset } = useForm<IBookingForm>({
-    defaultValues: { ...BOOKING_INITIAL_VALUE, ...mainState }
+    defaultValues: { ...cloneDeep(BOOKING_INITIAL_VALUE), ...mainState }
   });
 
   const cityValue = watch('city');
@@ -185,7 +184,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
-    const bookingToApprove = generateBookingDetails(cred, selectedSize, extraOptions, bookingId);
+    const bookingToApprove = cloneDeep(
+      generateBookingDetails(cred, selectedSize, extraOptions, bookingId)
+    );
     setBookingData(bookingToApprove);
     setDisplayConfirmation(true);
     setConflict(checkConflicts(bookingToApprove, bookings));
@@ -202,7 +203,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   const editBookingHandler = (index: number) => {
-    const currentBooking = bookings[index];
+    const currentBooking = cloneDeep(bookings[index]);
     const clientId = selectedClientIdOption(clients, currentBooking.clientId);
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
@@ -210,7 +211,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   const createInitialState = () => {
-    reset({ ...BOOKING_INITIAL_VALUE, ...mainState });
+    reset({ ...cloneDeep(BOOKING_INITIAL_VALUE), ...mainState });
     setBookingId(undefined);
     initialEditingState();
     setDisplayConfirmation(false);
@@ -249,7 +250,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       });
     } else {
       reset({
-        ...BOOKING_INITIAL_VALUE,
+        ...cloneDeep(BOOKING_INITIAL_VALUE),
         ...mainState,
         ...formClientData
       });

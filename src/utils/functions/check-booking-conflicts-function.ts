@@ -1,19 +1,26 @@
 /* eslint-disable no-debugger */
 import { uniq } from 'lodash';
 import { IBooking } from 'models';
-import { formatDate } from './calender-functions';
 
-const checkHours = (hOne: Date, hTwo: Date) => {
-  const parseHOne = Date.parse(hOne.toISOString());
-  const parseHTwo = Date.parse(hTwo.toISOString());
-  if (Math.abs(parseHOne - parseHTwo) <= 3600000) {
+// const checkHours = (hOne: Date, hTwo: Date) => {
+//   const parseHOne = Date.parse(hOne.toISOString());
+//   const parseHTwo = Date.parse(hTwo.toISOString());
+//   if (Math.abs(parseHOne - parseHTwo) <= 3600000) {
+//     return true;
+//   }
+//   return false;
+// };
+
+const checkDay = (dOne: Date, dTwo: Date) => {
+  if (Date.parse(new Date(dOne).toISOString()) - Date.parse(new Date(dTwo).toISOString()) === 0)
     return true;
-  }
   return false;
 };
 
-const checkDay = (dOne: Date, dTwo: Date) => {
-  if (Date.parse(formatDate(dOne)) - Date.parse(formatDate(dTwo)) === 0) return true;
+const checkHoursRange = (checkDate: Date, startHour: Date, endHour: Date) => {
+  if (checkDate.getTime() <= endHour.getTime() && checkDate.getTime() >= startHour.getTime()) {
+    return true;
+  }
   return false;
 };
 
@@ -21,17 +28,18 @@ const checkConflicts = (currentBooking: IBooking, allBookings: IBooking[]): bool
   let isConflict = false;
   allBookings.forEach((b) => {
     if (
-      b.id !== currentBooking.id &&
+      currentBooking.id !== b.id &&
+      currentBooking.city === b.city &&
       currentBooking.building === b.building &&
       currentBooking.month === b.month
     ) {
       b.bookingTime.forEach((cbt) => {
         const conflictDate = currentBooking.bookingTime.some((cb) => {
           const sameDay = checkDay(cb.day, cbt.day);
-          const sameStartHours = checkHours(cb.startHour, cbt.startHour);
-          const sameEndHours = checkHours(cb.endHour, cbt.endHour);
-          // debugger;
-          if (sameDay && (sameStartHours || sameEndHours)) {
+          const checkStartHour = checkHoursRange(cb.startHour, cbt.startHour, cbt.endHour);
+          const checkEndHour = checkHoursRange(cb.endHour, cbt.startHour, cbt.endHour);
+
+          if (sameDay && (checkStartHour || checkEndHour)) {
             return true;
           }
           return false;

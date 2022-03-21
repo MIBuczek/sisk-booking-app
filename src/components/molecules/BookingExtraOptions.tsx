@@ -269,7 +269,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
         <DisplaySelectedOptions>
           {!isEmpty(extraOptions) ? (
             extraOptions.map(({ fromHour, toHour, options }, index) => (
-              <DisplaySelectedOptionElement key={fromHour.getTime()}>
+              <DisplaySelectedOptionElement key={fromHour.getMilliseconds()}>
                 <RecordDetailSpan>
                   <strong>Opcje : </strong>
                   {checkSelectedOption(options)}

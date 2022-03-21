@@ -1,5 +1,5 @@
 import { TBooking } from 'models';
-import { formatDate, getTime } from './calender-functions';
+import { formatDate, formatTime } from './calender-functions';
 
 const modelDisplayValue = (currentValue?: TBooking, isHours?: boolean): null | string => {
   if (typeof currentValue === 'undefined') {
@@ -12,7 +12,7 @@ const modelDisplayValue = (currentValue?: TBooking, isHours?: boolean): null | s
     return formatDate(currentValue);
   }
   if (currentValue instanceof Date && isHours) {
-    return getTime(currentValue);
+    return formatTime(currentValue);
   }
   return currentValue.toString();
 };

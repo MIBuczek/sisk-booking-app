@@ -112,6 +112,7 @@ const ChevronIcon = styled(BsChevronDown)`
 
 interface MultipleRecordItemProps {
   index: number;
+  currentPage: number;
   isAdmin: boolean;
   isEmployee: boolean;
   recordProperty: string[];
@@ -125,6 +126,7 @@ interface MultipleRecordItemProps {
 
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   index,
+  currentPage,
   isAdmin,
   isEmployee,
   recordProperty,
@@ -139,7 +141,9 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
     render={({ isCollapsed, toggle }: IRenderProps) => (
       <>
         <tr>
-          <RecordTableData>{index}</RecordTableData>
+          <RecordTableData>
+            {currentPage > 1 ? (currentPage - 1) * 20 + index + 1 : index + 1}
+          </RecordTableData>
           {recordProperty.map((property) => (
             <RecordTableData key={property}>
               {modelDisplayValue(currentRecord[property])}
@@ -186,7 +190,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                         <strong>{recordPropertyDisplayMap[property]} : </strong>
                       </RecordDetailSpan>
                       {(currentRecord[property] as ISingleBookingDate[]).map((sb) => (
-                        <SingleBookingTime key={sb.day.getTime()}>
+                        <SingleBookingTime key={sb.day.getMilliseconds()}>
                           <RecordDetailSpan>
                             <strong>Dzień: </strong>
                             {modelDisplayValue(sb.day)}
@@ -212,7 +216,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                       </RecordDetailSpan>
                       {(currentRecord[property] as ISelectedExtraOptions[]).map(
                         ({ options, fromHour, toHour }) => (
-                          <SingleBookingTime key={fromHour.getTime()}>
+                          <SingleBookingTime key={fromHour.getMilliseconds()}>
                             <RecordDetailSpan>
                               <strong>Opcje : </strong>
                               {checkSelectedOption(options)}

@@ -73,7 +73,7 @@ export const addBooking = (bookingData: IBooking) => async (
   try {
     const resp = await db.collection('bookings').add(bookingData);
     const { bookings } = getStore().bookingStore;
-    const newBookings: IBooking[] = [...bookings, { ...bookingData, id: resp.id }];
+    const newBookings: IBooking[] = [{ ...bookingData, id: resp.id }, ...bookings];
     dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
   } catch (err) {

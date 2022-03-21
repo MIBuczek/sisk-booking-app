@@ -7,12 +7,12 @@ import {
   TSelect
 } from 'models';
 import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_TYPE, SIZE_OPTIONS, BOOKING_STATUS } from 'utils';
-import { formatDate, getTime } from './calender-functions';
+import { formatCalenderDate, formateCalenderHours } from './calender-functions';
 import { createSelectedOption } from './utils-functions';
 
 const overwriteDate = (day: Date, hour: Date) => {
-  const convertedDay = formatDate(day);
-  const convertedHour = getTime(hour);
+  const convertedDay = formatCalenderDate(day);
+  const convertedHour = formateCalenderHours(hour);
 
   return new Date(`${convertedDay}${convertedHour}`);
 };
@@ -25,7 +25,7 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   const { startDate, endDate, startHour, endHour, regular } = cred;
   const bookingArray: ISingleBookingDate[] = [
     {
-      day: startDate,
+      day: new Date(`${formatCalenderDate(startDate)}T00:01:00.000Z`),
       startHour: overwriteDate(startDate, startHour),
       endHour: overwriteDate(startDate, endHour)
     }
@@ -41,7 +41,7 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   do {
     const day = new Date(startDate.getTime() + weekInMilliseconds * index);
     bookingArray.push({
-      day,
+      day: new Date(`${formatCalenderDate(day)}T00:01:00.000Z`),
       startHour: overwriteDate(day, startHour),
       endHour: overwriteDate(day, endHour)
     });

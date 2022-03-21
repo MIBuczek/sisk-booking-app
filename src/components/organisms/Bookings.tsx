@@ -22,6 +22,7 @@ import ModalInfo from 'components/molecules/modals/ModalInfo';
 import BookingStatusForm from 'components/molecules/forms/BookingStatusForm';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
+import { cloneDeep } from 'lodash';
 import Modal from './Modal';
 
 const BookingsWrapper = styled.section`
@@ -110,7 +111,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
 
   const deleteBookingAction = () => {
     if (typeof deleteItemIndex === 'undefined') return;
-    const currentBooking = bookings[deleteItemIndex];
+    const currentBooking = cloneDeep(bookings[deleteItemIndex]);
     if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
     bookingListHandler(bookings.filter((b) => b.id !== currentBooking.id));
     initialBookingState();

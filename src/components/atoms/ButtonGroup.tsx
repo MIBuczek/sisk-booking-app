@@ -6,6 +6,7 @@ import Button from './Button';
 
 type GroupBtnProps = {
   active?: boolean;
+  disabled: boolean;
 };
 
 const ButtonGroupWrapper = styled.div`
@@ -16,10 +17,16 @@ const ButtonGroupWrapper = styled.div`
 `;
 
 const GroupBtn = styled(Button)<GroupBtnProps>`
-  background: ${({ theme, active }) => (active ? theme.green : theme.middleGray)};
+  background: ${({ theme, active, disabled }) => (active ? theme.green : theme.middleGray)};
   color: ${({ theme }) => theme.darkGrey};
   padding: 5px 15px;
   margin: 0;
+  &:disabled {
+    background: ${({ theme, active, disabled }) =>
+      active && disabled ? theme.darkGrey : theme.middleGray};
+    color: ${({ theme, active, disabled }) =>
+      active && disabled ? theme.lightGray : theme.darkGrey};
+  }
 `;
 
 interface IProps {

@@ -184,8 +184,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     const bookingToApprove = cloneDeep(
       generateBookingDetails(cred, selectedSize, extraOptions, bookingId)
     );

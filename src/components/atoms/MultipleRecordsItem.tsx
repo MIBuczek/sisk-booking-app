@@ -81,6 +81,7 @@ const BookingTimeWrapper = styled.div`
   border-top: ${({ theme }) => `1px solid ${theme.middleGray}`};
   border-bottom: ${({ theme }) => `1px solid ${theme.middleGray}`};
   padding: 3px 2px;
+  margin-bottom: 10px;
   span {
     padding: 2px;
   }
@@ -98,8 +99,8 @@ const SingleBookingTime = styled.div`
 
 const RecordDetailSpan = styled.span`
   font-size: ${({ theme }) => theme.fontSize.s};
-  padding: 10px 5px;
-  min-width: 20%;
+  padding: 10px 15px 10px 5px;
+  /* min-width: 20%; */
   width: auto;
 `;
 
@@ -235,12 +236,15 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                     </BookingTimeWrapper>
                   );
                 }
-                return (
-                  <RecordDetailSpan key={property}>
-                    <strong>{recordPropertyDisplayMap[property]} : </strong>
-                    {modelDisplayValue(currentRecord[property])}
-                  </RecordDetailSpan>
-                );
+                if (!isEmpty(currentRecord[property])) {
+                  return (
+                    <RecordDetailSpan key={property}>
+                      <strong>{recordPropertyDisplayMap[property]} : </strong>
+                      {modelDisplayValue(currentRecord[property])}
+                    </RecordDetailSpan>
+                  );
+                }
+                return null;
               })}
             </RecordDetail>
           </BookingDetailWrapper>

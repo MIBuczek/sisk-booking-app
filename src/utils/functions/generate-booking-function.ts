@@ -83,7 +83,7 @@ const generateBookingDetails = (
 const generateBookingStatusDate = (cred: IBookingStatusForm, currentBooking: IBooking) => ({
   ...currentBooking,
   bookingStatus: cred.bookingStatus.value,
-  bookingComments: cred.bookingComments
+  bookingComments: cred.bookingComments || ''
 });
 
 const generateBookingFormDetails = (

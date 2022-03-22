@@ -66,7 +66,10 @@ const RecordTableHeader = styled.th`
     width: 5%;
   }
   &:nth-of-type(2) {
-    width: 22%;
+    width: 20%;
+  }
+  &:nth-of-type(4) {
+    width: 18%;
   }
   &:last-of-type {
     width: 15%;
@@ -86,6 +89,7 @@ const RecordTableData = styled.td<RecordDataType>`
   color: ${({ theme }) => theme.darkGrey};
   text-align: ${({ empty }) => (empty ? 'center' : 'start')};
   animation: ${fadeInLeft} 0.5s linear;
+  word-break: break-word;
   @media (max-width: 890px) {
     font-size: ${({ theme }) => theme.fontSize.xs};
     word-break: break-all;

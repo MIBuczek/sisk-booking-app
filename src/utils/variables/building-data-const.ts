@@ -67,7 +67,7 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     }
   },
   {
-    name: 'Boisko trawiaste stadionie LA',
+    name: 'Boisko trawiaste na stadionie LA',
     property: 'boisko-trawiaste-stadionie-la',
     city: 'siechnice',
     size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],

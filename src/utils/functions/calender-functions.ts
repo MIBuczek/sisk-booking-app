@@ -8,16 +8,18 @@ const formatTime = (date: Date | null): string => {
   return date.toLocaleTimeString();
 };
 
-const formatCalenderDate = (date: Date): string => {
-  const stringDate = date?.toISOString();
+const formatCalenderDate = (date: Date | string): string => {
+  console.log(date);
+  const stringDate = new Date(date).toISOString();
   const index = stringDate.indexOf('T');
   return stringDate.substring(0, index);
 };
 
 const formateCalenderHours = (date: Date): string => {
-  const index = date?.toISOString().indexOf('T');
-  const lastIndex = date.toISOString().lastIndexOf('.');
-  return date?.toISOString().substring(index, lastIndex);
+  const checkedDate = new Date(date).toISOString();
+  const index = checkedDate.indexOf('T');
+  const lastIndex = checkedDate.lastIndexOf('.');
+  return checkedDate.substring(index, lastIndex);
 };
 
 const prepareCalenderItem = (id: string, startDay: Date, startHour: Date, endHour: Date) => ({

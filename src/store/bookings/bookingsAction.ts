@@ -48,18 +48,33 @@ export const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBoo
   }
 });
 
-export const getBookingsData = (isUser: boolean) => async (
-  dispatch: Dispatch<IBookingsAction>
-): Promise<void> => {
+export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
   dispatch(fetchingBookings());
   try {
     const resp = await db.collection('bookings').get();
     const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
-    if (isUser) {
-      localStorage.setItem('bookings', JSON.stringify(bookings));
-      localStorage.setItem('lastUpdate', `${Date.now()}`);
-    }
+  } catch (err) {
+    dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
+    throw new Error(JSON.stringify(err));
+  }
+};
+
+export const getBookingDataForUser = () => async (
+  dispatch: Dispatch<IBookingsAction>
+): Promise<void> => {
+  dispatch(fetchingBookings());
+  try {
+    const resp = await db
+      .collection('bookings')
+      .where('bookingStatus', '==', 'INITIAL')
+      .where('accepted', '==', true)
+      .get();
+    console.log(resp);
+    const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
+    dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    localStorage.setItem('lastUpdate', `${Date.now()}`);
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
     throw new Error(JSON.stringify(err));

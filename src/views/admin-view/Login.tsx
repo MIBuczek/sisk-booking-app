@@ -85,7 +85,7 @@ const Login: React.FC = (): JSX.Element => {
               onChange={onChange}
               invalid={!!errors.email}
               className="input"
-              placeholder="E-MAIL"
+              placeholder="E-mail"
             />
           )}
         />
@@ -103,7 +103,7 @@ const Login: React.FC = (): JSX.Element => {
               onChange={onChange}
               invalid={!!errors.password}
               className="input"
-              placeholder="HASŁO"
+              placeholder="Hasło"
               type="password"
             />
           )}

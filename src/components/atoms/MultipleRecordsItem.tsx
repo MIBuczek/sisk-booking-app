@@ -29,11 +29,15 @@ const RecordTableData = styled.td`
   color: ${({ theme }) => theme.darkGrey};
   animation: ${fadeInLeft} 0.5s linear;
   width: 15%;
+  word-break: break-word;
   &:nth-of-type(1) {
     width: 5%;
   }
   &:nth-of-type(2) {
-    width: 22%;
+    width: 20%;
+  }
+  &:nth-of-type(4) {
+    width: 18%;
   }
   &:last-of-type {
     width: 15%;
@@ -74,6 +78,7 @@ const RecordDetail = styled.td`
   border: ${({ theme }) => `1px solid ${theme.green}`};
   background: ${({ theme }) => theme.lightGray};
   animation: ${fadeIn} 0.5s linear;
+  word-break: break-word;
 `;
 
 const BookingTimeWrapper = styled.div`
@@ -100,7 +105,6 @@ const SingleBookingTime = styled.div`
 const RecordDetailSpan = styled.span`
   font-size: ${({ theme }) => theme.fontSize.s};
   padding: 10px 15px 10px 5px;
-  /* min-width: 20%; */
   width: auto;
 `;
 
@@ -147,7 +151,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
           </RecordTableData>
           {recordProperty.map((property) => (
             <RecordTableData key={property}>
-              {modelDisplayValue(currentRecord[property])}
+              {modelDisplayValue(property, currentRecord[property])}
             </RecordTableData>
           ))}
           {instanceOfBookings(allRecords) && singleInstanceOfBookings(currentRecord) && (
@@ -194,15 +198,15 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                         <SingleBookingTime key={sb.day.getMilliseconds()}>
                           <RecordDetailSpan>
                             <strong>Dzień: </strong>
-                            {modelDisplayValue(sb.day)}
+                            {modelDisplayValue(property, sb.day)}
                           </RecordDetailSpan>
                           <RecordDetailSpan>
                             <strong>Godzina rozpoczecia: </strong>
-                            {modelDisplayValue(sb.startHour, true)}
+                            {modelDisplayValue(property, sb.startHour, true)}
                           </RecordDetailSpan>
                           <RecordDetailSpan>
                             <strong>Godzina zakończenia: </strong>
-                            {modelDisplayValue(sb.endHour, true)}
+                            {modelDisplayValue(property, sb.endHour, true)}
                           </RecordDetailSpan>
                         </SingleBookingTime>
                       ))}
@@ -224,11 +228,11 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                             </RecordDetailSpan>
                             <RecordDetailSpan>
                               <strong>Od godziny : </strong>
-                              {modelDisplayValue(fromHour, true)}
+                              {modelDisplayValue(property, fromHour, true)}
                             </RecordDetailSpan>
                             <RecordDetailSpan>
                               <strong>Do godziny: </strong>
-                              {modelDisplayValue(toHour, true)}
+                              {modelDisplayValue(property, toHour, true)}
                             </RecordDetailSpan>
                           </SingleBookingTime>
                         )
@@ -240,7 +244,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                   return (
                     <RecordDetailSpan key={property}>
                       <strong>{recordPropertyDisplayMap[property]} : </strong>
-                      {modelDisplayValue(currentRecord[property])}
+                      {modelDisplayValue(property, currentRecord[property])}
                     </RecordDetailSpan>
                   );
                 }

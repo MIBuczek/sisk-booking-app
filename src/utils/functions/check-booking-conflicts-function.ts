@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import { uniq } from 'lodash';
 import { IBooking } from 'models';
 

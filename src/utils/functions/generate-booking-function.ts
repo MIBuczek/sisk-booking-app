@@ -12,7 +12,7 @@ import { createSelectedOption } from './utils-functions';
 
 const overwriteDate = (day: Date, hour: Date) => {
   const convertedDay = formatCalenderDate(day);
-  const convertedHour = formateCalenderHours(hour);
+  const convertedHour = formateCalenderHours(new Date(hour.getTime() + 3600000));
 
   return new Date(`${convertedDay}${convertedHour}`);
 };

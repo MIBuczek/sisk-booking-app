@@ -142,8 +142,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
 }) => {
   const { handleSubmit, control, watch, reset } = useForm<IExtraOptionForm>();
 
-  const lightValue = watch('lights');
-  const toiletsValue = watch('toilets');
+  const { lights: lightValue, toilets: toiletsValue } = watch();
 
   const onSubmit = handleSubmit(async (cred) => {
     const { fromHour, toHour, lights, toilets } = cred;

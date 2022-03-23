@@ -34,7 +34,7 @@ import Button from 'components/atoms/Button';
 import pl from 'date-fns/locale/pl';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
-import { cloneDeep, cloneDeepWith, isEmpty } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from '../ConfirmAction';
@@ -169,14 +169,16 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     clientStore: { clients }
   } = useSelector((state: IReduxState): IReduxState => state);
 
-  const { handleSubmit, errors, control, watch, reset } = useForm<IBookingForm>({
+  const { handleSubmit, errors, control, watch, reset, getValues } = useForm<IBookingForm>({
     defaultValues: { ...cloneDeep(BOOKING_INITIAL_VALUE), ...mainState }
   });
 
-  const cityValue = watch('city');
-  const buildingValue = watch('building');
-  const regularValue = watch('regular');
-  const selectedClientId = watch('clientId');
+  const {
+    city: cityValue,
+    building: buildingValue,
+    regular: regularValue,
+    clientId: selectedClientId
+  } = watch();
 
   const selectedSizeHandler = (e: Event, value: SIZE_OPTIONS): void => {
     e.preventDefault();
@@ -189,7 +191,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     );
     setBookingData(bookingToApprove);
     setDisplayConfirmation(true);
-    setConflict(checkConflicts(bookingToApprove, bookings));
+    if (isAdmin) {
+      setConflict(checkConflicts(bookingToApprove, bookings));
+    }
   });
 
   const confirmSubmit = () => {
@@ -249,8 +253,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         ...formClientData
       });
     } else {
+      const currentFormValues = getValues();
       reset({
-        ...cloneDeep(BOOKING_INITIAL_VALUE),
+        ...cloneDeep({ ...currentFormValues, clientId: { label: '', value: '' } }),
         ...mainState,
         ...formClientData
       });

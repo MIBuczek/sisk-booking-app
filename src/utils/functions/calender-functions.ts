@@ -3,13 +3,22 @@ const formatDate = (date: Date | null): string => {
   return date.toLocaleDateString();
 };
 
+/**
+ * Function to transform data object into string
+ * @param  {Date|null} date
+ * @returns {string}
+ */
 const formatTime = (date: Date | null): string => {
   if (!date) return '';
   return date.toLocaleTimeString();
 };
 
+/**
+ * Function to cut display data object into short part day/month/year
+ * @param  {Date|string} date
+ * @returns {string}
+ */
 const formatCalenderDate = (date: Date | string): string => {
-  console.log(date);
   const stringDate = new Date(date).toISOString();
   const index = stringDate.indexOf('T');
   return stringDate.substring(0, index);

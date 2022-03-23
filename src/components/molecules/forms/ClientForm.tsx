@@ -84,7 +84,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
   const { clients } = useSelector((state: IReduxState) => state.clientStore);
   const { handleSubmit, errors, control, reset, watch } = useForm<IClientForm>();
 
-  const clientType = watch('type');
+  const { type: clientType } = watch();
 
   React.useEffect(() => {
     if (isEditing && typeof editedItemIndex === 'number') {

@@ -19,7 +19,7 @@ const Header = styled.h1`
     bottom: -14px;
     left: 0;
     content: '';
-    border-bottom: 5px solid #afbf36;
+    border-bottom: ${({ theme }) => `5px solid ${theme.green}`};
     width: 110px;
   }
   svg {

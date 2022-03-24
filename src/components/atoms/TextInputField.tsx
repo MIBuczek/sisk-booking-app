@@ -17,7 +17,7 @@ const TextInputField = styled.input<InputType>`
   padding: 10px;
   letter-spacing: -0.5px;
   border-color: ${({ invalid }) => (invalid ? '#cc0000' : '#afbf36')};
-  &::hover {
+  &::focus {
     box-shadow: 0 0 5px 0 #eaeaea;
   }
   &::placeholder {

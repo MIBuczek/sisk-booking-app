@@ -161,7 +161,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           {errors.type && <ErrorMsg innerText="Pole nie może byc puste" />}
         </ClientSelectWrapper>
         <Label>
-          {clientType?.value === CLIENT_TYPE.COMPANY ? 'Nazwa firmy' : 'Imie i nazwisko'}
+          {clientType?.value === CLIENT_TYPE.COMPANY ? 'Nazwa firmy' : 'Imię i nazwisko'}
         </Label>
         <Controller
           name="name"

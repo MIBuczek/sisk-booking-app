@@ -13,7 +13,8 @@ import {
   RECORDS_BOOKING_ROW_DETAILS,
   RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
   adminCredentials,
-  checkAllBookingsConflicts
+  checkAllBookingsConflicts,
+  filterBookingsPerPlace
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/BookingForm';
@@ -60,6 +61,7 @@ const OpenBookingsModalButton = styled(Button)`
     border-color: #b9b8b8;
     box-shadow: none;
     opacity: 1;
+    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
   }
 `;
 
@@ -92,7 +94,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
 
   const bookingListHandler = (searchResults: (IClient | IBooking)[]): void => {
     if (searchResults.length && instanceOfBookings(searchResults)) {
-      setBookingsList(searchResults);
+      setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
     } else {
       setBookingsList([]);
     }
@@ -130,9 +132,9 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   };
 
   React.useEffect(() => {
-    setBookingsList(bookings);
+    setBookingsList(filterBookingsPerPlace(bookings, mainState, user?.isAdmin));
     setConflicts(checkAllBookingsConflicts(bookings));
-  }, [bookings]);
+  }, [bookings, mainState]);
 
   return (
     <BookingsWrapper>

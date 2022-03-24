@@ -197,7 +197,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           )}
         />
         {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Label>Imie i nazwisko</Label>
+        <Label>Imię i nazwisko</Label>
         <Controller
           name="person"
           defaultValue={''}

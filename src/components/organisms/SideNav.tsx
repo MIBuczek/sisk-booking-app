@@ -78,6 +78,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
           placeholder="Wybierz"
           onChange={(val: TSelect) => stateHandler(val, 'city')}
           selected={city}
+          isDisabled={!isAdmin}
         />
       </SelectWrapper>
       <SelectWrapper>
@@ -90,7 +91,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
           placeholder="Wybierz"
           onChange={(val: TSelect) => stateHandler(val, 'building')}
           selected={building}
-          isDisabled={!city}
+          isDisabled={!isAdmin || !city}
         />
       </SelectWrapper>
       {isAdminPanel ? (

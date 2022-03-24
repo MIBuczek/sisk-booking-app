@@ -10,7 +10,7 @@ const Button = styled.button<ButtonProps>`
   background: ${({ theme, secondary }) => (secondary ? theme.middleGray : theme.green)};
   font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.regular};
-  border: 1px solid ${({ theme }) => theme.green};
+  border: ${({ theme }) => `1px solid ${theme.green}`};
   font-family: inherit;
   margin: 1rem 0;
   cursor: pointer;
@@ -19,7 +19,7 @@ const Button = styled.button<ButtonProps>`
   letter-spacing: -0.5px;
   transition: 0.4s;
   &:hover {
-    box-shadow: 0px 1px 5px 0px rgb(0 0 0 / 40%);
+    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
     opacity: 0.8;
   }
   &:disabled {

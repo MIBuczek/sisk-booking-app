@@ -55,6 +55,7 @@ const OpenClientModalButton = styled(Button)`
     border-color: #b9b8b8;
     box-shadow: none;
     opacity: 1;
+    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
   }
 `;
 

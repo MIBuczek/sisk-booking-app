@@ -275,11 +275,11 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                 </RecordDetailSpan>
                 <RecordDetailSpan>
                   <strong>Od godziny : </strong>
-                  {modelDisplayValue('fromHour', fromHour)}
+                  {modelDisplayValue('fromHour', fromHour, true)}
                 </RecordDetailSpan>
                 <RecordDetailSpan>
                   <strong>Do godziny: </strong>
-                  {modelDisplayValue('toHour', toHour)}
+                  {modelDisplayValue('toHour', toHour, true)}
                 </RecordDetailSpan>
                 <RecordDetailsBtnPanel>
                   <RoundBtn>

@@ -13,7 +13,7 @@ const RECORDS_CLIENTS_ROW_DETAILS = [
 ];
 
 const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP = {
-  name: 'Imie i Nazwisko',
+  name: 'Imię i nazwisko',
   type: 'Typ',
   contactPerson: ' Osoba kontaktowa',
   phone: 'Telefon',

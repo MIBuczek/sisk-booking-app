@@ -89,12 +89,25 @@ const NavButton = styled(Button)`
   border: none;
   margin: 0;
   padding: 16px 10px 17px 10px;
+  display: inline-flex;
+  &.btn {
+    color: ${({ theme }) => theme.green};
+    font-weight: 600;
+    font-size: ${({ theme }) => theme.fontSize.ml};
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: 1px solid;
+    &:hover {
+      box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
+    }
+  }
   &:hover {
     box-shadow: none;
-    color: #afbf36;
+    color: ${({ theme }) => theme.green};
   }
   svg {
     display: block;
+    margin-left: 10px;
   }
 `;
 
@@ -121,6 +134,7 @@ const TopNav = (): JSX.Element => {
   const dispatch = useDispatch();
   const {
     authStore,
+    currentUserStore: { user },
     modal: { isOpen }
   } = useSelector((store: IReduxState): IReduxState => store);
 
@@ -156,7 +170,8 @@ const TopNav = (): JSX.Element => {
           </li>
           {authStore.auth && (
             <li>
-              <NavButton role="button" onClick={() => dispatch(logOutUser())}>
+              <NavButton role="button" className="btn" onClick={() => dispatch(logOutUser())}>
+                {user?.name}
                 <BsPower />
               </NavButton>
             </li>

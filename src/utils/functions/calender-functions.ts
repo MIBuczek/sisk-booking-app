@@ -10,7 +10,9 @@ const formatDate = (date: Date | null): string => {
  */
 const formatTime = (date: Date | null): string => {
   if (!date) return '';
-  return date.toLocaleTimeString();
+  const newDate = date.toLocaleTimeString();
+  const lastIndex = newDate.lastIndexOf(':');
+  return newDate.substring(0, lastIndex);
 };
 
 /**

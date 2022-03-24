@@ -96,9 +96,9 @@ const FormMessage = () => {
 
   return (
     <MessageWrapper onSubmit={onSubmit}>
-      <MessageHeader>Napisz do nas wiadomość</MessageHeader>
+      <MessageHeader>Skontaktuj się z nami</MessageHeader>
       <MessageContent>
-        <Label>Imie i nazwisko</Label>
+        <Label>Imię i nazwisko</Label>
         <Controller
           name="person"
           defaultValue={''}

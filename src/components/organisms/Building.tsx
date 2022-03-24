@@ -37,7 +37,7 @@ const BuildingWrapper = styled.article`
 const BuildingHeader = styled(Header)`
   width: 100%;
   height: fit-content;
-  margin: 20px 0 40px 20px;
+  margin: 20px 0 40px 0;
   @media (max-width: 1400px) {
     width: 80%;
   }
@@ -66,7 +66,7 @@ const InnerContent = styled.div`
       border-right-color: transparent;
       height: auto;
     }
-    padding: 20px 0 40px 20px;
+    padding: 20px 0 40px 0;
   }
   @media (max-width: 890px) {
     width: 90%;

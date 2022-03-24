@@ -22,6 +22,11 @@ export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
   letter-spacing: -0.5px;
   border-color: ${({ invalid, disabled }) =>
     invalid ? '#cc0000' : disabled ? '#b9b8b8' : '#afbf36'};
+  transition: 0.4s;
+  &:active,
+  &:focus {
+    box-shadow: inset 0px -17px 15px -25px rgb(66 68 90);
+  }
   &::placeholder {
     color: #b9b8b8;
   }

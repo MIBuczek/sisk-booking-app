@@ -33,7 +33,7 @@ const CalenderWrapper = styled.section`
 `;
 
 const ClientHeader = styled(Header)`
-  margin: 20px 0 40px 20px;
+  margin: 20px 0 40px 0;
   @media (max-width: 890px) {
     width: 80%;
   }

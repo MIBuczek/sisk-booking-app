@@ -21,9 +21,6 @@ type Navigation = {
 const NavWrapper = styled.nav<Navigation>`
   width: 100%;
   min-height: 12vh;
-  /* padding: ${({ isTop }) => (isTop ? '22px 60px' : '10px 60px')};
-  background: ${({ isTop }) => (isTop ? 'transparent' : 'white')};
-  position: ${({ isOpen }) => (isOpen ? 'static' : 'fixed')}; */
   padding: 22px 60px;
   background: transparent;
   position: static;
@@ -38,7 +35,6 @@ const NavWrapper = styled.nav<Navigation>`
 `;
 
 const NavContent = styled.div`
-  /* max-width: 1430px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,6 +53,8 @@ const StyledLinksList = styled.ul`
   justify-content: center;
   flex-wrap: wrap;
   li {
+    display: flex;
+    min-width: 100px;
     @media (max-width: 889px) {
       font-size: ${({ theme }) => theme.fontSize.m};
       text-align: center;
@@ -162,8 +160,6 @@ const TopNav = (): JSX.Element => {
             <NavButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
               <BsEnvelopeFill />
             </NavButton>
-          </li>
-          <li>
             <NaviAnchor href="http://www.sisk-siechnice.pl/" target="_blank">
               <BsFillHouseFill />
             </NaviAnchor>

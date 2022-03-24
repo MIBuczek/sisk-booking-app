@@ -134,7 +134,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
   return (
     <ClientWrapper>
       <ClientSubHeader>
-        {isEditing ? 'Edytuj istniejeacego najemce' : 'Dodaj nowy najemce'}
+        {isEditing ? 'Edytuj istniejeacego najemcę' : 'Dodaj nowego najemcę'}
       </ClientSubHeader>
       <ClientInnerContent>
         <ClientSelectWrapper>

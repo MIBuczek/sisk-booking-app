@@ -19,8 +19,10 @@ const TextAreaField = styled.textarea<TextAreaType>`
   text-align: left;
   letter-spacing: -0.5px;
   border-color: ${({ invalid }) => (invalid ? '#cc0000' : '#afbf36')};
-  &::hover {
-    box-shadow: 0 0 5px 0 #eaeaea;
+  transition: 0.4s;
+  &:active,
+  &:focus {
+    box-shadow: inset 0px -17px 15px -25px rgb(66 68 90);
   }
   &::placeholder {
     color: #b9b8b8;

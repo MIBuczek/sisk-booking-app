@@ -24,6 +24,9 @@ const ButtonIcon = styled.button`
     width: 2rem;
     height: 2rem;
   }
+  @media (max-width: 1400px) {
+    margin: 10px;
+  }
 `;
 
 export const iconStyle = {

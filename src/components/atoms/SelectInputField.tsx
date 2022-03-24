@@ -11,7 +11,7 @@ export const SelectWrapper = styled.div`
   min-width: 50%;
   @media (max-width: 1400px) {
     min-width: 30%;
-    margin: 10px 10px;
+    margin: 10px;
   }
 `;
 

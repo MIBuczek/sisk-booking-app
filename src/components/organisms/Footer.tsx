@@ -183,7 +183,7 @@ const Footer = (): JSX.Element => {
             <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
             <FooterAnchor href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
             <FooterButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
-              Napisz do nas
+              Skontaktuj się z nami
             </FooterButton>
           </ContentItem>
         </FooterContent>

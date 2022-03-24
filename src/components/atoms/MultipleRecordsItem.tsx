@@ -79,6 +79,7 @@ const RecordDetail = styled.td`
   background: ${({ theme }) => theme.lightGray};
   animation: ${fadeIn} 0.5s linear;
   word-break: break-word;
+  width: 100%;
 `;
 
 const BookingTimeWrapper = styled.div`
@@ -201,7 +202,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                             {modelDisplayValue(property, sb.day)}
                           </RecordDetailSpan>
                           <RecordDetailSpan>
-                            <strong>Godzina rozpoczecia: </strong>
+                            <strong>Godzina rozpoczęcia: </strong>
                             {modelDisplayValue(property, sb.startHour, true)}
                           </RecordDetailSpan>
                           <RecordDetailSpan>

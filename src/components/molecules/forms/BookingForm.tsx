@@ -277,12 +277,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   return (
     <BookingWrapper onSubmit={onSubmit}>
       <BookingHeader>
-        {isAdmin ? 'Dodaj nowa rezerwacje' : ' Wyślij prośbę o rezerwacje'}
+        {isAdmin ? 'Dodaj nową rezerwację' : ' Wyślij prośbę o rezerwację'}
       </BookingHeader>
       {isAdmin && (
         <AcceptWrapper>
           <SelectWrapper>
-            <Label>Dodaj najemce</Label>
+            <Label>Dodaj najemcę</Label>
             <Controller
               name="clientId"
               control={control}
@@ -301,7 +301,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             />
           </SelectWrapper>
           <SelectWrapper>
-            <Label>Zakceptuj rezerwacje</Label>
+            <Label>Zakceptuj rezerwację</Label>
             <Controller
               name="accepted"
               defaultValue={false}
@@ -395,7 +395,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             name="regular"
             defaultValue={false}
             control={control}
-            render={({ onChange, onBlur, value }) => (
+            render={({ onChange, value }) => (
               <Checkbox
                 checked={value}
                 className="checkbox"
@@ -467,7 +467,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
       </InputContainer>
       <InputContainer>
-        <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałby zarezerwować obiekt`}</Label>
+        <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałbyś zarezerwować obiekt`}</Label>
         <Controller
           name="startDate"
           defaultValue={new Date()}
@@ -492,7 +492,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         {errors.startDate && <ErrorMsg innerText="Pole nie może być puste" />}
         {regularValue && (
           <>
-            <Label>Do kiedy chciałby zarezerwować obiekt</Label>
+            <Label>Do kiedy chciałbyś zarezerwować obiekt</Label>
             <Controller
               name="endDate"
               defaultValue={new Date()}
@@ -596,7 +596,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       {conflict && (
         <ConflictParagraph small bold conflict={conflict}>
           <BsFillExclamationCircleFill />
-          Ta rezerwacja ma konflikt z innymi rezerwacjami , czy napewno chcesz ja zatwierdzić
+          Ta rezerwacja ma konflikt z innymi rezerwacjami , czy napewno chcesz ją zatwierdzić
         </ConflictParagraph>
       )}
       {!isAdmin && (
@@ -621,8 +621,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         <ConfirmAction
           message={
             isEditing
-              ? 'Czy napewno chcesz zaktualizowac rezerwacje'
-              : 'Czy napewno chcesz wysłać prośbe o rezerwacje'
+              ? 'Czy napewno chcesz zaktualizować rezerwację'
+              : 'Czy napewno chcesz wysłać prośbę o rezerwację'
           }
           callback={confirmSubmit}
           cancelCallback={() => {
@@ -636,7 +636,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             Anuluj
           </Button>
           <Button role="button" onClick={onSubmit} disabled={isAdmin ? false : !police}>
-            {isAdmin ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwacje` : 'Wyślij Rezerwacje'}
+            {isAdmin
+              ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwację`
+              : 'Wyślij prośbę o rezerwację'}
           </Button>
         </ButtonPanel>
       )}

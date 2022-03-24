@@ -89,7 +89,7 @@ const BookingDetails = (): JSX.Element => {
             </DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Zajmowana powierzchnia : <DetailsSpan>{booking.size}</DetailsSpan>
+            Wynajęta powierzchnia : <DetailsSpan>{booking.size}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
             Od godziny : <DetailsSpan>{formatTime(booking.bookingTime[0].startHour)}</DetailsSpan>

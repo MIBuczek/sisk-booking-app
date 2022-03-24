@@ -130,7 +130,7 @@ const FormMessage = () => {
               onChange={onChange}
               invalid={!!errors.email}
               className="input"
-              placeholder="E-mail"
+              placeholder="Wpisz"
               disabled={displayConfirmation}
             />
           )}

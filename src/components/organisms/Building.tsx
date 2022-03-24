@@ -171,7 +171,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
         <DetailsSpan>{currentCity.name}</DetailsSpan>
         <DetailsParagraph bold>Telefon Kontaktowy :</DetailsParagraph>
         <DetailsSpan>{currentCity.phone}</DetailsSpan>
-        <DetailsParagraph bold>Email :</DetailsParagraph>
+        <DetailsParagraph bold>E-mail :</DetailsParagraph>
         <DetailsSpan>{currentCity.email}</DetailsSpan>
         <DetailsParagraph bold>Pracownicy :</DetailsParagraph>
         <DetailsSpan>1. Lorem Ipsum</DetailsSpan>
@@ -191,7 +191,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
               onChange={onChange}
               invalid={!!errors.email}
               className="input"
-              placeholder="E-mail"
+              placeholder="Wpisz"
               disabled={displayConfirmation}
             />
           )}

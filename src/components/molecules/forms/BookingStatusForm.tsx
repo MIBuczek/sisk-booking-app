@@ -99,7 +99,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
 
   return (
     <BookingStatusWrapper>
-      <BookingStatusHeader>Rozlicz Rezerwacje</BookingStatusHeader>
+      <BookingStatusHeader>ROZLICZ REZERWACJĘ</BookingStatusHeader>
       <InnerContent>
         <Label>Status</Label>
         <Controller

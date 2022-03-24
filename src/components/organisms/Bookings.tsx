@@ -149,7 +149,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         />
         {adminCredentials(user) && (
           <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-            Dodaj nowa rezerwace
+            Dodaj nowa rezerwacę
           </OpenBookingsModalButton>
         )}
       </RecordsActionContent>

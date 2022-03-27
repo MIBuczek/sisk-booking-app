@@ -3,7 +3,8 @@ import { IBooking, IClient } from 'models';
 import * as React from 'react';
 import { fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { pagination } from 'utils';
+import { pagination, SIZE_OPTIONS } from 'utils';
+import ButtonGroup from './ButtonGroup';
 import MultipleRecordItem from './MultipleRecordsItem';
 import Pagination from './Pagination';
 
@@ -52,6 +53,12 @@ const RecordTable = styled.table`
       margin: auto;
       display: block;
     }
+  }
+  tfoot {
+    width: 100%;
+    display: flex;
+    border-top: ${({ theme }) => `1px solid ${theme.green}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
   }
 `;
 
@@ -122,9 +129,15 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   deleteHandler
 }) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [postPerPage] = React.useState<number>(20);
+  const [postPerPage, setPostPerPage] = React.useState<number>(20);
 
   const nextPage = (num: number): void => setCurrentPage(num);
+
+  const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof value === 'number') setPostPerPage(value);
+  };
 
   React.useEffect(() => undefined, [records]);
 
@@ -162,8 +175,17 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
             ))
           )}
         </tbody>
+        <tfoot>
+          <Pagination nextPage={nextPage} totalPost={records.length} postPerPage={postPerPage} />
+          <ButtonGroup
+            itemPerPage
+            options={[20, 50, 100]}
+            optionsHandler={postPerPageHandler}
+            value={postPerPage}
+            disabled={false}
+          />
+        </tfoot>
       </RecordTable>
-      <Pagination nextPage={nextPage} totalPost={records.length} postPerPage={postPerPage} />
     </RecordWrapper>
   );
 };

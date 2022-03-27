@@ -14,10 +14,14 @@ const ButtonGroupWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
+  &.itemPerPageContainer {
+    width: 30%;
+    justify-content: end;
+  }
 `;
 
 const GroupBtn = styled(Button)<GroupBtnProps>`
-  background: ${({ theme, active, disabled }) => (active ? theme.green : theme.middleGray)};
+  background: ${({ theme, active }) => (active ? theme.green : theme.middleGray)};
   color: ${({ theme }) => theme.darkGrey};
   padding: 5px 15px;
   margin: 0;
@@ -27,29 +31,38 @@ const GroupBtn = styled(Button)<GroupBtnProps>`
     color: ${({ theme, active, disabled }) =>
       active && disabled ? theme.lightGray : theme.darkGrey};
   }
+  &.itemPerPageItem {
+    margin-left: 8px;
+    background: ${({ theme, active }) => (active ? theme.green : 'white')};
+    border-radius: 15px;
+    padding: 5px 8px;
+  }
 `;
 
-interface IProps {
-  value: SIZE_OPTIONS;
-  options: SIZE_OPTIONS[];
+export type TProps<T> = {
+  itemPerPage?: boolean;
+  value: T;
+  options: Array<T>;
   disabled: boolean;
-  optionsHandler: (e: Event, value: SIZE_OPTIONS) => void;
-}
+  optionsHandler: (e: React.MouseEvent, value: T) => void;
+};
 
-const ButtonGroup: React.FunctionComponent<IProps> = ({
+const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
+  itemPerPage = false,
   value,
   options,
   disabled,
   optionsHandler
 }) => (
-  <ButtonGroupWrapper>
+  <ButtonGroupWrapper className={`${itemPerPage ? 'itemPerPageContainer' : ''}`}>
     {!isEmpty(options)
       ? options.map(
           (option): JSX.Element => (
             <GroupBtn
+              className={`${itemPerPage ? 'itemPerPageItem' : ''}`}
               key={option}
               active={value === option}
-              onClick={(e) => optionsHandler((e as unknown) as Event, option)}
+              onClick={(e) => optionsHandler(e, option)}
               disabled={disabled}
             >
               {option}

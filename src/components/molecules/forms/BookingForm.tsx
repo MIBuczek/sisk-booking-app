@@ -180,9 +180,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     clientId: selectedClientId
   } = watch();
 
-  const selectedSizeHandler = (e: Event, value: SIZE_OPTIONS): void => {
+  const selectedSizeHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number): void => {
     e.preventDefault();
-    setSelectedSize(value);
+    e.stopPropagation();
+    if (value in SIZE_OPTIONS) setSelectedSize(value as SIZE_OPTIONS);
   };
 
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {

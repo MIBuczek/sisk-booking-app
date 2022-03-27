@@ -3,6 +3,7 @@ import styled from 'styled-components';
 type ParagraphProps = {
   small?: boolean;
   bold?: boolean;
+  conflict?: boolean;
 };
 
 const Paragraph = styled.p<ParagraphProps>`

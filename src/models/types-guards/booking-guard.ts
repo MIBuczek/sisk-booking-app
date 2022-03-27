@@ -1,5 +1,11 @@
 import { IBooking, IClient } from 'models';
 
-export function instanceOfBookings(array: (IClient | IBooking)[]): array is IBooking[] {
+function instanceOfBookings(array: (IClient | IBooking)[]): array is IBooking[] {
   return array[0].person !== undefined;
 }
+
+function singleInstanceOfBookings(obj: IClient | IBooking): obj is IBooking {
+  return obj.person !== undefined;
+}
+
+export { instanceOfBookings, singleInstanceOfBookings };

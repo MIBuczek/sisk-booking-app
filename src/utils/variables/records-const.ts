@@ -13,7 +13,7 @@ const RECORDS_CLIENTS_ROW_DETAILS = [
 ];
 
 const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP = {
-  name: 'Imie i Nazwisko',
+  name: 'Imię i nazwisko',
   type: 'Typ',
   contactPerson: ' Osoba kontaktowa',
   phone: 'Telefon',
@@ -49,7 +49,9 @@ const RECORDS_BOOKING_ROW_DETAILS = [
   'accepted',
   'bookingTime',
   'selectedOptions',
-  'message'
+  'message',
+  'bookingStatus',
+  'bookingComments'
 ];
 
 const RECORDS_BOOKING_DETAILS_PROPERTY_MAP = {
@@ -65,7 +67,9 @@ const RECORDS_BOOKING_DETAILS_PROPERTY_MAP = {
   accepted: 'Zakceptowana',
   bookingTime: 'Szczegóły rezerwacji',
   selectedOptions: 'Wybrane dodatkowe opcje',
-  message: 'Wiadomość'
+  message: 'Wiadomość',
+  bookingStatus: 'Status rezerwacji',
+  bookingComments: 'Komentarze pracowników'
 };
 
 export {

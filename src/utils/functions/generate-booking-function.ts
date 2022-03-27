@@ -7,7 +7,15 @@ import {
   TSelect
 } from 'models';
 import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_TYPE, SIZE_OPTIONS, BOOKING_STATUS } from 'utils';
+import { formatCalenderDate, formateCalenderHours } from './calender-functions';
 import { createSelectedOption } from './utils-functions';
+
+const overwriteDate = (day: Date, hour: Date) => {
+  const convertedDay = formatCalenderDate(day);
+  const convertedHour = formateCalenderHours(new Date(hour.getTime() + 3600000));
+
+  return new Date(`${convertedDay}${convertedHour}`);
+};
 
 function calculateWeeksBetween(d1: number, d2: number): number {
   return Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
@@ -17,9 +25,9 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   const { startDate, endDate, startHour, endHour, regular } = cred;
   const bookingArray: ISingleBookingDate[] = [
     {
-      day: startDate,
-      startHour,
-      endHour
+      day: new Date(`${formatCalenderDate(startDate)}T00:01:00.000Z`),
+      startHour: overwriteDate(startDate, startHour),
+      endHour: overwriteDate(startDate, endHour)
     }
   ];
 
@@ -31,10 +39,11 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   let index = 1;
   const weeksBetween = calculateWeeksBetween(startDate.getTime(), endDate.getTime());
   do {
+    const day = new Date(startDate.getTime() + weekInMilliseconds * index);
     bookingArray.push({
-      day: new Date(startDate.getTime() + weekInMilliseconds * index),
-      startHour,
-      endHour
+      day: new Date(`${formatCalenderDate(day)}T00:01:00.000Z`),
+      startHour: overwriteDate(day, startHour),
+      endHour: overwriteDate(day, endHour)
     });
     index += 1;
   } while (index <= weeksBetween);
@@ -74,7 +83,7 @@ const generateBookingDetails = (
 const generateBookingStatusDate = (cred: IBookingStatusForm, currentBooking: IBooking) => ({
   ...currentBooking,
   bookingStatus: cred.bookingStatus.value,
-  bookingComments: cred.bookingComments
+  bookingComments: cred.bookingComments || ''
 });
 
 const generateBookingFormDetails = (
@@ -95,4 +104,9 @@ const generateBookingFormDetails = (
   clientId
 });
 
-export { generateBookingDetails, generateBookingFormDetails, generateBookingStatusDate };
+export {
+  generateBookingDetails,
+  generateBookingFormDetails,
+  generateBookingStatusDate,
+  overwriteDate
+};

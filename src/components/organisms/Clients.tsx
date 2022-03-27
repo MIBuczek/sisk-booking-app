@@ -1,7 +1,7 @@
 import Button from 'components/atoms/Button';
 import Header from 'components/atoms/Header';
 import MultipleRecords from 'components/atoms/MultipleRecords';
-import NewClientForm from 'components/molecules/forms/NewClientForm';
+import ClientForm from 'components/molecules/forms/ClientForm';
 import { IBooking, IClient, instanceOfClients, IReduxState } from 'models';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +33,7 @@ const CalenderWrapper = styled.section`
 `;
 
 const ClientHeader = styled(Header)`
-  margin: 20px 0 40px 20px;
+  margin: 20px 0 40px 0;
   @media (max-width: 890px) {
     width: 80%;
   }
@@ -55,6 +55,7 @@ const OpenClientModalButton = styled(Button)`
     border-color: #b9b8b8;
     box-shadow: none;
     opacity: 1;
+    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
   }
 `;
 
@@ -132,9 +133,9 @@ const Clients = () => {
         isAdmin={adminCredentials(user)}
         isEmployee={user?.isEmployee || false}
         headers={RECORDS_CLIENTS_HEADERS}
-        dataProperty={RECORDS_CLIENTS_ROW}
-        dataPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}
-        dataPropertyDisplayMap={RECORDS_CLIENTS_DETAILS_PROPERTY_MAP}
+        recordProperty={RECORDS_CLIENTS_ROW}
+        recordPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}
+        recordPropertyDisplayMap={RECORDS_CLIENTS_DETAILS_PROPERTY_MAP}
         records={clientList}
         editHandler={editClientHandler}
         deleteHandler={deleteClientHandler}
@@ -143,7 +144,7 @@ const Clients = () => {
       {isOpen && (
         <Modal>
           {type === MODAL_TYPES.CLIENT && (
-            <NewClientForm
+            <ClientForm
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}
               initialEditingState={initialClientState}

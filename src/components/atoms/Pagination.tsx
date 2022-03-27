@@ -3,14 +3,12 @@ import styled from 'styled-components';
 import { paginationItems } from 'utils';
 
 const PaginationWrapper = styled.div`
-  width: 100%;
+  width: 70%;
   min-height: 30px;
   height: auto;
   display: flex;
   margin: 0.5rem auto;
   align-items: center;
-  border-top: ${({ theme }) => `1px solid ${theme.green}`};
-  border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
 `;
 
 const PaginationBtn = styled.button`

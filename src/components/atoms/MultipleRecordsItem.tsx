@@ -1,15 +1,24 @@
 import { isEmpty } from 'lodash';
-import { IClient, IBooking, ISingleBookingDate, ISelectedExtraOptions } from 'models';
+import {
+  IClient,
+  IBooking,
+  ISingleBookingDate,
+  ISelectedExtraOptions,
+  instanceOfBookings,
+  singleInstanceOfBookings
+} from 'models';
 import * as React from 'react';
 import {
   BsChevronDown,
+  BsFillCheckCircleFill,
   BsFillCheckSquareFill,
   BsFillFileEarmarkTextFill,
-  BsTrashFill
+  BsTrashFill,
+  BsXCircleFill
 } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { checkSelectedOption, modelDisplayValue } from 'utils';
+import { checkConflicts, checkSelectedOption, modelDisplayValue } from 'utils';
 import Collapse, { IRenderProps } from '../../providers/Collapse';
 import Button from './Button';
 
@@ -20,11 +29,15 @@ const RecordTableData = styled.td`
   color: ${({ theme }) => theme.darkGrey};
   animation: ${fadeInLeft} 0.5s linear;
   width: 15%;
+  word-break: break-word;
   &:nth-of-type(1) {
     width: 5%;
   }
   &:nth-of-type(2) {
-    width: 22%;
+    width: 20%;
+  }
+  &:nth-of-type(4) {
+    width: 18%;
   }
   &:last-of-type {
     width: 15%;
@@ -65,6 +78,8 @@ const RecordDetail = styled.td`
   border: ${({ theme }) => `1px solid ${theme.green}`};
   background: ${({ theme }) => theme.lightGray};
   animation: ${fadeIn} 0.5s linear;
+  word-break: break-word;
+  width: 100%;
 `;
 
 const BookingTimeWrapper = styled.div`
@@ -72,6 +87,7 @@ const BookingTimeWrapper = styled.div`
   border-top: ${({ theme }) => `1px solid ${theme.middleGray}`};
   border-bottom: ${({ theme }) => `1px solid ${theme.middleGray}`};
   padding: 3px 2px;
+  margin-bottom: 10px;
   span {
     padding: 2px;
   }
@@ -89,8 +105,7 @@ const SingleBookingTime = styled.div`
 
 const RecordDetailSpan = styled.span`
   font-size: ${({ theme }) => theme.fontSize.s};
-  padding: 10px 5px;
-  min-width: 20%;
+  padding: 10px 15px 10px 5px;
   width: auto;
 `;
 
@@ -103,24 +118,28 @@ const ChevronIcon = styled(BsChevronDown)`
 
 interface MultipleRecordItemProps {
   index: number;
+  currentPage: number;
   isAdmin: boolean;
   isEmployee: boolean;
   recordProperty: string[];
   recordPropertyDetails: string[];
   recordPropertyDisplayMap: { [x: string]: string };
   currentRecord: IClient | IBooking;
+  allRecords: (IClient | IBooking)[];
   editHandler: (index: number, isEditor: boolean) => void;
   deleteHandler: (index: number) => void;
 }
 
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   index,
+  currentPage,
   isAdmin,
   isEmployee,
   recordProperty,
   recordPropertyDetails,
   recordPropertyDisplayMap,
   currentRecord,
+  allRecords,
   editHandler,
   deleteHandler
 }) => (
@@ -128,13 +147,23 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
     render={({ isCollapsed, toggle }: IRenderProps) => (
       <>
         <tr>
-          <RecordTableData>{index}</RecordTableData>
+          <RecordTableData>
+            {currentPage > 1 ? (currentPage - 1) * 20 + index + 1 : index + 1}
+          </RecordTableData>
           {recordProperty.map((property) => (
             <RecordTableData key={property}>
-              {modelDisplayValue(currentRecord[property])}
+              {modelDisplayValue(property, currentRecord[property])}
             </RecordTableData>
           ))}
-          <RecordTableData> Nie </RecordTableData>
+          {instanceOfBookings(allRecords) && singleInstanceOfBookings(currentRecord) && (
+            <RecordTableData>
+              {checkConflicts(currentRecord, allRecords) ? (
+                <BsXCircleFill style={{ color: '#cc0000', marginLeft: '1rem' }} />
+              ) : (
+                <BsFillCheckCircleFill style={{ color: '#AFBF36', marginLeft: '1rem' }} />
+              )}
+            </RecordTableData>
+          )}
           <RecordTableData>
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
@@ -167,18 +196,18 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                         <strong>{recordPropertyDisplayMap[property]} : </strong>
                       </RecordDetailSpan>
                       {(currentRecord[property] as ISingleBookingDate[]).map((sb) => (
-                        <SingleBookingTime key={sb.day.getTime()}>
+                        <SingleBookingTime key={sb.day.getMilliseconds()}>
                           <RecordDetailSpan>
                             <strong>Dzień: </strong>
-                            {modelDisplayValue(sb.day)}
+                            {modelDisplayValue(property, sb.day)}
                           </RecordDetailSpan>
                           <RecordDetailSpan>
-                            <strong>Godzina rozpoczecia: </strong>
-                            {modelDisplayValue(sb.startHour)}
+                            <strong>Godzina rozpoczęcia: </strong>
+                            {modelDisplayValue(property, sb.startHour, true)}
                           </RecordDetailSpan>
                           <RecordDetailSpan>
                             <strong>Godzina zakończenia: </strong>
-                            {modelDisplayValue(sb.endHour)}
+                            {modelDisplayValue(property, sb.endHour, true)}
                           </RecordDetailSpan>
                         </SingleBookingTime>
                       ))}
@@ -193,18 +222,18 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                       </RecordDetailSpan>
                       {(currentRecord[property] as ISelectedExtraOptions[]).map(
                         ({ options, fromHour, toHour }) => (
-                          <SingleBookingTime key={fromHour.getTime()}>
+                          <SingleBookingTime key={fromHour.getMilliseconds()}>
                             <RecordDetailSpan>
                               <strong>Opcje : </strong>
                               {checkSelectedOption(options)}
                             </RecordDetailSpan>
                             <RecordDetailSpan>
                               <strong>Od godziny : </strong>
-                              {modelDisplayValue(fromHour)}
+                              {modelDisplayValue(property, fromHour, true)}
                             </RecordDetailSpan>
                             <RecordDetailSpan>
                               <strong>Do godziny: </strong>
-                              {modelDisplayValue(toHour)}
+                              {modelDisplayValue(property, toHour, true)}
                             </RecordDetailSpan>
                           </SingleBookingTime>
                         )
@@ -212,12 +241,15 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                     </BookingTimeWrapper>
                   );
                 }
-                return (
-                  <RecordDetailSpan key={property}>
-                    <strong>{recordPropertyDisplayMap[property]} : </strong>
-                    {modelDisplayValue(currentRecord[property])}
-                  </RecordDetailSpan>
-                );
+                if (!isEmpty(currentRecord[property])) {
+                  return (
+                    <RecordDetailSpan key={property}>
+                      <strong>{recordPropertyDisplayMap[property]} : </strong>
+                      {modelDisplayValue(property, currentRecord[property])}
+                    </RecordDetailSpan>
+                  );
+                }
+                return null;
               })}
             </RecordDetail>
           </BookingDetailWrapper>
@@ -226,5 +258,4 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
     )}
   />
 );
-
 export default MultipleRecordItem;

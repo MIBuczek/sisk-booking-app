@@ -6,7 +6,7 @@ import {
   createSelectedOption,
   firstLetterUpperCase,
   formatDate,
-  displayTime
+  formatTime
 } from 'utils';
 import Paragraph from '../atoms/Paragraph';
 import Header from '../atoms/Header';
@@ -89,13 +89,13 @@ const BookingDetails = (): JSX.Element => {
             </DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Zajmowana powierzchnia : <DetailsSpan>{booking.size}</DetailsSpan>
+            Wynajęta powierzchnia : <DetailsSpan>{booking.size}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Od godziny : <DetailsSpan>{displayTime(booking.bookingTime[0].startHour)}</DetailsSpan>
+            Od godziny : <DetailsSpan>{formatTime(booking.bookingTime[0].startHour)}</DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>
-            Do godziny : <DetailsSpan>{displayTime(booking.bookingTime[0].endHour)}</DetailsSpan>
+            Do godziny : <DetailsSpan>{formatTime(booking.bookingTime[0].endHour)}</DetailsSpan>
           </DetailsParagraph>
           <ClearButton onClick={clear}>Wyczyść</ClearButton>
         </>

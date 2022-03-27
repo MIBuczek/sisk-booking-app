@@ -34,7 +34,7 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     name: 'Hala sportowa',
     property: 'hala-sportowa',
     city: 'siechnice',
-    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
+    size: [SIZE_OPTIONS['1/3'], SIZE_OPTIONS['2/3'], SIZE_OPTIONS['1/1']],
     phone: '123-123-123',
     email: 'xxx@xx.pl',
     extra: {
@@ -58,7 +58,7 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     name: 'Boisko ze sztuczną nawierzchnią',
     property: 'boisko-sztuczna-nawierzchnia',
     city: 'siechnice',
-    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/4'], SIZE_OPTIONS['3/4']],
     phone: '123-123-123',
     email: 'xxx@xx.pl',
     extra: {
@@ -67,10 +67,22 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     }
   },
   {
-    name: 'Boisko trawiaste stadionie LA',
+    name: 'Boisko trawiaste na stadionie LA',
     property: 'boisko-trawiaste-stadionie-la',
     city: 'siechnice',
-    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/3'], SIZE_OPTIONS['1/4']],
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2'], SIZE_OPTIONS['1/4'], SIZE_OPTIONS['3/4']],
+    phone: '123-123-123',
+    email: 'xxx@xx.pl',
+    extra: {
+      lighting: false,
+      toilets: false
+    }
+  },
+  {
+    name: 'Orlik',
+    property: 'orlik',
+    city: 'siechnice',
+    size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
     phone: '123-123-123',
     email: 'xxx@xx.pl',
     extra: {

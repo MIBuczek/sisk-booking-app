@@ -142,8 +142,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
 }) => {
   const { handleSubmit, control, watch, reset } = useForm<IExtraOptionForm>();
 
-  const lightValue = watch('lights');
-  const toiletsValue = watch('toilets');
+  const { lights: lightValue, toilets: toiletsValue } = watch();
 
   const onSubmit = handleSubmit(async (cred) => {
     const { fromHour, toHour, lights, toilets } = cred;
@@ -224,7 +223,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                   maxTime={setHours(setMinutes(new Date(), 30), 22)}
                   timeIntervals={15}
                   timeCaption="Godzina"
-                  dateFormat="h:mm aa"
+                  dateFormat="HH:mm"
                   locale="pl"
                   onChange={onChange}
                   onBlur={onBlur}
@@ -251,7 +250,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                   maxTime={setHours(setMinutes(new Date(), 30), 22)}
                   timeIntervals={15}
                   timeCaption="Godzina"
-                  dateFormat="h:mm aa"
+                  dateFormat="HH:mm"
                   locale="pl"
                   onChange={onChange}
                   onBlur={onBlur}
@@ -269,18 +268,18 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
         <DisplaySelectedOptions>
           {!isEmpty(extraOptions) ? (
             extraOptions.map(({ fromHour, toHour, options }, index) => (
-              <DisplaySelectedOptionElement key={fromHour.getTime()}>
+              <DisplaySelectedOptionElement key={fromHour.getMilliseconds()}>
                 <RecordDetailSpan>
                   <strong>Opcje : </strong>
                   {checkSelectedOption(options)}
                 </RecordDetailSpan>
                 <RecordDetailSpan>
                   <strong>Od godziny : </strong>
-                  {modelDisplayValue(fromHour)}
+                  {modelDisplayValue('fromHour', fromHour, true)}
                 </RecordDetailSpan>
                 <RecordDetailSpan>
                   <strong>Do godziny: </strong>
-                  {modelDisplayValue(toHour)}
+                  {modelDisplayValue('toHour', toHour, true)}
                 </RecordDetailSpan>
                 <RecordDetailsBtnPanel>
                   <RoundBtn>

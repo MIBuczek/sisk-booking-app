@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,15 +41,15 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
   const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
 
   React.useEffect(() => {
-    if (!isEmpty(authStore.auth) && !isUserPage) {
+    if (!isEmpty(authStore.auth)) {
       dispatch(StoreActions.getUserData());
-      dispatch(StoreActions.getBookingsData(false));
+      dispatch(StoreActions.getBookingsData());
       dispatch(StoreActions.getClientsData());
       dispatch(StoreActions.getBuildingsData());
       setStoreReady(false);
     }
     if (isUserPage && checkLocalStorage()) {
-      dispatch(StoreActions.getBookingsData(true));
+      dispatch(StoreActions.getBookingDataForUser());
     }
   }, [authStore.savingStage, isUserPage]);
 

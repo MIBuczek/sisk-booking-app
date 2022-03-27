@@ -37,7 +37,7 @@ const BuildingWrapper = styled.article`
 const BuildingHeader = styled(Header)`
   width: 100%;
   height: fit-content;
-  margin: 20px 0 40px 20px;
+  margin: 20px 0 40px 0;
   @media (max-width: 1400px) {
     width: 80%;
   }
@@ -66,7 +66,7 @@ const InnerContent = styled.div`
       border-right-color: transparent;
       height: auto;
     }
-    padding: 20px 0 40px 20px;
+    padding: 20px 0 40px 0;
   }
   @media (max-width: 890px) {
     width: 90%;
@@ -171,7 +171,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
         <DetailsSpan>{currentCity.name}</DetailsSpan>
         <DetailsParagraph bold>Telefon Kontaktowy :</DetailsParagraph>
         <DetailsSpan>{currentCity.phone}</DetailsSpan>
-        <DetailsParagraph bold>Email :</DetailsParagraph>
+        <DetailsParagraph bold>E-mail :</DetailsParagraph>
         <DetailsSpan>{currentCity.email}</DetailsSpan>
         <DetailsParagraph bold>Pracownicy :</DetailsParagraph>
         <DetailsSpan>1. Lorem Ipsum</DetailsSpan>
@@ -191,13 +191,13 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
               onChange={onChange}
               invalid={!!errors.email}
               className="input"
-              placeholder="E-mail"
+              placeholder="Wpisz"
               disabled={displayConfirmation}
             />
           )}
         />
-        {errors.email && <ErrorMsg innerText="Pole nie moze byc puste" />}
-        <Label>Imie i nazwisko</Label>
+        {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
+        <Label>Imię i nazwisko</Label>
         <Controller
           name="person"
           defaultValue={''}
@@ -215,7 +215,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             />
           )}
         />
-        {errors.person && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Wiadomość</Label>
         <Controller
           name="message"
@@ -235,7 +235,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             />
           )}
         />
-        {errors.message && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.message && <ErrorMsg innerText="Pole nie może być puste" />}
         {displayConfirmation ? (
           <ConfirmAction
             message="Czy napewno chcesz wysłać wiadomość"

@@ -24,7 +24,7 @@ const CLIENT_OPTIONS: TSelect[] = [
 const CITY_OPTIONS: TSelect[] = [
   { label: 'Siechnice', value: 'siechnice' },
   { label: 'Radwanice', value: 'radwanice' },
-  { label: 'Świeta Katarzyna', value: 'swieta-katarzyna' },
+  { label: 'Święta Katarzyna', value: 'swieta-katarzyna' },
   { label: 'Żerniki Wrocławskie', value: 'zerniki-wroclawskie' }
 ];
 

@@ -1,7 +1,7 @@
 import { IBookedTime } from 'models';
 import * as React from 'react';
 import styled from 'styled-components';
-import { displayTime, formatDate } from 'utils';
+import { formatTime, formatDate } from 'utils';
 import Paragraph from './Paragraph';
 
 const DetailsList = styled.ul`
@@ -41,15 +41,15 @@ interface IProps {
 const SummaryDetailsItem: React.FunctionComponent<IProps> = ({ bookingCityDetails }) => (
   <DetailsList>
     {bookingCityDetails.map(({ day, startHour, endHour, size, building }) => (
-      <DetailListItem key={startHour.getTime()}>
+      <DetailListItem key={startHour.getMilliseconds()}>
         <DetailsParagraph bold>
           Budynek : <DetailsSpan>{building}</DetailsSpan>
           Powierzchnia : <DetailsSpan>{size}</DetailsSpan>
         </DetailsParagraph>
         <DetailsParagraph bold>
           Dzień : <DetailsSpan>{formatDate(day)}</DetailsSpan>
-          Godzina rozpoczęcia : <DetailsSpan>{displayTime(startHour)}</DetailsSpan>
-          Godzina zakończenia : <DetailsSpan>{displayTime(endHour)}</DetailsSpan>
+          Godzina rozpoczęcia : <DetailsSpan>{formatTime(startHour)}</DetailsSpan>
+          Godzina zakończenia : <DetailsSpan>{formatTime(endHour)}</DetailsSpan>
         </DetailsParagraph>
       </DetailListItem>
     ))}

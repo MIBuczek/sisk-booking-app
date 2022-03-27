@@ -21,9 +21,6 @@ type Navigation = {
 const NavWrapper = styled.nav<Navigation>`
   width: 100%;
   min-height: 12vh;
-  /* padding: ${({ isTop }) => (isTop ? '22px 60px' : '10px 60px')};
-  background: ${({ isTop }) => (isTop ? 'transparent' : 'white')};
-  position: ${({ isOpen }) => (isOpen ? 'static' : 'fixed')}; */
   padding: 22px 60px;
   background: transparent;
   position: static;
@@ -38,7 +35,6 @@ const NavWrapper = styled.nav<Navigation>`
 `;
 
 const NavContent = styled.div`
-  /* max-width: 1430px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,6 +53,8 @@ const StyledLinksList = styled.ul`
   justify-content: center;
   flex-wrap: wrap;
   li {
+    display: flex;
+    min-width: 100px;
     @media (max-width: 889px) {
       font-size: ${({ theme }) => theme.fontSize.m};
       text-align: center;
@@ -89,12 +87,25 @@ const NavButton = styled(Button)`
   border: none;
   margin: 0;
   padding: 16px 10px 17px 10px;
+  display: inline-flex;
+  &.btn {
+    color: ${({ theme }) => theme.green};
+    font-weight: 600;
+    font-size: ${({ theme }) => theme.fontSize.ml};
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: 1px solid;
+    &:hover {
+      box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
+    }
+  }
   &:hover {
     box-shadow: none;
-    color: #afbf36;
+    color: ${({ theme }) => theme.green};
   }
   svg {
     display: block;
+    margin-left: 10px;
   }
 `;
 
@@ -121,6 +132,7 @@ const TopNav = (): JSX.Element => {
   const dispatch = useDispatch();
   const {
     authStore,
+    currentUserStore: { user },
     modal: { isOpen }
   } = useSelector((store: IReduxState): IReduxState => store);
 
@@ -148,15 +160,14 @@ const TopNav = (): JSX.Element => {
             <NavButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
               <BsEnvelopeFill />
             </NavButton>
-          </li>
-          <li>
             <NaviAnchor href="http://www.sisk-siechnice.pl/" target="_blank">
               <BsFillHouseFill />
             </NaviAnchor>
           </li>
           {authStore.auth && (
             <li>
-              <NavButton role="button" onClick={() => dispatch(logOutUser())}>
+              <NavButton role="button" className="btn" onClick={() => dispatch(logOutUser())}>
+                {user?.name}
                 <BsPower />
               </NavButton>
             </li>

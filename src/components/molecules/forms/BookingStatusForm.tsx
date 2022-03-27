@@ -4,6 +4,7 @@ import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles } from 'components/atoms/SelectInputField';
 import TextAreaField from 'components/atoms/TextAreaField';
+import { cloneDeep } from 'lodash';
 import { IBooking, IBookingsPayload, IBookingStatusForm, IReduxState } from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -71,7 +72,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
 
   const onSubmit = handleSubmit<IBookingStatusForm>(async (cred) => {
     if (typeof editedItemIndex === 'undefined') return;
-    const currentBooking = bookings[editedItemIndex];
+    const currentBooking = cloneDeep(bookings[editedItemIndex]);
     setBookingData(generateBookingStatusDate(cred, currentBooking));
     setDisplayConfirmation(true);
   });
@@ -98,7 +99,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
 
   return (
     <BookingStatusWrapper>
-      <BookingStatusHeader>Rozlicz Rezerwacje</BookingStatusHeader>
+      <BookingStatusHeader>ROZLICZ REZERWACJĘ</BookingStatusHeader>
       <InnerContent>
         <Label>Status</Label>
         <Controller
@@ -119,10 +120,10 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
             />
           )}
         />
-        {errors.bookingStatus && <ErrorMsg innerText="Pole nie moze byc puste" />}
+        {errors.bookingStatus && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Uwagi</Label>
         <Controller
-          name="message"
+          name="bookingComments"
           defaultValue={''}
           control={control}
           rules={{ required: false }}

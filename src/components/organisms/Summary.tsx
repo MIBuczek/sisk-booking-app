@@ -133,8 +133,7 @@ const Summary = () => {
 
   const { control, watch } = useForm();
 
-  const clientValue: TSelect = watch('client');
-  const monthValue: Date = watch('month');
+  const { client: clientValue, month: monthValue } = watch();
 
   const generateClientsOptions = (): TSelect[] => {
     if (!clients.length) return [];

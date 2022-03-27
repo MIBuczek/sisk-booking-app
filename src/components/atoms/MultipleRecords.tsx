@@ -3,7 +3,8 @@ import { IBooking, IClient } from 'models';
 import * as React from 'react';
 import { fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { pagination } from 'utils';
+import { pagination, SIZE_OPTIONS } from 'utils';
+import ButtonGroup from './ButtonGroup';
 import MultipleRecordItem from './MultipleRecordsItem';
 import Pagination from './Pagination';
 
@@ -50,7 +51,14 @@ const RecordTable = styled.table`
       width: 100%;
       text-align: center;
       margin: auto;
+      display: block;
     }
+  }
+  tfoot {
+    width: 100%;
+    display: flex;
+    border-top: ${({ theme }) => `1px solid ${theme.green}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
   }
 `;
 
@@ -65,7 +73,10 @@ const RecordTableHeader = styled.th`
     width: 5%;
   }
   &:nth-of-type(2) {
-    width: 22%;
+    width: 20%;
+  }
+  &:nth-of-type(4) {
+    width: 18%;
   }
   &:last-of-type {
     width: 15%;
@@ -85,6 +96,7 @@ const RecordTableData = styled.td<RecordDataType>`
   color: ${({ theme }) => theme.darkGrey};
   text-align: ${({ empty }) => (empty ? 'center' : 'start')};
   animation: ${fadeInLeft} 0.5s linear;
+  word-break: break-word;
   @media (max-width: 890px) {
     font-size: ${({ theme }) => theme.fontSize.xs};
     word-break: break-all;
@@ -93,9 +105,9 @@ const RecordTableData = styled.td<RecordDataType>`
 
 interface IProps {
   headers: string[];
-  dataProperty: string[];
-  dataPropertyDetails: string[];
-  dataPropertyDisplayMap: { [x: string]: string };
+  recordProperty: string[];
+  recordPropertyDetails: string[];
+  recordPropertyDisplayMap: { [x: string]: string };
   isAdmin: boolean;
   isEmployee: boolean;
   records?: (IClient | IBooking)[];
@@ -106,9 +118,9 @@ interface IProps {
 
 const MultipleRecords: React.FunctionComponent<IProps> = ({
   headers,
-  dataProperty,
-  dataPropertyDetails,
-  dataPropertyDisplayMap,
+  recordProperty,
+  recordPropertyDetails,
+  recordPropertyDisplayMap,
   isAdmin,
   isEmployee,
   records = [],
@@ -117,9 +129,15 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   deleteHandler
 }) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [postPerPage] = React.useState<number>(5);
+  const [postPerPage, setPostPerPage] = React.useState<number>(20);
 
   const nextPage = (num: number): void => setCurrentPage(num);
+
+  const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof value === 'number') setPostPerPage(value);
+  };
 
   React.useEffect(() => undefined, [records]);
 
@@ -143,20 +161,31 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
               <MultipleRecordItem
                 key={record.id}
                 index={index}
-                recordProperty={dataProperty}
-                recordPropertyDetails={dataPropertyDetails}
-                recordPropertyDisplayMap={dataPropertyDisplayMap}
+                currentPage={currentPage}
+                recordProperty={recordProperty}
+                recordPropertyDetails={recordPropertyDetails}
+                recordPropertyDisplayMap={recordPropertyDisplayMap}
                 isAdmin={isAdmin}
                 isEmployee={isEmployee}
                 currentRecord={record}
+                allRecords={records}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}
               />
             ))
           )}
         </tbody>
+        <tfoot>
+          <Pagination nextPage={nextPage} totalPost={records.length} postPerPage={postPerPage} />
+          <ButtonGroup
+            itemPerPage
+            options={[20, 50, 100]}
+            optionsHandler={postPerPageHandler}
+            value={postPerPage}
+            disabled={false}
+          />
+        </tfoot>
       </RecordTable>
-      <Pagination nextPage={nextPage} totalPost={records.length} postPerPage={postPerPage} />
     </RecordWrapper>
   );
 };

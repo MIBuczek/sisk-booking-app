@@ -29,15 +29,29 @@ const SideWrapper = styled.aside`
   @media (max-width: 1400px) {
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
     width: 95%;
     padding: 30px 20px;
+    align-items: end;
   }
   @media (max-width: 799px) {
     flex-wrap: nowrap;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+  }
+`;
+
+const InnerNavigationPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 1400px) {
+    width: 80%;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 799px) {
+    flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -67,6 +81,8 @@ const SideNav: React.FunctionComponent<IProps> = ({
 
   React.useLayoutEffect(() => {}, [state]);
 
+  const blockSelectOptions = isAdminPanel ? !isAdmin : false;
+
   return (
     <SideWrapper>
       <SelectWrapper>
@@ -78,6 +94,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
           placeholder="Wybierz"
           onChange={(val: TSelect) => stateHandler(val, 'city')}
           selected={city}
+          isDisabled={blockSelectOptions}
         />
       </SelectWrapper>
       <SelectWrapper>
@@ -90,11 +107,11 @@ const SideNav: React.FunctionComponent<IProps> = ({
           placeholder="Wybierz"
           onChange={(val: TSelect) => stateHandler(val, 'building')}
           selected={building}
-          isDisabled={!city}
+          isDisabled={blockSelectOptions || !city}
         />
       </SelectWrapper>
       {isAdminPanel ? (
-        <>
+        <InnerNavigationPanel>
           <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CALENDER)}>
             <BsFillCalendar2DateFill style={iconStyle} /> KALENDARZ
           </ButtonIcon>
@@ -114,11 +131,13 @@ const SideNav: React.FunctionComponent<IProps> = ({
               </ButtonIcon>
             </>
           )}
-        </>
+        </InnerNavigationPanel>
       ) : (
-        <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-          <BsFileEarmarkBarGraph style={iconStyle} /> DODAJ REZERWACJE
-        </ButtonIcon>
+        <InnerNavigationPanel>
+          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
+            <BsFileEarmarkBarGraph style={iconStyle} /> DODAJ REZERWACJE
+          </ButtonIcon>
+        </InnerNavigationPanel>
       )}
       <BookingDetails />
     </SideWrapper>

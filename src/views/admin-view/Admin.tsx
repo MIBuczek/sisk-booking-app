@@ -12,6 +12,7 @@ import {
   adminCredentials,
   ADMIN_TABS,
   BUILDINGS_OPTIONS,
+  CITY_OPTIONS,
   initialAdminState,
   MODAL_TYPES
 } from 'utils';
@@ -42,6 +43,18 @@ const Admin = (): JSX.Element => {
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
+  const setWorkPlace = (): void => {
+    if (user?.city && user?.building) {
+      const selectedCity = CITY_OPTIONS.find((co) => co.value === user?.city) || CITY_OPTIONS[0];
+      const selectedBuilding =
+        BUILDINGS_OPTIONS[selectedCity.value].find((b) => b.value === user?.building) ||
+        BUILDINGS_OPTIONS[selectedCity.value][0];
+
+      stateHandler(selectedCity, 'city');
+      stateHandler(selectedBuilding, 'building');
+    }
+  };
+
   const stateHandler = (value: TSelect, field: string) => {
     if (field === 'city') {
       setAdminState(() => ({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
@@ -53,6 +66,10 @@ const Admin = (): JSX.Element => {
   const tabHandler = (currentTab: ADMIN_TABS): void => {
     setTab(currentTab);
   };
+
+  React.useEffect(() => {
+    setWorkPlace();
+  }, [user]);
 
   React.useEffect(() => undefined, [tab]);
 
@@ -71,7 +88,9 @@ const Admin = (): JSX.Element => {
         isAdmin={adminCredentials(user)}
       />
       {/* admin inner content */}
-      {tab === ADMIN_TABS.CALENDER && <BookingCalender mainState={adminState} isAdmin />}
+      {tab === ADMIN_TABS.CALENDER && (
+        <BookingCalender mainState={adminState} isAdmin={adminCredentials(user)} />
+      )}
       {tab === ADMIN_TABS.BOOKINGS && <Bookings mainState={adminState} />}
       {adminCredentials(user) && (
         <>

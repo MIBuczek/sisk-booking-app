@@ -2,21 +2,22 @@ import { IBookingStatusForm, TSelect } from 'models';
 
 enum BOOKING_STATUS {
   INITIAL = 'INITIAL',
+  NOT_DONE = 'NOT_DONE',
   DONE = 'DONE',
   QUIT = 'QUIT'
 }
 
 const BOOKING_STATUS_OPTIONS: TSelect[] = [
   {
-    label: 'Nie rozpoczeta',
-    value: BOOKING_STATUS.INITIAL
+    label: 'Nie odbyła się',
+    value: BOOKING_STATUS.NOT_DONE
   },
   {
-    label: 'Zakończona',
+    label: 'Odbyła się',
     value: BOOKING_STATUS.DONE
   },
   {
-    label: 'Rezygnacja',
+    label: 'Odwołana',
     value: BOOKING_STATUS.QUIT
   }
 ];

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { ExtraOptions, IBooking, IClient, TSelect } from 'models';
 import { SIZE_OPTIONS, SIZE_OPTIONS_BTN } from 'utils/variables/form-const';
-import { BUILDINGS_OPTIONS, SIZE_FIELD_OPTIONS } from 'utils/variables/options-const';
+import { SIZE_FIELD_OPTIONS } from 'utils/variables/options-const';
 
 const firstLetterUpperCase = (s: string): string =>
   s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
@@ -40,11 +40,6 @@ const selectSizeFieldOptions = (buildingValue: string, cityValue: string): SIZE_
   return SIZE_OPTIONS_BTN;
 };
 
-const selectBuildingOptions = (cityValue: string, building: TSelect): TSelect[] => {
-  if (!cityValue) return [building];
-  return BUILDINGS_OPTIONS[cityValue];
-};
-
 const selectClientOptions = (clients: IClient[]): TSelect[] => {
   if (!clients) return [];
   return clients.map((c) => ({ label: c.name, value: c.id || '' }));
@@ -63,7 +58,6 @@ const checkSelectedOption = (options: ExtraOptions[]): string =>
 export {
   generateSelectDefaultValue,
   selectSizeFieldOptions,
-  selectBuildingOptions,
   selectClientOptions,
   selectedClientIdOption,
   pagination,

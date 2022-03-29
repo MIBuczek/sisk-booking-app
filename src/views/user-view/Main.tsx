@@ -9,7 +9,6 @@ import { BUILDINGS_OPTIONS, initialMainState, MODAL_TYPES } from 'utils';
 import { cloneDeep } from 'lodash';
 import { useSelector } from 'react-redux';
 import Modal from 'components/organisms/Modal';
-import ModalMessage from 'components/molecules/modals/ModalMessage';
 import ModalBooking from 'components/molecules/modals/ModalBooking';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
 
@@ -57,7 +56,6 @@ const Main: React.FC<IProps> = (): JSX.Element => {
       <BookingCalender mainState={mainState} />
       {isOpen && (
         <Modal>
-          {type === MODAL_TYPES.MESSAGE && <ModalMessage />}
           {type === MODAL_TYPES.BOOKINGS && <ModalBooking mainState={mainState} />}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
           {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}

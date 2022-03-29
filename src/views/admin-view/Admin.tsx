@@ -6,18 +6,15 @@ import Header from 'components/atoms/Header';
 import { fadeIn } from 'style/animation';
 import SideNav from 'components/organisms/SideNav';
 import BookingCalender from 'components/organisms/Calender';
-import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
 import {
   adminCredentials,
   ADMIN_TABS,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
-  initialAdminState,
-  MODAL_TYPES
+  initialAdminState
 } from 'utils';
 import Clients from 'components/organisms/Clients';
-import ModalMessage from 'components/molecules/modals/ModalMessage';
 import Bookings from 'components/organisms/Bookings';
 import Building from 'components/organisms/Building';
 import Summary from 'components/organisms/Summary';
@@ -39,8 +36,7 @@ const Admin = (): JSX.Element => {
 
   const {
     authStore: { auth },
-    currentUserStore: { user },
-    modal: { isOpen, type }
+    currentUserStore: { user }
   } = useSelector((state: IReduxState) => state);
 
   const setWorkPlace = (): void => {
@@ -98,12 +94,6 @@ const Admin = (): JSX.Element => {
           {tab === ADMIN_TABS.BUILDINGS && <Building mainState={adminState} />}
           {tab === ADMIN_TABS.SUMMARY && <Summary />}
         </>
-      )}
-      {/* modal content */}
-      {isOpen && type === MODAL_TYPES.MESSAGE && (
-        <Modal>
-          <ModalMessage />
-        </Modal>
       )}
     </AdminWrapper>
   );

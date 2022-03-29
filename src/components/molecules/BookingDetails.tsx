@@ -54,7 +54,7 @@ const DetailsSpan = styled.span`
 const ClearButton = styled(Button)`
   background-color: #eaeaea;
   border-color: ${({ theme }) => theme.green};
-  color: #454545;
+  color: ${({ theme }) => theme.darkGrey};
   &:hover {
     background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;

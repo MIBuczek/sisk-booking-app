@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
 import { db, parseFirebaseBookingData, BOOKING_STATE, SAVING_STAGE, MODAL_TYPES } from 'utils';
 import { IBooking, IBookingsAction, IModalAction, IReduxState } from 'models';
@@ -70,11 +69,8 @@ export const getBookingDataForUser = () => async (
       .where('bookingStatus', '==', 'INITIAL')
       .where('accepted', '==', true)
       .get();
-    console.log(resp);
     const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-    localStorage.setItem('lastUpdate', `${Date.now()}`);
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
     throw new Error(JSON.stringify(err));

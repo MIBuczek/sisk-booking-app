@@ -1,5 +1,5 @@
 /* eslint-disable import/no-duplicates */
-import { IBooking, IMainState, IReduxState, ISelectedExtraOptions } from 'models';
+import { IBooking, IMainState, IReduxState, ISelectedExtraOptions, TSelect } from 'models';
 import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
 import { registerLocale } from 'react-datepicker';
@@ -13,7 +13,8 @@ import {
   CITY_OPTIONS,
   generateBookingDetails,
   generateBookingFormDetails,
-  selectBuildingOptions,
+  generateBuildingOptions,
+  // selectBuildingOptions,
   selectClientOptions,
   selectedClientIdOption,
   selectSizeFieldOptions,
@@ -166,7 +167,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
   const {
     bookingStore: { bookings },
-    clientStore: { clients }
+    clientStore: { clients },
+    buildingStore: { buildings }
   } = useSelector((state: IReduxState): IReduxState => state);
 
   const { handleSubmit, errors, control, watch, reset, getValues } = useForm<IBookingForm>({
@@ -184,6 +186,11 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (value in SIZE_OPTIONS) setSelectedSize(value as SIZE_OPTIONS);
+  };
+
+  const selectBuildingOptions = (cv: string, b: TSelect): TSelect[] => {
+    if (!cv) return [b];
+    return generateBuildingOptions(buildings)[cv];
   };
 
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {

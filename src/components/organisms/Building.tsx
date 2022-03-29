@@ -6,18 +6,13 @@ import Paragraph from 'components/atoms/Paragraph';
 import TextAreaField from 'components/atoms/TextAreaField';
 import TextInputField from 'components/atoms/TextInputField';
 import ConfirmAction from 'components/molecules/ConfirmAction';
-import { IAdminState, IBuilding, IEmployeeMessage } from 'models';
+import { IAdminState, IBuilding, IEmployeeMessage, IReduxState } from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
-import {
-  INITIAL_EMPLOYEE_MESSAGE,
-  RADWANICE_BUILDINGS,
-  SIECHNICE_BUILDINGS,
-  SWIETA_KATARZYNA_BUILDING,
-  ZERNIKI_WROCLAWSKIE_BUILDING
-} from 'utils';
+import { generateAllBuilding, INITIAL_ALL_BUILDINGS, INITIAL_EMPLOYEE_MESSAGE } from 'utils';
 
 const BuildingWrapper = styled.article`
   width: 60%;
@@ -117,18 +112,21 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
 
   const { city, building } = mainState;
 
+  const { buildings } = useSelector((state: IReduxState) => state.buildingStore);
+
   const compareBuildings = (b: IBuilding): boolean => b.property === building.value;
 
   const findBuilding = (pickedCity: string): IBuilding | undefined => {
+    const allBuildings = generateAllBuilding(buildings) || INITIAL_ALL_BUILDINGS;
     switch (pickedCity) {
       case 'radwanice':
-        return RADWANICE_BUILDINGS.find(compareBuildings);
+        return allBuildings.radwanice.find(compareBuildings);
       case 'siechnice':
-        return SIECHNICE_BUILDINGS.find(compareBuildings);
+        return allBuildings.siechnice.find(compareBuildings);
       case 'swieta-katarzyna':
-        return SWIETA_KATARZYNA_BUILDING.find(compareBuildings);
+        return allBuildings['swieta-katarzyna'].find(compareBuildings);
       case 'zerniki-wroclawskie':
-        return ZERNIKI_WROCLAWSKIE_BUILDING.find(compareBuildings);
+        return allBuildings['zerniki-wroclawskie'].find(compareBuildings);
       default:
         return undefined;
     }

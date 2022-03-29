@@ -2,8 +2,8 @@ import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as StoreActions from 'store';
-import { IBooking, IReduxState } from '../../models';
-import { BOOKING_STATE, SAVING_STAGE } from '../../utils/variables/store-const';
+import { IReduxState } from '../../models';
+import { SAVING_STAGE } from '../../utils/variables/store-const';
 import Loading from './Loading';
 
 export interface IProps {
@@ -19,18 +19,18 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
     (state: IReduxState): IReduxState => state
   );
 
-  const checkLocalStorage = (): boolean => {
-    const lastUpdate = localStorage.getItem('lastUpdate');
-    if (!lastUpdate) {
-      return true;
-    }
-    if (Number(lastUpdate) + 900000 < Date.now()) {
-      return true;
-    }
-    const bookingData = JSON.parse(localStorage.getItem('bookings') || '[]') as IBooking[];
-    dispatch(StoreActions.fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookingData));
-    return false;
-  };
+  // const checkLocalStorage = (): boolean => {
+  //   const lastUpdate = localStorage.getItem('lastUpdate');
+  //   if (!lastUpdate) {
+  //     return true;
+  //   }
+  //   if (Number(lastUpdate) + 900000 < Date.now()) {
+  //     return true;
+  //   }
+  //   const bookingData = JSON.parse(localStorage.getItem('bookings') || '[]') as IBooking[];
+  //   dispatch(StoreActions.fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookingData));
+  //   return false;
+  // };
 
   const adminStoreReady =
     currentUserStore.savingStage === SAVING_STAGE.SUCCESS &&
@@ -47,9 +47,9 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
       dispatch(StoreActions.getClientsData());
       dispatch(StoreActions.getBuildingsData());
       setStoreReady(false);
-    }
-    if (isUserPage && checkLocalStorage()) {
+    } else {
       dispatch(StoreActions.getBookingDataForUser());
+      dispatch(StoreActions.getBuildingsData());
     }
   }, [authStore.savingStage, isUserPage]);
 

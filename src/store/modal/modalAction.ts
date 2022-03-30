@@ -1,6 +1,12 @@
 import { IModalAction } from 'models';
 import { MODAL_STATE, MODAL_TYPES } from 'utils';
 
+/**
+ * Modal store action to open modal.
+ * @param type
+ * @param message
+ * @returns {IModalAction}
+ */
 const openModal = (type: MODAL_TYPES, message: string = ''): IModalAction => ({
   type: MODAL_STATE.DISPLAY,
   payload: {
@@ -10,6 +16,10 @@ const openModal = (type: MODAL_TYPES, message: string = ''): IModalAction => ({
   }
 });
 
+/**
+ * Modal store action to close modal.
+ * @returns {IModalAction}
+ */
 const closeModal = (): IModalAction => ({
   type: MODAL_STATE.INITIAL,
   payload: {

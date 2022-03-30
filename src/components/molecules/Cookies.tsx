@@ -49,10 +49,17 @@ const CookieParagraph = styled(Paragraph)`
 const Cookies = () => {
   const [showInfo, setShowInfo] = React.useState(true);
 
+  /**
+   * Function to set local storage if user accept cookies politic.
+   */
   const setLocalStorage = () => {
     localStorage.setItem('cookies', 'false');
     setShowInfo(false);
   };
+
+  /**
+   * Function to get local storage and check if current user accept cookies politic.
+   */
   const getLocalStorage = () => {
     const userCookies: string | null = localStorage.getItem('cookies');
     if (!userCookies) setShowInfo(true);

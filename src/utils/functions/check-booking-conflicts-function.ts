@@ -10,12 +10,27 @@ import { IBooking } from 'models';
 //   return false;
 // };
 
+/**
+ * Function to check day into two date object.
+ * If it the same return true
+ * @param  dOne
+ * @param  dTwo
+ * @returns {Boolean}
+ */
 const checkDay = (dOne: Date, dTwo: Date) => {
   if (Date.parse(new Date(dOne).toISOString()) - Date.parse(new Date(dTwo).toISOString()) === 0)
     return true;
   return false;
 };
 
+/**
+ * Function to check time into date.
+ * If it between start and end time other booking return true (possible time conflict)
+ * @param  checkDate
+ * @param  startHour
+ * @param  endHour
+ * @returns {Boolean}
+ */
 const checkHoursRange = (checkDate: Date, startHour: Date, endHour: Date) => {
   if (checkDate.getTime() <= endHour.getTime() && checkDate.getTime() >= startHour.getTime()) {
     return true;
@@ -23,6 +38,12 @@ const checkHoursRange = (checkDate: Date, startHour: Date, endHour: Date) => {
   return false;
 };
 
+/**
+ * Function to check if one booking has conflict with others.
+ * @param  currentBooking
+ * @param  allBookings
+ * @returns {Boolean}
+ */
 const checkConflicts = (currentBooking: IBooking, allBookings: IBooking[]): boolean => {
   let isConflict = false;
   allBookings.forEach((b) => {
@@ -52,6 +73,12 @@ const checkConflicts = (currentBooking: IBooking, allBookings: IBooking[]): bool
   return isConflict;
 };
 
+/**
+ * Function to check if inside booking array it already any conflict.
+ * If yes, return item id
+ * @param  allBookings
+ * @returns {Array<string>}
+ */
 const checkAllBookingsConflicts = (allBookings: IBooking[]): string[] => {
   let confectBookingArray: string[] = [];
 

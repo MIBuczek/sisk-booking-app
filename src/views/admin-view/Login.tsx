@@ -55,6 +55,10 @@ const Login: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const { auth } = useSelector((store: IReduxState) => store.authStore);
 
+  /**
+   * Function to dispatch action to log user into platform
+   * @param cred
+   */
   const onSubmit = handleSubmit<ICredential>((cred) => {
     dispatch(logInUser(cred.email, cred.password));
   });

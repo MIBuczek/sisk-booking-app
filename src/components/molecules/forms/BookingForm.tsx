@@ -182,17 +182,32 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     clientId: selectedClientId
   } = watch();
 
+  /**
+   * Function to handle selected reservation size.
+   * @param e
+   * @param value
+   */
   const selectedSizeHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number): void => {
     e.preventDefault();
     e.stopPropagation();
     if (value in SIZE_OPTIONS) setSelectedSize(value as SIZE_OPTIONS);
   };
 
+  /**
+   * Function to get building options into dropdown related to selected city.
+   * @param cv
+   * @param b
+   */
   const selectBuildingOptions = (cv: string, b: TSelect): TSelect[] => {
     if (!cv) return [b];
     return generateBuildingOptions(buildings)[cv];
   };
 
+  /**
+   * Function to submit actual form values into form state.
+   * It will be dispatched to database it user confirm action.
+   * @param cred
+   */
   const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
     const bookingToApprove = cloneDeep(
       generateBookingDetails(cred, selectedSize, extraOptions, bookingId)
@@ -204,6 +219,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     }
   });
 
+  /**
+   * Function to confirm dispatch action. If so then add or update firebase booking collection.
+   */
   const confirmSubmit = () => {
     if (!bookingData) return;
 
@@ -214,6 +232,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     dispatch(closeModal());
   };
 
+  /**
+   * Function handle edit selected booking object. It set form fields with current booking data.
+   * @param index
+   */
   const editBookingHandler = (index: number) => {
     const currentBooking = cloneDeep(bookings[index]);
     const clientId = selectedClientIdOption(clients, currentBooking.clientId);
@@ -222,6 +244,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     setConflict(checkConflicts(currentBooking, bookings));
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const createInitialState = () => {
     reset({ ...cloneDeep(BOOKING_INITIAL_VALUE), ...mainState });
     setBookingId(undefined);
@@ -231,11 +256,18 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     setConflict(false);
   };
 
+  /**
+   * Function handle cancel action.
+   */
   const cancelHandler = () => {
     createInitialState();
     dispatch(closeModal());
   };
 
+  /**
+   * Function to update the state if admin want to assign client to current booking data.
+   * If yes then fill up form fields and add client id into booking object
+   */
   const fillUpFormWithClientData = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     cID?: string

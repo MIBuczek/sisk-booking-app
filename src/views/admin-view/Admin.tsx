@@ -39,6 +39,9 @@ const Admin = (): JSX.Element => {
     currentUserStore: { user }
   } = useSelector((state: IReduxState) => state);
 
+  /**
+   * Function select in dropdown user work place. City and building.
+   */
   const setWorkPlace = (): void => {
     if (user?.city && user?.building) {
       const selectedCity = CITY_OPTIONS.find((co) => co.value === user?.city) || CITY_OPTIONS[0];
@@ -51,6 +54,11 @@ const Admin = (): JSX.Element => {
     }
   };
 
+  /**
+   * Function to handler main state on admin view.
+   * @param value
+   * @param field
+   */
   const stateHandler = (value: TSelect, field: string) => {
     if (field === 'city') {
       setAdminState(() => ({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
@@ -59,6 +67,10 @@ const Admin = (): JSX.Element => {
     }
   };
 
+  /**
+   * Function switch view after admin selection.
+   * @param currentTab
+   */
   const tabHandler = (currentTab: ADMIN_TABS): void => {
     setTab(currentTab);
   };

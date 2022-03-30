@@ -34,6 +34,11 @@ export interface IProps {}
 const Main: React.FC<IProps> = (): JSX.Element => {
   const [mainState, setNavState] = React.useState<IMainState>(cloneDeep(initialMainState));
 
+  /**
+   * Function to handler main state on user view.
+   * @param value
+   * @param field
+   */
   const mainStateHandler = (value: TSelect, field: string) => {
     if (field === 'city') {
       setNavState(() => ({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));

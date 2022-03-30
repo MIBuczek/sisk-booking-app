@@ -33,6 +33,9 @@ const fetchingUserError = (errorMessage: string): IUserAction => ({
   }
 });
 
+/**
+ * User store action to get already logged user.
+ */
 const getUserData = () => async (
   dispatch: Dispatch<IUserAction>,
   getState: () => IReduxState

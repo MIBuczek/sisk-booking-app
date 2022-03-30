@@ -2,18 +2,33 @@
 import { IBuilding, IClient } from 'models';
 import { IBooking } from 'models/store/booking-models';
 
+/**
+ * Map function to transform bookingTime data from firebase
+ * @param item
+ * @returns {Object}
+ */
 const transformFirebaseBookingTimeData = (item: any) => ({
   day: item.day.toDate(),
   startHour: item.startHour.toDate(),
   endHour: item.endHour.toDate()
 });
 
+/**
+ * Map function to transform extra options data from firebase
+ * @param item
+ * @returns {Object}
+ */
 const transformFirebaseSelectedOptionsData = (item: any) => ({
   options: item.options,
   fromHour: item.fromHour.toDate(),
   toHour: item.toHour.toDate()
 });
 
+/**
+ * Map function to transform single booking data form firebase
+ * @param doc
+ * @returns {Object<IBooking>}
+ */
 const parseFirebaseBookingData = (doc: any) =>
   ({
     type: doc.data().type,
@@ -37,6 +52,11 @@ const parseFirebaseBookingData = (doc: any) =>
     id: doc.id
   } as IBooking);
 
+/**
+ * Map function to transform single client data form firebase
+ * @param doc
+ * @returns {Object<IClient>}
+ */
 const parseFirebaseClientData = (doc: any) =>
   ({
     type: doc.data().type,
@@ -51,6 +71,11 @@ const parseFirebaseClientData = (doc: any) =>
     id: doc.id
   } as IClient);
 
+/**
+ * Map function to transform single building data form firebase
+ * @param doc
+ * @returns {Object<IBuilding>}
+ */
 const parseFirebaseBuildingData = (doc: any) =>
   ({
     name: doc.data().name,

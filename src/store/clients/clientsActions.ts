@@ -34,6 +34,9 @@ const fetchingClientsError = (errorMessage: string): IClientsActions => ({
   }
 });
 
+/**
+ * Client store action to get all clients records from firebase clients collections.
+ */
 export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>): Promise<void> => {
   dispatch(fetchingClients());
   try {
@@ -46,6 +49,9 @@ export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>):
   }
 };
 
+/**
+ * Client store action to add client records to firebase clients collections.
+ */
 export const addClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions | IModalAction>,
   getStore: () => IReduxState
@@ -63,6 +69,9 @@ export const addClient = (clientData: IClient) => async (
   }
 };
 
+/**
+ * Client store action to update client records to firebase clients collections.
+ */
 export const updateClient = (clientData: IClient) => async (
   dispatch: Dispatch<IClientsActions | IModalAction>,
   getStore: () => IReduxState
@@ -81,6 +90,9 @@ export const updateClient = (clientData: IClient) => async (
   }
 };
 
+/**
+ * Client store action to delete client records to firebase clients collections.
+ */
 export const deleteClient = (id: string) => async (
   dispatch: Dispatch<IClientsActions | IModalAction>,
   getStore: () => IReduxState

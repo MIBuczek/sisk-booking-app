@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   BUILDINGS_OPTIONS,
-  createSelectedOption,
+  findSelectedOption,
   firstLetterUpperCase,
   formatDate,
   formatTime
@@ -67,6 +67,9 @@ const BookingDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const { booking } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
 
+  /**
+   * Function to clear selected booking
+   */
   const clear = () => {
     dispatch(clearCurrentBooking());
   };
@@ -85,7 +88,7 @@ const BookingDetails = (): JSX.Element => {
           <DetailsParagraph bold>
             Obiekt :
             <DetailsSpan>
-              {createSelectedOption(booking.building, BUILDINGS_OPTIONS[booking.city])?.label}
+              {findSelectedOption(booking.building, BUILDINGS_OPTIONS[booking.city])?.label}
             </DetailsSpan>
           </DetailsParagraph>
           <DetailsParagraph bold>

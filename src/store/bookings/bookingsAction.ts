@@ -47,6 +47,9 @@ export const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBoo
   }
 });
 
+/**
+ * Booking store action to get records form firebase in admin view.
+ */
 export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
   dispatch(fetchingBookings());
   try {
@@ -59,6 +62,9 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
   }
 };
 
+/**
+ * Booking store action to get records form firebase in user view.
+ */
 export const getBookingDataForUser = () => async (
   dispatch: Dispatch<IBookingsAction>
 ): Promise<void> => {
@@ -77,6 +83,9 @@ export const getBookingDataForUser = () => async (
   }
 };
 
+/**
+ * Booking store action to add records to firebase database bookings collection.
+ */
 export const addBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
@@ -95,6 +104,9 @@ export const addBooking = (bookingData: IBooking) => async (
   }
 };
 
+/**
+ * Booking store action to update records to firebase database bookings collection.
+ */
 export const updateBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
@@ -115,6 +127,9 @@ export const updateBooking = (bookingData: IBooking) => async (
   }
 };
 
+/**
+ * Booking store action to get current booking records from already stored bookings state.
+ */
 export const getCurrentBooking = (id: string) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
@@ -128,6 +143,9 @@ export const getCurrentBooking = (id: string) => async (
   }
 };
 
+/**
+ * Booking store action to get current booking records from already stored bookings state.
+ */
 export const clearCurrentBooking = () => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
@@ -136,6 +154,9 @@ export const clearCurrentBooking = () => async (
   dispatch(getSingleBooking(bookings, undefined));
 };
 
+/**
+ * Booking store action to delete records to firebase database bookings collection.
+ */
 export const deleteBooking = (id: string) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState

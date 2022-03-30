@@ -77,16 +77,27 @@ const FormMessage = () => {
   const dispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm();
 
+  /**
+   * Function to submit actual form values into form message state.
+   * It will be dispatched to database it user confirm action.
+   * @param cred
+   */
   const onSubmit = handleSubmit<IMessageForm>((cred): void => {
     setMessage({ ...cred });
     setDisplayConfirmation(true);
   });
 
+  /**
+   * Function to confirm dispatch action. If so then sent notification to pointed email address.
+   */
   const confirmSubmit = (): void => {
     alert(JSON.stringify(message));
     initialState();
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const initialState = (): void => {
     setMessage(undefined);
     setPolice(false);

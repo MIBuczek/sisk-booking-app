@@ -114,8 +114,18 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
 
   const { buildings } = useSelector((state: IReduxState) => state.buildingStore);
 
+  /**
+   * Function to compare selected building with building database.
+   * @param b
+   * @returns {Boolean}
+   */
   const compareBuildings = (b: IBuilding): boolean => b.property === building.value;
 
+  /**
+   * Function to find and return building into building database.
+   * @param pickedCity
+   * @returns {Object<IBuilding> | undefined}
+   */
   const findBuilding = (pickedCity: string): IBuilding | undefined => {
     const allBuildings = generateAllBuilding(buildings) || INITIAL_ALL_BUILDINGS;
     switch (pickedCity) {
@@ -139,11 +149,17 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
     setDisplayConfirmation(true);
   });
 
+  /**
+   * Function to confirm dispatch action. If so then sent notification to pointed email address.
+   */
   const confirmSubmit = (): void => {
     alert(JSON.stringify(message));
     initialState();
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const initialState = (): void => {
     setMessage(undefined);
     setDisplayConfirmation(false);

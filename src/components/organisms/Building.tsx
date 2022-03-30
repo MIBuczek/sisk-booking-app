@@ -144,6 +144,11 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
 
   const { control, handleSubmit, errors, reset } = useForm<IEmployeeMessage>();
 
+  /**
+   * Function to submit actual form values into form employee message state.
+   * It will be dispatched to database it user confirm action.
+   * @param cred
+   */
   const onSubmit = handleSubmit<IEmployeeMessage>((cred): void => {
     setMessage({ ...cred });
     setDisplayConfirmation(true);

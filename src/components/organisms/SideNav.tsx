@@ -75,6 +75,9 @@ const SideNav: React.FunctionComponent<IProps> = ({
 
   const { city, building } = state;
 
+  /**
+   * Function to get building options assigned to selected city.
+   */
   const selectBuilding = (): TSelect[] => {
     if (!city) return [];
     return generateBuildingOptions(buildings)[city.value];

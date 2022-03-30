@@ -73,17 +73,39 @@ const Clients = () => {
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
+  /**
+   * Function to handle the client list. It is related to search input field.
+   * @param searchResults
+   */
+  const clientListHandler = (searchResults: (IClient | IBooking)[]): void => {
+    if (searchResults.length && instanceOfClients(searchResults)) {
+      setClientList(searchResults);
+    }
+  };
+
+  /**
+   * Function to handle edited client data and set related data into client form.
+   * @param index
+   * @param editHandler
+   */
   const editClientHandler = (index: number, editHandler: boolean) => {
     setIsEditing(true);
     setEditedItemIndex(index);
     dispatch(openModal(MODAL_TYPES.CLIENT));
   };
 
+  /**
+   * Function to handle delete client item and display related confirmation modal.
+   * @param index
+   */
   const deleteClientHandler = (index: number) => {
     setDeleteItemIndex(index);
     dispatch(openModal(MODAL_TYPES.DELETE));
   };
 
+  /**
+   * Function to dispatch deleting action into firebase client data collection.
+   */
   const deleteClientAction = () => {
     if (typeof deleteItemIndex === 'undefined') return;
     const currentClient = clients[deleteItemIndex];
@@ -93,21 +115,21 @@ const Clients = () => {
     dispatch(closeModal());
   };
 
+  /**
+   * Function to cancel deleting action.
+   */
   const cancelDeleteClientAction = () => {
     initialClientState();
     dispatch(closeModal());
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const initialClientState = () => {
     setIsEditing(false);
     setEditedItemIndex(undefined);
     setDeleteItemIndex(undefined);
-  };
-
-  const clientListHandler = (searchResults: (IClient | IBooking)[]): void => {
-    if (searchResults.length && instanceOfClients(searchResults)) {
-      setClientList(searchResults);
-    }
   };
 
   React.useEffect(() => setClientList(clients), [clients]);

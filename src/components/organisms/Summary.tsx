@@ -135,12 +135,18 @@ const Summary = () => {
 
   const { client: clientValue, month: monthValue } = watch();
 
+  /**
+   * Function to generate client options into dropdown.
+   * @returns {Array<TSelect>}
+   */
   const generateClientsOptions = (): TSelect[] => {
     if (!clients.length) return [];
-
     return clients.map((c) => ({ label: c.name, value: c?.id || c.name }));
   };
 
+  /**
+   * Function to generate summary according selected client.
+   */
   const generateClientSummary = (): void => {
     if (!clientValue || !monthValue || !clients) return;
 

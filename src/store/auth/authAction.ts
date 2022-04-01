@@ -32,6 +32,11 @@ export const fetchingAuthError = (errorMessage: string): IAuthAction => ({
   }
 });
 
+/**
+ * Store login user action.
+ * @param  email
+ * @param  password
+ */
 export const logInUser = (email: string, password: string) => async (
   dispatch: Dispatch<IAuthAction>
 ): Promise<void> => {
@@ -53,6 +58,10 @@ export const logInUser = (email: string, password: string) => async (
   }
 };
 
+/**
+ * Store logout user action.
+ * @param  dispatch
+ */
 export const logOutUser = () => async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
   dispatch(fetchingAuth());
   try {

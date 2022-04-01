@@ -117,6 +117,10 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
   const dispatch = useDispatch();
   const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
 
+  /**
+   * Function create event into full calender component.
+   * Event is related to the user or admin view.
+   */
   const createEvents = (): void =>
     setEvents(
       bookings.reduce((acc: EventInput[], b: IBooking) => {
@@ -134,6 +138,10 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
       }, [])
     );
 
+  /**
+   * Full calender event to get data and get current booking data from the store.
+   * @param clickInfo
+   */
   const handleEventClick = async (clickInfo: EventClickArg) => {
     dispatch(getCurrentBooking(clickInfo.event._def.publicId));
   };

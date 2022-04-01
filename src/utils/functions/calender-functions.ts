@@ -1,10 +1,15 @@
+/**
+ * Function to transform date object into local date string
+ * @param date
+ * @returns {String}
+ */
 const formatDate = (date: Date | null): string => {
   if (!date) return '';
   return date.toLocaleDateString();
 };
 
 /**
- * Function to transform data object into string
+ * Function to transform date object into string
  * @param  {Date|null} date
  * @returns {string}
  */
@@ -16,7 +21,7 @@ const formatTime = (date: Date | null): string => {
 };
 
 /**
- * Function to cut display data object into short part day/month/year
+ * Function to cut display date object into short part day/month/year
  * @param  {Date|string} date
  * @returns {string}
  */
@@ -26,6 +31,11 @@ const formatCalenderDate = (date: Date | string): string => {
   return stringDate.substring(0, index);
 };
 
+/**
+ * Function to transform date object into accepted calender hours format
+ * @param date
+ * @returns {String}
+ */
 const formateCalenderHours = (date: Date): string => {
   const checkedDate = new Date(date).toISOString();
   const index = checkedDate.indexOf('T');
@@ -33,6 +43,14 @@ const formateCalenderHours = (date: Date): string => {
   return checkedDate.substring(index, lastIndex);
 };
 
+/**
+ * Function generate reservation calender object display into view
+ * @param id
+ * @param startDay
+ * @param startHour
+ * @param endHour
+ * @returns {Object}
+ */
 const prepareCalenderItem = (id: string, startDay: Date, startHour: Date, endHour: Date) => ({
   id,
   allDay: false,

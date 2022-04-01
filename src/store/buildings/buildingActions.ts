@@ -33,6 +33,9 @@ const fetchingBuildingsError = (errorMessage: string): IBuildingAction => ({
   }
 });
 
+/**
+ * Building store action to get all buildings records from firebase buildings collections.
+ */
 const getBuildingsData = () => async (dispatch: Dispatch<IBuildingAction>): Promise<void> => {
   dispatch(fetchingBuildingsStart());
   try {

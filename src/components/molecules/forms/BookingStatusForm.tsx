@@ -70,6 +70,11 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
 
   const { handleSubmit, errors, control, reset } = useForm<IBookingStatusForm>();
 
+  /**
+   * Function to submit additional status form fields.
+   * This is related to admin and employee. To change the status of selected reservation.
+   * @param cred
+   */
   const onSubmit = handleSubmit<IBookingStatusForm>(async (cred) => {
     if (typeof editedItemIndex === 'undefined') return;
     const currentBooking = cloneDeep(bookings[editedItemIndex]);
@@ -77,6 +82,10 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
     setDisplayConfirmation(true);
   });
 
+  /**
+   * Function to confirm dispatch action.
+   * If so then update firebase booking collection with new status.
+   */
   const confirmSubmit = () => {
     if (!bookingData) return;
 
@@ -86,12 +95,18 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
     dispatch(closeModal());
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const createInitialState = () => {
     reset({ ...INITIAL_BOOKING_STATUS_FORM });
     setDisplayConfirmation(false);
     setBookingData(undefined);
   };
 
+  /**
+   * Function handle cancel action.
+   */
   const cancelHandler = () => {
     createInitialState();
     dispatch(closeModal());

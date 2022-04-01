@@ -17,7 +17,7 @@ interface IBuilding {
 }
 
 interface IBuildingPayload extends IPayload {
-  buildings?: IBuilding[];
+  buildings: IBuilding[];
 }
 
 interface IBuildingAction {

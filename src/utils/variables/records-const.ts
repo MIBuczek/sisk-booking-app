@@ -12,7 +12,7 @@ const RECORDS_CLIENTS_ROW_DETAILS = [
   'nip'
 ];
 
-const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP = {
+const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP: { [x: string]: string } = {
   name: 'Imię i nazwisko',
   type: 'Typ',
   contactPerson: ' Osoba kontaktowa',

@@ -130,6 +130,7 @@ const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
 
   const dispatch = useDispatch();
+
   const {
     authStore,
     currentUserStore: { user },
@@ -138,6 +139,9 @@ const TopNav = (): JSX.Element => {
 
   const scrollPosition = useScrollPosition();
 
+  /**
+   * Condition to check if we on top of the page.
+   */
   if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
   else if (scrollPosition < 30 && !isTop) setIsTop(true);
 

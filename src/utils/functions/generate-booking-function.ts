@@ -8,19 +8,37 @@ import {
 } from 'models';
 import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_TYPE, SIZE_OPTIONS, BOOKING_STATUS } from 'utils';
 import { formatCalenderDate, formateCalenderHours } from './calender-functions';
-import { createSelectedOption } from './utils-functions';
+import { findSelectedOption } from './utils-functions';
 
-const overwriteDate = (day: Date, hour: Date) => {
+/**
+ * Function to overwrite booking day object and add one hour to be as in CET time zone
+ * @param  day
+ * @param  hour
+ * @returns {Date}
+ */
+const overwriteDate = (day: Date, hour: Date): Date => {
   const convertedDay = formatCalenderDate(day);
   const convertedHour = formateCalenderHours(new Date(hour.getTime() + 3600000));
-
   return new Date(`${convertedDay}${convertedHour}`);
 };
 
+/**
+ * Function to check and return number of full weeks between two date
+ * @param  d1
+ * @param  d2
+ * @returns {Number}
+ */
 function calculateWeeksBetween(d1: number, d2: number): number {
   return Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
 }
 
+/**
+ * Function to create bookingTime object.
+ * It calculate if the current booking is single or periodic reservation.
+ * If so then it generate array of bookingTime objects.
+ * @param  cred
+ * @returns {Array<ISingleBookingDate>}
+ */
 const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   const { startDate, endDate, startHour, endHour, regular } = cred;
   const bookingArray: ISingleBookingDate[] = [
@@ -34,7 +52,7 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   if (!regular) {
     return bookingArray;
   }
-  // one week is 604800000 ms
+  /* one week is 604800000 ms */
   const weekInMilliseconds = 604800000;
   let index = 1;
   const weeksBetween = calculateWeeksBetween(startDate.getTime(), endDate.getTime());
@@ -50,6 +68,14 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
   return bookingArray;
 };
 
+/**
+ * Function to generate final booking object saved in database
+ * @param  cred
+ * @param  selectedSize
+ * @param  extraOptions
+ * @param  id
+ * @returns {Object<IBooking>}
+ */
 const generateBookingDetails = (
   cred: IBookingForm,
   selectedSize: SIZE_OPTIONS,
@@ -80,20 +106,36 @@ const generateBookingDetails = (
   };
 };
 
-const generateBookingStatusDate = (cred: IBookingStatusForm, currentBooking: IBooking) => ({
+/**
+ * Function to generate single booking status data
+ * @param  cred
+ * @param  currentBooking
+ * @returns {Object<IBooking>}
+ */
+const generateBookingStatusDate = (
+  cred: IBookingStatusForm,
+  currentBooking: IBooking
+): IBooking => ({
   ...currentBooking,
   bookingStatus: cred.bookingStatus.value,
   bookingComments: cred.bookingComments || ''
 });
 
+/**
+ * Function to generate form object user in React Hook Forms
+ * @param  currentBooking
+ * @param  clientId
+ * @param  city
+ * @returns {Object<IBookingForm>}
+ */
 const generateBookingFormDetails = (
   currentBooking: IBooking,
   clientId?: TSelect,
   city?: TSelect
 ): IBookingForm => ({
   ...currentBooking,
-  city: createSelectedOption(currentBooking.city, CITY_OPTIONS) || CITY_OPTIONS[0],
-  building: createSelectedOption(
+  city: findSelectedOption(currentBooking.city, CITY_OPTIONS) || CITY_OPTIONS[0],
+  building: findSelectedOption(
     currentBooking.building,
     BUILDINGS_OPTIONS[city?.value || CITY_OPTIONS[0].value]
   ),

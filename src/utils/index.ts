@@ -22,3 +22,4 @@ export * from 'utils/functions/credentials-function';
 export * from 'utils/functions/summary-functions';
 export * from 'utils/functions/check-booking-conflicts-function';
 export * from 'utils/functions/filter-bookings-function';
+export * from 'utils/functions/generate-building-function';

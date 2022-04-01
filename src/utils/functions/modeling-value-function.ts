@@ -1,6 +1,9 @@
 import { TBooking } from 'models';
 import { formatDate, formatTime } from './calender-functions';
 
+/**
+ * Object used to transform property value into display value
+ */
 const transformValue: { [x: string]: string } = {
   INITIAL: 'Nie rozpoczęta',
   DONE: 'Zakończona',
@@ -17,6 +20,13 @@ const transformValue: { [x: string]: string } = {
 
 const propertyToModel: string[] = ['city', 'building'];
 
+/**
+ * Function to model display value in booking details
+ * @param  property
+ * @param  currentValue
+ * @param  isHours
+ * @returns {Null | String}
+ */
 const modelDisplayValue = (
   property: string,
   currentValue?: TBooking,

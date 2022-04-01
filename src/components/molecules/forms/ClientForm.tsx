@@ -7,7 +7,7 @@ import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
 import TextInputField from 'components/atoms/TextInputField';
-import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, createSelectedOption } from 'utils';
+import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, findSelectedOption } from 'utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { IClient, IReduxState } from 'models';
 import { IClientForm } from 'models/forms/client-form-model';
@@ -94,6 +94,11 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
     }
   }, [isEditing]);
 
+  /**
+   * Function to submit actual form values into form state.
+   * It will be dispatched to database it user confirm action.
+   * @param cred
+   */
   const onSubmit = handleSubmit<IClientForm>(async (cred) => {
     setClientData({
       ...cred,
@@ -102,6 +107,9 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
     setDisplayConfirmation(true);
   });
 
+  /**
+   * Function to confirm dispatch action. If so then add or update firebase clients collection.
+   */
   const confirmSubmit = () => {
     if (!clientData) return;
     if (clientId) {
@@ -112,12 +120,19 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
     dispatch(closeModal());
   };
 
+  /**
+   * Function handle edit selected client object. It set form fields with current client data.
+   * @param index
+   */
   const editClientHandler = (index: number) => {
     const currentClient = clients[index];
-    reset({ ...currentClient, type: createSelectedOption(currentClient.type, CLIENT_OPTIONS) });
+    reset({ ...currentClient, type: findSelectedOption(currentClient.type, CLIENT_OPTIONS) });
     setClientId(currentClient.id);
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const createInitialState = () => {
     reset(CLIENT_INITIAL_VALUE);
     setClientId(undefined);
@@ -126,6 +141,9 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
     setDisplayConfirmation(false);
   };
 
+  /**
+   * Function handle cancel action.
+   */
   const cancelHandler = () => {
     createInitialState();
     dispatch(closeModal());

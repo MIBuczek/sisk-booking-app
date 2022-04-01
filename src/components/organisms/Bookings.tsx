@@ -92,6 +92,10 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
+  /**
+   * Function to handle the booking list. It is related to search input field.
+   * @param searchResults
+   */
   const bookingListHandler = (searchResults: (IClient | IBooking)[]): void => {
     if (searchResults.length && instanceOfBookings(searchResults)) {
       setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
@@ -100,17 +104,29 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     }
   };
 
+  /**
+   * Function to handle edited item and set related property edit item and fill up booking form.
+   * @param index
+   * @param isEditor
+   */
   const editBookingHandler = (index: number, isEditor: boolean) => {
     setIsEditing(isEditor);
     setEditedItemIndex(index);
     dispatch(openModal(isEditor ? MODAL_TYPES.BOOKINGS : MODAL_TYPES.BOOKINGS_STATUS));
   };
 
+  /**
+   * Function to handle delete booking item and display related confirmation modal.
+   * @param index
+   */
   const deleteBookingHandler = (index: number) => {
     setDeleteItemIndex(index);
     dispatch(openModal(MODAL_TYPES.DELETE));
   };
 
+  /**
+   * Function to dispatch deleting action into firebase booking data collection.
+   */
   const deleteBookingAction = () => {
     if (typeof deleteItemIndex === 'undefined') return;
     const currentBooking = cloneDeep(bookings[deleteItemIndex]);
@@ -120,11 +136,17 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     dispatch(closeModal());
   };
 
+  /**
+   * Function to cancel deleting action.
+   */
   const cancelDeleteBookingAction = () => {
     initialBookingState();
     dispatch(closeModal());
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const initialBookingState = () => {
     setIsEditing(false);
     setEditedItemIndex(undefined);

@@ -6,18 +6,15 @@ import Header from 'components/atoms/Header';
 import { fadeIn } from 'style/animation';
 import SideNav from 'components/organisms/SideNav';
 import BookingCalender from 'components/organisms/Calender';
-import Modal from 'components/organisms/Modal';
 import { IAdminState, IReduxState, TSelect } from 'models';
 import {
   adminCredentials,
   ADMIN_TABS,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
-  initialAdminState,
-  MODAL_TYPES
+  initialAdminState
 } from 'utils';
 import Clients from 'components/organisms/Clients';
-import ModalMessage from 'components/molecules/modals/ModalMessage';
 import Bookings from 'components/organisms/Bookings';
 import Building from 'components/organisms/Building';
 import Summary from 'components/organisms/Summary';
@@ -39,10 +36,12 @@ const Admin = (): JSX.Element => {
 
   const {
     authStore: { auth },
-    currentUserStore: { user },
-    modal: { isOpen, type }
+    currentUserStore: { user }
   } = useSelector((state: IReduxState) => state);
 
+  /**
+   * Function select in dropdown user work place. City and building.
+   */
   const setWorkPlace = (): void => {
     if (user?.city && user?.building) {
       const selectedCity = CITY_OPTIONS.find((co) => co.value === user?.city) || CITY_OPTIONS[0];
@@ -55,6 +54,11 @@ const Admin = (): JSX.Element => {
     }
   };
 
+  /**
+   * Function to handler main state on admin view.
+   * @param value
+   * @param field
+   */
   const stateHandler = (value: TSelect, field: string) => {
     if (field === 'city') {
       setAdminState(() => ({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
@@ -63,6 +67,10 @@ const Admin = (): JSX.Element => {
     }
   };
 
+  /**
+   * Function switch view after admin selection.
+   * @param currentTab
+   */
   const tabHandler = (currentTab: ADMIN_TABS): void => {
     setTab(currentTab);
   };
@@ -98,12 +106,6 @@ const Admin = (): JSX.Element => {
           {tab === ADMIN_TABS.BUILDINGS && <Building mainState={adminState} />}
           {tab === ADMIN_TABS.SUMMARY && <Summary />}
         </>
-      )}
-      {/* modal content */}
-      {isOpen && type === MODAL_TYPES.MESSAGE && (
-        <Modal>
-          <ModalMessage />
-        </Modal>
       )}
     </AdminWrapper>
   );

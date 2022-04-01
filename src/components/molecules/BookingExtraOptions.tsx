@@ -144,6 +144,11 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
 
   const { lights: lightValue, toilets: toiletsValue } = watch();
 
+  /**
+   * Function to collect extra option form and add it to general booking object.
+   * It also set what option was selected into array.
+   * @param cred
+   */
   const onSubmit = handleSubmit(async (cred) => {
     const { fromHour, toHour, lights, toilets } = cred;
     const singleRecord = { options: [{ lights }, { toilets }], fromHour, toHour };
@@ -151,6 +156,11 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     reset({ ...INITIAL_EXTRA_OPTIONS });
   });
 
+  /**
+   * Function edit selected extra option and updated form state.
+   * @param e
+   * @param index
+   */
   const editExtraOption = (e: React.MouseEvent, index: number) => {
     e.preventDefault();
     const { options, fromHour, toHour } = extraOptions[index];
@@ -158,6 +168,11 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     deleteExtraOption(e, index);
   };
 
+  /**
+   * Function to deleted selected extra option from current booking state.
+   * @param e
+   * @param index
+   */
   const deleteExtraOption = (e: React.MouseEvent, index: number) => {
     e.preventDefault();
     setExtraOptions(extraOptions.filter((o, i) => i !== index));

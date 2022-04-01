@@ -8,10 +8,10 @@ import {
   BsFillCalendar2DateFill
 } from 'react-icons/bs';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { ADMIN_TABS, BUILDINGS_OPTIONS, CITY_OPTIONS, MODAL_TYPES } from 'utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { ADMIN_TABS, CITY_OPTIONS, generateBuildingOptions, MODAL_TYPES } from 'utils';
 import { openModal } from 'store';
-import { IAdminState, IMainState, TSelect } from 'models';
+import { IAdminState, IMainState, IReduxState, TSelect } from 'models';
 import Label from 'components/atoms/Label';
 import ButtonIcon, { iconStyle } from 'components/atoms/ButtonIcon';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
@@ -71,12 +71,16 @@ const SideNav: React.FunctionComponent<IProps> = ({
   tabHandler
 }): JSX.Element => {
   const dispatch = useDispatch();
+  const { buildings } = useSelector((appState: IReduxState) => appState.buildingStore);
 
   const { city, building } = state;
 
+  /**
+   * Function to get building options assigned to selected city.
+   */
   const selectBuilding = (): TSelect[] => {
     if (!city) return [];
-    return BUILDINGS_OPTIONS[city.value];
+    return generateBuildingOptions(buildings)[city.value];
   };
 
   React.useLayoutEffect(() => {}, [state]);

@@ -1,14 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import dots from '../../assets/images/iframe-load.gif';
+import Loader from 'react-loaders';
+import 'loaders.css/loaders.css';
 
 const LoadingWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(250, 250, 250, 0.7);
+  background: rgba(250, 250, 250, 0.8);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,15 +17,17 @@ const LoadingWrapper = styled.div`
   z-index: 100;
 `;
 
-const LoadingAnimation = styled.img`
-  width: 100px;
+const LoaderDots = styled(Loader)`
+  .ball-pulse > div {
+    background-color: ${({ theme }) => theme.green};
+  }
 `;
 
 export interface IProps {}
 
 const Loading: React.FC<IProps> = (): JSX.Element => (
   <LoadingWrapper>
-    <LoadingAnimation src={dots} alt="loading" />
+    <LoaderDots type="ball-pulse" active />
   </LoadingWrapper>
 );
 

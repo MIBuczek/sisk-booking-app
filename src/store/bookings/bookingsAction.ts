@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'react';
 import { db, parseFirebaseBookingData, BOOKING_STATE, SAVING_STAGE, MODAL_TYPES } from 'utils';
 import { IBooking, IBookingsAction, IModalAction, IReduxState } from 'models';
@@ -48,6 +47,9 @@ export const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBoo
   }
 });
 
+/**
+ * Booking store action to get records form firebase in admin view.
+ */
 export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
   dispatch(fetchingBookings());
   try {
@@ -60,6 +62,9 @@ export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>)
   }
 };
 
+/**
+ * Booking store action to get records form firebase in user view.
+ */
 export const getBookingDataForUser = () => async (
   dispatch: Dispatch<IBookingsAction>
 ): Promise<void> => {
@@ -70,17 +75,17 @@ export const getBookingDataForUser = () => async (
       .where('bookingStatus', '==', 'INITIAL')
       .where('accepted', '==', true)
       .get();
-    console.log(resp);
     const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-    localStorage.setItem('lastUpdate', `${Date.now()}`);
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
     throw new Error(JSON.stringify(err));
   }
 };
 
+/**
+ * Booking store action to add records to firebase database bookings collection.
+ */
 export const addBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
@@ -99,6 +104,9 @@ export const addBooking = (bookingData: IBooking) => async (
   }
 };
 
+/**
+ * Booking store action to update records to firebase database bookings collection.
+ */
 export const updateBooking = (bookingData: IBooking) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
@@ -119,6 +127,9 @@ export const updateBooking = (bookingData: IBooking) => async (
   }
 };
 
+/**
+ * Booking store action to get current booking records from already stored bookings state.
+ */
 export const getCurrentBooking = (id: string) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
@@ -132,6 +143,9 @@ export const getCurrentBooking = (id: string) => async (
   }
 };
 
+/**
+ * Booking store action to get current booking records from already stored bookings state.
+ */
 export const clearCurrentBooking = () => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
@@ -140,6 +154,9 @@ export const clearCurrentBooking = () => async (
   dispatch(getSingleBooking(bookings, undefined));
 };
 
+/**
+ * Booking store action to delete records to firebase database bookings collection.
+ */
 export const deleteBooking = (id: string) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState

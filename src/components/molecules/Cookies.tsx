@@ -12,10 +12,10 @@ const CookiesWrapper = styled.div`
   box-shadow: 0px 3px 9px 0px rgb(0 0 0 / 40%);
   box-sizing: border-box;
   z-index: 100;
-  color: #454545;
+  color: ${({ theme }) => theme.darkGrey};
   width: 260px;
   height: auto;
-  background-color: #ffffff;
+  color: ${({ theme }) => theme.white};
   padding: 15px 20px;
   border-radius: 3px;
 `;
@@ -33,7 +33,7 @@ const CookieHeader = styled(Header)`
 `;
 
 const CookieParagraph = styled(Paragraph)`
-  color: #454545;
+  color: ${({ theme }) => theme.darkGrey};
   font-size: 14px;
   font-weight: 400;
   padding-top: 0;
@@ -49,10 +49,17 @@ const CookieParagraph = styled(Paragraph)`
 const Cookies = () => {
   const [showInfo, setShowInfo] = React.useState(true);
 
+  /**
+   * Function to set local storage if user accept cookies politic.
+   */
   const setLocalStorage = () => {
     localStorage.setItem('cookies', 'false');
     setShowInfo(false);
   };
+
+  /**
+   * Function to get local storage and check if current user accept cookies politic.
+   */
   const getLocalStorage = () => {
     const userCookies: string | null = localStorage.getItem('cookies');
     if (!userCookies) setShowInfo(true);

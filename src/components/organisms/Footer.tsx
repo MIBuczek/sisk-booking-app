@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { IReduxState } from 'models';
+import ModalMessage from 'components/molecules/modals/ModalMessage';
 import logoFooter from '../../assets/images/logo_footer.png';
 import BIPFooter from '../../assets/images/bip-footer.png';
 import Paragraph from '../atoms/Paragraph';
@@ -10,6 +12,7 @@ import Button from '../atoms/Button';
 import { fadeIn } from '../../style/animation';
 import { MODAL_TYPES } from '../../utils/variables/store-const';
 import { openModal } from '../../store/modal/modalAction';
+import Modal from './Modal';
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -155,6 +158,8 @@ const FooterAnchor = styled(Anchor)`
 
 const Footer = (): JSX.Element => {
   const dispatch = useDispatch();
+  const { isOpen, type } = useSelector((state: IReduxState) => state.modal);
+
   return (
     <>
       <FooterWrapper>
@@ -195,6 +200,11 @@ const Footer = (): JSX.Element => {
             © Copyright 2018 SISK / Created by GECKO Web Services
           </FooterParagraph>
         </FooterCredits>
+        {isOpen && type === MODAL_TYPES.MESSAGE ? (
+          <Modal>
+            <ModalMessage />
+          </Modal>
+        ) : null}
       </FooterWrapper>
     </>
   );

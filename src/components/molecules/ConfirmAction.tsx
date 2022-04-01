@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const ConfirmationWrapper = styled.div`
   width: 100%;
   padding: 10px 20px;
-  background-color: #afbf36;
+  background-color: ${({ theme }) => theme.green};
   display: flex;
   justify-content: center;
   animation: ${fadeIn} 0.5s linear;
@@ -23,7 +23,7 @@ const ConfirmationContent = styled.div`
 
 const ConfirmationParagraph = styled(Paragraph)`
   padding-bottom: 1rem;
-  color: white;
+  color: ${({ theme }) => theme.white};
   position: relative;
   font-size: 16px;
   &:after {
@@ -37,7 +37,7 @@ const ConfirmationParagraph = styled(Paragraph)`
 `;
 
 const QuestionIcon = styled(BsFillQuestionCircleFill)`
-  color: white;
+  color: ${({ theme }) => theme.white};
   margin: 5px 0 0 5px;
 `;
 

@@ -14,7 +14,6 @@ import {
   generateBookingDetails,
   generateBookingFormDetails,
   generateBuildingOptions,
-  // selectBuildingOptions,
   selectClientOptions,
   selectedClientIdOption,
   selectSizeFieldOptions,
@@ -33,6 +32,7 @@ import { DataPickerField } from 'components/atoms/DatapickerField';
 import Anchor from 'components/atoms/Anchor';
 import Button from 'components/atoms/Button';
 import pl from 'date-fns/locale/pl';
+import addMonths from 'date-fns/addMonths';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { cloneDeep, isEmpty } from 'lodash';
@@ -162,6 +162,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const [conflict, setConflict] = React.useState<boolean>(false);
 
   const { city, building } = mainState;
+
+  const maxRangDate = new Date(`${new Date().getFullYear()}-01-01T00:01:00.676Z`);
 
   const dispatch = useDispatch();
 
@@ -521,6 +523,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               placeholderText="Wybierz"
               locale="pl"
               minDate={new Date()}
+              maxDate={addMonths(maxRangDate, 8)}
+              selectsRange
               invalid={!!errors.startDate}
               onChange={onChange}
               onBlur={onBlur}
@@ -546,6 +550,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   placeholderText="Wybierz"
                   locale="pl"
                   minDate={new Date()}
+                  maxDate={addMonths(maxRangDate, 8)}
                   invalid={!!errors.endDate}
                   onChange={onChange}
                   onBlur={onBlur}

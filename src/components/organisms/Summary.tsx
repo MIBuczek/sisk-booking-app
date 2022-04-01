@@ -13,9 +13,12 @@ import Button from 'components/atoms/Button';
 import {
   findAllClientReservation,
   generateReservationSummary,
-  INITIAL_CLIENT_BOOKING_DETAILS
+  INITIAL_CLIENT_BOOKING_DETAILS,
+  modelDisplayValue,
+  RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
+  RECORDS_CLIENTS_ROW_DETAILS
 } from 'utils';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
 import { fadeInLeft } from 'style/animation';
 import SummaryDetailsItem from 'components/atoms/SummaryDetailItem';
@@ -101,7 +104,9 @@ const MonthPicker = styled(DataPickerField)`
 
 const SummaryBtn = styled(Button)`
   width: 290px;
-  margin-top: auto;
+  &:first-of-type {
+    margin-top: auto;
+  }
   @media (max-width: 890px) {
     margin: 20px 10px;
   }
@@ -115,6 +120,44 @@ const DetailsParagraph = styled(Paragraph)`
   }
 `;
 
+const ClientDetailTable = styled.table`
+  width: 100%;
+  height: auto;
+  display: block;
+  padding: 0;
+  border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+  tbody {
+    display: inherit;
+    width: 100%;
+    tr {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+  }
+`;
+
+const ClientDetailWrapper = styled.tr`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+`;
+
+const DetailContent = styled.td`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: auto;
+  font-size: ${({ theme }) => theme.fontSize.s};
+  color: ${({ theme }) => theme.darkGrey};
+  word-break: break-word;
+  width: 100%;
+  padding: 5px 8px 5px 0;
+  strong {
+    margin-bottom: 5px;
+  }
+`;
+
 const DetailsSpan = styled.span`
   font-weight: 400;
   font-weight: 400;
@@ -123,8 +166,9 @@ const DetailsSpan = styled.span`
 
 const Summary = () => {
   const [clientSummary, setClientSummary] = React.useState<ISummaryClientBookings>(
-    INITIAL_CLIENT_BOOKING_DETAILS
+    cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)
   );
+  const [isSummaryGenerated, setIsSummaryGenerated] = React.useState<boolean>(false);
 
   const {
     clientStore: { clients },
@@ -158,10 +202,16 @@ const Summary = () => {
 
     const initialSummary = cloneDeep({
       ...INITIAL_CLIENT_BOOKING_DETAILS,
-      clientName: currentClient.name || currentClient.contactPerson
+      client: cloneDeep(currentClient)
     });
 
-    setClientSummary(generateReservationSummary(initialSummary, allClientReservations));
+    setClientSummary(generateReservationSummary(initialSummary, allClientReservations, monthValue));
+    setIsSummaryGenerated(true);
+  };
+
+  const clearSummary = () => {
+    setClientSummary(cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS));
+    setIsSummaryGenerated(false);
   };
 
   return (
@@ -212,13 +262,28 @@ const Summary = () => {
         <SummaryBtn type="button" onClick={generateClientSummary}>
           Generuj podsumowanie
         </SummaryBtn>
+        <SummaryBtn type="button" onClick={clearSummary} secondary>
+          Wyczyść
+        </SummaryBtn>
       </SummaryInputContent>
       <SummaryDetailContent>
-        {clientSummary.clientName ? (
+        {isSummaryGenerated ? (
           <>
-            <DetailsParagraph bold>
-              Nazwa klienta : <DetailsSpan>{clientSummary.clientName}</DetailsSpan>
-            </DetailsParagraph>
+            <ClientDetailTable>
+              <ClientDetailWrapper>
+                {RECORDS_CLIENTS_ROW_DETAILS.map((prop) => {
+                  if (!isEmpty(clientSummary.client[prop])) {
+                    return (
+                      <DetailContent key={prop}>
+                        <strong>{RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]} : </strong>
+                        {modelDisplayValue(prop, clientSummary.client[prop])}
+                      </DetailContent>
+                    );
+                  }
+                  return null;
+                })}
+              </ClientDetailWrapper>
+            </ClientDetailTable>
             <DetailsParagraph bold>
               Radwanice :<DetailsSpan>{clientSummary.radwanice.length} rezerwacji.</DetailsSpan>
             </DetailsParagraph>

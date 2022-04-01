@@ -1,7 +1,16 @@
 import { ISummaryClientBookings } from 'models';
 
 const INITIAL_CLIENT_BOOKING_DETAILS: ISummaryClientBookings = {
-  clientName: '',
+  client: {
+    type: '',
+    name: '',
+    contactPerson: '',
+    phone: '',
+    email: '',
+    street: '',
+    city: '',
+    zipCode: ''
+  },
   radwanice: [],
   siechnice: [],
   'swieta-katarzyna': [],

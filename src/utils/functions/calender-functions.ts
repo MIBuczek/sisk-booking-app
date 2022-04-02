@@ -51,12 +51,23 @@ const formateCalenderHours = (date: Date): string => {
  * @param endHour
  * @returns {Object}
  */
-const prepareCalenderItem = (id: string, startDay: Date, startHour: Date, endHour: Date) => ({
+const prepareCalenderItem = (
+  itemTitle: string,
+  id: string,
+  startDay: Date,
+  startHour: Date,
+  endHour: Date,
+  accepted: boolean,
+  size: string
+) => ({
   id,
   allDay: false,
-  title: 'Rezerwacja',
+  title: `${itemTitle}`,
+  url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
+  textColor: `${size}`,
   start: `${formatCalenderDate(startDay)}${formateCalenderHours(startHour)}`,
-  end: `${formatCalenderDate(startDay)}${formateCalenderHours(endHour)}`
+  end: `${formatCalenderDate(startDay)}${formateCalenderHours(endHour)}`,
+  backgroundColor: `${accepted ? '' : 'red'}`
 });
 
 export { formatDate, prepareCalenderItem, formatTime, formatCalenderDate, formateCalenderHours };

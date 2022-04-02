@@ -128,7 +128,7 @@ const FormMessage = () => {
           )}
         />
         {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Label>Wpisz swoj adres e-mail</Label>
+        <Label>Adres e-mail</Label>
         <Controller
           name="email"
           defaultValue={''}
@@ -147,7 +147,7 @@ const FormMessage = () => {
           )}
         />
         {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Label>Numer kontaktowy</Label>
+        <Label>Telefon kontaktowy</Label>
         <Controller
           name="phone"
           defaultValue={''}

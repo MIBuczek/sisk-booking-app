@@ -139,7 +139,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
       ) : (
         <InnerNavigationPanel>
           <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-            <BsFileEarmarkBarGraph style={iconStyle} /> DODAJ REZERWACJE
+            <BsFileEarmarkBarGraph style={iconStyle} /> DODAJ REZERWACJĘ
           </ButtonIcon>
         </InnerNavigationPanel>
       )}

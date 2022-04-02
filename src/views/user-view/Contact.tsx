@@ -39,8 +39,11 @@ const Contact = () => (
   <ContactWrapper>
     <ContactInfo>
       <Header>DANE TELEADRESOWE</Header>
-      <Paragraph bold>Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.</Paragraph>
-      <Paragraph>ul. Jana Pawła || 12 55-011 Siechnice</Paragraph>
+      <Paragraph bold>
+        Siechnicka Inwestycyjna Spółka Komunalna <br />
+        sp. z o.o.
+      </Paragraph>
+      <Paragraph>ul. Jana Pawła II 12 55-011 Siechnice</Paragraph>
       <br />
       <Paragraph bold small>
         Godziny przyjęć interesantów:
@@ -78,7 +81,7 @@ const Contact = () => (
       </Anchor>
     </ContactInfo>
     <ContactInfo>
-      <Header>Osoba kontaktowa w sprawie rezerwacji</Header>
+      <Header>Osoba do kontaktu w sprawie rezerwacji</Header>
       <Paragraph>
         <strong>Sara Buczek</strong>
       </Paragraph>

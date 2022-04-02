@@ -36,6 +36,9 @@ const CalenderWrapper = styled.section`
     .fc-timegrid-event.fc-v-event {
       background-color: ${({ theme }) => theme.green};
       border-color: #b9b8b8;
+      p {
+        margin: 3px 0;
+      }
     }
     .fc-button-primary {
       background-color: #eaeaea;
@@ -131,7 +134,18 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
           (isAdmin || b.accepted)
         ) {
           b.bookingTime.forEach((bt) => {
-            acc.push(prepareCalenderItem(b.id, bt.day, bt.startHour, bt.endHour));
+            const itemTitle = `${isAdmin ? b.person : 'Rezerwacja'}`;
+            acc.push(
+              prepareCalenderItem(
+                itemTitle,
+                b.id,
+                bt.day,
+                bt.startHour,
+                bt.endHour,
+                b.accepted,
+                b.size
+              )
+            );
           });
         }
         return acc;
@@ -165,6 +179,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
         slotMinTime="08:00:00"
         slotMaxTime="24:00:00"
         allDaySlot={false}
+        firstDay={1}
         weekends
         events={events}
         eventContent={RenderEventContent}

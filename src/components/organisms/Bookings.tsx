@@ -171,7 +171,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         />
         {adminCredentials(user) && (
           <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-            Dodaj nowa rezerwacę
+            Dodaj nową rezerwację
           </OpenBookingsModalButton>
         )}
       </RecordsActionContent>
@@ -207,7 +207,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           )}
           {type === MODAL_TYPES.DELETE && (
             <ModalDelete
-              message="Czy na pewno chcesz chcesz skazować tą rezerwacje"
+              message="Czy na pewno chcesz usunąć tą rezerwację"
               callback={deleteBookingAction}
               cancelCallback={cancelDeleteBookingAction}
             />

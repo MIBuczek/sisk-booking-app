@@ -136,7 +136,7 @@ const Clients = () => {
 
   return (
     <CalenderWrapper>
-      <ClientHeader>Lista Najemcy</ClientHeader>
+      <ClientHeader>Najemcy</ClientHeader>
       <RecordsActionContent>
         <SearchInputField
           type="clients"
@@ -147,7 +147,7 @@ const Clients = () => {
         />
         {adminCredentials(user) && (
           <OpenClientModalButton onClick={() => dispatch(openModal(MODAL_TYPES.CLIENT))}>
-            Dodaj nowego najemce
+            Dodaj nowego najemcę
           </OpenClientModalButton>
         )}
       </RecordsActionContent>

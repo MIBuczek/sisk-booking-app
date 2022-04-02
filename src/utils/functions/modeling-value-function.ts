@@ -53,4 +53,4 @@ const modelDisplayValue = (
   return currentValue.toString();
 };
 
-export { modelDisplayValue };
+export { modelDisplayValue, transformValue };

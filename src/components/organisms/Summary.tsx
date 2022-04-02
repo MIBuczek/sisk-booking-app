@@ -239,7 +239,7 @@ const Summary = () => {
           />
         </SelectWrapper>
         <MonthPickerWrapper>
-          <Label>Wybierz miesiac</Label>
+          <Label>Wybierz miesiąc</Label>
           <Controller
             name="month"
             defaultValue={new Date()}
@@ -270,19 +270,21 @@ const Summary = () => {
         {isSummaryGenerated ? (
           <>
             <ClientDetailTable>
-              <ClientDetailWrapper>
-                {RECORDS_CLIENTS_ROW_DETAILS.map((prop) => {
-                  if (!isEmpty(clientSummary.client[prop])) {
-                    return (
-                      <DetailContent key={prop}>
-                        <strong>{RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]} : </strong>
-                        {modelDisplayValue(prop, clientSummary.client[prop])}
-                      </DetailContent>
-                    );
-                  }
-                  return null;
-                })}
-              </ClientDetailWrapper>
+              <tbody>
+                <ClientDetailWrapper>
+                  {RECORDS_CLIENTS_ROW_DETAILS.map((prop) => {
+                    if (!isEmpty(clientSummary.client[prop])) {
+                      return (
+                        <DetailContent key={prop}>
+                          <strong>{RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]} : </strong>
+                          {modelDisplayValue(prop, clientSummary.client[prop])}
+                        </DetailContent>
+                      );
+                    }
+                    return null;
+                  })}
+                </ClientDetailWrapper>
+              </tbody>
             </ClientDetailTable>
             <DetailsParagraph bold>
               Radwanice :<DetailsSpan>{clientSummary.radwanice.length} rezerwacji.</DetailsSpan>
@@ -314,7 +316,7 @@ const Summary = () => {
           </>
         ) : (
           <DetailsParagraph bold className="empty">
-            Aby zobaczyc posumowanie wybierz klienta oraz miesiac
+            Aby zobaczyć posumowanie, wybierz klienta oraz miesiąc.
           </DetailsParagraph>
         )}
       </SummaryDetailContent>

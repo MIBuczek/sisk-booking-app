@@ -524,7 +524,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               locale="pl"
               minDate={new Date()}
               maxDate={addMonths(maxRangDate, 8)}
-              selectsRange
+              dateFormat="dd-MM-yyyy"
               invalid={!!errors.startDate}
               onChange={onChange}
               onBlur={onBlur}
@@ -551,6 +551,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   locale="pl"
                   minDate={new Date()}
                   maxDate={addMonths(maxRangDate, 8)}
+                  dateFormat="dd-MM-yyyy"
                   invalid={!!errors.endDate}
                   onChange={onChange}
                   onBlur={onBlur}

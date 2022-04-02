@@ -109,6 +109,7 @@ const Login: React.FC = (): JSX.Element => {
               className="input"
               placeholder="Wpisz"
               type="password"
+              autoComplete="on"
             />
           )}
         />

@@ -3,8 +3,9 @@ import { EventContentArg } from '@fullcalendar/react';
 
 const RenderEventContent = (eventContent: EventContentArg) => (
   <>
-    <b>{eventContent.event.title}</b>
+    <p>{eventContent.event.title}</p>
+    <p>{eventContent.event.url}</p>
+    <p>{eventContent.event.textColor}</p>
   </>
 );
-
 export default RenderEventContent;

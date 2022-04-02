@@ -59,6 +59,13 @@ const RecordTable = styled.table`
     display: flex;
     border-top: ${({ theme }) => `1px solid ${theme.green}`};
     border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+    tr {
+      width: 100%;
+      td {
+        width: 100%;
+        display: flex;
+      }
+    }
   }
 `;
 
@@ -176,14 +183,22 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
           )}
         </tbody>
         <tfoot>
-          <Pagination nextPage={nextPage} totalPost={records.length} postPerPage={postPerPage} />
-          <ButtonGroup
-            itemPerPage
-            options={[20, 50, 100]}
-            optionsHandler={postPerPageHandler}
-            value={postPerPage}
-            disabled={false}
-          />
+          <tr>
+            <td>
+              <Pagination
+                nextPage={nextPage}
+                totalPost={records.length}
+                postPerPage={postPerPage}
+              />
+              <ButtonGroup
+                itemPerPage
+                options={[20, 50, 100]}
+                optionsHandler={postPerPageHandler}
+                value={postPerPage}
+                disabled={false}
+              />
+            </td>
+          </tr>
         </tfoot>
       </RecordTable>
     </RecordWrapper>

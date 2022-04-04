@@ -25,7 +25,7 @@ const NoMatchContent = styled.section`
   }
 `;
 
-const NoMatch: React.SFC = (): JSX.Element => (
+const NoMatch = (): JSX.Element => (
   <NoMatchWrapper>
     <NoMatchContent>
       <Header>

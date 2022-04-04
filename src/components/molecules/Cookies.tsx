@@ -18,6 +18,7 @@ const CookiesWrapper = styled.div`
   color: ${({ theme }) => theme.white};
   padding: 15px 20px;
   border-radius: 3px;
+  background-color: white;
 `;
 
 const CookieHeader = styled(Header)`

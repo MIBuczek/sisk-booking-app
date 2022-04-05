@@ -13,6 +13,7 @@ interface IBuilding {
   extra: IExtraBuilding;
   phone: string;
   email: string;
+  employees: string[];
   [x: string]: string | string[] | SIZE_OPTIONS[] | IExtraBuilding;
 }
 

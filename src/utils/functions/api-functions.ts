@@ -84,7 +84,8 @@ const parseFirebaseBuildingData = (doc: any) =>
     size: doc.data().size,
     extra: doc.data().extra,
     phone: doc.data().phone,
-    email: doc.data().email
+    email: doc.data().email,
+    employees: doc.data().employees
   } as IBuilding);
 
 export { parseFirebaseBookingData, parseFirebaseClientData, parseFirebaseBuildingData };

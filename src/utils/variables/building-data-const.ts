@@ -13,7 +13,8 @@ const RADWANICE_BUILDINGS: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   },
   {
     name: 'Sala fitness',
@@ -25,7 +26,8 @@ const RADWANICE_BUILDINGS: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   }
 ];
 
@@ -40,7 +42,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   },
   {
     name: 'Sala fitness',
@@ -52,7 +55,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   },
   {
     name: 'Boisko ze sztuczną nawierzchnią',
@@ -64,7 +68,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     extra: {
       lighting: true,
       toilets: true
-    }
+    },
+    employees: []
   },
   {
     name: 'Boisko trawiaste na stadionie LA',
@@ -76,7 +81,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   },
   {
     name: 'Orlik',
@@ -88,7 +94,8 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   }
 ];
 
@@ -103,7 +110,8 @@ const SWIETA_KATARZYNA_BUILDING: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   }
 ];
 
@@ -118,7 +126,8 @@ const ZERNIKI_WROCLAWSKIE_BUILDING: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   },
   {
     name: 'Sala fitness',
@@ -130,7 +139,8 @@ const ZERNIKI_WROCLAWSKIE_BUILDING: IBuilding[] = [
     extra: {
       lighting: false,
       toilets: false
-    }
+    },
+    employees: []
   }
 ];
 

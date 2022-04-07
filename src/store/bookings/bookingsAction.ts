@@ -75,7 +75,6 @@ export const getBookingDataForUser = () => async (
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
-    console.log(err);
     throw new Error(JSON.stringify(err));
   }
 };

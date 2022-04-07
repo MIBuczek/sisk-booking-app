@@ -42,10 +42,10 @@ export const customStyles = (invalid: boolean) => ({
     border: isDisabled
       ? '1px solid #b9b8b8'
       : isSelected
-      ? '1px solid #afbf36'
-      : isFocused
-      ? '#eaeaea'
-      : null
+        ? '1px solid #afbf36'
+        : isFocused
+          ? '#eaeaea'
+          : null
   }),
   placeholder: (styles: { [x: string]: string }) => ({ ...styles, left: '50%', color: '#b9b8b8' })
   // singleValue: (provided: { [x: string]: string }) => {

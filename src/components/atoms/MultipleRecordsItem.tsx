@@ -119,9 +119,6 @@ const CommentsSpan = styled(RecordDetailSpan)`
   width: 100% !important;
   border-bottom: ${({ theme }) => `1px dotted ${theme.middleGray}`};
   margin-bottom: 3px;
-  &:last-of-type {
-    border-bottom: none;
-  }
 `;
 
 const ChevronIcon = styled(BsChevronDown)`

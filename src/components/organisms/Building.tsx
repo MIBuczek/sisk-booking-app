@@ -7,7 +7,6 @@ import SelectInputField, { customStyles } from 'components/atoms/SelectInputFiel
 import TextAreaField from 'components/atoms/TextAreaField';
 import TextInputField from 'components/atoms/TextInputField';
 import ConfirmAction from 'components/molecules/ConfirmAction';
-import { isEmpty } from 'lodash';
 import { IAdminState, IBuilding, IEmployeeMessage, IReduxState, TSelect } from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -112,6 +111,11 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
 
   const { buildings } = useSelector((state: IReduxState) => state.buildingStore);
 
+  /**
+   * Function to get all building employees.
+   * @param selectedBuilding
+   * @returns {Array<TSelect>}
+   */
   const getEmployeesOptions = (selectedBuilding: IBuilding | undefined): TSelect[] => {
     if (!selectedBuilding) return [];
     return selectedBuilding.employees.map((e): TSelect => ({ value: e, label: e }));

@@ -66,7 +66,8 @@ const ListItemBtn = styled(Button)`
   width: 35px;
   &:hover {
     box-shadow: none;
-    border-color: ${({ theme }) => theme.middleGray};
+    border-color: ${({ theme }) => theme.darkGrey};
+    color: ${({ theme }) => theme.darkGrey};
   }
 `;
 
@@ -96,10 +97,15 @@ const BookingTimeWrapper = styled.div`
 const SingleBookingTime = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   span {
     display: inline-block;
     padding: 5px 3px;
-    width: 33%;
+    width: 20%;
+  }
+  button {
+    background: transparent;
+    border-bottom: none;
   }
 `;
 
@@ -107,6 +113,15 @@ const RecordDetailSpan = styled.span`
   font-size: ${({ theme }) => theme.fontSize.s};
   padding: 10px 15px 10px 5px;
   width: auto;
+`;
+
+const CommentsSpan = styled(RecordDetailSpan)`
+  width: 100% !important;
+  border-bottom: ${({ theme }) => `1px dotted ${theme.middleGray}`};
+  margin-bottom: 3px;
+  &:last-of-type {
+    border-bottom: none;
+  }
 `;
 
 const ChevronIcon = styled(BsChevronDown)`
@@ -126,7 +141,7 @@ interface MultipleRecordItemProps {
   recordPropertyDisplayMap: { [x: string]: string };
   currentRecord: IClient | IBooking;
   allRecords: (IClient | IBooking)[];
-  editHandler: (index: number, isEditor: boolean) => void;
+  editHandler: (itemIndex: number, isMainItem: boolean, subItemIndex?: number) => void;
   deleteHandler: (index: number) => void;
 }
 
@@ -168,11 +183,6 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
             <ListItemBtn onClick={toggle}>
               <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
             </ListItemBtn>
-            {(isAdmin || isEmployee) && (
-              <ListItemBtn onClick={() => editHandler(index, false)}>
-                <BsFillCheckSquareFill />
-              </ListItemBtn>
-            )}
             {isAdmin && (
               <>
                 <ListItemBtn onClick={() => editHandler(index, true)}>
@@ -195,8 +205,8 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                       <RecordDetailSpan>
                         <strong>{recordPropertyDisplayMap[property]} : </strong>
                       </RecordDetailSpan>
-                      {(currentRecord[property] as ISingleBookingDate[]).map((sb) => (
-                        <SingleBookingTime key={sb.day.getMilliseconds()}>
+                      {(currentRecord[property] as ISingleBookingDate[]).map((sb, sbi) => (
+                        <SingleBookingTime key={`${sb.day.getMilliseconds() + sbi + index}`}>
                           <RecordDetailSpan>
                             <strong>Dzień: </strong>
                             {modelDisplayValue(property, sb.day)}
@@ -209,6 +219,19 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                             <strong>Godzina zakończenia: </strong>
                             {modelDisplayValue(property, sb.endHour, true)}
                           </RecordDetailSpan>
+                          <RecordDetailSpan>
+                            <strong>Status: </strong>
+                            {modelDisplayValue(property, sb.status)}
+                          </RecordDetailSpan>
+                          {(isAdmin || isEmployee) && (
+                            <ListItemBtn onClick={() => editHandler(index, false, sbi)}>
+                              <BsFillCheckSquareFill />
+                            </ListItemBtn>
+                          )}
+                          <CommentsSpan>
+                            <strong>Komentarz: </strong>
+                            {modelDisplayValue(property, sb.comments)}
+                          </CommentsSpan>
                         </SingleBookingTime>
                       ))}
                     </BookingTimeWrapper>

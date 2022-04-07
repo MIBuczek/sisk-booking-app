@@ -6,6 +6,8 @@ interface ISingleBookingDate {
   day: Date;
   startHour: Date;
   endHour: Date;
+  comments: string;
+  status: string;
 }
 
 type TBooking =
@@ -34,8 +36,6 @@ interface IBooking {
   bookingTime: ISingleBookingDate[];
   accepted: boolean;
   message: string;
-  bookingStatus: string;
-  bookingComments: string;
   extraOptions: boolean;
   selectedOptions: ISelectedExtraOptions[];
   id: string;

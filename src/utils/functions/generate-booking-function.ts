@@ -45,7 +45,9 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
     {
       day: new Date(`${formatCalenderDate(startDate)}T00:01:00.000Z`),
       startHour: overwriteDate(startDate, startHour),
-      endHour: overwriteDate(startDate, endHour)
+      endHour: overwriteDate(startDate, endHour),
+      comments: '',
+      status: BOOKING_STATUS.INITIAL
     }
   ];
 
@@ -61,7 +63,9 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
     bookingArray.push({
       day: new Date(`${formatCalenderDate(day)}T00:01:00.000Z`),
       startHour: overwriteDate(day, startHour),
-      endHour: overwriteDate(day, endHour)
+      endHour: overwriteDate(day, endHour),
+      comments: '',
+      status: BOOKING_STATUS.INITIAL
     });
     index += 1;
   } while (index <= weeksBetween);
@@ -97,8 +101,6 @@ const generateBookingDetails = (
     month: cred.startDate.getMonth(),
     accepted: cred.accepted || false,
     message: cred.message,
-    bookingStatus: BOOKING_STATUS.INITIAL,
-    bookingComments: '',
     extraOptions: !!extraOptions.length,
     selectedOptions: extraOptions,
     bookingTime,
@@ -110,16 +112,26 @@ const generateBookingDetails = (
  * Function to generate single booking status data
  * @param  cred
  * @param  currentBooking
+ * @param  subItemIndex
  * @returns {Object<IBooking>}
  */
 const generateBookingStatusDate = (
   cred: IBookingStatusForm,
-  currentBooking: IBooking
-): IBooking => ({
-  ...currentBooking,
-  bookingStatus: cred.bookingStatus.value,
-  bookingComments: cred.bookingComments || ''
-});
+  currentBooking: IBooking,
+  subItemIndex: number
+): IBooking => {
+  let updatedBT = currentBooking.bookingTime[subItemIndex];
+  updatedBT = {
+    ...updatedBT,
+    status: cred.bookingStatus.value,
+    comments: cred.bookingComments
+  };
+  currentBooking.bookingTime.splice(subItemIndex, 1, updatedBT);
+  return {
+    ...currentBooking,
+    bookingTime: [...currentBooking.bookingTime]
+  };
+};
 
 /**
  * Function to generate form object user in React Hook Forms

@@ -119,7 +119,7 @@ interface IProps {
   isEmployee: boolean;
   records?: (IClient | IBooking)[];
   emptyText: string;
-  editHandler: (index: number, isEditor: boolean) => void;
+  editHandler: (itemIndex: number, isMainItem: boolean, subItemIndex?: number) => void;
   deleteHandler: (index: number) => void;
 }
 

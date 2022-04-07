@@ -70,15 +70,12 @@ export const getBookingDataForUser = () => async (
 ): Promise<void> => {
   dispatch(fetchingBookings());
   try {
-    const resp = await db
-      .collection('bookings')
-      .where('bookingStatus', '==', 'INITIAL')
-      .where('accepted', '==', true)
-      .get();
+    const resp = await db.collection('bookings').where('accepted', '==', true).get();
     const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
+    console.log(err);
     throw new Error(JSON.stringify(err));
   }
 };

@@ -209,6 +209,9 @@ const Summary = () => {
     setIsSummaryGenerated(true);
   };
 
+  /**
+   * Function to restore initial status.
+   */
   const clearSummary = () => {
     setClientSummary(cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS));
     setIsSummaryGenerated(false);

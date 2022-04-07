@@ -57,10 +57,12 @@ const ButtonPanel = styled.div`
 
 interface BookingStatusFormProps {
   editedItemIndex?: number;
+  editedSubItemIndex?: number;
 }
 
 const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
-  editedItemIndex
+  editedItemIndex,
+  editedSubItemIndex
 }) => {
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
   const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
@@ -68,7 +70,17 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
   const dispatch = useDispatch();
   const { bookings } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
 
-  const { handleSubmit, errors, control, reset } = useForm<IBookingStatusForm>();
+  const { handleSubmit, errors, control, reset } = useForm<IBookingStatusForm>({
+    defaultValues: { bookingStatus: BOOKING_STATUS_OPTIONS[0], bookingComments: '' }
+  });
+
+  const editBookingStatusHandler = () => {
+    if (typeof editedItemIndex === 'undefined' || typeof editedSubItemIndex === 'undefined') return;
+    const { status, comments } = bookings[editedItemIndex].bookingTime[editedSubItemIndex];
+    const bookingStatus =
+      BOOKING_STATUS_OPTIONS.find((bso) => bso.value === status) || BOOKING_STATUS_OPTIONS[0];
+    reset({ bookingStatus, bookingComments: comments });
+  };
 
   /**
    * Function to submit additional status form fields.
@@ -76,9 +88,9 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
    * @param cred
    */
   const onSubmit = handleSubmit<IBookingStatusForm>(async (cred) => {
-    if (typeof editedItemIndex === 'undefined') return;
+    if (typeof editedItemIndex === 'undefined' || typeof editedSubItemIndex === 'undefined') return;
     const currentBooking = cloneDeep(bookings[editedItemIndex]);
-    setBookingData(generateBookingStatusDate(cred, currentBooking));
+    setBookingData(generateBookingStatusDate(cred, currentBooking, editedSubItemIndex));
     setDisplayConfirmation(true);
   });
 
@@ -111,6 +123,14 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
     createInitialState();
     dispatch(closeModal());
   };
+
+  React.useEffect(() => {
+    editBookingStatusHandler();
+
+    return () => {
+      cancelHandler();
+    };
+  }, []);
 
   return (
     <BookingStatusWrapper>

@@ -103,11 +103,9 @@ const BookingDetails = (): JSX.Element => {
           <ClearButton onClick={clear}>Wyczyść</ClearButton>
         </>
       ) : (
-        <>
-          <DetailsParagraph bold>
-            Aby zobaczyć szczegóły, kliknij kalendarzu na wybraną rezerwację.
-          </DetailsParagraph>
-        </>
+        <DetailsParagraph bold>
+          Aby zobaczyć szczegóły, kliknij kalendarzu na wybraną rezerwację.
+        </DetailsParagraph>
       )}
     </BookingDetailsWrapper>
   );

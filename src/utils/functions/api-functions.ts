@@ -1,24 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IBuilding, IClient } from 'models';
-import { IBooking } from 'models/store/booking-models';
+import { IBuilding, IClient, ISelectedExtraOptions, IBooking, ISingleBookingDate } from 'models';
 
 /**
  * Map function to transform bookingTime data from firebase
  * @param item
- * @returns {Object}
+ * @returns {Object<ISingleBookingDate>}
  */
-const transformFirebaseBookingTimeData = (item: any) => ({
+const transformFirebaseBookingTimeData = (item: any): ISingleBookingDate => ({
   day: item.day.toDate(),
   startHour: item.startHour.toDate(),
-  endHour: item.endHour.toDate()
+  endHour: item.endHour.toDate(),
+  comments: item.comments,
+  status: item.status
 });
 
 /**
  * Map function to transform extra options data from firebase
  * @param item
- * @returns {Object}
+ * @returns {Object<ISelectedExtraOptions>}
  */
-const transformFirebaseSelectedOptionsData = (item: any) => ({
+const transformFirebaseSelectedOptionsData = (item: any): ISelectedExtraOptions => ({
   options: item.options,
   fromHour: item.fromHour.toDate(),
   toHour: item.toHour.toDate()
@@ -47,8 +48,6 @@ const parseFirebaseBookingData = (doc: any) =>
     selectedOptions: doc.data().selectedOptions.map(transformFirebaseSelectedOptionsData),
     accepted: doc.data().accepted,
     message: doc.data().message,
-    bookingStatus: doc.data().bookingStatus,
-    bookingComments: doc.data().bookingComments,
     id: doc.id
   } as IBooking);
 
@@ -84,7 +83,8 @@ const parseFirebaseBuildingData = (doc: any) =>
     size: doc.data().size,
     extra: doc.data().extra,
     phone: doc.data().phone,
-    email: doc.data().email
+    email: doc.data().email,
+    employees: doc.data().employees
   } as IBuilding);
 
 export { parseFirebaseBookingData, parseFirebaseClientData, parseFirebaseBuildingData };

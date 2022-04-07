@@ -85,12 +85,13 @@ const Clients = () => {
 
   /**
    * Function to handle edited client data and set related data into client form.
-   * @param index
-   * @param editHandler
+   * @param itemIndex
+   * @param isMainItem
+   * @param subItemIndex
    */
-  const editClientHandler = (index: number, editHandler: boolean) => {
+  const editClientHandler = (itemIndex: number, isMainItem: boolean, subItemIndex?: number) => {
     setIsEditing(true);
-    setEditedItemIndex(index);
+    setEditedItemIndex(itemIndex);
     dispatch(openModal(MODAL_TYPES.CLIENT));
   };
 

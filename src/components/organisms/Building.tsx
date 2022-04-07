@@ -3,10 +3,11 @@ import ErrorMsg from 'components/atoms/ErrorMsg';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import Paragraph from 'components/atoms/Paragraph';
+import SelectInputField, { customStyles } from 'components/atoms/SelectInputField';
 import TextAreaField from 'components/atoms/TextAreaField';
 import TextInputField from 'components/atoms/TextInputField';
 import ConfirmAction from 'components/molecules/ConfirmAction';
-import { IAdminState, IBuilding, IEmployeeMessage, IReduxState } from 'models';
+import { IAdminState, IBuilding, IEmployeeMessage, IReduxState, TSelect } from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -78,12 +79,8 @@ const DetailsParagraph = styled(Paragraph)`
 
 const DetailsSpan = styled.span`
   font-weight: 400;
-  margin-left: 0.5rem;
+  margin: 0 0 0.5rem 0.5rem;
   font-size: 14px;
-`;
-
-const EmployeeInput = styled(TextInputField)`
-  width: 100%;
 `;
 
 const EmployeeTextArea = styled(TextAreaField)`
@@ -113,6 +110,16 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
   const { city, building } = mainState;
 
   const { buildings } = useSelector((state: IReduxState) => state.buildingStore);
+
+  /**
+   * Function to get all building employees.
+   * @param selectedBuilding
+   * @returns {Array<TSelect>}
+   */
+  const getEmployeesOptions = (selectedBuilding: IBuilding | undefined): TSelect[] => {
+    if (!selectedBuilding) return [];
+    return selectedBuilding.employees.map((e): TSelect => ({ value: e, label: e }));
+  };
 
   /**
    * Function to compare selected building with building database.
@@ -193,18 +200,41 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
         <DetailsParagraph bold>E-mail :</DetailsParagraph>
         <DetailsSpan>{currentCity.email}</DetailsSpan>
         <DetailsParagraph bold>Pracownicy :</DetailsParagraph>
-        <DetailsSpan>1. Lorem Ipsum</DetailsSpan>
+        {currentCity.employees.map((e, i) => (
+          <DetailsSpan key={`${e}`}>{`${i + 1}. ${e}`}</DetailsSpan>
+        ))}
       </InnerContent>
       <InnerContent>
         <BuildingSubHeader>Wyślij wiadomość pracownikowi</BuildingSubHeader>
-        <Label>E-mail</Label>
+        <Label>Imię i nazwisko</Label>
         <Controller
-          name="email"
-          defaultValue={''}
+          name="person"
+          defaultValue={{ label: '', value: '' }}
           control={control}
           rules={{ required: true }}
           render={({ onChange, onBlur, value }) => (
-            <EmployeeInput
+            <SelectInputField
+              options={getEmployeesOptions(currentCity)}
+              styles={customStyles(!!errors.person)}
+              placeholder="Wybierz"
+              onChange={onChange}
+              onBlur={onBlur}
+              selected={value}
+              value={value}
+              isDisabled={displayConfirmation}
+              defaultValue={building}
+            />
+          )}
+        />
+        {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
+        <Label>E-mail</Label>
+        <Controller
+          name="email"
+          defaultValue={currentCity.email || ''}
+          control={control}
+          rules={{ required: true }}
+          render={({ onChange, onBlur, value }) => (
+            <TextInputField
               onBlur={onBlur}
               value={value}
               onChange={onChange}
@@ -216,25 +246,6 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           )}
         />
         {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Label>Imię i nazwisko</Label>
-        <Controller
-          name="person"
-          defaultValue={''}
-          control={control}
-          rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
-            <EmployeeInput
-              onBlur={onBlur}
-              value={value}
-              onChange={onChange}
-              invalid={!!errors.person}
-              className="input"
-              placeholder="Wpisz"
-              disabled={displayConfirmation}
-            />
-          )}
-        />
-        {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
         <Label>Wiadomość</Label>
         <Controller
           name="message"

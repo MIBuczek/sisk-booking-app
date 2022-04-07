@@ -43,8 +43,7 @@ const generateReservationSummary = (
             acc.push({
               ...bt,
               building: r.building,
-              size: r.size,
-              status: r.bookingStatus
+              size: r.size
             });
           }
           return acc;

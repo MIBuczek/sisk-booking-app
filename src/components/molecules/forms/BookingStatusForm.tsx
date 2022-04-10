@@ -101,7 +101,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
   const confirmSubmit = () => {
     if (!bookingData) return;
 
-    dispatch(updateBooking(bookingData));
+    dispatch(updateBooking(bookingData, true));
 
     createInitialState();
     dispatch(closeModal());

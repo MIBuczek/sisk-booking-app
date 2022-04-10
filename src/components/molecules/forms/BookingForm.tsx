@@ -227,8 +227,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const confirmSubmit = () => {
     if (!bookingData) return;
 
-    if (bookingId) dispatch(updateBooking({ ...bookingData, id: bookingId }));
-    else dispatch(addBooking(bookingData));
+    if (bookingId) dispatch(updateBooking({ ...bookingData, id: bookingId }, isAdmin));
+    else dispatch(addBooking(bookingData, isAdmin));
 
     createInitialState();
     dispatch(closeModal());

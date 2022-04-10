@@ -1,5 +1,12 @@
 import { Dispatch } from 'react';
-import { db, parseFirebaseBookingData, BOOKING_STATE, SAVING_STAGE, MODAL_TYPES } from 'utils';
+import {
+  db,
+  parseFirebaseBookingData,
+  BOOKING_STATE,
+  SAVING_STAGE,
+  MODAL_TYPES,
+  storeEmailNotification
+} from 'utils';
 import { IBooking, IBookingsAction, IModalAction, IReduxState } from 'models';
 import { openModal } from 'store';
 
@@ -82,20 +89,38 @@ export const getBookingDataForUser = () => async (
 /**
  * Booking store action to add records to firebase database bookings collection.
  */
-export const addBooking = (bookingData: IBooking) => async (
+export const addBooking = (bookingData: IBooking, isAdmin: boolean) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
     const resp = await db.collection('bookings').add(bookingData);
-    const { bookings } = getStore().bookingStore;
+
+    const {
+      bookingStore: { bookings },
+      buildingStore: { buildings }
+    } = getStore();
+
     const newBookings: IBooking[] = [{ ...bookingData, id: resp.id }, ...bookings];
+
     dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
+
+    const building = buildings.find((b) => b.property === bookingData.building);
+    const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
+    if (emailResp > 200) {
+      dispatch(
+        openModal(
+          MODAL_TYPES.ERROR,
+          'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
+        )
+      );
+    }
   } catch (err) {
     dispatch(
       openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie można dodac Twojej rezerwacji.')
     );
+
     throw new Error(JSON.stringify(err));
   }
 };
@@ -103,18 +128,35 @@ export const addBooking = (bookingData: IBooking) => async (
 /**
  * Booking store action to update records to firebase database bookings collection.
  */
-export const updateBooking = (bookingData: IBooking) => async (
+export const updateBooking = (bookingData: IBooking, isAdmin: boolean) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
     await db.collection('bookings').doc(bookingData.id).update(bookingData);
-    const { bookings } = getStore().bookingStore;
+
+    const {
+      bookingStore: { bookings },
+      buildingStore: { buildings }
+    } = getStore();
+
     const newBookings: IBooking[] = bookings.map((booking: IBooking) =>
       booking.id === bookingData.id ? bookingData : booking
     );
+
     dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, newBookings));
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została zaktualizowana pomyślnie'));
+
+    const building = buildings.find((b) => b.property === bookingData.building);
+    const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
+    if (emailResp > 200) {
+      dispatch(
+        openModal(
+          MODAL_TYPES.ERROR,
+          'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
+        )
+      );
+    }
   } catch (err) {
     dispatch(
       openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie można zaktualizować rezerwacji.')

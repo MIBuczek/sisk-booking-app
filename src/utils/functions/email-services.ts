@@ -101,7 +101,7 @@ const storeEmailNotification = (
   if (isAdmin) {
     return sendEmailNotification(
       USER_SERVICE_ID,
-      USER_TEMPLATE_BOOKING_ID,
+      ADMIN_TEMPLATE_BOOKING_ID,
       emailAdminBodyBooking(bookingData, buildingEmail),
       USER_ID
     );

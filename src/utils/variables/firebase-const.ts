@@ -4,14 +4,14 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 // Personal config
-const devSKD = {
-  apiKey: 'AIzaSyCjSThKQ4QgNeaiBwaeGvoV0RmFaB0kgsg',
-  authDomain: 'sisk-book-tool.firebaseapp.com',
-  projectId: 'sisk-book-tool',
-  storageBucket: 'sisk-book-tool.appspot.com',
-  messagingSenderId: '1070184996817',
-  appId: '1:1070184996817:web:71ac2cb95a4c5210e90af0'
-};
+// const devSKD = {
+//   apiKey: 'AIzaSyCjSThKQ4QgNeaiBwaeGvoV0RmFaB0kgsg',
+//   authDomain: 'sisk-book-tool.firebaseapp.com',
+//   projectId: 'sisk-book-tool',
+//   storageBucket: 'sisk-book-tool.appspot.com',
+//   messagingSenderId: '1070184996817',
+//   appId: '1:1070184996817:web:71ac2cb95a4c5210e90af0'
+// };
 
 // SISK config
 const prodSKD = {

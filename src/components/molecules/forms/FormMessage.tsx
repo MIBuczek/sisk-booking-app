@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import {
   sendEmailNotification,
   USER_MIB_ID,
-  USER_MIB_TEMPLATE_BOOKING_ID,
+  USER_MIB_TEMPLATE_MESSAGE_ID,
   USER_MIB_SERVICE_ID
 } from 'utils';
 import Anchor from '../../atoms/Anchor';
@@ -114,10 +114,10 @@ const FormMessage = () => {
   /**
    * Function to confirm dispatch action. If so then sent notification to pointed email address.
    */
-  const confirmSubmit = async () => {
+  const confirmSubmit = async (): Promise<void> => {
     const status = await sendEmailNotification(
       USER_MIB_SERVICE_ID,
-      USER_MIB_TEMPLATE_BOOKING_ID,
+      USER_MIB_TEMPLATE_MESSAGE_ID,
       message,
       USER_MIB_ID
     );

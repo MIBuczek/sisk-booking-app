@@ -1,7 +1,7 @@
-import { IEmployeeMessage } from 'models';
+import { IEmployeeMessageForm } from 'models';
 
-const INITIAL_EMPLOYEE_MESSAGE: IEmployeeMessage = {
-  person: '',
+const INITIAL_EMPLOYEE_MESSAGE: IEmployeeMessageForm = {
+  person: { label: '', value: '' },
   email: '',
   message: ''
 };

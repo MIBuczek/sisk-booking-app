@@ -48,6 +48,7 @@ const parseFirebaseBookingData = (doc: any) =>
     selectedOptions: doc.data().selectedOptions.map(transformFirebaseSelectedOptionsData),
     accepted: doc.data().accepted,
     message: doc.data().message,
+    payment: doc.data().payment,
     id: doc.id
   } as IBooking);
 

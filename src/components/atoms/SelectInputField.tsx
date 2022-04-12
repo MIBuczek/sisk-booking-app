@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-nested-ternary */
 import styled from 'styled-components';
 import Select from 'react-select';
@@ -42,16 +43,16 @@ export const customStyles = (invalid: boolean) => ({
     border: isDisabled
       ? '1px solid #b9b8b8'
       : isSelected
-        ? '1px solid #afbf36'
-        : isFocused
-          ? '#eaeaea'
-          : null
+      ? '1px solid #afbf36'
+      : isFocused
+      ? '#eaeaea'
+      : null
   }),
-  placeholder: (styles: { [x: string]: string }) => ({ ...styles, left: '50%', color: '#b9b8b8' })
-  // singleValue: (provided: { [x: string]: string }) => {
-  //   const left = '50%';
-  //   return { ...provided, left };
-  // }
+  placeholder: (styles: { [x: string]: string }) => ({ ...styles, left: '50%', color: '#b9b8b8' }),
+  singleValue: (provided: { [x: string]: string }) => {
+    const left = '50%';
+    return { ...provided, left };
+  }
 });
 
 export default SelectInputField;

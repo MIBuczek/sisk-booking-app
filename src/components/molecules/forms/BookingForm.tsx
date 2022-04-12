@@ -14,6 +14,7 @@ import {
   generateBookingDetails,
   generateBookingFormDetails,
   generateBuildingOptions,
+  PAYMENTS_OPTIONS,
   selectClientOptions,
   selectedClientIdOption,
   selectSizeFieldOptions,
@@ -304,6 +305,15 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     }
   };
 
+  /**
+   * Function to display right confirmation message according current state.
+   */
+  const confirmationMessage = (): string => {
+    if (isEditing) return 'Czy napewno chcesz zaktualizować rezerwację';
+    if (isAdmin) return 'Czy napewno chcesz dodać nową rezerwację';
+    return 'Czy napewno chcesz wysłać prośbę o rezerwację';
+  };
+
   React.useEffect(() => {
     setSizeOptions(selectSizeFieldOptions(cityValue.value, buildingValue.value));
   }, [cityValue, buildingValue]);
@@ -507,6 +517,29 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
+        <SelectWrapper>
+          <Label>Płatność</Label>
+          <Controller
+            name="payment"
+            defaultValue={PAYMENTS_OPTIONS[0]}
+            control={control}
+            rules={{ required: true }}
+            render={({ onChange, onBlur, value }) => (
+              <SelectInputField
+                options={PAYMENTS_OPTIONS}
+                styles={customStyles(!!errors.payment)}
+                placeholder="Wybierz"
+                onChange={onChange}
+                onBlur={onBlur}
+                selected={value}
+                value={value}
+                defaultValue={PAYMENTS_OPTIONS[0]}
+                isDisabled={displayConfirmation}
+              />
+            )}
+          />
+          {errors.payment && <ErrorMsg innerText="Pole nie może być puste" />}
+        </SelectWrapper>
       </InputContainer>
       <InputContainer>
         <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałbyś zarezerwować obiekt`}</Label>
@@ -665,11 +698,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       )}
       {displayConfirmation ? (
         <ConfirmAction
-          message={
-            isEditing
-              ? 'Czy napewno chcesz zaktualizować rezerwację'
-              : 'Czy napewno chcesz wysłać prośbę o rezerwację'
-          }
+          message={confirmationMessage()}
           callback={confirmSubmit}
           cancelCallback={() => {
             setDisplayConfirmation(false);

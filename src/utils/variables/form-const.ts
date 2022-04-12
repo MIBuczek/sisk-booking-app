@@ -1,5 +1,6 @@
 import { IBookingForm } from 'models/forms/booking-form-models';
 import { IClientForm } from 'models/forms/client-form-model';
+import { PAYMENTS_OPTIONS } from './options-const';
 
 const today = new Date();
 
@@ -45,7 +46,8 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
   startHour: today,
   endHour: today,
   accepted: false,
-  message: ''
+  message: '',
+  payment: { label: 'Gotówka', value: 'cash' }
 };
 
 const SIZE_OPTIONS_BTN = Object.values(SIZE_OPTIONS);

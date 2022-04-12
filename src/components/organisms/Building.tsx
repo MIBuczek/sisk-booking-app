@@ -186,7 +186,6 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
       message,
       USER_MIB_ID
     );
-    // alert(JSON.stringify(message));
     initialState();
   };
 

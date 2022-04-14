@@ -1,5 +1,6 @@
 import Button from 'components/atoms/Button';
 import ErrorMsg from 'components/atoms/ErrorMsg';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import Paragraph from 'components/atoms/Paragraph';
@@ -124,7 +125,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
 
   const { city, building } = mainState;
 
-  const { buildings } = useSelector((state: IReduxState) => state.buildingStore);
+  const { buildings, errorMessage } = useSelector((state: IReduxState) => state.buildingStore);
 
   /**
    * Function to get all building employees.
@@ -209,6 +210,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
   return (
     <BuildingWrapper>
       <BuildingHeader>Obiekty sportowe</BuildingHeader>
+      {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
       <InnerContent>
         <BuildingSubHeader>Dane o obiekcie</BuildingSubHeader>
         <DetailsParagraph bold>Miejscowość :</DetailsParagraph>

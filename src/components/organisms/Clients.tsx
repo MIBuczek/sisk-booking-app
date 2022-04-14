@@ -19,6 +19,7 @@ import Modal from 'components/organisms/Modal';
 import SearchInputField from 'components/atoms/SearchInputField';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 
 const CalenderWrapper = styled.section`
   width: 60%;
@@ -68,8 +69,8 @@ const Clients = () => {
   const dispatch = useDispatch();
 
   const {
-    clientStore: { clients },
-    currentUserStore: { user },
+    clientStore: { clients, errorMessage: errorClient },
+    currentUserStore: { user, errorMessage: errorUser },
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
@@ -138,6 +139,7 @@ const Clients = () => {
   return (
     <CalenderWrapper>
       <ClientHeader>Najemcy</ClientHeader>
+      {(errorClient || errorUser) && <ErrorMsgServer innerText={errorClient || errorUser} />}
       <RecordsActionContent>
         <SearchInputField
           type="clients"

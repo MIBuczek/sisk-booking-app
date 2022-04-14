@@ -24,6 +24,7 @@ import BookingStatusForm from 'components/molecules/forms/BookingStatusForm';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import { cloneDeep } from 'lodash';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Modal from './Modal';
 
 const BookingsWrapper = styled.section`
@@ -88,8 +89,8 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   const dispatch = useDispatch();
 
   const {
-    bookingStore: { bookings },
-    currentUserStore: { user },
+    bookingStore: { bookings, errorMessage: errorBooking },
+    currentUserStore: { user, errorMessage: errorUser },
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
 
@@ -165,6 +166,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   return (
     <BookingsWrapper>
       <BookingsHeader>Lista Rezerwacji</BookingsHeader>
+      {(errorBooking || errorUser) && <ErrorMsgServer innerText={errorBooking || errorUser} />}
       <RecordsActionContent>
         <SearchInputField
           type="bookings"

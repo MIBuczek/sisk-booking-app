@@ -1,6 +1,5 @@
 import { IBookingForm } from 'models/forms/booking-form-models';
 import { IClientForm } from 'models/forms/client-form-model';
-import { PAYMENTS_OPTIONS } from './options-const';
 
 const today = new Date();
 

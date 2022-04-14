@@ -22,6 +22,7 @@ import { cloneDeep, isEmpty } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
 import { fadeInLeft } from 'style/animation';
 import SummaryDetailsItem from 'components/atoms/SummaryDetailItem';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 
 registerLocale('pl', pl);
 
@@ -171,8 +172,8 @@ const Summary = () => {
   const [isSummaryGenerated, setIsSummaryGenerated] = React.useState<boolean>(false);
 
   const {
-    clientStore: { clients },
-    bookingStore: { bookings }
+    clientStore: { clients, errorMessage: errorClient },
+    bookingStore: { bookings, errorMessage: errorBooking }
   } = useSelector((state: IReduxState) => state);
 
   const { control, watch } = useForm();
@@ -220,6 +221,7 @@ const Summary = () => {
   return (
     <SummaryWrapper>
       <SummaryHeader>Podsumowanie Najmów</SummaryHeader>
+      {(errorClient || errorBooking) && <ErrorMsgServer innerText={errorClient || errorBooking} />}
       <SummaryInputContent>
         <SelectWrapper>
           <Label>Wybrany klient</Label>

@@ -11,7 +11,7 @@ import { IReduxState } from 'models';
 import { logInUser } from 'store';
 import { Redirect } from 'react-router';
 import { fadeIn } from 'style/animation';
-import { BsExclamationCircle } from 'react-icons/bs';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 
 const LoginWrapper = styled.section`
   width: 100%;
@@ -50,22 +50,6 @@ const LoginTextInputs = styled(TextInputField)`
   margin-bottom: 10px;
 `;
 
-const ErrorLogin = styled.span`
-  color: ${({ theme }) => theme.error};
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: -0.5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 10px 40px;
-  svg {
-    height: 20px;
-    width: 15px;
-    margin-left: 3px;
-  }
-`;
 const Login: React.FC = (): JSX.Element => {
   const { handleSubmit, errors, control, getValues } = useForm<ICredential>();
 
@@ -131,12 +115,7 @@ const Login: React.FC = (): JSX.Element => {
           )}
         />
         {errors.password && <ErrorMsg innerText="Pole nie może być puste" />}
-        {errorMessage && (
-          <ErrorLogin>
-            {errorMessage}
-            <BsExclamationCircle />
-          </ErrorLogin>
-        )}
+        {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
         <Button role="button" onClick={onSubmit} disabled={false}>
           Zaloguj się
         </Button>

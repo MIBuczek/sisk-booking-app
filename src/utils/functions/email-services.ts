@@ -28,7 +28,7 @@ const flatBookingTime = (b: ISingleBookingDate): string => `
  * @returns {Object}
  */
 const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
-  const { person, club, email, phone, message, bookingTime, city, building } = booking;
+  const { person, club, email, phone, message, bookingTime, city, building, payment } = booking;
   const parsedBookingTime = bookingTime.map(flatBookingTime).join().replace(',', '\n');
   return {
     building: modelDisplayValue('building', building),
@@ -38,6 +38,7 @@ const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
     email,
     phone,
     parsedBookingTime,
+    payment,
     message,
     buildingEmail
   };
@@ -49,7 +50,7 @@ const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
  * @returns {Object}
  */
 const emailUserBodyBooking = (booking: IBooking) => {
-  const { person, club, email, phone, message, bookingTime, city, building } = booking;
+  const { person, club, email, phone, message, bookingTime, city, building, payment } = booking;
   const parsedBookingTime = bookingTime.map(flatBookingTime).join().replace(',', ' / ');
 
   return {
@@ -59,6 +60,7 @@ const emailUserBodyBooking = (booking: IBooking) => {
     club,
     email,
     phone,
+    payment,
     parsedBookingTime,
     message
   };

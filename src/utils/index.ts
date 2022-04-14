@@ -12,6 +12,7 @@ export * from 'utils/variables/building-data-const';
 export * from 'utils/variables/booking-extra-options-const';
 export * from 'utils/variables/employee-message-const';
 export * from 'utils/variables/summary-data-const';
+export * from 'utils/variables/email-service-data';
 
 export * from 'utils/functions/api-functions';
 export * from 'utils/functions/calender-functions';
@@ -23,3 +24,4 @@ export * from 'utils/functions/summary-functions';
 export * from 'utils/functions/check-booking-conflicts-function';
 export * from 'utils/functions/filter-bookings-function';
 export * from 'utils/functions/generate-building-function';
+export * from 'utils/functions/email-services';

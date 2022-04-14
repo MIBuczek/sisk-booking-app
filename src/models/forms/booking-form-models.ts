@@ -17,6 +17,7 @@ interface IBookingForm {
   endHour: Date;
   accepted: boolean;
   message: string;
+  payment: TSelect;
   id?: string;
 }
 

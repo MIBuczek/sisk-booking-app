@@ -42,4 +42,9 @@ const SIZE_FIELD_OPTIONS: ISizeFieldOptions = {
   'zerniki-wroclawskie': generateSizeOptions(ZERNIKI_WROCLAWSKIE_BUILDING)
 };
 
-export { CITY_OPTIONS, BUILDINGS_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS };
+const PAYMENTS_OPTIONS: TSelect[] = [
+  { value: 'cash', label: 'Gotówka' },
+  { value: 'invoice', label: 'Faktura' }
+];
+
+export { CITY_OPTIONS, BUILDINGS_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS, PAYMENTS_OPTIONS };

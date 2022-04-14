@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Paragraph from 'components/atoms/Paragraph';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import { IAdminState, IBooking, IMainState } from 'models';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import { prepareCalenderItem } from '../../utils/functions/calender-functions';
 import RenderEventContent from '../atoms/CalenderEvent';
 import { IReduxState } from '../../models/store/store-models';
@@ -118,7 +119,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
   const [events, setEvents] = React.useState<EventInput[]>([]);
 
   const dispatch = useDispatch();
-  const { bookings } = useSelector((state: IReduxState) => state.bookingStore);
+  const { bookings, errorMessage } = useSelector((state: IReduxState) => state.bookingStore);
 
   /**
    * Function create event into full calender component.
@@ -166,6 +167,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
 
   return (
     <CalenderWrapper>
+      {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
       <FullCalendar
         plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{

@@ -1,5 +1,6 @@
 import Button from 'components/atoms/Button';
 import ErrorMsg from 'components/atoms/ErrorMsg';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import Paragraph from 'components/atoms/Paragraph';
@@ -7,13 +8,28 @@ import SelectInputField, { customStyles } from 'components/atoms/SelectInputFiel
 import TextAreaField from 'components/atoms/TextAreaField';
 import TextInputField from 'components/atoms/TextInputField';
 import ConfirmAction from 'components/molecules/ConfirmAction';
-import { IAdminState, IBuilding, IEmployeeMessage, IReduxState, TSelect } from 'models';
+import {
+  IAdminState,
+  IBuilding,
+  IEmployeeMessage,
+  IEmployeeMessageForm,
+  IReduxState,
+  TSelect
+} from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
-import { generateAllBuilding, INITIAL_ALL_BUILDINGS, INITIAL_EMPLOYEE_MESSAGE } from 'utils';
+import {
+  generateAllBuilding,
+  INITIAL_ALL_BUILDINGS,
+  INITIAL_EMPLOYEE_MESSAGE,
+  sendEmailNotification,
+  USER_MIB_ID,
+  USER_MIB_SERVICE_ID,
+  USER_MIB_TEMPLATE_EMPLOYEE_ID
+} from 'utils';
 
 const BuildingWrapper = styled.article`
   width: 60%;
@@ -109,7 +125,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
 
   const { city, building } = mainState;
 
-  const { buildings } = useSelector((state: IReduxState) => state.buildingStore);
+  const { buildings, errorMessage } = useSelector((state: IReduxState) => state.buildingStore);
 
   /**
    * Function to get all building employees.
@@ -149,23 +165,28 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
     }
   };
 
-  const { control, handleSubmit, errors, reset } = useForm<IEmployeeMessage>();
+  const { control, handleSubmit, errors, reset } = useForm<IEmployeeMessageForm>();
 
   /**
    * Function to submit actual form values into form employee message state.
    * It will be dispatched to database it user confirm action.
    * @param cred
    */
-  const onSubmit = handleSubmit<IEmployeeMessage>((cred): void => {
-    setMessage({ ...cred });
+  const onSubmit = handleSubmit<IEmployeeMessageForm>((cred): void => {
+    setMessage({ ...cred, person: cred.person.value });
     setDisplayConfirmation(true);
   });
 
   /**
    * Function to confirm dispatch action. If so then sent notification to pointed email address.
    */
-  const confirmSubmit = (): void => {
-    alert(JSON.stringify(message));
+  const confirmSubmit = async (): Promise<void> => {
+    await sendEmailNotification(
+      USER_MIB_SERVICE_ID,
+      USER_MIB_TEMPLATE_EMPLOYEE_ID,
+      message,
+      USER_MIB_ID
+    );
     initialState();
   };
 
@@ -189,6 +210,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
   return (
     <BuildingWrapper>
       <BuildingHeader>Obiekty sportowe</BuildingHeader>
+      {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
       <InnerContent>
         <BuildingSubHeader>Dane o obiekcie</BuildingSubHeader>
         <DetailsParagraph bold>Miejscowość :</DetailsParagraph>

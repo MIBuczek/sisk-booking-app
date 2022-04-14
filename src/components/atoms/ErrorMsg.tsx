@@ -24,7 +24,7 @@ interface IProps {
 
 const ErrorMsg: React.FC<IProps> = ({ innerText }) => (
   <ErrorTextContent>
-    Pole nie może być puste <BsExclamationCircle />
+    {innerText} <BsExclamationCircle />
   </ErrorTextContent>
 );
 

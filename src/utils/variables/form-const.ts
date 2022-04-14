@@ -45,7 +45,8 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
   startHour: today,
   endHour: today,
   accepted: false,
-  message: ''
+  message: '',
+  payment: { label: 'Gotówka', value: 'cash' }
 };
 
 const SIZE_OPTIONS_BTN = Object.values(SIZE_OPTIONS);

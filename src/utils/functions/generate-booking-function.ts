@@ -6,7 +6,14 @@ import {
   ISingleBookingDate,
   TSelect
 } from 'models';
-import { BUILDINGS_OPTIONS, CITY_OPTIONS, CLIENT_TYPE, SIZE_OPTIONS, BOOKING_STATUS } from 'utils';
+import {
+  BUILDINGS_OPTIONS,
+  CITY_OPTIONS,
+  CLIENT_TYPE,
+  SIZE_OPTIONS,
+  BOOKING_STATUS,
+  PAYMENTS_OPTIONS
+} from 'utils';
 import { formatCalenderDate, formateCalenderHours } from './calender-functions';
 import { findSelectedOption } from './utils-functions';
 
@@ -101,6 +108,7 @@ const generateBookingDetails = (
     month: cred.startDate.getMonth(),
     accepted: cred.accepted || false,
     message: cred.message,
+    payment: cred.payment.value,
     extraOptions: !!extraOptions.length,
     selectedOptions: extraOptions,
     bookingTime,
@@ -151,6 +159,7 @@ const generateBookingFormDetails = (
     currentBooking.building,
     BUILDINGS_OPTIONS[city?.value || CITY_OPTIONS[0].value]
   ),
+  payment: findSelectedOption(currentBooking.payment, PAYMENTS_OPTIONS),
   startDate: currentBooking.bookingTime[0].day,
   endDate: currentBooking.bookingTime[currentBooking.bookingTime.length - 1].day,
   startHour: currentBooking.bookingTime[0].startHour,

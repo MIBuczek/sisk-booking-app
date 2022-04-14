@@ -38,6 +38,7 @@ interface IBooking {
   message: string;
   extraOptions: boolean;
   selectedOptions: ISelectedExtraOptions[];
+  payment: string;
   id: string;
   [x: string]: TBooking;
 }

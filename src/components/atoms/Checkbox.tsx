@@ -66,7 +66,7 @@ const StyledCheckbox = styled.div<CheckboxInput>`
   }
   ${Icon} {
     visibility: ${({ checked, disabled }) =>
-      (checked && disabled) || checked ? 'visible' : 'hidden'};
+    (checked && disabled) || checked ? 'visible' : 'hidden'};
   }
   ${({ checked, disabled, isAccepted }) => {
     if (disabled) {

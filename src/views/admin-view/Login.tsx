@@ -11,6 +11,7 @@ import { IReduxState } from 'models';
 import { logInUser } from 'store';
 import { Redirect } from 'react-router';
 import { fadeIn } from 'style/animation';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 
 const LoginWrapper = styled.section`
   width: 100%;
@@ -53,7 +54,7 @@ const Login: React.FC = (): JSX.Element => {
   const { handleSubmit, errors, control, getValues } = useForm<ICredential>();
 
   const dispatch = useDispatch();
-  const { auth } = useSelector((store: IReduxState) => store.authStore);
+  const { auth, errorMessage } = useSelector((store: IReduxState) => store.authStore);
 
   /**
    * Function to dispatch action to log user into platform
@@ -114,12 +115,8 @@ const Login: React.FC = (): JSX.Element => {
           )}
         />
         {errors.password && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Button
-          role="button"
-          onClick={onSubmit}
-          disabled={false}
-          // size="SMALL"
-        >
+        {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
+        <Button role="button" onClick={onSubmit} disabled={false}>
           Zaloguj się
         </Button>
       </LoginPanel>

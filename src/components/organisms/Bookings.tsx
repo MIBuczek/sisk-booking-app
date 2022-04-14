@@ -24,7 +24,7 @@ import BookingStatusForm from 'components/molecules/forms/BookingStatusForm';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import { cloneDeep } from 'lodash';
-import { DataPickerField } from 'components/atoms/DatapickerField';
+import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Modal from './Modal';
 
 const BookingsWrapper = styled.section`
@@ -51,12 +51,6 @@ const RecordsActionContent = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-`;
-
-const MonthPicker = styled(DataPickerField)`
-  width: 290px;
-  height: 35px;
-  border-radius: 5px;
 `;
 
 const OpenBookingsModalButton = styled(Button)`
@@ -86,7 +80,6 @@ interface BookingsProps {
 
 const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   const [bookingsList, setBookingsList] = React.useState<IBooking[]>([]);
-  const [selectedMonth, setSelectedMonth] = React.useState<Date>(new Date());
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
   const [editedSubItemIndex, setEditedSubItemIndex] = React.useState<number | undefined>(undefined);
@@ -96,18 +89,10 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   const dispatch = useDispatch();
 
   const {
-    bookingStore: { bookings },
-    currentUserStore: { user },
+    bookingStore: { bookings, errorMessage: errorBooking },
+    currentUserStore: { user, errorMessage: errorUser },
     modal: { isOpen, type }
   } = useSelector((state: IReduxState) => state);
-
-  /**
-   * Function to handle selected moth.
-   * @param moth
-   */
-  const mothHandler = (moth: Date | [Date | null, Date | null] | null): void => {
-    if (moth instanceof Date) setSelectedMonth(moth);
-  };
 
   /**
    * Function to handle the booking list. It is related to search input field.
@@ -115,9 +100,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
    */
   const bookingListHandler = (searchResults: (IClient | IBooking)[]): void => {
     if (searchResults.length && instanceOfBookings(searchResults)) {
-      setBookingsList(
-        filterBookingsPerPlace(searchResults, mainState, selectedMonth, user?.isAdmin)
-      );
+      setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
     } else {
       setBookingsList([]);
     }
@@ -176,13 +159,14 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   };
 
   React.useEffect(() => {
-    setBookingsList(filterBookingsPerPlace(bookings, mainState, selectedMonth, user?.isAdmin));
+    setBookingsList(filterBookingsPerPlace(bookings, mainState, user?.isAdmin));
     setConflicts(checkAllBookingsConflicts(bookings));
   }, [bookings, mainState]);
 
   return (
     <BookingsWrapper>
       <BookingsHeader>Lista Rezerwacji</BookingsHeader>
+      {(errorBooking || errorUser) && <ErrorMsgServer innerText={errorBooking || errorUser} />}
       <RecordsActionContent>
         <SearchInputField
           type="bookings"
@@ -190,15 +174,6 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           searchContent={bookings}
           searchProperty="person"
           searchContentHandler={bookingListHandler}
-        />
-        <MonthPicker
-          placeholderText="Wybierz Miesiąc"
-          dateFormat="MM/yyyy"
-          showMonthYearPicker
-          shouldCloseOnSelect
-          locale="pl"
-          onChange={mothHandler}
-          selected={selectedMonth}
         />
         {adminCredentials(user) && (
           <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>

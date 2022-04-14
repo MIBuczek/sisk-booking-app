@@ -1,9 +1,16 @@
 import { IMessageForm } from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { BsExclamationCircle } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'store';
 import styled from 'styled-components';
+import {
+  sendEmailNotification,
+  USER_MIB_ID,
+  USER_MIB_TEMPLATE_MESSAGE_ID,
+  USER_MIB_SERVICE_ID
+} from 'utils';
 import Anchor from '../../atoms/Anchor';
 import Button from '../../atoms/Button';
 import Checkbox from '../../atoms/Checkbox';
@@ -69,10 +76,27 @@ const ButtonPanel = styled.div`
   }
 `;
 
+const ErrorServer = styled.span`
+  color: ${({ theme }) => theme.error};
+  font-weight: 600;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  letter-spacing: -0.5px;
+  width: 100%;
+  padding: 10px 40px;
+  svg {
+    height: 20px;
+    width: 15px;
+    margin-left: 3px;
+  }
+`;
+
 const FormMessage = () => {
   const [message, setMessage] = React.useState<IMessageForm | undefined>();
   const [police, setPolice] = React.useState<boolean>(false);
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const dispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm();
@@ -90,9 +114,19 @@ const FormMessage = () => {
   /**
    * Function to confirm dispatch action. If so then sent notification to pointed email address.
    */
-  const confirmSubmit = (): void => {
-    alert(JSON.stringify(message));
-    initialState();
+  const confirmSubmit = async (): Promise<void> => {
+    const status = await sendEmailNotification(
+      USER_MIB_SERVICE_ID,
+      USER_MIB_TEMPLATE_MESSAGE_ID,
+      message,
+      USER_MIB_ID
+    );
+    if (status > 200) {
+      setError(true);
+    } else {
+      initialState();
+      setError(false);
+    }
   };
 
   /**
@@ -108,6 +142,12 @@ const FormMessage = () => {
   return (
     <MessageWrapper onSubmit={onSubmit}>
       <MessageHeader>Skontaktuj się z nami</MessageHeader>
+      {error && (
+        <ErrorServer>
+          Nie udało sie wysłać wiadomość. Problem z serwerem
+          <BsExclamationCircle />
+        </ErrorServer>
+      )}
       <MessageContent>
         <Label>Imię i nazwisko</Label>
         <Controller

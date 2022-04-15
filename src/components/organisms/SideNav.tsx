@@ -80,8 +80,6 @@ const SideNav: React.FunctionComponent<IProps> = ({
    */
   const selectBuilding = (): TSelect[] => {
     if (!city) return [];
-    console.log(city.value);
-    console.log(generateBuildingOptions(buildings));
     return generateBuildingOptions(buildings)[city.value];
   };
 

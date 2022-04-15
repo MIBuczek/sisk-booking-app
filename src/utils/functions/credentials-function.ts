@@ -13,4 +13,16 @@ const adminCredentials = (loggedUsed: IUser | undefined): boolean => {
   return false;
 };
 
-export { adminCredentials };
+/**
+ * Function to check user credentials to go true building a city navigation options.
+ * @param  loggedUsed
+ * @returns {Boolean}
+ */
+const sideNavCredentials = (loggedUsed: IUser | undefined): boolean => {
+  if (!loggedUsed) return false;
+  const { isAdmin, isOffice } = loggedUsed;
+  if (isAdmin || isOffice) return true;
+  return false;
+};
+
+export { adminCredentials, sideNavCredentials };

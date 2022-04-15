@@ -158,6 +158,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
    * @param clickInfo
    */
   const handleEventClick = async (clickInfo: EventClickArg) => {
+    clickInfo.jsEvent.preventDefault();
     dispatch(getCurrentBooking(clickInfo.event._def.publicId));
   };
 

@@ -232,7 +232,6 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                   placeholderText="Wybierz"
                   showTimeSelect
                   showTimeSelectOnly
-                  isClearable
                   shouldCloseOnSelect
                   minTime={setHours(setMinutes(new Date(), 0), 9)}
                   maxTime={setHours(setMinutes(new Date(), 30), 22)}
@@ -259,7 +258,6 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                   placeholderText="Wybierz"
                   showTimeSelect
                   showTimeSelectOnly
-                  isClearable
                   shouldCloseOnSelect
                   minTime={setHours(setMinutes(new Date(), 0), 9)}
                   maxTime={setHours(setMinutes(new Date(), 30), 22)}

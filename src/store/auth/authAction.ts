@@ -53,7 +53,7 @@ export const logInUser = (email: string, password: string) => async (
       dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
     }
   } catch (err) {
-    dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
+    dispatch(fetchingAuthError('Nie udane logowanie do aplikacji. Błedny adres e-mail lub hasło.'));
     throw new Error(JSON.stringify(err));
   }
 };

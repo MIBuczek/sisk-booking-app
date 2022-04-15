@@ -26,6 +26,9 @@ const TextInputField = styled.input<InputType>`
     color: #b9b8b8;
     text-align: center;
   }
+  &:disabled {
+    color: #b9b8b8;
+  }
   @media (max-width: 890px) {
     width: 240px;
   }

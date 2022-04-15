@@ -5,6 +5,7 @@ import ReactDatePicker from 'react-datepicker';
 
 type DataPickerType = {
   invalid?: boolean;
+  disabled?: boolean;
 };
 
 export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
@@ -28,6 +29,9 @@ export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
     box-shadow: inset 0px -17px 15px -25px rgb(66 68 90);
   }
   &::placeholder {
+    color: #b9b8b8;
+  }
+  &:disabled {
     color: #b9b8b8;
   }
 `;

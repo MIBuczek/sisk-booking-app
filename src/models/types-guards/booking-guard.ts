@@ -8,4 +8,9 @@ function singleInstanceOfBookings(obj: IClient | IBooking): obj is IBooking {
   return obj.person !== undefined;
 }
 
-export { instanceOfBookings, singleInstanceOfBookings };
+function bookingIndexTypeChecker(index?: number): index is number {
+  if (typeof index === 'number') return true;
+  return false;
+}
+
+export { instanceOfBookings, singleInstanceOfBookings, bookingIndexTypeChecker };

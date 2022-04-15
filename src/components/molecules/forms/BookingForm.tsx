@@ -551,7 +551,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           render={({ value, onChange, onBlur }) => (
             <DataPickerField
               showTimeSelect={false}
-              isClearable
               shouldCloseOnSelect
               placeholderText="Wybierz"
               locale="pl"
@@ -578,7 +577,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               render={({ value, onChange, onBlur }) => (
                 <DataPickerField
                   showTimeSelect={false}
-                  isClearable
                   shouldCloseOnSelect
                   placeholderText="Wybierz"
                   locale="pl"
@@ -607,7 +605,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               placeholderText="Wybierz"
               showTimeSelect
               showTimeSelectOnly
-              isClearable
               shouldCloseOnSelect
               minTime={setHours(setMinutes(new Date(), 0), 9)}
               maxTime={setHours(setMinutes(new Date(), 30), 22)}
@@ -635,7 +632,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               placeholderText="Wybierz"
               showTimeSelect
               showTimeSelectOnly
-              isClearable
               shouldCloseOnSelect
               minTime={setHours(setMinutes(new Date(), 0), 9)}
               maxTime={setHours(setMinutes(new Date(), 30), 22)}

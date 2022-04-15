@@ -12,6 +12,7 @@ const ConfirmationWrapper = styled.div`
   display: flex;
   justify-content: center;
   animation: ${fadeIn} 0.5s linear;
+  border-radius: 5px;
 `;
 
 const ConfirmationContent = styled.div`

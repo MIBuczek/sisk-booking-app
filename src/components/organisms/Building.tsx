@@ -8,6 +8,7 @@ import SelectInputField, { customStyles } from 'components/atoms/SelectInputFiel
 import TextAreaField from 'components/atoms/TextAreaField';
 import TextInputField from 'components/atoms/TextInputField';
 import ConfirmAction from 'components/molecules/ConfirmAction';
+import ModalInfo from 'components/molecules/modals/ModalInfo';
 import {
   IAdminState,
   IBuilding,
@@ -18,18 +19,21 @@ import {
 } from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal } from 'store';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
 import {
   generateAllBuilding,
   INITIAL_ALL_BUILDINGS,
   INITIAL_EMPLOYEE_MESSAGE,
+  MODAL_TYPES,
   sendEmailNotification,
   USER_MIB_ID,
   USER_MIB_SERVICE_ID,
   USER_MIB_TEMPLATE_EMPLOYEE_ID
 } from 'utils';
+import Modal from './Modal';
 
 const BuildingWrapper = styled.article`
   width: 60%;
@@ -125,7 +129,11 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
 
   const { city, building } = mainState;
 
-  const { buildings, errorMessage } = useSelector((state: IReduxState) => state.buildingStore);
+  const dispatch = useDispatch();
+  const {
+    modal: { isOpen, type },
+    buildingStore: { buildings, errorMessage }
+  } = useSelector((state: IReduxState) => state);
 
   /**
    * Function to get all building employees.
@@ -181,12 +189,19 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
    * Function to confirm dispatch action. If so then sent notification to pointed email address.
    */
   const confirmSubmit = async (): Promise<void> => {
-    await sendEmailNotification(
+    const resp = await sendEmailNotification(
       USER_MIB_SERVICE_ID,
       USER_MIB_TEMPLATE_EMPLOYEE_ID,
       message,
       USER_MIB_ID
     );
+    if (resp === 200) {
+      dispatch(openModal(MODAL_TYPES.SUCCESS, 'Wiadomość została wysłana pomyślnie'));
+    } else {
+      dispatch(
+        openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie udało sie wysłać Twojej wiadomości')
+      );
+    }
     initialState();
   };
 
@@ -282,7 +297,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
               invalid={!!errors.message}
               className="input"
               placeholder="Wiadomość"
-              disabled={displayConfirmation}
+              readOnly={displayConfirmation}
               style={{ marginBottom: displayConfirmation ? '20px' : '0px' }}
             />
           )}
@@ -303,6 +318,11 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           </ButtonPanel>
         )}
       </InnerContent>
+      {isOpen && (
+        <Modal>
+          {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Wiadomość do Pracowników" />}
+        </Modal>
+      )}
     </BuildingWrapper>
   );
 };

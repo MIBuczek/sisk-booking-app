@@ -5,7 +5,13 @@ import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles } from 'components/atoms/SelectInputField';
 import TextAreaField from 'components/atoms/TextAreaField';
 import { cloneDeep } from 'lodash';
-import { IBooking, IBookingsPayload, IBookingStatusForm, IReduxState } from 'models';
+import {
+  bookingIndexTypeChecker,
+  IBooking,
+  IBookingsPayload,
+  IBookingStatusForm,
+  IReduxState
+} from 'models';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +19,8 @@ import { closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
 import {
   BOOKING_STATUS_OPTIONS,
+  formatDate,
+  formatTime,
   generateBookingStatusDate,
   INITIAL_BOOKING_STATUS_FORM
 } from 'utils';
@@ -41,7 +49,23 @@ const InnerContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 20px 0;
+  width: 80%;
+  padding: 10px 0 20px;
+`;
+
+const ClientStatusDetails = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 80%;
+  border-top: ${({ theme }) => `1px solid ${theme.green}`};
+  border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+`;
+
+const DetailsSpan = styled.span`
+  font-weight: 400;
+  margin: 8px 0;
+  font-size: ${({ theme }) => theme.fontSize.s};
+  color: ${({ theme }) => theme.darkGrey};
 `;
 
 const ButtonPanel = styled.div`
@@ -135,6 +159,26 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
   return (
     <BookingStatusWrapper>
       <BookingStatusHeader>ROZLICZ REZERWACJĘ</BookingStatusHeader>
+      {bookingIndexTypeChecker(editedItemIndex) && bookingIndexTypeChecker(editedSubItemIndex) ? (
+        <ClientStatusDetails>
+          <DetailsSpan>
+            <strong>Klient: </strong>
+            {bookings[editedItemIndex].person}
+          </DetailsSpan>
+          <DetailsSpan>
+            <strong>Dzień: </strong>
+            {formatDate(bookings[editedItemIndex].bookingTime[editedSubItemIndex].day)}
+          </DetailsSpan>
+          <DetailsSpan>
+            <strong>Godzina rozpoczęcia: </strong>
+            {formatTime(bookings[editedItemIndex].bookingTime[editedSubItemIndex].startHour)}
+          </DetailsSpan>
+          <DetailsSpan>
+            <strong>Godzina zakońćzenia: </strong>
+            {formatTime(bookings[editedItemIndex].bookingTime[editedSubItemIndex].endHour)}
+          </DetailsSpan>
+        </ClientStatusDetails>
+      ) : null}
       <InnerContent>
         <Label>Status</Label>
         <Controller
@@ -169,6 +213,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
               onBlur={onBlur}
               value={value}
               disabled={displayConfirmation}
+              style={{ width: '100%' }}
             />
           )}
         />

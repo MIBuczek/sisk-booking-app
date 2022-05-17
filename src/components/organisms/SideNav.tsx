@@ -111,7 +111,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
           placeholder="Wybierz"
           onChange={(val: TSelect) => stateHandler(val, 'building')}
           selected={building}
-          isDisabled={blockSelectOptions || !city}
+          isDisabled={!city}
         />
       </SelectWrapper>
       {isAdminPanel ? (

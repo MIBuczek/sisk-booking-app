@@ -4,7 +4,7 @@ import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
 import { IReduxState, ISummaryClientBookings, TSelect } from 'models';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import pl from 'date-fns/locale/pl';
@@ -230,7 +230,7 @@ const Summary = () => {
             defaultValue={{ label: '', value: '' }}
             control={control}
             rules={{ required: true }}
-            render={({ onChange, onBlur, value }) => (
+            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
               <SelectInputField
                 options={generateClientsOptions()}
                 styles={customStyles(false)}
@@ -250,7 +250,7 @@ const Summary = () => {
             defaultValue={new Date()}
             control={control}
             rules={{ required: true }}
-            render={({ value, onChange, onBlur }) => (
+            render={({ value, onChange, onBlur }: ControllerRenderProps) => (
               <MonthPicker
                 placeholderText="Wybierz"
                 dateFormat="MM/yyyy"

@@ -3,7 +3,7 @@ import { IBooking, IMainState, IReduxState, ISelectedExtraOptions, TSelect } fro
 import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
 import { registerLocale } from 'react-datepicker';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBooking, closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
@@ -94,6 +94,17 @@ const AcceptWrapper = styled.div`
   @media (max-width: 890px) {
     justify-content: center;
   }
+`;
+
+const ArchiveWrapper = styled(SelectWrapper)`
+  width: 100%;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  margin: 0;
+  border-top: ${({ theme }) => `1px solid ${theme.green}`};
+  border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
 `;
 
 const AutoFillContent = styled(SelectWrapper)`
@@ -339,7 +350,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               name="clientId"
               control={control}
               defaultValue={{ label: '', value: '' }}
-              render={({ onChange, onBlur, value }) => (
+              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
                 <SelectInputField
                   options={selectClientOptions(clients)}
                   placeholder="Wybierz"
@@ -358,7 +369,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               name="accepted"
               defaultValue={false}
               control={control}
-              render={({ onChange, value }) => (
+              render={({ onChange, value }: ControllerRenderProps) => (
                 <Checkbox
                   checked={value}
                   className="checkbox"
@@ -390,7 +401,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={city}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <SelectInputField
               options={CITY_OPTIONS}
               styles={customStyles(!!errors.city)}
@@ -413,7 +424,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={building}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <SelectInputField
               options={selectBuildingOptions(cityValue.value, building)}
               styles={customStyles(!!errors.building)}
@@ -447,7 +458,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             name="regular"
             defaultValue={false}
             control={control}
-            render={({ onChange, value }) => (
+            render={({ onChange, value }: ControllerRenderProps) => (
               <Checkbox
                 checked={value}
                 className="checkbox"
@@ -466,7 +477,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -485,7 +496,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -504,7 +515,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -524,7 +535,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             defaultValue={PAYMENTS_OPTIONS[0]}
             control={control}
             rules={{ required: true }}
-            render={({ onChange, onBlur, value }) => (
+            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
               <SelectInputField
                 options={PAYMENTS_OPTIONS}
                 styles={customStyles(!!errors.payment)}
@@ -548,7 +559,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={new Date()}
           control={control}
           rules={{ required: true }}
-          render={({ value, onChange, onBlur }) => (
+          render={({ value, onChange, onBlur }: ControllerRenderProps) => (
             <DataPickerField
               showTimeSelect={false}
               shouldCloseOnSelect
@@ -574,7 +585,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               defaultValue={new Date()}
               control={control}
               rules={{ required: true }}
-              render={({ value, onChange, onBlur }) => (
+              render={({ value, onChange, onBlur }: ControllerRenderProps) => (
                 <DataPickerField
                   showTimeSelect={false}
                   shouldCloseOnSelect
@@ -600,7 +611,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={null}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <DataPickerField
               placeholderText="Wybierz"
               showTimeSelect
@@ -627,7 +638,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={null}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <DataPickerField
               placeholderText="Wybierz"
               showTimeSelect
@@ -658,7 +669,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         defaultValue={''}
         control={control}
         rules={{ required: false }}
-        render={({ onChange, onBlur, value }) => (
+        render={({ onChange, onBlur, value }: ControllerRenderProps) => (
           <MessageTextArea
             placeholder="Wiadomość"
             onChange={onChange}
@@ -668,6 +679,25 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           />
         )}
       />
+      {isEditing && (
+        <ArchiveWrapper>
+          <Label>Zarchiwizować rezerwacje</Label>
+          <Controller
+            name="archive"
+            defaultValue={false}
+            control={control}
+            render={({ onChange, value }: ControllerRenderProps) => (
+              <Checkbox
+                checked={value}
+                className="checkbox"
+                name="archive"
+                changeHandler={onChange}
+                disabled={displayConfirmation}
+              />
+            )}
+          />
+        </ArchiveWrapper>
+      )}
       {conflict && (
         <ConflictParagraph small bold conflict={conflict}>
           <BsFillExclamationCircleFill />

@@ -13,7 +13,7 @@ import {
   IReduxState
 } from 'models';
 import * as React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
@@ -186,7 +186,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
           defaultValue={BOOKING_STATUS_OPTIONS[0]}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <SelectInputField
               options={BOOKING_STATUS_OPTIONS}
               styles={customStyles(false)}
@@ -206,7 +206,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: false }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextAreaField
               placeholder="Wiadomość"
               onChange={onChange}

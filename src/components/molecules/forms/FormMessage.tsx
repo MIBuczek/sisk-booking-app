@@ -1,6 +1,6 @@
 import { IMessageForm } from 'models';
 import * as React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'store';
@@ -155,7 +155,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -174,7 +174,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -193,7 +193,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -212,7 +212,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextAreaField
               onBlur={onBlur}
               value={value}

@@ -46,12 +46,7 @@ const Admin = (): JSX.Element => {
   const setWorkPlace = (): void => {
     if (user?.city && user?.building) {
       const selectedCity = CITY_OPTIONS.find((co) => co.value === user?.city) || CITY_OPTIONS[0];
-      const selectedBuilding =
-        BUILDINGS_OPTIONS[selectedCity.value].find((b) => b.value === user?.building) ||
-        BUILDINGS_OPTIONS[selectedCity.value][0];
-
       stateHandler(selectedCity, 'city');
-      stateHandler(selectedBuilding, 'building');
     }
   };
 

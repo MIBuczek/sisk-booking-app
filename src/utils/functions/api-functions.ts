@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IBuilding, IClient, ISelectedExtraOptions, IBooking, ISingleBookingDate } from 'models';
+import {
+  IBuilding,
+  IClient,
+  ISelectedExtraOptions,
+  IBooking,
+  ISingleBookingDate,
+  IUser
+} from 'models';
 
 /**
  * Map function to transform bookingTime data from firebase
@@ -49,6 +56,7 @@ const parseFirebaseBookingData = (doc: any) =>
     accepted: doc.data().accepted,
     message: doc.data().message,
     payment: doc.data().payment,
+    archive: doc.data().archive,
     id: doc.id
   } as IBooking);
 

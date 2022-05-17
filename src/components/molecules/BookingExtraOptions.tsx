@@ -2,7 +2,7 @@
 import { DataPickerField } from 'components/atoms/DatapickerField';
 import Label from 'components/atoms/Label';
 import * as React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
 import setHours from 'date-fns/setHours';
@@ -193,7 +193,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               name="lights"
               defaultValue={false}
               control={control}
-              render={({ onChange, value }) => (
+              render={({ onChange, value }: ControllerRenderProps) => (
                 <Checkbox
                   checked={value}
                   className="checkbox"
@@ -210,7 +210,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               name="toilets"
               defaultValue={false}
               control={control}
-              render={({ onChange, value }) => (
+              render={({ onChange, value }: ControllerRenderProps) => (
                 <Checkbox
                   checked={value}
                   className="checkbox"
@@ -227,7 +227,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               name="fromHour"
               defaultValue={new Date()}
               control={control}
-              render={({ onChange, onBlur, value }) => (
+              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
                 <HourPickerField
                   placeholderText="Wybierz"
                   showTimeSelect
@@ -253,7 +253,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               defaultValue={new Date()}
               control={control}
               rules={{ required: true }}
-              render={({ onChange, onBlur, value }) => (
+              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
                 <HourPickerField
                   placeholderText="Wybierz"
                   showTimeSelect

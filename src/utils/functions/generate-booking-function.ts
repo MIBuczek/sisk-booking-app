@@ -111,6 +111,7 @@ const generateBookingDetails = (
     payment: cred.payment.value,
     extraOptions: !!extraOptions.length,
     selectedOptions: extraOptions,
+    archive: cred.archive,
     bookingTime,
     id
   };

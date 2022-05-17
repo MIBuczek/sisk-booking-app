@@ -18,6 +18,7 @@ interface IBookingForm {
   accepted: boolean;
   message: string;
   payment: TSelect;
+  archive: boolean;
   id?: string;
 }
 

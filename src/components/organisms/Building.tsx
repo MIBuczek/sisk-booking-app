@@ -18,7 +18,7 @@ import {
   TSelect
 } from 'models';
 import * as React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from 'store';
 import { fadeIn } from 'style/animation';
@@ -249,7 +249,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           defaultValue={{ label: '', value: '' }}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <SelectInputField
               options={getEmployeesOptions(currentCity)}
               styles={customStyles(!!errors.person)}
@@ -270,7 +270,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           defaultValue={currentCity.email || ''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -289,7 +289,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <EmployeeTextArea
               onBlur={onBlur}
               value={value}

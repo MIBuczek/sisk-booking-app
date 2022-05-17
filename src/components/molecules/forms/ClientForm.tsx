@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import Button from 'components/atoms/Button';
 import ErrorMsg from 'components/atoms/ErrorMsg';
@@ -162,7 +162,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
             defaultValue={CLIENT_OPTIONS[0]}
             control={control}
             rules={{ required: true }}
-            render={({ onChange, onBlur, value }) => (
+            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
               <SelectInputField
                 options={CLIENT_OPTIONS}
                 styles={customStyles(!!errors.type)}
@@ -186,7 +186,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -207,7 +207,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
               defaultValue={''}
               control={control}
               rules={{ required: true }}
-              render={({ onChange, onBlur, value }) => (
+              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
                 <TextInputField
                   onBlur={onBlur}
                   value={value}
@@ -228,7 +228,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -247,7 +247,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -270,7 +270,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
               defaultValue={''}
               control={control}
               rules={{ required: true }}
-              render={({ onChange, onBlur, value }) => (
+              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
                 <TextInputField
                   onBlur={onBlur}
                   value={value}
@@ -291,7 +291,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -310,7 +310,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -329,7 +329,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <TextInputField
               onBlur={onBlur}
               value={value}

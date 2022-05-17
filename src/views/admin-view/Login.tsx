@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import TextInputField from 'components/atoms/TextInputField';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Button from 'components/atoms/Button';
@@ -83,7 +83,7 @@ const Login: React.FC = (): JSX.Element => {
             required: true,
             validate: () => getValues('email').includes('@')
           }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <LoginTextInputs
               onBlur={onBlur}
               value={value}
@@ -101,7 +101,7 @@ const Login: React.FC = (): JSX.Element => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }) => (
+          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
             <LoginTextInputs
               onBlur={onBlur}
               value={value}

@@ -9,6 +9,7 @@ interface IProps {
 const ModalBooking: React.FunctionComponent<IProps> = ({ mainState }) => (
   <BookingForm
     mainState={mainState}
+    bookingsList={[]}
     isAdmin={false}
     isEditing={false}
     initialEditingState={() => null}

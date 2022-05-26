@@ -151,6 +151,7 @@ const ConflictParagraph = styled(Paragraph)`
 
 interface BookingFormProps {
   mainState: IMainState;
+  bookingsList: IBooking[];
   isAdmin: boolean;
   isEditing: boolean;
   editedItemIndex?: number;
@@ -158,6 +159,7 @@ interface BookingFormProps {
 }
 
 const BookingForm: React.FunctionComponent<BookingFormProps> = ({
+  bookingsList,
   mainState,
   isAdmin,
   isEditing,
@@ -251,7 +253,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    * @param index
    */
   const editBookingHandler = (index: number) => {
-    const currentBooking = cloneDeep(bookings[index]);
+    const currentBooking = cloneDeep(bookingsList[index]);
     const clientId = selectedClientIdOption(clients, currentBooking.clientId);
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
@@ -299,7 +301,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     };
 
     if (typeof editedItemIndex === 'number') {
-      const currentBooking = bookings[editedItemIndex];
+      const currentBooking = bookingsList[editedItemIndex];
       const clientId = selectedClientIdOption(clients, currentBooking.clientId);
 
       reset({

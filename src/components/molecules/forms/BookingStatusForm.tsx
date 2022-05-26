@@ -5,16 +5,10 @@ import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles } from 'components/atoms/SelectInputField';
 import TextAreaField from 'components/atoms/TextAreaField';
 import { cloneDeep } from 'lodash';
-import {
-  bookingIndexTypeChecker,
-  IBooking,
-  IBookingsPayload,
-  IBookingStatusForm,
-  IReduxState
-} from 'models';
+import { bookingIndexTypeChecker, IBooking, IBookingStatusForm } from 'models';
 import * as React from 'react';
 import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
 import {
@@ -80,11 +74,13 @@ const ButtonPanel = styled.div`
 `;
 
 interface BookingStatusFormProps {
+  bookingsList: IBooking[];
   editedItemIndex?: number;
   editedSubItemIndex?: number;
 }
 
 const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
+  bookingsList,
   editedItemIndex,
   editedSubItemIndex
 }) => {
@@ -92,7 +88,6 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
   const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
 
   const dispatch = useDispatch();
-  const { bookings } = useSelector((state: IReduxState): IBookingsPayload => state.bookingStore);
 
   const { handleSubmit, errors, control, reset } = useForm<IBookingStatusForm>({
     defaultValues: { bookingStatus: BOOKING_STATUS_OPTIONS[0], bookingComments: '' }
@@ -100,7 +95,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
 
   const editBookingStatusHandler = () => {
     if (typeof editedItemIndex === 'undefined' || typeof editedSubItemIndex === 'undefined') return;
-    const { status, comments } = bookings[editedItemIndex].bookingTime[editedSubItemIndex];
+    const { status, comments } = bookingsList[editedItemIndex].bookingTime[editedSubItemIndex];
     const bookingStatus =
       BOOKING_STATUS_OPTIONS.find((bso) => bso.value === status) || BOOKING_STATUS_OPTIONS[0];
     reset({ bookingStatus, bookingComments: comments });
@@ -113,7 +108,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
    */
   const onSubmit = handleSubmit<IBookingStatusForm>(async (cred) => {
     if (typeof editedItemIndex === 'undefined' || typeof editedSubItemIndex === 'undefined') return;
-    const currentBooking = cloneDeep(bookings[editedItemIndex]);
+    const currentBooking = cloneDeep(bookingsList[editedItemIndex]);
     setBookingData(generateBookingStatusDate(cred, currentBooking, editedSubItemIndex));
     setDisplayConfirmation(true);
   });
@@ -163,19 +158,19 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
         <ClientStatusDetails>
           <DetailsSpan>
             <strong>Klient: </strong>
-            {bookings[editedItemIndex].person}
+            {bookingsList[editedItemIndex].person}
           </DetailsSpan>
           <DetailsSpan>
             <strong>Dzień: </strong>
-            {formatDate(bookings[editedItemIndex].bookingTime[editedSubItemIndex].day)}
+            {formatDate(bookingsList[editedItemIndex].bookingTime[editedSubItemIndex].day)}
           </DetailsSpan>
           <DetailsSpan>
             <strong>Godzina rozpoczęcia: </strong>
-            {formatTime(bookings[editedItemIndex].bookingTime[editedSubItemIndex].startHour)}
+            {formatTime(bookingsList[editedItemIndex].bookingTime[editedSubItemIndex].startHour)}
           </DetailsSpan>
           <DetailsSpan>
             <strong>Godzina zakońćzenia: </strong>
-            {formatTime(bookings[editedItemIndex].bookingTime[editedSubItemIndex].endHour)}
+            {formatTime(bookingsList[editedItemIndex].bookingTime[editedSubItemIndex].endHour)}
           </DetailsSpan>
         </ClientStatusDetails>
       ) : null}

@@ -36,7 +36,7 @@ import pl from 'date-fns/locale/pl';
 import addMonths from 'date-fns/addMonths';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from '../ConfirmAction';
@@ -151,6 +151,7 @@ const ConflictParagraph = styled(Paragraph)`
 
 interface BookingFormProps {
   mainState: IMainState;
+  bookingsList: IBooking[];
   isAdmin: boolean;
   isEditing: boolean;
   editedItemIndex?: number;
@@ -158,6 +159,7 @@ interface BookingFormProps {
 }
 
 const BookingForm: React.FunctionComponent<BookingFormProps> = ({
+  bookingsList,
   mainState,
   isAdmin,
   isEditing,
@@ -193,7 +195,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     city: cityValue,
     building: buildingValue,
     regular: regularValue,
-    clientId: selectedClientId
+    clientId: selectedClientId,
+    person: personName
   } = watch();
 
   /**
@@ -243,7 +246,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     else dispatch(addBooking(bookingData, isAdmin));
 
     createInitialState();
-    dispatch(closeModal());
+    // To not close modal if error
+    // dispatch(closeModal());
   };
 
   /**
@@ -251,11 +255,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    * @param index
    */
   const editBookingHandler = (index: number) => {
-    const currentBooking = cloneDeep(bookings[index]);
+    const currentBooking = cloneDeep(bookingsList[index]);
     const clientId = selectedClientIdOption(clients, currentBooking.clientId);
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
     setConflict(checkConflicts(currentBooking, bookings));
+    setSelectedSize(currentBooking.size);
   };
 
   /**
@@ -282,15 +287,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    * Function to update the state if admin want to assign client to current booking data.
    * If yes then fill up form fields and add client id into booking object
    */
-  const fillUpFormWithClientData = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    cID?: string
-  ): void => {
+  const fillUpFormWithClientData = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     e.preventDefault();
     e.stopPropagation();
-    const selectedClient = clients.find((c) => c.id === cID);
+    const selectedClient = clients.find((c) => c.id === selectedClientId?.value);
 
-    if (!selectedClient) return;
+    if (!selectedClient || !selectedClientId) return;
 
     const formClientData = {
       person: selectedClient?.name,
@@ -298,22 +300,30 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       phone: selectedClient?.phone
     };
 
-    if (typeof editedItemIndex === 'number') {
-      const currentBooking = bookings[editedItemIndex];
-      const clientId = selectedClientIdOption(clients, currentBooking.clientId);
+    const currentFormValues = getValues();
 
+    if (typeof editedItemIndex === 'number') {
       reset({
-        ...generateBookingFormDetails(currentBooking, clientId, city),
+        ...cloneDeep({ ...currentFormValues }),
         ...formClientData
       });
+      // eslint-disable-next-line no-param-reassign
+      bookingsList[editedItemIndex].clientId = selectedClientId.value;
     } else {
-      const currentFormValues = getValues();
       reset({
-        ...cloneDeep({ ...currentFormValues, clientId: { label: '', value: '' } }),
+        ...cloneDeep({ ...currentFormValues, clientId: selectedClientId }),
         ...mainState,
         ...formClientData
       });
     }
+  };
+
+  /**
+   * Function compare is booking client id with drop down selected option
+   */
+  const compareClientIds = (): boolean => {
+    if (!selectedClientId) return false;
+    return selectedClientId?.label !== personName;
   };
 
   /**
@@ -380,14 +390,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               )}
             />
           </SelectWrapper>
-          {!isEmpty(selectedClientId?.value) && (
+          {compareClientIds() && (
             <AutoFillContent>
               <Label>Czy chcesz autouzupełnić dane klienta</Label>
-              <Button
-                role="button"
-                secondary
-                onClick={(e) => fillUpFormWithClientData(e, selectedClientId?.value)}
-              >
+              <Button role="button" secondary onClick={(e) => fillUpFormWithClientData(e)}>
                 Tak
               </Button>
             </AutoFillContent>

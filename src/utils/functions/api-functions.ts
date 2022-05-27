@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  IBuilding,
-  IClient,
-  ISelectedExtraOptions,
-  IBooking,
-  ISingleBookingDate,
-  IUser
-} from 'models';
+import { IBuilding, IClient, ISelectedExtraOptions, IBooking, ISingleBookingDate } from 'models';
 
 /**
  * Map function to transform bookingTime data from firebase

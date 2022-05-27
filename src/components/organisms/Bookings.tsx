@@ -202,6 +202,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           {type === MODAL_TYPES.BOOKINGS && (
             <BookingForm
               mainState={mainState}
+              bookingsList={bookingsList}
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}
               initialEditingState={initialBookingState}
@@ -210,6 +211,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           )}
           {type === MODAL_TYPES.BOOKINGS_STATUS && (
             <BookingStatusForm
+              bookingsList={bookingsList}
               editedItemIndex={editedItemIndex}
               editedSubItemIndex={editedSubItemIndex}
             />

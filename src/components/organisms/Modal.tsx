@@ -1,11 +1,8 @@
-import Button from 'components/atoms/Button';
 import * as React from 'react';
-import { BsX } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import bgModal from '../../assets/images/background-modal.jpg';
 import { IReduxState } from '../../models';
-import { closeModal } from '../../store/modal/modalAction';
 import { fadeIn } from '../../style/animation';
 
 const ModalWrapper = styled.div`
@@ -21,19 +18,6 @@ const ModalWrapper = styled.div`
   justify-content: center;
   animation: ${fadeIn} 0.5s linear;
   z-index: 9999;
-`;
-
-const CloseBtn = styled(Button)`
-  display: block;
-  margin: 10px 10px 10px auto;
-  color: ${({ theme }) => theme.white};
-  padding: 0;
-  svg {
-    width: 2rem;
-    height: 2rem;
-    position: relative;
-    top: 2px;
-  }
 `;
 
 const BGImage = styled.img`
@@ -62,18 +46,12 @@ export interface IProps {
 }
 
 const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {
-  const dispatch = useDispatch();
   const { isOpen } = useSelector((state: IReduxState) => state.modal);
   if (isOpen) {
     return (
       <ModalWrapper>
         <BGImage src={bgModal} alt="bg" />
-        <ModalContent>
-          <CloseBtn role="button" onClick={() => dispatch(closeModal())}>
-            <BsX />
-          </CloseBtn>
-          {children}
-        </ModalContent>
+        <ModalContent>{children}</ModalContent>
       </ModalWrapper>
     );
   }

@@ -260,6 +260,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
     setConflict(checkConflicts(currentBooking, bookings));
+    setSelectedSize(currentBooking.size);
   };
 
   /**

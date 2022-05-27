@@ -135,6 +135,8 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
     buildingStore: { buildings, errorMessage }
   } = useSelector((state: IReduxState) => state);
 
+  const { control, handleSubmit, errors, reset } = useForm<IEmployeeMessageForm>();
+
   /**
    * Function to get all building employees.
    * @param selectedBuilding
@@ -146,34 +148,18 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
   };
 
   /**
-   * Function to compare selected building with building database.
-   * @param b
-   * @returns {Boolean}
-   */
-  const compareBuildings = (b: IBuilding): boolean => b.property === building.value;
-
-  /**
    * Function to find and return building into building database.
    * @param pickedCity
    * @returns {Object<IBuilding> | undefined}
    */
   const findBuilding = (pickedCity: string): IBuilding | undefined => {
     const allBuildings = generateAllBuilding(buildings) || INITIAL_ALL_BUILDINGS;
-    switch (pickedCity) {
-      case 'radwanice':
-        return allBuildings.radwanice.find(compareBuildings);
-      case 'siechnice':
-        return allBuildings.siechnice.find(compareBuildings);
-      case 'swieta-katarzyna':
-        return allBuildings['swieta-katarzyna'].find(compareBuildings);
-      case 'zerniki-wroclawskie':
-        return allBuildings['zerniki-wroclawskie'].find(compareBuildings);
-      default:
-        return undefined;
-    }
+    const currentBuilding = allBuildings[pickedCity].find(
+      (b: IBuilding): boolean => b.property === building.value
+    );
+    reset({ ...INITIAL_EMPLOYEE_MESSAGE, email: currentBuilding?.email || '' });
+    return currentBuilding;
   };
-
-  const { control, handleSubmit, errors, reset } = useForm<IEmployeeMessageForm>();
 
   /**
    * Function to submit actual form values into form employee message state.

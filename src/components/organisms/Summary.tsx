@@ -132,7 +132,7 @@ const ClientDetailTable = styled.table`
     width: 100%;
     tr {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       width: 100%;
     }
   }
@@ -153,9 +153,17 @@ const DetailContent = styled.td`
   color: ${({ theme }) => theme.darkGrey};
   word-break: break-word;
   width: 100%;
-  padding: 5px 8px 5px 0;
+  padding: 5px 5px 5px 0;
   strong {
     margin-bottom: 5px;
+  }
+  &:first-of-type {
+    strong {
+      letter-spacing: 0.2px;
+    }
+  }
+  &:last-of-type {
+    padding-right: 0;
   }
 `;
 

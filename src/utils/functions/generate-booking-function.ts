@@ -25,7 +25,9 @@ import { findSelectedOption } from './utils-functions';
  */
 const overwriteDate = (day: Date, hour: Date): Date => {
   const convertedDay = formatCalenderDate(day);
-  const convertedHour = formateCalenderHours(new Date(hour.getTime() + 3600000));
+  const convertedHour = formateCalenderHours(
+    new Date(hour.getTime() - hour.getTimezoneOffset() * 60000)
+  );
   return new Date(`${convertedDay}${convertedHour}`);
 };
 
@@ -111,7 +113,7 @@ const generateBookingDetails = (
     payment: cred.payment.value,
     extraOptions: !!extraOptions.length,
     selectedOptions: extraOptions,
-    archive: cred.archive,
+    archive: cred.archive || false,
     bookingTime,
     id
   };

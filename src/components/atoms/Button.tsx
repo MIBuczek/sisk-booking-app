@@ -8,7 +8,7 @@ type ButtonProps = {
 const Button = styled.button<ButtonProps>`
   color: ${({ theme }) => theme.darkGrey};
   background: ${({ theme, secondary }) => (secondary ? theme.middleGray : theme.green)};
-  font-size: ${({ theme }) => theme.fontSize.m};
+  font-size: 16px;
   font-weight: ${({ theme }) => theme.regular};
   border: ${({ theme }) => `1px solid ${theme.green}`};
   font-family: inherit;

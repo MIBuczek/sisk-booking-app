@@ -152,7 +152,7 @@ const TopNav = (): JSX.Element => {
         <StyledLinksList>
           <li>
             <NavigationLink to="/" exact activeStyle={active}>
-              Harmonogram Rezerwacji
+              Kalendarz Rezerwacji
             </NavigationLink>
           </li>
           <li>

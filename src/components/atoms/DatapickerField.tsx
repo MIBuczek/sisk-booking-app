@@ -15,7 +15,7 @@ export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
   background: #eaeaea;
   border: ${({ theme }) => `1px solid ${theme.green}`};
   color: ${({ theme }) => theme.darkGrey};
-  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: ${({ theme }) => theme.bold};
   text-align: center;
   padding: 10px;

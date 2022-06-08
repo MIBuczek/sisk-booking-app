@@ -31,7 +31,7 @@ export const customStyles = (invalid: boolean) => ({
     border: invalid ? '1px solid #cc0000' : '1px solid #afbf36',
     backgroundColor: '#eaeaea',
     letterSpacing: '-0.5px',
-    fontSize: '1rem',
+    fontSize: '1.2rem',
     fontWeight: '600'
   }),
   option: (

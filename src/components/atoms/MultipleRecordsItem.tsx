@@ -25,7 +25,7 @@ import Button from './Button';
 const RecordTableData = styled.td`
   display: inline-block;
   padding: 0.5rem 0.8rem;
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.darkGrey};
   animation: ${fadeInLeft} 0.5s linear;
   width: 15%;
@@ -69,6 +69,10 @@ const ListItemBtn = styled(Button)`
     border-color: ${({ theme }) => theme.darkGrey};
     color: ${({ theme }) => theme.darkGrey};
   }
+  &:disabled {
+    background: transparent;
+    color: ${({ theme }) => theme.darkGrey};
+  }
 `;
 
 const RecordDetail = styled.td`
@@ -110,7 +114,7 @@ const SingleBookingTime = styled.div`
 `;
 
 const RecordDetailSpan = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.m};
   padding: 10px 15px 10px 5px;
   width: auto;
 `;
@@ -119,9 +123,6 @@ const CommentsSpan = styled(RecordDetailSpan)`
   width: 100% !important;
   border-bottom: ${({ theme }) => `1px dotted ${theme.middleGray}`};
   margin-bottom: 3px;
-  &:last-of-type {
-    border-bottom-color: transparent;
-  }
 `;
 
 const ChevronIcon = styled(BsChevronDown)`
@@ -224,7 +225,10 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                             {modelDisplayValue(property, sb.status)}
                           </RecordDetailSpan>
                           {(isAdmin || isEmployee) && (
-                            <ListItemBtn onClick={() => editHandler(index, false, sbi)}>
+                            <ListItemBtn
+                              disabled={!currentRecord.accepted}
+                              onClick={() => editHandler(index, false, sbi)}
+                            >
                               <BsFillCheckSquareFill />
                             </ListItemBtn>
                           )}

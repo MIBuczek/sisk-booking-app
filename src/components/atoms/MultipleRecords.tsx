@@ -72,7 +72,7 @@ const RecordTable = styled.table`
 const RecordTableHeader = styled.th`
   padding: 0.5rem 0.8rem;
   font-weight: 600;
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.darkGrey};
   text-align: start;
   width: 15%;
@@ -90,7 +90,7 @@ const RecordTableHeader = styled.th`
     margin-left: auto;
   }
   @media (max-width: 890px) {
-    font-size: ${({ theme }) => theme.fontSize.xs};
+    font-size: ${({ theme }) => theme.fontSize.s};
     padding: 0.2rem 0.8rem;
     word-break: break-all;
   }
@@ -99,13 +99,13 @@ const RecordTableHeader = styled.th`
 const RecordTableData = styled.td<RecordDataType>`
   display: inline-block;
   padding: 0.5rem 0.8rem;
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.darkGrey};
   text-align: ${({ empty }) => (empty ? 'center' : 'start')};
   animation: ${fadeInLeft} 0.5s linear;
   word-break: break-word;
   @media (max-width: 890px) {
-    font-size: ${({ theme }) => theme.fontSize.xs};
+    font-size: ${({ theme }) => theme.fontSize.s};
     word-break: break-all;
   }
 `;

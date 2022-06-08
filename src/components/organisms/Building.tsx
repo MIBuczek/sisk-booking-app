@@ -63,7 +63,7 @@ const BuildingHeader = styled(Header)`
 `;
 
 const BuildingSubHeader = styled(Header)`
-  font-size: ${({ theme }) => theme.fontSize.ml};
+  font-size: 18px;
   width: 85%;
   margin: 0 0 25px;
 `;
@@ -91,7 +91,7 @@ const InnerContent = styled.div`
 `;
 
 const DetailsParagraph = styled(Paragraph)`
-  font-size: 12px;
+  font-size: 16px;
   animation: ${fadeIn} 0.5s linear;
   color: ${({ theme }) => theme.green};
   padding: 10px 0;

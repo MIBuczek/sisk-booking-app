@@ -50,6 +50,7 @@ const ButtonWrapper = styled.div`
 
 const ConfirmationBtn = styled(Button)`
   padding: 10px 20px;
+  font-size: 16px;
 `;
 
 interface IProps {

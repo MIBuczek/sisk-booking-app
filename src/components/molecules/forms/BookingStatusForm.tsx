@@ -58,7 +58,7 @@ const ClientStatusDetails = styled.div`
 const DetailsSpan = styled.span`
   font-weight: 400;
   margin: 8px 0;
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.darkGrey};
 `;
 

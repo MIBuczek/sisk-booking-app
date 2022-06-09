@@ -10,7 +10,7 @@ enum BOOKING_STATUS {
 const BOOKING_STATUS_OPTIONS: TSelect[] = [
   {
     label: 'Nie odbyła się',
-    value: BOOKING_STATUS.NOT_DONE
+    value: BOOKING_STATUS.INITIAL
   },
   {
     label: 'Odbyła się',

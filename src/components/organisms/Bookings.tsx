@@ -57,6 +57,7 @@ const OpenBookingsModalButton = styled(Button)`
   background-color: #eaeaea;
   border-color: ${({ theme }) => theme.green};
   color: #454545;
+  font-size: 16px;
   &:hover {
     background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;
@@ -193,10 +194,12 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         deleteHandler={deleteBookingHandler}
         emptyText="Nie ma żadnej dodanej rezerwacja do bazy danych."
       />
-      <ConflictParagraph small bold conflict={!!conflicts.length}>
-        <BsFillExclamationCircleFill />
-        {`Aktualna liczba konfliktów: ${conflicts.length}`}
-      </ConflictParagraph>
+      {user?.isAdmin && (
+        <ConflictParagraph small bold conflict={!!conflicts.length}>
+          <BsFillExclamationCircleFill />
+          {`Aktualna liczba konfliktów: ${conflicts.length}`}
+        </ConflictParagraph>
+      )}
       {isOpen && (
         <Modal>
           {type === MODAL_TYPES.BOOKINGS && (

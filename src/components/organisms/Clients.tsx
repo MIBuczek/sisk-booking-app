@@ -51,6 +51,7 @@ const OpenClientModalButton = styled(Button)`
   background-color: #eaeaea;
   border-color: ${({ theme }) => theme.green};
   color: #454545;
+  font-size: 16px;
   &:hover {
     background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;

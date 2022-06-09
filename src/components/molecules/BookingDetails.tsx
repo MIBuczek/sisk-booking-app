@@ -39,7 +39,7 @@ const DetailsHeader = styled(Header)`
 `;
 
 const DetailsParagraph = styled(Paragraph)`
-  font-size: 12px;
+  font-size: 14px;
   animation: ${fadeIn} 0.5s linear;
   &:first-of-type {
     padding-top: 30px;

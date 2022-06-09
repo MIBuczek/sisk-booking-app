@@ -51,7 +51,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
 
   return (
     <MainWrapper>
-      <Header>HARMONOGRAM REZERWACJI OBIEKTÓW</Header>
+      <Header>KALENDARZ REZERWACJI OBIEKTÓW</Header>
       <SideNav
         state={mainState}
         stateHandler={mainStateHandler}

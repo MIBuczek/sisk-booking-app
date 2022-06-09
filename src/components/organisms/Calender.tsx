@@ -37,10 +37,12 @@ const CalenderWrapper = styled.section`
     .fc-timegrid-event.fc-v-event {
       background-color: ${({ theme }) => theme.green};
       border-color: #b9b8b8;
+      overflow: hidden;
       p {
         margin: 3px 0;
       }
     }
+
     .fc-button-primary {
       background-color: #eaeaea;
       border-color: ${({ theme }) => theme.green};

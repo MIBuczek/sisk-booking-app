@@ -322,7 +322,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    * Function compare is booking client id with drop down selected option
    */
   const compareClientIds = (): boolean => {
-    if (!selectedClientId) return false;
+    if (!selectedClientId || !selectedClientId.label) return false;
     return selectedClientId?.label !== personName;
   };
 
@@ -349,9 +349,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
   return (
     <BookingWrapper onSubmit={onSubmit}>
-      <BookingHeader>
-        {isAdmin ? 'Dodaj nową rezerwację' : ' Wyślij prośbę o rezerwację'}
-      </BookingHeader>
+      <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
       {isAdmin && (
         <AcceptWrapper>
           <SelectWrapper>
@@ -459,7 +457,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       </SelectWrapper>
       <SelectWrapper>
         <RodoWrapper>
-          <Label>Czy jest to rezerwacja cykliczna</Label>
+          <Label>Rezerwacja cykliczna</Label>
           <Controller
             name="regular"
             defaultValue={false}
@@ -496,7 +494,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Label>Adres e-mail</Label>
+        <Label>E-mail</Label>
         <Controller
           name="email"
           defaultValue={''}
@@ -515,7 +513,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Label>Podaj numer telefonu</Label>
+        <Label>Telefonu</Label>
         <Controller
           name="phone"
           defaultValue={''}
@@ -559,7 +557,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         </SelectWrapper>
       </InputContainer>
       <InputContainer>
-        <Label>{`${regularValue ? 'Od kiedy' : 'Kiedy'} chciałbyś zarezerwować obiekt`}</Label>
+        <Label>{regularValue ? 'Od kiedy' : 'Kiedy'}</Label>
         <Controller
           name="startDate"
           defaultValue={new Date()}
@@ -585,7 +583,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         {errors.startDate && <ErrorMsg innerText="Pole nie może być puste" />}
         {regularValue && (
           <>
-            <Label>Do kiedy chciałbyś zarezerwować obiekt</Label>
+            <Label>Do kiedy</Label>
             <Controller
               name="endDate"
               defaultValue={new Date()}
@@ -611,7 +609,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             {errors.endDate && <ErrorMsg innerText="Pole nie może być puste" />}
           </>
         )}
-        <Label>Od której godziny</Label>
+        <Label>Od godziny</Label>
         <Controller
           name="startHour"
           defaultValue={null}
@@ -638,7 +636,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.startHour && <ErrorMsg innerText="Pole nie może być puste" />}
-        <Label>Do której godziny</Label>
+        <Label>Do godziny</Label>
         <Controller
           name="endHour"
           defaultValue={null}

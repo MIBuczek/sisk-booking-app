@@ -6,6 +6,7 @@ import { formatDate, formatTime } from './calender-functions';
  */
 const transformValue: { [x: string]: string } = {
   INITIAL: 'Nie rozpoczęta',
+  NOT_DONE: 'Nie rozpoczęta',
   DONE: 'Zakończona',
   QUIT: 'Rezygnacja',
   siechnice: 'Siechnice',

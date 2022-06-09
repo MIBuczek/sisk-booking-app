@@ -67,7 +67,7 @@ const prepareCalenderItem = (
   textColor: `${size}`,
   start: `${formatCalenderDate(startDay)}${formateCalenderHours(startHour)}`,
   end: `${formatCalenderDate(startDay)}${formateCalenderHours(endHour)}`,
-  backgroundColor: `${accepted ? '' : 'red'}`
+  backgroundColor: `${accepted ? '' : '#5e5e5e'}`
 });
 
 export { formatDate, prepareCalenderItem, formatTime, formatCalenderDate, formateCalenderHours };

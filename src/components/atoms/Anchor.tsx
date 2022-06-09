@@ -9,7 +9,7 @@ const Anchor = styled.a<AnchorProps>`
   align-items: center;
   cursor: pointer;
   color: ${({ theme }) => theme.darkGrey};
-  font-size: ${({ small }) => (small ? '1rem' : '1.5rem')};
+  font-size: ${({ small }) => (small ? '1.2rem' : '1.5rem')};
   line-height: ${({ small }) => (small ? '1.1rem' : '1.5rem')};
   padding-top: ${({ small }) => (small ? '0' : '15px')};
   text-align: justify;

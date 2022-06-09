@@ -11,7 +11,7 @@ const TextAreaField = styled.textarea<TextAreaType>`
   background: #eaeaea;
   border: 1px solid #afbf36;
   color: ${({ theme }) => theme.darkGrey};
-  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: ${({ theme }) => theme.bold};
   text-align: center;
   resize: none;

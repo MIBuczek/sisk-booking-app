@@ -71,9 +71,7 @@ const Login: React.FC = (): JSX.Element => {
   return (
     <LoginWrapper>
       <LoginPanel>
-        <LoginHeader>
-          Panel logowania dla administratora harmonogramu rezerwacji obiektów
-        </LoginHeader>
+        <LoginHeader>Panel logowania dla administratora kalendarza rezerwacji obiektów</LoginHeader>
         <Label>Adres e-mail</Label>
         <Controller
           name="email"

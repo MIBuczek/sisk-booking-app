@@ -8,17 +8,8 @@ import { IBookedTime, IBooking, ISummaryClientBookings, TSelect } from 'models';
  * @param  monthValue
  * @returns {Array<IBooking>}
  */
-const findAllClientReservation = (
-  bookings: IBooking[],
-  clientValue: TSelect,
-  monthValue: Date
-): IBooking[] =>
-  bookings.filter((b) => {
-    if (b.clientId === clientValue.value && b.month === new Date(monthValue).getMonth()) {
-      return true;
-    }
-    return false;
-  });
+const findAllClientReservation = (bookings: IBooking[], clientValue: TSelect): IBooking[] =>
+  bookings.filter((b) => b.clientId === clientValue.value);
 
 /**
  * Function to model all client reservation and divide it into to cities.

@@ -21,7 +21,7 @@ const DetailListItem = styled.li`
 `;
 
 const DetailsParagraph = styled(Paragraph)`
-  font-size: 12px;
+  font-size: 14px;
   padding-top: 5px;
   &.empty {
     text-align: center;

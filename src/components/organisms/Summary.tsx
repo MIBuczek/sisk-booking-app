@@ -92,7 +92,7 @@ const MonthPickerWrapper = styled(SelectWrapper)`
     }
     .react-datepicker__month {
       width: 290px;
-      font-size: 12px;
+      font-size: 14px;
     }
   }
 `;
@@ -114,7 +114,7 @@ const SummaryBtn = styled(Button)`
 `;
 
 const DetailsParagraph = styled(Paragraph)`
-  font-size: 12px;
+  font-size: 14px;
   padding-top: 12px;
   &.empty {
     text-align: center;
@@ -149,7 +149,7 @@ const DetailContent = styled.td`
   flex-direction: column;
   align-items: flex-start;
   height: auto;
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.darkGrey};
   word-break: break-word;
   width: 100%;
@@ -171,6 +171,7 @@ const DetailsSpan = styled.span`
   font-weight: 400;
   font-weight: 400;
   margin: 0 4rem 0 0.5rem;
+  font-size: 14px;
 `;
 
 const Summary = () => {
@@ -207,7 +208,7 @@ const Summary = () => {
 
     if (!currentClient) return;
 
-    const allClientReservations = findAllClientReservation(bookings, clientValue, monthValue);
+    const allClientReservations = findAllClientReservation(bookings, clientValue);
 
     const initialSummary = cloneDeep({
       ...INITIAL_CLIENT_BOOKING_DETAILS,

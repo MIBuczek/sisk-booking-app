@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import Modal from 'components/organisms/Modal';
 import ModalBooking from 'components/molecules/modals/ModalBooking';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
+import { Redirect } from 'react-router';
 
 const MainWrapper = styled.section`
   width: 100%;
@@ -41,13 +42,20 @@ const Main: React.FC<IProps> = (): JSX.Element => {
    */
   const mainStateHandler = (value: TSelect, field: string) => {
     if (field === 'city') {
-      setNavState(() => ({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
+      setNavState(() => cloneDeep({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
     } else {
       setNavState((prev) => ({ ...prev, building: value }));
     }
   };
 
-  const { isOpen, type } = useSelector((state: IReduxState) => state.modal);
+  const {
+    modal: { isOpen, type },
+    authStore: { auth }
+  } = useSelector((state: IReduxState) => state);
+
+  if (auth) {
+    return <Redirect to="/admin" />;
+  }
 
   return (
     <MainWrapper>

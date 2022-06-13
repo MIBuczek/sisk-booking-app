@@ -44,10 +44,9 @@ const Admin = (): JSX.Element => {
    * Function select in dropdown user work place. City and building.
    */
   const setWorkPlace = (): void => {
-    if (user?.city && user?.building) {
-      const selectedCity = CITY_OPTIONS.find((co) => co.value === user?.city) || CITY_OPTIONS[0];
-      stateHandler(selectedCity, 'city');
-    }
+    if (!user?.city) return;
+    const selectedCity = CITY_OPTIONS.find((co) => co.value === user?.city) || CITY_OPTIONS[0];
+    stateHandler(selectedCity, 'city');
   };
 
   /**
@@ -71,11 +70,9 @@ const Admin = (): JSX.Element => {
     setTab(currentTab);
   };
 
-  React.useEffect(() => {
-    setWorkPlace();
-  }, [user]);
+  React.useEffect(() => setWorkPlace(), [user]);
 
-  React.useEffect(() => undefined, [tab]);
+  React.useEffect(() => {}, [tab]);
 
   if (!auth) {
     return <Redirect to="/login" />;

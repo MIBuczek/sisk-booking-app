@@ -112,3 +112,15 @@ lerna-debug.log
 # System Files
 
 .DS_Store
+
+# Firebase
+/.firebase
+.firebaserc
+firebase.json
+
+# Github
+/.github
+
+# build
+/public
+/build

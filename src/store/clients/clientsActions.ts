@@ -83,7 +83,7 @@ export const updateClient = (clientData: IClient) => async (
       client.id === clientData.id ? clientData : client
     );
     dispatch(fetchingClientsDone(CLIENTS_STATE.UPDATE_CLIENT, newClients));
-    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Dane klienta zostały zmienione pomuślnie'));
+    dispatch(openModal(MODAL_TYPES.SUCCESS, 'Dane klienta zostały zmienione pomyślnie'));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można zaktualizować danych klienta.'));
     throw new Error(JSON.stringify(err));
@@ -98,7 +98,7 @@ export const deleteClient = (id: string) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    db.collection('clients').doc(id).delete();
+    await db.collection('clients').doc(id).delete();
     const { clients } = getStore().clientStore;
     const updatedClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
     dispatch(fetchingClientsDone(CLIENTS_STATE.DELETE_CLIENT, updatedClients));

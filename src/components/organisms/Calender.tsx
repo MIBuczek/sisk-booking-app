@@ -9,10 +9,10 @@ import Paragraph from 'components/atoms/Paragraph';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import { IAdminState, IBooking, IMainState } from 'models';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import { prepareCalenderItem } from '../../utils/functions/calender-functions';
+import { prepareCalenderItem } from '../../utils';
 import RenderEventContent from '../atoms/CalenderEvent';
-import { IReduxState } from '../../models/store/store-models';
-import { getCurrentBooking } from '../../store/bookings/bookingsAction';
+import { IReduxState } from '../../models';
+import { getCurrentBooking } from '../../store';
 
 const CalenderWrapper = styled.section`
   width: 60%;

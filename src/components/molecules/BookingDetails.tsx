@@ -11,7 +11,7 @@ import {
 import Paragraph from '../atoms/Paragraph';
 import Header from '../atoms/Header';
 import Button from '../atoms/Button';
-import { clearCurrentBooking } from '../../store/bookings/bookingsAction';
+import { clearCurrentBooking } from '../../store';
 import { fadeIn } from '../../style/animation';
 import { IBookingsPayload, IReduxState } from '../../models';
 

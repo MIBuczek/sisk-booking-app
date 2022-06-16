@@ -10,8 +10,8 @@ import useScrollPosition from '../../hooks/useScrollPosition ';
 import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 import { fadeIn } from '../../style/animation';
-import { openModal } from '../../store/modal/modalAction';
-import { MODAL_TYPES } from '../../utils/variables/store-const';
+import { openModal } from '../../store';
+import { MODAL_TYPES } from '../../utils';
 
 type Navigation = {
   isTop: boolean;
@@ -96,7 +96,7 @@ const NavButton = styled(Button)`
     padding: 5px 10px;
     border: 1px solid;
     &:hover {
-      box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
+      box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     }
   }
   &:hover {
@@ -164,7 +164,7 @@ const TopNav = (): JSX.Element => {
             <NavButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
               <BsEnvelopeFill />
             </NavButton>
-            <NaviAnchor href="http://www.sisk-siechnice.pl/" target="_blank">
+            <NaviAnchor href="https://www.sisk-siechnice.pl/" target="_blank">
               <BsFillHouseFill />
             </NaviAnchor>
           </li>

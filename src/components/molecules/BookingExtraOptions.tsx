@@ -80,7 +80,6 @@ const RoundBtn = styled(Button)`
   height: 30px;
   padding: 0;
   display: flex;
-  padding: 0;
   align-items: center;
   justify-content: center;
   svg {

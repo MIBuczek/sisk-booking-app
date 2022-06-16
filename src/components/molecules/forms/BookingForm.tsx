@@ -48,9 +48,11 @@ const BookingWrapper = styled.form`
   max-width: 670px;
   display: flex;
   flex-wrap: wrap;
+
   button {
     align-self: flex-end;
   }
+
   @media (max-width: 890px) {
     align-items: center;
     justify-content: center;
@@ -61,6 +63,7 @@ const BookingHeader = styled(Header)`
   width: 100%;
   margin: 20px 0 40px;
   padding: 0 20px;
+
   &:after {
     left: 20px;
   }
@@ -134,6 +137,7 @@ const ButtonPanel = styled.div`
   justify-content: flex-end;
   width: 100%;
   margin: 3rem 20px;
+
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -144,6 +148,7 @@ const ConflictParagraph = styled(Paragraph)`
   text-align: center;
   color: ${({ theme }) => theme.error};
   margin: 10px 20px;
+
   svg {
     margin-right: 8px;
   }
@@ -177,8 +182,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
   const { city, building } = mainState;
 
-  const maxRangDate = new Date(`${new Date().getFullYear()}-01-01T00:01:00.676Z`);
-
   const dispatch = useDispatch();
 
   const {
@@ -198,6 +201,18 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     clientId: selectedClientId,
     person: personName
   } = watch();
+
+  /**
+   * Function to generate max rang in data type input.
+   * If we have august then extend it for next year.
+   */
+  const generateMaxRangDate = () => {
+    let currentYear = new Date().getFullYear();
+    if (new Date().getMonth() >= 7) {
+      currentYear += 1;
+    }
+    return new Date(`${currentYear}-01-01T00:01:00.676Z`);
+  };
 
   /**
    * Function to handle selected reservation size.
@@ -319,7 +334,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   /**
-   * Function compare is booking client id with drop down selected option
+   * Function compare is booking client id with dropdown selected option
    */
   const compareClientIds = (): boolean => {
     if (!selectedClientId || !selectedClientId.label) return false;
@@ -570,7 +585,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               placeholderText="Wybierz"
               locale="pl"
               minDate={new Date()}
-              maxDate={addMonths(maxRangDate, 8)}
+              maxDate={addMonths(generateMaxRangDate(), 8)}
               dateFormat="dd-MM-yyyy"
               invalid={!!errors.startDate}
               onChange={onChange}
@@ -596,7 +611,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   placeholderText="Wybierz"
                   locale="pl"
                   minDate={new Date()}
-                  maxDate={addMonths(maxRangDate, 8)}
+                  maxDate={addMonths(generateMaxRangDate(), 8)}
                   dateFormat="dd-MM-yyyy"
                   invalid={!!errors.endDate}
                   onChange={onChange}
@@ -719,7 +734,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           />
           <Anchor
             small
-            href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
+            href="https://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
             target="_blank"
           >
             Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.

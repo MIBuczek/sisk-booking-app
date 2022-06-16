@@ -1,10 +1,12 @@
 import { isEmpty } from 'lodash';
 import {
-  IClient,
   IBooking,
-  ISingleBookingDate,
-  ISelectedExtraOptions,
+  IClient,
+  IDeleteHandler,
+  IEditHandler,
   instanceOfBookings,
+  ISelectedExtraOptions,
+  ISingleBookingDate,
   singleInstanceOfBookings
 } from 'models';
 import * as React from 'react';
@@ -30,19 +32,24 @@ const RecordTableData = styled.td`
   animation: ${fadeInLeft} 0.5s linear;
   width: 15%;
   word-break: break-word;
+
   &:nth-of-type(1) {
     width: 5%;
   }
+
   &:nth-of-type(2) {
     width: 20%;
   }
+
   &:nth-of-type(4) {
     width: 18%;
   }
+
   &:last-of-type {
     width: 15%;
     margin-left: auto;
   }
+
   @media (max-width: 890px) {
     display: flex;
     flex-wrap: wrap;
@@ -64,11 +71,13 @@ const ListItemBtn = styled(Button)`
   padding: 5px;
   margin: 0;
   width: 35px;
+
   &:hover {
     box-shadow: none;
     border-color: ${({ theme }) => theme.darkGrey};
     color: ${({ theme }) => theme.darkGrey};
   }
+
   &:disabled {
     background: transparent;
     color: ${({ theme }) => theme.darkGrey};
@@ -93,6 +102,7 @@ const BookingTimeWrapper = styled.div`
   border-bottom: ${({ theme }) => `1px solid ${theme.middleGray}`};
   padding: 3px 2px;
   margin-bottom: 10px;
+
   span {
     padding: 2px;
   }
@@ -102,11 +112,13 @@ const SingleBookingTime = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
   span {
     display: inline-block;
     padding: 5px 3px;
     width: 20%;
   }
+
   button {
     background: transparent;
     border-bottom: none;
@@ -127,6 +139,7 @@ const CommentsSpan = styled(RecordDetailSpan)`
 
 const ChevronIcon = styled(BsChevronDown)`
   transition: 0.4s;
+
   &.open {
     transform: rotate(180deg);
   }
@@ -135,6 +148,7 @@ const ChevronIcon = styled(BsChevronDown)`
 interface MultipleRecordItemProps {
   index: number;
   currentPage: number;
+  postPerPage: number;
   isAdmin: boolean;
   isEmployee: boolean;
   recordProperty: string[];
@@ -142,13 +156,14 @@ interface MultipleRecordItemProps {
   recordPropertyDisplayMap: { [x: string]: string };
   currentRecord: IClient | IBooking;
   allRecords: (IClient | IBooking)[];
-  editHandler: (itemIndex: number, isMainItem: boolean, subItemIndex?: number) => void;
-  deleteHandler: (index: number) => void;
+  editHandler: (editDetails: IEditHandler) => void;
+  deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   index,
   currentPage,
+  postPerPage,
   isAdmin,
   isEmployee,
   recordProperty,
@@ -186,10 +201,22 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
             </ListItemBtn>
             {isAdmin && (
               <>
-                <ListItemBtn onClick={() => editHandler(index, true)}>
+                <ListItemBtn
+                  onClick={() =>
+                    editHandler({
+                      itemIndex: index,
+                      isMainItem: true,
+                      subItemIndex: null,
+                      currentPage,
+                      postPerPage
+                    })
+                  }
+                >
                   <BsFillFileEarmarkTextFill />
                 </ListItemBtn>
-                <ListItemBtn onClick={() => deleteHandler(index)}>
+                <ListItemBtn
+                  onClick={() => deleteHandler({ itemIndex: index, currentPage, postPerPage })}
+                >
                   <BsTrashFill />
                 </ListItemBtn>
               </>
@@ -227,7 +254,15 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                           {(isAdmin || isEmployee) && (
                             <ListItemBtn
                               disabled={!currentRecord.accepted}
-                              onClick={() => editHandler(index, false, sbi)}
+                              onClick={() =>
+                                editHandler({
+                                  itemIndex: index,
+                                  isMainItem: false,
+                                  subItemIndex: sbi,
+                                  currentPage,
+                                  postPerPage
+                                })
+                              }
                             >
                               <BsFillCheckSquareFill />
                             </ListItemBtn>

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as StoreActions from 'store';
 import { IReduxState } from '../../models';
-import { SAVING_STAGE } from '../../utils/variables/store-const';
+import { SAVING_STAGE } from '../../utils';
 import Loading from './Loading';
 
 export interface IProps {

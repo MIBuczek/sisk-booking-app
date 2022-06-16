@@ -9,16 +9,14 @@ const TextAreaField = styled.textarea<TextAreaType>`
   height: 135px;
   border-radius: 5px;
   background: #eaeaea;
-  border: 1px solid #afbf36;
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: ${({ theme }) => theme.bold};
-  text-align: center;
   resize: none;
   padding: 10px;
   text-align: left;
   letter-spacing: -0.5px;
-  border-color: ${({ invalid }) => (invalid ? '#cc0000' : '#afbf36')};
+  border: ${({ invalid }) => (invalid ? '1px solid #cc0000' : ' 1px solid#afbf36')};
   transition: 0.4s;
   &:active,
   &:focus {

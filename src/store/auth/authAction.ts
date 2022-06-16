@@ -58,10 +58,7 @@ export const logInUser = (email: string, password: string) => async (
   }
 };
 
-/**
- * Store logout user action.
- * @param  dispatch
- */
+/* Store logout user action. */
 export const logOutUser = () => async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
   dispatch(fetchingAuth());
   try {

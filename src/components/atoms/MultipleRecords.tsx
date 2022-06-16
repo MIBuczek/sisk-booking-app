@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { IBooking, IClient } from 'models';
+import { IBooking, IClient, IDeleteHandler, IEditHandler } from 'models';
 import * as React from 'react';
 import { fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
@@ -26,27 +26,33 @@ const RecordTable = styled.table`
   min-height: 430px;
   display: block;
   padding: 0;
+
   thead {
     display: inherit;
     width: 100%;
+
     tr {
       display: flex;
       width: 100%;
+
       &:first-of-type {
         border-top: ${({ theme }) => `1px solid ${theme.green}`};
         border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
       }
     }
   }
+
   tbody {
     display: inherit;
     width: 100%;
     min-height: 430px;
+
     tr {
       display: flex;
       align-items: center;
       width: 100%;
     }
+
     tr.empty {
       width: 100%;
       text-align: center;
@@ -54,13 +60,16 @@ const RecordTable = styled.table`
       display: block;
     }
   }
+
   tfoot {
     width: 100%;
     display: flex;
     border-top: ${({ theme }) => `1px solid ${theme.green}`};
     border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+
     tr {
       width: 100%;
+
       td {
         width: 100%;
         display: flex;
@@ -76,19 +85,24 @@ const RecordTableHeader = styled.th`
   color: ${({ theme }) => theme.darkGrey};
   text-align: start;
   width: 15%;
+
   &:nth-of-type(1) {
     width: 5%;
   }
+
   &:nth-of-type(2) {
     width: 20%;
   }
+
   &:nth-of-type(4) {
     width: 18%;
   }
+
   &:last-of-type {
     width: 15%;
     margin-left: auto;
   }
+
   @media (max-width: 890px) {
     font-size: ${({ theme }) => theme.fontSize.s};
     padding: 0.2rem 0.8rem;
@@ -119,8 +133,8 @@ interface IProps {
   isEmployee: boolean;
   records?: (IClient | IBooking)[];
   emptyText: string;
-  editHandler: (itemIndex: number, isMainItem: boolean, subItemIndex?: number) => void;
-  deleteHandler: (index: number) => void;
+  editHandler: (editDetails: IEditHandler) => void;
+  deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
 const MultipleRecords: React.FunctionComponent<IProps> = ({
@@ -169,6 +183,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 key={record.id}
                 index={index}
                 currentPage={currentPage}
+                postPerPage={postPerPage}
                 recordProperty={recordProperty}
                 recordPropertyDetails={recordPropertyDetails}
                 recordPropertyDisplayMap={recordPropertyDisplayMap}

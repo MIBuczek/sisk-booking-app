@@ -12,6 +12,13 @@ export const SelectWrapper = styled.div`
   min-width: 50%;
   @media (max-width: 1400px) {
     min-width: 30%;
+    padding-right: 50px;
+    margin: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 799px) {
     margin: 10px;
   }
 `;

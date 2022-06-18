@@ -32,11 +32,12 @@ const SideWrapper = styled.aside`
     width: 95%;
     padding: 30px 20px;
     align-items: end;
+    justify-content: flex-start;
   }
   @media (max-width: 799px) {
     flex-wrap: nowrap;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 `;
 
@@ -46,12 +47,14 @@ const InnerNavigationPanel = styled.div`
   @media (max-width: 1400px) {
     width: 80%;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
+    padding: 30px 20px;
   }
   @media (max-width: 799px) {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    padding: 20px 10px;
   }
 `;
 
@@ -89,32 +92,34 @@ const SideNav: React.FunctionComponent<IProps> = ({
 
   return (
     <SideWrapper>
-      <SelectWrapper>
-        <Label>Miejscowość</Label>
-        <SelectInputField
-          defaultValue={city}
-          options={CITY_OPTIONS}
-          styles={customStyles(false)}
-          placeholder="Wybierz"
-          onChange={(val: TSelect) => stateHandler(val, 'city')}
-          selected={city}
-          value={city}
-          isDisabled={blockSelectOptions}
-        />
-      </SelectWrapper>
-      <SelectWrapper>
-        <Label>Obiekt</Label>
-        <SelectInputField
-          defaultValue={building}
-          value={building}
-          options={selectBuilding()}
-          styles={customStyles(false)}
-          placeholder="Wybierz"
-          onChange={(val: TSelect) => stateHandler(val, 'building')}
-          selected={building}
-          isDisabled={!city}
-        />
-      </SelectWrapper>
+      <InnerNavigationPanel style={{ paddingBottom: '0px' }}>
+        <SelectWrapper>
+          <Label>Miejscowość</Label>
+          <SelectInputField
+            defaultValue={city}
+            options={CITY_OPTIONS}
+            styles={customStyles(false)}
+            placeholder="Wybierz"
+            onChange={(val: TSelect) => stateHandler(val, 'city')}
+            selected={city}
+            value={city}
+            isDisabled={blockSelectOptions}
+          />
+        </SelectWrapper>
+        <SelectWrapper>
+          <Label>Obiekt</Label>
+          <SelectInputField
+            defaultValue={building}
+            value={building}
+            options={selectBuilding()}
+            styles={customStyles(false)}
+            placeholder="Wybierz"
+            onChange={(val: TSelect) => stateHandler(val, 'building')}
+            selected={building}
+            isDisabled={!city}
+          />
+        </SelectWrapper>
+      </InnerNavigationPanel>
       {isAdminPanel ? (
         <InnerNavigationPanel>
           <ButtonIcon role="button" onClick={() => tabHandler(ADMIN_TABS.CALENDER)}>

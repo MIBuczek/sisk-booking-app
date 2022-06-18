@@ -196,7 +196,13 @@ const Footer = (): JSX.Element => {
           Polityka prywatności
         </FooterAnchor>
         <FooterParagraph small>
-          © Copyright 2018 SISK / Created by GECKO Web Services
+          © Copyright 2018 SISK / Created by
+          <FooterAnchor
+            style={{ display: 'inline-block', paddingLeft: '8px', textDecoration: 'underline' }}
+            href="https://gecko-web-services.web.app"
+          >
+            GECKO Web Services
+          </FooterAnchor>
         </FooterParagraph>
       </FooterCredits>
       {isOpen && type === MODAL_TYPES.MESSAGE ? (

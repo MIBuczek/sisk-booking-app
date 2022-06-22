@@ -29,9 +29,9 @@ const TextInputField = styled.input<InputType>`
   &:disabled {
     color: #b9b8b8;
   }
-  @media (max-width: 890px) {
+  /* @media (max-width: 890px) {
     width: 240px;
-  }
+  } */
 `;
 
 export default TextInputField;

@@ -47,13 +47,14 @@ registerLocale('pl', pl);
 const BookingWrapper = styled.form`
   max-width: 670px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   button {
     align-self: flex-end;
   }
-  @media (max-width: 890px) {
+  @media (max-width: 720px) {
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
   }
 `;
 
@@ -72,16 +73,20 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (max-width: 890px) {
+  @media (max-width: 720px) {
     width: 100%;
   }
 `;
 
 const RodoWrapper = styled.div`
+  width: 100%;
   height: auto;
   display: flex;
   align-items: center;
   margin: 10px 20px;
+  @media (max-width: 720px) {
+    width: 90%;
+  }
 `;
 
 const AcceptWrapper = styled.div`
@@ -96,7 +101,13 @@ const AcceptWrapper = styled.div`
   }
 `;
 
-const ArchiveWrapper = styled(SelectWrapper)`
+const SelectFormWrapper = styled(SelectWrapper)`
+  @media (max-width: 1400px) {
+    padding-right: 0px;
+  }
+`;
+
+const ArchiveWrapper = styled(SelectFormWrapper)`
   width: 100%;
   align-items: center;
   flex-direction: row;
@@ -120,12 +131,19 @@ const TextAreaLabel = styled(Label)`
 const MessageTextArea = styled(TextAreaField)`
   width: 100%;
   margin: 10px 20px;
+  @media (max-width: 1400px) {
+    width: 90%;
+    margin: 10px 0;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
+  @media (max-width: 1400px) {
+    width: 100%;
+  }
 `;
 
 const ButtonPanel = styled.div`
@@ -136,6 +154,10 @@ const ButtonPanel = styled.div`
   margin: 3rem 20px;
   button {
     margin: 0 0 0 0.8rem;
+  }
+  @media (max-width: 720px) {
+    width: 90%;
+    justify-content: center;
   }
 `;
 
@@ -352,7 +374,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
       {isAdmin && (
         <AcceptWrapper>
-          <SelectWrapper>
+          <SelectFormWrapper>
             <Label>Dodaj najemcę</Label>
             <Controller
               name="clientId"
@@ -370,8 +392,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 />
               )}
             />
-          </SelectWrapper>
-          <SelectWrapper>
+          </SelectFormWrapper>
+          <SelectFormWrapper>
             <Label>Zakceptuj rezerwację</Label>
             <Controller
               name="accepted"
@@ -387,7 +409,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 />
               )}
             />
-          </SelectWrapper>
+          </SelectFormWrapper>
           {compareClientIds() && (
             <AutoFillContent>
               <Label>Czy chcesz autouzupełnić dane klienta</Label>
@@ -398,7 +420,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         </AcceptWrapper>
       )}
-      <SelectWrapper>
+      <SelectFormWrapper>
         <Label>Miejscowość</Label>
         <Controller
           name="city"
@@ -420,8 +442,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.city && <ErrorMsg innerText="Pole nie może być puste" />}
-      </SelectWrapper>
-      <SelectWrapper>
+      </SelectFormWrapper>
+      <SelectFormWrapper>
         <Label>Obiekt</Label>
         <Controller
           name="building"
@@ -443,8 +465,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.building && <ErrorMsg innerText="Pole nie może być puste" />}
-      </SelectWrapper>
-      <SelectWrapper>
+      </SelectFormWrapper>
+      <SelectFormWrapper>
         <Label>Rezerwowana powierzchnia</Label>
         <ButtonWrapper>
           <ButtonGroup
@@ -454,8 +476,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             disabled={displayConfirmation}
           />
         </ButtonWrapper>
-      </SelectWrapper>
-      <SelectWrapper>
+      </SelectFormWrapper>
+      <SelectFormWrapper>
         <RodoWrapper>
           <Label>Rezerwacja cykliczna</Label>
           <Controller
@@ -473,7 +495,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             )}
           />
         </RodoWrapper>
-      </SelectWrapper>
+      </SelectFormWrapper>
       <InputContainer>
         <Label>Imię i nazwisko</Label>
         <Controller
@@ -532,7 +554,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
-        <SelectWrapper>
+        <SelectFormWrapper>
           <Label>Płatność</Label>
           <Controller
             name="payment"
@@ -554,7 +576,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             )}
           />
           {errors.payment && <ErrorMsg innerText="Pole nie może być puste" />}
-        </SelectWrapper>
+        </SelectFormWrapper>
       </InputContainer>
       <InputContainer>
         <Label>{regularValue ? 'Od kiedy' : 'Kiedy'}</Label>

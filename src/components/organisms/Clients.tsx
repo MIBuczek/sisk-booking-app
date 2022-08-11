@@ -2,13 +2,21 @@ import Button from 'components/atoms/Button';
 import Header from 'components/atoms/Header';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ClientForm from 'components/molecules/forms/ClientForm';
-import { IBooking, IClient, instanceOfClients, IReduxState } from 'models';
+import {
+  IBooking,
+  IClient,
+  IDeleteHandler,
+  IEditHandler,
+  instanceOfClients,
+  IReduxState
+} from 'models';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, deleteClient, openModal } from 'store';
 import styled from 'styled-components';
 import {
   adminCredentials,
+  findCurrentItemIndex,
   MODAL_TYPES,
   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
   RECORDS_CLIENTS_HEADERS,
@@ -52,12 +60,12 @@ const OpenClientModalButton = styled(Button)`
   border-color: ${({ theme }) => theme.green};
   color: #454545;
   font-size: 16px;
+
   &:hover {
     background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;
-    box-shadow: none;
     opacity: 1;
-    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
+    box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
   }
 `;
 
@@ -88,12 +96,13 @@ const Clients = () => {
   /**
    * Function to handle edited client data and set related data into client form.
    * @param itemIndex
-   * @param isMainItem
-   * @param subItemIndex
+   * @param currentPage
+   * @param postPerPage
    */
-  const editClientHandler = (itemIndex: number, isMainItem: boolean, subItemIndex?: number) => {
+  const editClientHandler = ({ itemIndex, currentPage, postPerPage }: IEditHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
     setIsEditing(true);
-    setEditedItemIndex(itemIndex);
+    setEditedItemIndex(currentIndex);
     dispatch(openModal(MODAL_TYPES.CLIENT));
   };
 
@@ -101,8 +110,9 @@ const Clients = () => {
    * Function to handle delete client item and display related confirmation modal.
    * @param index
    */
-  const deleteClientHandler = (index: number) => {
-    setDeleteItemIndex(index);
+  const deleteClientHandler = ({ itemIndex, currentPage, postPerPage }: IDeleteHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
+    setDeleteItemIndex(currentIndex);
     dispatch(openModal(MODAL_TYPES.DELETE));
   };
 
@@ -111,9 +121,9 @@ const Clients = () => {
    */
   const deleteClientAction = () => {
     if (typeof deleteItemIndex === 'undefined') return;
-    const currentClient = clients[deleteItemIndex];
+    const currentClient = clientList[deleteItemIndex];
     if (currentClient.id) dispatch(deleteClient(currentClient.id));
-    clientListHandler(clients.filter((c) => c.id !== currentClient.id));
+    clientListHandler(clientList.filter((c) => c.id !== currentClient.id));
     initialClientState();
     dispatch(closeModal());
   };
@@ -174,11 +184,12 @@ const Clients = () => {
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}
               initialEditingState={initialClientState}
+              clientList={clientList}
             />
           )}
           {type === MODAL_TYPES.DELETE && (
             <ModalDelete
-              message="Czy na pewno chcesz skazować tego klienta"
+              message="Czy na pewno chcesz skasować tego klienta"
               callback={deleteClientAction}
               cancelCallback={cancelDeleteClientAction}
             />

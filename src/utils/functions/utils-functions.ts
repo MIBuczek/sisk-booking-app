@@ -12,16 +12,6 @@ const firstLetterUpperCase = (s: string): string =>
   s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
 
 /**
- * Function to generate TSelect object into dropdown.
- * @param  s
- * @returns {TSelect}
- */
-const generateSelectDefaultValue = (s: string): TSelect => ({
-  value: s,
-  label: firstLetterUpperCase(s)
-});
-
-/**
  * Function to find which option was already selected.
  * @param  value
  * @param  options
@@ -88,6 +78,7 @@ const selectClientOptions = (clients: IClient[]): TSelect[] => {
 /**
  * Function to generate clients option for dropdown.
  * @param  clients
+ * @param clientId
  * @returns {Array<TSelect>}
  */
 const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect | undefined =>
@@ -105,8 +96,24 @@ const checkSelectedOption = (options: ExtraOptions[]): string =>
     return acc;
   }, '');
 
+/**
+ * Function to find current item index related to current page and post per page.
+ * @param itemIndex
+ * @param currentPage
+ * @param postPerPage
+ */
+const findCurrentItemIndex = (
+  itemIndex: number,
+  currentPage: number,
+  postPerPage: number
+): number => {
+  if (currentPage > 1) {
+    return (currentPage - 1) * postPerPage + itemIndex;
+  }
+  return itemIndex;
+};
+
 export {
-  generateSelectDefaultValue,
   selectSizeFieldOptions,
   selectClientOptions,
   selectedClientIdOption,
@@ -114,5 +121,6 @@ export {
   paginationItems,
   findSelectedOption,
   firstLetterUpperCase,
-  checkSelectedOption
+  checkSelectedOption,
+  findCurrentItemIndex
 };

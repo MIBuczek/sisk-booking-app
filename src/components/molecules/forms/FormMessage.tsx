@@ -235,7 +235,7 @@ const FormMessage = () => {
           />
           <Anchor
             small
-            href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
+            href="https://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
             target="_blank"
           >
             Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.

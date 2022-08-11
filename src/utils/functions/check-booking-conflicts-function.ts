@@ -8,11 +8,8 @@ import { IBooking } from 'models';
  * @param  dTwo
  * @returns {Boolean}
  */
-const checkDay = (dOne: Date, dTwo: Date) => {
-  if (Date.parse(new Date(dOne).toISOString()) - Date.parse(new Date(dTwo).toISOString()) === 0)
-    return true;
-  return false;
-};
+const checkDay = (dOne: Date, dTwo: Date) =>
+  Date.parse(new Date(dOne).toISOString()) - Date.parse(new Date(dTwo).toISOString()) === 0;
 
 /**
  * Function to check time into date.

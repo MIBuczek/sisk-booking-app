@@ -9,7 +9,7 @@ const ModalWrapper = styled.div`
   width: 100%;
   height: 100%;
   min-height: 100%;
-  max-height: fix-content;
+  max-height: fit-content;
   position: fixed;
   top: 0;
   left: 0;

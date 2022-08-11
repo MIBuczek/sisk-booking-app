@@ -8,7 +8,7 @@ const DetailsList = styled.ul`
   width: 100%;
   height: auto;
   list-style: none;
-  padding: 0px 10px;
+  padding: 0 10px;
   border: ${({ theme }) => `1px solid ${theme.green}`};
   background: ${({ theme }) => theme.lightGray};
 `;
@@ -29,7 +29,6 @@ const DetailsParagraph = styled(Paragraph)`
 `;
 
 const DetailsSpan = styled.span`
-  font-weight: 400;
   font-weight: 400;
   margin: 0 4rem 0 0.5rem;
 `;

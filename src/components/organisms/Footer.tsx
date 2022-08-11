@@ -10,8 +10,8 @@ import Paragraph from '../atoms/Paragraph';
 import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 import { fadeIn } from '../../style/animation';
-import { MODAL_TYPES } from '../../utils/variables/store-const';
-import { openModal } from '../../store/modal/modalAction';
+import { MODAL_TYPES } from '../../utils';
+import { openModal } from '../../store';
 import Modal from './Modal';
 
 const FooterWrapper = styled.footer`
@@ -153,7 +153,7 @@ const FooterParagraph = styled(Paragraph)`
 const FooterAnchor = styled(Anchor)`
   color: white;
   line-height: 1.6em;
-  padding-top: 0px;
+  padding-top: 0;
 `;
 
 const Footer = (): JSX.Element => {
@@ -185,14 +185,14 @@ const Footer = (): JSX.Element => {
             Rezerwacje
           </FooterLinkItem>
           <FooterLinkItem to="/contact">Kontakt</FooterLinkItem>
-          <FooterAnchor href="http://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
+          <FooterAnchor href="https://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
           <FooterButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
             Skontaktuj się z nami
           </FooterButton>
         </ContentItem>
       </FooterContent>
       <FooterCredits>
-        <FooterAnchor href="http://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
+        <FooterAnchor href="https://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
           Polityka prywatności
         </FooterAnchor>
         <FooterParagraph small>

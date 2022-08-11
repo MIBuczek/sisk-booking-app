@@ -15,7 +15,7 @@ const RedirectLink = styled(Link)`
   letter-spacing: -0.5px;
   transition: 0.3s;
   &:hover {
-    box-shadow: 0px 1px 5px 0px rgb(0 0 0 / 40%);
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 40%);
   }
 `;
 

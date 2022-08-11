@@ -14,6 +14,7 @@ export * from 'models/forms/employee-message-models';
 export * from 'models/forms/booking-form-models';
 export * from 'models/forms/client-form-model';
 export * from 'models/forms/booking-status-form-models';
+export * from 'models/forms/general-form-models';
 export * from 'models/components/select-model';
 export * from 'models/forms/booking-extra-options-models';
 export * from 'models/components/summary-client-model';

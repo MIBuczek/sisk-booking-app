@@ -6,6 +6,7 @@ import { IBuilding, IClient, ISelectedExtraOptions, IBooking, ISingleBookingDate
  * @param item
  * @returns {Object<ISingleBookingDate>}
  */
+
 const transformFirebaseBookingTimeData = (item: any): ISingleBookingDate => ({
   day: item.day.toDate(),
   startHour: item.startHour.toDate(),

@@ -2,7 +2,6 @@ import { IBookingStatusForm, TSelect } from 'models';
 
 enum BOOKING_STATUS {
   INITIAL = 'INITIAL',
-  NOT_DONE = 'NOT_DONE',
   DONE = 'DONE',
   QUIT = 'QUIT'
 }

@@ -14,6 +14,7 @@ const ButtonGroupWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
+
   &.itemPerPageContainer {
     width: 30%;
     justify-content: end;
@@ -25,12 +26,14 @@ const GroupBtn = styled(Button)<GroupBtnProps>`
   color: ${({ theme }) => theme.darkGrey};
   padding: 5px 15px;
   margin: 0;
+
   &:disabled {
     background: ${({ theme, active, disabled }) =>
-    active && disabled ? theme.darkGrey : theme.middleGray};
+      active && disabled ? theme.darkGrey : theme.middleGray};
     color: ${({ theme, active, disabled }) =>
-    active && disabled ? theme.lightGray : theme.darkGrey};
+      active && disabled ? theme.lightGray : theme.darkGrey};
   }
+
   &.itemPerPageItem {
     margin-left: 8px;
     background: ${({ theme, active }) => (active ? theme.green : 'white')};
@@ -57,7 +60,7 @@ const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
   <ButtonGroupWrapper className={`${itemPerPage ? 'itemPerPageContainer' : ''}`}>
     {!isEmpty(options)
       ? options.map(
-        (option): JSX.Element => (
+          (option): JSX.Element => (
             <GroupBtn
               className={`${itemPerPage ? 'itemPerPageItem' : ''}`}
               key={option}
@@ -67,10 +70,9 @@ const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
             >
               {option}
             </GroupBtn>
+          )
         )
-      )
       : null}
   </ButtonGroupWrapper>
 );
-
 export default ButtonGroup;

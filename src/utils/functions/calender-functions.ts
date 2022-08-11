@@ -45,10 +45,13 @@ const formateCalenderHours = (date: Date): string => {
 
 /**
  * Function generate reservation calender object display into view
+ * @param itemTitle
  * @param id
  * @param startDay
  * @param startHour
  * @param endHour
+ * @param accepted
+ * @param size
  * @returns {Object}
  */
 const prepareCalenderItem = (

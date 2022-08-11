@@ -18,10 +18,12 @@ const Button = styled.button<ButtonProps>`
   border-radius: 3px;
   letter-spacing: -0.5px;
   transition: 0.4s;
+
   &:hover {
-    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
+    box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     opacity: 0.8;
   }
+
   &:disabled {
     background: ${({ theme }) => theme.middleGray};
   }

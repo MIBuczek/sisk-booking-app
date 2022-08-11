@@ -8,8 +8,8 @@ import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
 import TextInputField from 'components/atoms/TextInputField';
 import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, findSelectedOption } from 'utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { IClient, IReduxState } from 'models';
+import { useDispatch } from 'react-redux';
+import { IClient } from 'models';
 import { IClientForm } from 'models/forms/client-form-model';
 import { addClient, closeModal, updateClient } from 'store';
 import ConfirmAction from '../ConfirmAction';
@@ -38,12 +38,14 @@ const ClientInnerContent = styled.article`
   align-items: center;
   justify-content: flex-start;
   padding: 0 40px 20px 20px;
+
   &:first-of-type {
     border-right: ${({ theme }) => `1px solid ${theme.green}`};
     @media (max-width: 890px) {
       border-right-color: transparent;
     }
   }
+
   @media (max-width: 890px) {
     width: 100%;
     border-right-color: transparent;
@@ -60,6 +62,7 @@ const ButtonPanel = styled.div`
   justify-content: flex-end;
   width: 85%;
   margin: 3rem 0;
+
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -69,19 +72,20 @@ interface ClientFormProps {
   isEditing: boolean;
   editedItemIndex?: number;
   initialEditingState: () => void;
+  clientList: IClient[];
 }
 
 const ClientForm: React.FunctionComponent<ClientFormProps> = ({
   isEditing,
   editedItemIndex,
-  initialEditingState
+  initialEditingState,
+  clientList
 }) => {
   const [clientData, setClientData] = React.useState<IClient | undefined>(undefined);
   const [clientId, setClientId] = React.useState<string | undefined>(undefined);
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
 
   const dispatch = useDispatch();
-  const { clients } = useSelector((state: IReduxState) => state.clientStore);
   const { handleSubmit, errors, control, reset, watch } = useForm<IClientForm>();
 
   const { type: clientType } = watch();
@@ -125,7 +129,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
    * @param index
    */
   const editClientHandler = (index: number) => {
-    const currentClient = clients[index];
+    const currentClient = clientList[index];
     reset({ ...currentClient, type: findSelectedOption(currentClient.type, CLIENT_OPTIONS) });
     setClientId(currentClient.id);
   };

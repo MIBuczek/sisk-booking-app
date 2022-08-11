@@ -5,7 +5,6 @@ import { IBookedTime, IBooking, ISummaryClientBookings, TSelect } from 'models';
  * Function to find all reservation assigned to client id
  * @param  bookings
  * @param  clientValue
- * @param  monthValue
  * @returns {Array<IBooking>}
  */
 const findAllClientReservation = (bookings: IBooking[], clientValue: TSelect): IBooking[] =>

@@ -2,19 +2,28 @@ import * as React from 'react';
 import Button from 'components/atoms/Button';
 import Header from 'components/atoms/Header';
 import SearchInputField from 'components/atoms/SearchInputField';
-import { IAdminState, IBooking, IClient, instanceOfBookings, IReduxState } from 'models';
+import {
+  IAdminState,
+  IBooking,
+  IClient,
+  IDeleteHandler,
+  IEditHandler,
+  instanceOfBookings,
+  IReduxState
+} from 'models';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, deleteBooking, openModal } from 'store';
 import styled from 'styled-components';
 import {
-  MODAL_TYPES,
-  RECORDS_BOOKINGS_HEADERS,
-  RECORDS_BOOKINGS_ROW,
-  RECORDS_BOOKING_ROW_DETAILS,
-  RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
   adminCredentials,
   checkAllBookingsConflicts,
-  filterBookingsPerPlace
+  filterBookingsPerPlace,
+  findCurrentItemIndex,
+  MODAL_TYPES,
+  RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
+  RECORDS_BOOKING_ROW_DETAILS,
+  RECORDS_BOOKINGS_HEADERS,
+  RECORDS_BOOKINGS_ROW
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/BookingForm';
@@ -58,17 +67,18 @@ const OpenBookingsModalButton = styled(Button)`
   border-color: ${({ theme }) => theme.green};
   color: #454545;
   font-size: 16px;
+
   &:hover {
     background-color: ${({ theme }) => theme.green};
     border-color: #b9b8b8;
-    box-shadow: none;
     opacity: 1;
-    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
+    box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
   }
 `;
 
 const ConflictParagraph = styled(Paragraph)`
   color: ${({ theme, conflict }) => (conflict ? theme.error : theme.darkGrey)};
+
   svg {
     color: ${({ theme, conflict }) => (conflict ? theme.error : theme.green)};
     margin-right: 8px;
@@ -111,22 +121,34 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
    * Function to handle edited item and set related property edit item and fill up booking form.
    * @param itemIndex
    * @param isMainItem
+   * @param subItemIndex
+   * @param currentPage
+   * @param postPerPage
    */
-  const editBookingHandler = (itemIndex: number, isMainItem: boolean, subItemIndex?: number) => {
+  const editBookingHandler = ({
+    itemIndex,
+    isMainItem,
+    subItemIndex,
+    currentPage,
+    postPerPage
+  }: IEditHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
     setIsEditing(isMainItem);
-    setEditedItemIndex(itemIndex);
+    setEditedItemIndex(currentIndex);
     dispatch(openModal(isMainItem ? MODAL_TYPES.BOOKINGS : MODAL_TYPES.BOOKINGS_STATUS));
     if (typeof subItemIndex === 'number') {
       setEditedSubItemIndex(subItemIndex);
     }
   };
-
   /**
    * Function to handle delete booking item and display related confirmation modal.
-   * @param index
+   * @param itemIndex
+   * @param currentPage
+   * @param postPerPage
    */
-  const deleteBookingHandler = (index: number) => {
-    setDeleteItemIndex(index);
+  const deleteBookingHandler = ({ itemIndex, currentPage, postPerPage }: IDeleteHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
+    setDeleteItemIndex(currentIndex);
     dispatch(openModal(MODAL_TYPES.DELETE));
   };
 
@@ -135,7 +157,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
    */
   const deleteBookingAction = () => {
     if (typeof deleteItemIndex === 'undefined') return;
-    const currentBooking = cloneDeep(bookings[deleteItemIndex]);
+    const currentBooking = cloneDeep(bookingsList[deleteItemIndex]);
     if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
     bookingListHandler(bookings.filter((b) => b.id !== currentBooking.id));
     initialBookingState();

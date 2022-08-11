@@ -200,7 +200,7 @@ export const deleteBooking = (id: string) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    db.collection('bookings').doc(id).delete();
+    await db.collection('bookings').doc(id).delete();
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
     dispatch(fetchingBookingsDone(BOOKING_STATE.DELETE_BOOKING, newBookings));

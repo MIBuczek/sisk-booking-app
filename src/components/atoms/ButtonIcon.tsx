@@ -16,8 +16,7 @@ const ButtonIcon = styled.button`
   width: 290px;
   border-radius: 5px;
   &:hover {
-    /* color: ${({ theme }) => theme.green}; */
-    box-shadow: 0px 0px 17px -7px rgba(66, 68, 90, 1);
+    box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
   }
   svg {
     color: inherit;

@@ -9,10 +9,9 @@ const CookiesWrapper = styled.div`
   position: fixed;
   right: 20px;
   bottom: 6%;
-  box-shadow: 0px 3px 9px 0px rgb(0 0 0 / 40%);
+  box-shadow: 0 3px 9px 0 rgb(0 0 0 / 40%);
   box-sizing: border-box;
   z-index: 100;
-  color: ${({ theme }) => theme.darkGrey};
   width: 260px;
   height: auto;
   color: ${({ theme }) => theme.white};
@@ -80,7 +79,7 @@ const Cookies = () => {
       <CookieParagraph>
         Serwis wykorzystuje pliki cookies. Korzystając ze strony wyrażasz zgodę na wykorzystywanie
         plików cookies.
-        <Anchor target="_blank" href="http://www.sisk-siechnice.pl/polityka-prywatnosci/">
+        <Anchor target="_blank" href="https://www.sisk-siechnice.pl/polityka-prywatnosci/">
           Dowiedz się więcej.
         </Anchor>
       </CookieParagraph>

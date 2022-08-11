@@ -21,8 +21,7 @@ const adminCredentials = (loggedUsed: IUser | undefined): boolean => {
 const sideNavCredentials = (loggedUsed: IUser | undefined): boolean => {
   if (!loggedUsed) return false;
   const { isAdmin, isOffice } = loggedUsed;
-  if (isAdmin || isOffice) return true;
-  return false;
+  return isAdmin || isOffice;
 };
 
 export { adminCredentials, sideNavCredentials };

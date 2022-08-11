@@ -9,8 +9,7 @@ function singleInstanceOfBookings(obj: IClient | IBooking): obj is IBooking {
 }
 
 function bookingIndexTypeChecker(index?: number): index is number {
-  if (typeof index === 'number') return true;
-  return false;
+  return typeof index === 'number';
 }
 
 export { instanceOfBookings, singleInstanceOfBookings, bookingIndexTypeChecker };

@@ -9,17 +9,22 @@ import RedirectLink from 'components/atoms/RedirectLink';
 const NoMatchWrapper = styled.main`
   width: 100%;
   margin-top: 5vh;
-  min-height: 72vh;
+  min-height: 46.5vh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 `;
 
+const NoMatchHeader = styled(Header)`
+  width: 100%;
+`;
+
 const NoMatchContent = styled.section`
   display: flex;
   flex-direction: column;
   max-width: 570px;
+
   p {
     padding: 0;
   }
@@ -28,10 +33,10 @@ const NoMatchContent = styled.section`
 const NoMatch = (): JSX.Element => (
   <NoMatchWrapper>
     <NoMatchContent>
-      <Header>
+      <NoMatchHeader>
         Strona nie istnieje
         <BsExclamationSquare />
-      </Header>
+      </NoMatchHeader>
       <Paragraph>Bład 404</Paragraph>
       <RedirectLink to="/">Powrót do kaledarza rezerwacji</RedirectLink>
     </NoMatchContent>

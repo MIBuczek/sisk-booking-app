@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-export interface HeaderProps {
-  text: string;
-}
-
 const Header = styled.h1`
   color: ${({ theme }) => theme.darkGrey};
   font-size: ${({ theme }) => theme.fontSize.l};

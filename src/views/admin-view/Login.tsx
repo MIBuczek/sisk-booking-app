@@ -16,7 +16,6 @@ import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 const LoginWrapper = styled.section`
   width: 100%;
   min-height: 83vh;
-  margin-top: 5vh;
   display: grid;
   grid-template-columns: 1fr;
   margin: 0.5rem 0;

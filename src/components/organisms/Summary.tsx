@@ -169,7 +169,6 @@ const DetailContent = styled.td`
 
 const DetailsSpan = styled.span`
   font-weight: 400;
-  font-weight: 400;
   margin: 0 4rem 0 0.5rem;
   font-size: 14px;
 `;

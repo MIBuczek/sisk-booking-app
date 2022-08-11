@@ -15,7 +15,7 @@ const ServerErrorWrapper = styled.main`
 const ServerErrorContent = styled.section`
   margin: 0 auto;
   display: flex;
-  flex-direction: rowe;
+  flex-direction: row;
   flex-wrap: wrap;
   max-width: 630px;
   a {

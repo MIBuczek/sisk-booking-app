@@ -47,14 +47,14 @@ registerLocale('pl', pl);
 const BookingWrapper = styled.form`
   max-width: 670px;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   button {
     align-self: flex-end;
   }
-  @media (max-width: 720px) {
-    flex-direction: column;
+
+  @media (max-width: 890px) {
     align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -62,6 +62,7 @@ const BookingHeader = styled(Header)`
   width: 100%;
   margin: 20px 0 40px;
   padding: 0 20px;
+
   &:after {
     left: 20px;
   }
@@ -73,20 +74,16 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (max-width: 720px) {
+  @media (max-width: 890px) {
     width: 100%;
   }
 `;
 
 const RodoWrapper = styled.div`
-  width: 100%;
   height: auto;
   display: flex;
   align-items: center;
   margin: 10px 20px;
-  @media (max-width: 720px) {
-    width: 90%;
-  }
 `;
 
 const AcceptWrapper = styled.div`
@@ -101,13 +98,7 @@ const AcceptWrapper = styled.div`
   }
 `;
 
-const SelectFormWrapper = styled(SelectWrapper)`
-  @media (max-width: 1400px) {
-    padding-right: 0px;
-  }
-`;
-
-const ArchiveWrapper = styled(SelectFormWrapper)`
+const ArchiveWrapper = styled(SelectWrapper)`
   width: 100%;
   align-items: center;
   flex-direction: row;
@@ -131,19 +122,12 @@ const TextAreaLabel = styled(Label)`
 const MessageTextArea = styled(TextAreaField)`
   width: 100%;
   margin: 10px 20px;
-  @media (max-width: 1400px) {
-    width: 90%;
-    margin: 10px 0;
-  }
 `;
 
 const ButtonWrapper = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
-  @media (max-width: 1400px) {
-    width: 100%;
-  }
 `;
 
 const ButtonPanel = styled.div`
@@ -152,12 +136,9 @@ const ButtonPanel = styled.div`
   justify-content: flex-end;
   width: 100%;
   margin: 3rem 20px;
+
   button {
     margin: 0 0 0 0.8rem;
-  }
-  @media (max-width: 720px) {
-    width: 90%;
-    justify-content: center;
   }
 `;
 
@@ -166,6 +147,7 @@ const ConflictParagraph = styled(Paragraph)`
   text-align: center;
   color: ${({ theme }) => theme.error};
   margin: 10px 20px;
+
   svg {
     margin-right: 8px;
   }
@@ -199,8 +181,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
   const { city, building } = mainState;
 
-  const maxRangDate = new Date(`${new Date().getFullYear()}-01-01T00:01:00.676Z`);
-
   const dispatch = useDispatch();
 
   const {
@@ -220,6 +200,18 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     clientId: selectedClientId,
     person: personName
   } = watch();
+
+  /**
+   * Function to generate max rang in data type input.
+   * If we have august then extend it for next year.
+   */
+  const generateMaxRangDate = () => {
+    let currentYear = new Date().getFullYear();
+    if (new Date().getMonth() >= 7) {
+      currentYear += 1;
+    }
+    return new Date(`${currentYear}-01-01T00:01:00.676Z`);
+  };
 
   /**
    * Function to handle selected reservation size.
@@ -341,7 +333,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   /**
-   * Function compare is booking client id with drop down selected option
+   * Function compare is booking client id with dropdown selected option
    */
   const compareClientIds = (): boolean => {
     if (!selectedClientId || !selectedClientId.label) return false;
@@ -374,7 +366,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
       {isAdmin && (
         <AcceptWrapper>
-          <SelectFormWrapper>
+          <SelectWrapper>
             <Label>Dodaj najemcę</Label>
             <Controller
               name="clientId"
@@ -392,8 +384,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 />
               )}
             />
-          </SelectFormWrapper>
-          <SelectFormWrapper>
+          </SelectWrapper>
+          <SelectWrapper>
             <Label>Zakceptuj rezerwację</Label>
             <Controller
               name="accepted"
@@ -409,7 +401,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 />
               )}
             />
-          </SelectFormWrapper>
+          </SelectWrapper>
           {compareClientIds() && (
             <AutoFillContent>
               <Label>Czy chcesz autouzupełnić dane klienta</Label>
@@ -420,7 +412,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         </AcceptWrapper>
       )}
-      <SelectFormWrapper>
+      <SelectWrapper>
         <Label>Miejscowość</Label>
         <Controller
           name="city"
@@ -442,8 +434,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.city && <ErrorMsg innerText="Pole nie może być puste" />}
-      </SelectFormWrapper>
-      <SelectFormWrapper>
+      </SelectWrapper>
+      <SelectWrapper>
         <Label>Obiekt</Label>
         <Controller
           name="building"
@@ -465,8 +457,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.building && <ErrorMsg innerText="Pole nie może być puste" />}
-      </SelectFormWrapper>
-      <SelectFormWrapper>
+      </SelectWrapper>
+      <SelectWrapper>
         <Label>Rezerwowana powierzchnia</Label>
         <ButtonWrapper>
           <ButtonGroup
@@ -476,8 +468,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             disabled={displayConfirmation}
           />
         </ButtonWrapper>
-      </SelectFormWrapper>
-      <SelectFormWrapper>
+      </SelectWrapper>
+      <SelectWrapper>
         <RodoWrapper>
           <Label>Rezerwacja cykliczna</Label>
           <Controller
@@ -495,7 +487,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             )}
           />
         </RodoWrapper>
-      </SelectFormWrapper>
+      </SelectWrapper>
       <InputContainer>
         <Label>Imię i nazwisko</Label>
         <Controller
@@ -554,7 +546,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
-        <SelectFormWrapper>
+        <SelectWrapper>
           <Label>Płatność</Label>
           <Controller
             name="payment"
@@ -576,7 +568,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             )}
           />
           {errors.payment && <ErrorMsg innerText="Pole nie może być puste" />}
-        </SelectFormWrapper>
+        </SelectWrapper>
       </InputContainer>
       <InputContainer>
         <Label>{regularValue ? 'Od kiedy' : 'Kiedy'}</Label>
@@ -592,7 +584,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               placeholderText="Wybierz"
               locale="pl"
               minDate={new Date()}
-              maxDate={addMonths(maxRangDate, 8)}
+              maxDate={addMonths(generateMaxRangDate(), 8)}
               dateFormat="dd-MM-yyyy"
               invalid={!!errors.startDate}
               onChange={onChange}
@@ -618,7 +610,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   placeholderText="Wybierz"
                   locale="pl"
                   minDate={new Date()}
-                  maxDate={addMonths(maxRangDate, 8)}
+                  maxDate={addMonths(generateMaxRangDate(), 8)}
                   dateFormat="dd-MM-yyyy"
                   invalid={!!errors.endDate}
                   onChange={onChange}
@@ -741,7 +733,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           />
           <Anchor
             small
-            href="http://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
+            href="https://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
             target="_blank"
           >
             Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.

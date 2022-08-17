@@ -14,7 +14,7 @@ import {
   BOOKING_STATUS,
   PAYMENTS_OPTIONS
 } from 'utils';
-import { formatCalenderDate, formateCalenderHours } from './calender-functions';
+import { formatCalenderDate, formatCalenderHours } from './calender-functions';
 import { findSelectedOption } from './utils-functions';
 
 /**
@@ -25,7 +25,7 @@ import { findSelectedOption } from './utils-functions';
  */
 const overwriteDate = (day: Date, hour: Date): Date => {
   const convertedDay = formatCalenderDate(day);
-  const convertedHour = formateCalenderHours(
+  const convertedHour = formatCalenderHours(
     new Date(hour.getTime() - hour.getTimezoneOffset() * 60000)
   );
   return new Date(`${convertedDay}${convertedHour}`);

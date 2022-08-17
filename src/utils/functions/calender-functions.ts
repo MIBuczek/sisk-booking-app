@@ -32,11 +32,25 @@ const formatCalenderDate = (date: Date | string): string => {
 };
 
 /**
+ * Function to transform date object into correct Warsaw time zone
+ * @param date
+ * @returns {String}
+ */
+const formatDisplayTime = (date: Date | string) => {
+  const formDate = new Date(date);
+  formDate.setHours(formDate.getHours() + 2);
+  const stringDate = formDate.toISOString();
+  const index = stringDate.indexOf('T');
+  const lastIndex = stringDate.lastIndexOf('.');
+  return stringDate.substring(index, lastIndex);
+};
+
+/**
  * Function to transform date object into accepted calender hours format
  * @param date
  * @returns {String}
  */
-const formateCalenderHours = (date: Date): string => {
+const formatCalenderHours = (date: Date): string => {
   const checkedDate = new Date(date).toISOString();
   const index = checkedDate.indexOf('T');
   const lastIndex = checkedDate.lastIndexOf('.');
@@ -68,9 +82,9 @@ const prepareCalenderItem = (
   title: `${itemTitle}`,
   url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
   textColor: `${size}`,
-  start: `${formatCalenderDate(startDay)}${formateCalenderHours(startHour)}`,
-  end: `${formatCalenderDate(startDay)}${formateCalenderHours(endHour)}`,
+  start: `${formatCalenderDate(startDay)}${formatDisplayTime(startHour)}`,
+  end: `${formatCalenderDate(startDay)}${formatDisplayTime(endHour)}`,
   backgroundColor: `${accepted ? '' : '#5e5e5e'}`
 });
 
-export { formatDate, prepareCalenderItem, formatTime, formatCalenderDate, formateCalenderHours };
+export { formatDate, prepareCalenderItem, formatTime, formatCalenderDate, formatCalenderHours };

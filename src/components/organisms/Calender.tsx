@@ -23,21 +23,25 @@ const CalenderWrapper = styled.section`
   justify-content: center;
   padding: 30px 0;
   z-index: 0;
+
   .fc-direction-ltr {
     width: 95%;
     max-height: 650px;
     font-size: 12px;
     font-weight: 500;
     color: #454545;
+
     .fc-day-today {
       .fc-timegrid-col-frame {
         background: #eeeeee;
       }
     }
+
     .fc-timegrid-event.fc-v-event {
       background-color: ${({ theme }) => theme.green};
       border-color: #b9b8b8;
       overflow: hidden;
+
       p {
         margin: 3px 0;
       }
@@ -48,55 +52,67 @@ const CalenderWrapper = styled.section`
       border-color: ${({ theme }) => theme.green};
       color: #454545;
       transition: 0.4s;
+
       &:focus,
       &:hover {
         background-color: ${({ theme }) => theme.green};
         border-color: #b9b8b8;
         box-shadow: none;
       }
+
       &:not(:disabled):active {
         background-color: #454545;
         color: #b9b8b8;
       }
+
       &:disabled {
         background-color: #b9b8b8;
         border-color: #454545;
         color: #454545;
+
         &:hover {
           background-color: #b9b8b8;
           border-color: #454545;
         }
       }
     }
+
     .fc-button-primary.fc-next-button,
     .fc-button-primary.fc-prev-button {
       color: white;
     }
+
     .fc-button-primary.fc-timeGridWeek-button.fc-button-active,
     .fc-button-primary.fc-listWeek-button.fc-button-active {
       background-color: #454545;
       color: #b9b8b8;
+
       &:focus {
         box-shadow: none;
       }
     }
+
     .fc-list-day-cushion {
       color: #454545;
     }
+
     .fc-button-group {
       .fc-button {
         background: #afbf36;
         border-color: #eaeaea;
       }
+
       .fc-button-active {
         background-color: #eaeaea;
         border-color: #afbf36;
       }
     }
+
     @media (max-width: 1400px) {
       height: 950px;
     }
   }
+
   @media (max-width: 1400px) {
     width: 95%;
     padding: 30px 20px;
@@ -106,6 +122,7 @@ const CalenderWrapper = styled.section`
 const UserInfo = styled(Paragraph)`
   font-size: 12px;
   width: 95%;
+
   svg {
     margin-right: 10px;
     color: #afbf36;
@@ -181,7 +198,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
         initialView="timeGridWeek"
         selectMirror
         dayMaxEvents
-        slotMinTime="08:00:00"
+        slotMinTime="06:00:00"
         slotMaxTime="24:00:00"
         allDaySlot={false}
         firstDay={1}

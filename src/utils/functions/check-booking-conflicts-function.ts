@@ -45,18 +45,13 @@ const checkOverlapCase = (
 /**
  * Function to check if one booking has conflict with others.
  * @param  currentBooking
- * @param  allBookings
+ * @param  currentPlaceBookings
  * @returns {Boolean}
  */
-const checkConflicts = (currentBooking: IBooking, allBookings: IBooking[]): boolean => {
+const checkConflicts = (currentBooking: IBooking, currentPlaceBookings: IBooking[]): boolean => {
   let isConflict = false;
-  allBookings.forEach((b) => {
-    if (
-      currentBooking.id !== b.id &&
-      currentBooking.city === b.city &&
-      currentBooking.building === b.building &&
-      currentBooking.month === b.month
-    ) {
+  currentPlaceBookings.forEach((b) => {
+    if (currentBooking.id !== b.id && currentBooking.month === b.month) {
       b.bookingTime.forEach((cbt) => {
         const conflictDate = currentBooking.bookingTime.some((cb) => {
           const sameDay = checkDay(cb.day, cbt.day);
@@ -66,7 +61,7 @@ const checkConflicts = (currentBooking: IBooking, allBookings: IBooking[]): bool
 
           return sameDay && (checkStartHour || checkEndHour || isOverlap);
         });
-        if (conflictDate && !currentBooking.accepted) {
+        if (conflictDate) {
           isConflict = true;
         }
       });
@@ -78,23 +73,23 @@ const checkConflicts = (currentBooking: IBooking, allBookings: IBooking[]): bool
 /**
  * Function to check if inside booking array it already any conflict.
  * If yes, return item id
- * @param  allBookings
+ * @param  currentPlaceBookings
  * @returns {Array<string>}
  */
-const checkAllBookingsConflicts = (allBookings: IBooking[]): string[] => {
-  let confectBookingArray: string[] = [];
+const checkAllBookingsConflicts = (currentPlaceBookings: IBooking[]): string[] => {
+  let conflictedBookingArray: string[] = [];
 
-  if (allBookings.length <= 1) {
-    return confectBookingArray;
+  if (currentPlaceBookings.length <= 1) {
+    return conflictedBookingArray;
   }
 
-  allBookings.forEach((currentBooking) => {
-    if (checkConflicts(currentBooking, allBookings)) {
-      confectBookingArray = [...confectBookingArray, currentBooking.id];
+  currentPlaceBookings.forEach((currentBooking) => {
+    if (checkConflicts(currentBooking, currentPlaceBookings)) {
+      conflictedBookingArray = [...conflictedBookingArray, currentBooking.id];
     }
   });
 
-  return uniq(confectBookingArray);
+  return uniq(conflictedBookingArray);
 };
 
 export { checkConflicts, checkAllBookingsConflicts };

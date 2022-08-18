@@ -85,6 +85,7 @@ const Admin = (): JSX.Element => {
         isAdminPanel
         state={adminState}
         stateHandler={stateHandler}
+        activeTab={tab}
         tabHandler={tabHandler}
         isAdmin={sideNavCredentials(user)}
       />

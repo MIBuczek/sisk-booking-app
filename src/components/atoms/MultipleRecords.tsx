@@ -201,6 +201,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
           <tr>
             <td>
               <Pagination
+                currentPage={currentPage}
                 nextPage={nextPage}
                 totalPost={records.length}
                 postPerPage={postPerPage}

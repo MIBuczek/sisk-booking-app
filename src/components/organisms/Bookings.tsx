@@ -181,9 +181,15 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     setDeleteItemIndex(undefined);
   };
 
+  const handlerEffectCallBack = () => {
+    const bookingByPlace = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
+    setBookingsList(bookingByPlace);
+    const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
+    setConflicts(bookingWithConflicts);
+  };
+
   React.useEffect(() => {
-    setBookingsList(filterBookingsPerPlace(bookings, mainState, user?.isAdmin));
-    setConflicts(checkAllBookingsConflicts(bookings));
+    handlerEffectCallBack();
   }, [bookings, mainState]);
 
   return (

@@ -43,8 +43,8 @@ function calculateWeeksBetween(d1: number, d2: number): number {
 
 /**
  * Function to create bookingTime object.
- * It calculate if the current booking is single or periodic reservation.
- * If so then it generate array of bookingTime objects.
+ * It calculates if the current booking is single or periodic reservation.
+ * If so then it generates array of bookingTime objects.
  * @param  cred
  * @returns {Array<ISingleBookingDate>}
  */

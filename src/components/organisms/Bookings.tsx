@@ -181,16 +181,19 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     setDeleteItemIndex(undefined);
   };
 
+  /**
+   * Function for handle UseEffect call back.
+   */
   const handlerEffectCallBack = () => {
-    const bookingByPlace = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
+    const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
     setBookingsList(bookingByPlace);
-    const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
-    setConflicts(bookingWithConflicts);
+    if (user?.isAdmin) {
+      const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
+      setConflicts(bookingWithConflicts);
+    }
   };
 
-  React.useEffect(() => {
-    handlerEffectCallBack();
-  }, [bookings, mainState]);
+  React.useEffect(handlerEffectCallBack, [bookings, mainState]);
 
   return (
     <BookingsWrapper>
@@ -217,6 +220,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         recordPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
         isAdmin={adminCredentials(user)}
         isEmployee={user?.isEmployee || false}
+        conflicts={conflicts}
         records={bookingsList}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}

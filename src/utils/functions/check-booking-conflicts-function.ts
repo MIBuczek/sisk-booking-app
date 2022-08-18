@@ -3,7 +3,7 @@ import { IBooking } from 'models';
 
 /**
  * Function to check day into two date object.
- * If it the same return true
+ * If it is the same return true
  * @param  dOne
  * @param  dTwo
  * @returns {Boolean}

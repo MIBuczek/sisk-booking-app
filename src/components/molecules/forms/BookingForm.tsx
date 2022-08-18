@@ -48,6 +48,7 @@ const BookingWrapper = styled.form`
   max-width: 670px;
   display: flex;
   flex-wrap: wrap;
+
   button {
     align-self: flex-end;
   }
@@ -184,7 +185,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const dispatch = useDispatch();
 
   const {
-    bookingStore: { bookings },
     clientStore: { clients },
     buildingStore: { buildings }
   } = useSelector((state: IReduxState): IReduxState => state);
@@ -246,7 +246,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     setBookingData(bookingToApprove);
     setDisplayConfirmation(true);
     if (isAdmin) {
-      setConflict(checkConflicts(bookingToApprove, bookings));
+      setConflict(checkConflicts(bookingToApprove, bookingsList));
     }
   });
 
@@ -273,8 +273,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     const clientId = selectedClientIdOption(clients, currentBooking.clientId);
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
-    setConflict(checkConflicts(currentBooking, bookings));
     setSelectedSize(currentBooking.size);
+    if (isAdmin) {
+      setConflict(checkConflicts(currentBooking, bookingsList));
+    }
   };
 
   /**

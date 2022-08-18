@@ -20,7 +20,7 @@ import {
 } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { checkConflicts, checkSelectedOption, modelDisplayValue } from 'utils';
+import { checkSelectedOption, modelDisplayValue } from 'utils';
 import Collapse, { IRenderProps } from '../../providers/Collapse';
 import Button from './Button';
 
@@ -155,7 +155,8 @@ interface MultipleRecordItemProps {
   recordPropertyDetails: string[];
   recordPropertyDisplayMap: { [x: string]: string };
   currentRecord: IClient | IBooking;
-  allRecords: (IClient | IBooking)[];
+  hasConflicts: boolean;
+  records: (IClient | IBooking)[];
   editHandler: (editDetails: IEditHandler) => void;
   deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
@@ -170,7 +171,8 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   recordPropertyDetails,
   recordPropertyDisplayMap,
   currentRecord,
-  allRecords,
+  hasConflicts,
+  records,
   editHandler,
   deleteHandler
 }) => (
@@ -186,9 +188,9 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
               {modelDisplayValue(property, currentRecord[property])}
             </RecordTableData>
           ))}
-          {instanceOfBookings(allRecords) && singleInstanceOfBookings(currentRecord) && (
+          {instanceOfBookings(records) && singleInstanceOfBookings(currentRecord) && (
             <RecordTableData>
-              {checkConflicts(currentRecord, allRecords) ? (
+              {isAdmin && hasConflicts ? (
                 <BsXCircleFill style={{ color: '#cc0000', marginLeft: '1rem' }} />
               ) : (
                 <BsFillCheckCircleFill style={{ color: '#AFBF36', marginLeft: '1rem' }} />

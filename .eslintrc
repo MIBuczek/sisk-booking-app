@@ -3,7 +3,12 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "airbnb", "prettier", "airbnb-typescript"],
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+    "airbnb-typescript"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
@@ -13,9 +18,16 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier"
+  ],
   "rules": {
-    "object-curly-spacing": ["warn", "always"],
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
     "import/no-cycle": 0,
     "no-unused-vars": 0,
     "max-len": [
@@ -64,7 +76,7 @@
     "@typescript-eslint/default-param-last": 0,
     "@typescript-eslint/naming-convention": 0,
     "indent": 0,
-    "@typescript-eslint/indent": ["error"],
+    "@typescript-eslint/indent": "warn",
     "@typescript-eslint/no-explicit-any": [
       "error",
       {

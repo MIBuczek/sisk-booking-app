@@ -10,12 +10,10 @@ export const SelectWrapper = styled.div`
   justify-content: center;
   margin: 10px 0;
   min-width: 50%;
+
   @media (max-width: 1400px) {
-    min-width: 30%;
-    padding-right: 50px;
+    min-width: 45%;
     margin: 10px;
-    align-items: flex-start;
-    justify-content: flex-start;
   }
 
   @media (max-width: 799px) {

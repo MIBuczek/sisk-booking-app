@@ -53,9 +53,17 @@ const BookingWrapper = styled.form`
     align-self: flex-end;
   }
 
-  @media (max-width: 890px) {
+  @media (max-width: 1400px) {
     align-items: center;
     justify-content: center;
+  }
+
+  @media (max-width: 890px) {
+    margin: 0 auto;
+  }
+
+  @media (max-width: 620px) {
+    flex-direction: column;
   }
 `;
 
@@ -75,8 +83,9 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   @media (max-width: 890px) {
-    width: 100%;
+    width: 50%;
   }
 `;
 
@@ -94,6 +103,7 @@ const AcceptWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+
   @media (max-width: 890px) {
     justify-content: center;
   }
@@ -123,12 +133,25 @@ const TextAreaLabel = styled(Label)`
 const MessageTextArea = styled(TextAreaField)`
   width: 100%;
   margin: 10px 20px;
+
+  @media (max-width: 620px) {
+    width: 80%;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
+
+  @media (max-width: 1400px) {
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 620px) {
+    width: 100%;
+  }
 `;
 
 const ButtonPanel = styled.div`
@@ -140,6 +163,10 @@ const ButtonPanel = styled.div`
 
   button {
     margin: 0 0 0 0.8rem;
+  }
+
+  @media (max-width: 620px) {
+    width: 80%;
   }
 `;
 

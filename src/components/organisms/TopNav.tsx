@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BsEnvelopeFill, BsFillHouseFill, BsPower } from 'react-icons/bs';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { IReduxState } from 'models';
@@ -52,6 +52,7 @@ const StyledLinksList = styled.ul`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+
   li {
     display: flex;
     min-width: 100px;
@@ -72,9 +73,11 @@ const NavigationLink = styled(NavLink)`
   text-transform: uppercase;
   padding: 16px 10px 17px 10px;
   transition: 0.4s;
+
   &:hover {
     color: ${({ theme }) => theme.green};
   }
+
   @media (max-width: 889px) {
     font-size: ${({ theme }) => theme.fontSize.m};
   }
@@ -88,6 +91,7 @@ const NavButton = styled(Button)`
   margin: 0;
   padding: 16px 10px 17px 10px;
   display: inline-flex;
+
   &.btn {
     color: ${({ theme }) => theme.green};
     font-weight: 600;
@@ -95,14 +99,17 @@ const NavButton = styled(Button)`
     text-transform: uppercase;
     padding: 5px 10px;
     border: 1px solid;
+
     &:hover {
       box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     }
   }
+
   &:hover {
     box-shadow: none;
     color: ${({ theme }) => theme.green};
   }
+
   svg {
     display: block;
     margin-left: 10px;
@@ -113,12 +120,15 @@ const NaviAnchor = styled(Anchor)`
   background: transparent;
   font-size: 1.9rem;
   padding: 16px 10px 17px 10px;
+
   &:hover {
     color: #afbf36;
   }
+
   svg {
     display: block;
   }
+
   @media (max-width: 889px) {
     padding: 5px 10px;
   }
@@ -128,6 +138,8 @@ const active = { color: '#AFBF36' };
 
 const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
+
+  const location = useLocation();
 
   const dispatch = useDispatch();
 
@@ -144,6 +156,10 @@ const TopNav = (): JSX.Element => {
    */
   if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
   else if (scrollPosition < 30 && !isTop) setIsTop(true);
+
+  if (location.pathname.includes('report-pdf')) {
+    return <></>;
+  }
 
   return (
     <NavWrapper isTop={isTop} isOpen={isOpen}>

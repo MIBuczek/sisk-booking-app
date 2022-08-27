@@ -23,6 +23,8 @@ import Paragraph from 'components/atoms/Paragraph';
 import { fadeInLeft } from 'style/animation';
 import SummaryDetailsItem from 'components/atoms/SummaryDetailItem';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
+import { Link } from 'react-router-dom';
+import { BsFilePdf } from 'react-icons/bs';
 
 registerLocale('pl', pl);
 
@@ -70,6 +72,7 @@ const SummaryInputContent = styled.div`
 `;
 
 const SummaryDetailContent = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 65%;
@@ -87,9 +90,11 @@ const SummaryDetailContent = styled.div`
 const MonthPickerWrapper = styled(SelectWrapper)`
   .react-datepicker {
     border-color: ${({ theme }) => theme.green};
+
     .react-datepicker__header {
       height: 30px;
     }
+
     .react-datepicker__month {
       width: 290px;
       font-size: 14px;
@@ -105,9 +110,11 @@ const MonthPicker = styled(DataPickerField)`
 
 const SummaryBtn = styled(Button)`
   width: 290px;
+
   &:first-of-type {
     margin-top: auto;
   }
+
   @media (max-width: 890px) {
     margin: 20px 10px;
   }
@@ -116,6 +123,7 @@ const SummaryBtn = styled(Button)`
 const DetailsParagraph = styled(Paragraph)`
   font-size: 14px;
   padding-top: 12px;
+
   &.empty {
     text-align: center;
   }
@@ -127,9 +135,11 @@ const ClientDetailTable = styled.table`
   display: block;
   padding: 0;
   border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+
   tbody {
     display: inherit;
     width: 100%;
+
     tr {
       display: flex;
       align-items: flex-start;
@@ -154,14 +164,17 @@ const DetailContent = styled.td`
   word-break: break-word;
   width: 100%;
   padding: 5px 5px 5px 0;
+
   strong {
     margin-bottom: 5px;
   }
+
   &:first-of-type {
     strong {
       letter-spacing: 0.2px;
     }
   }
+
   &:last-of-type {
     padding-right: 0;
   }
@@ -171,6 +184,31 @@ const DetailsSpan = styled.span`
   font-weight: 400;
   margin: 0 4rem 0 0.5rem;
   font-size: 14px;
+`;
+
+const pdfIconStyles = {
+  fontSize: '2rem',
+  marginLeft: '1rem',
+  color: 'AFBF36'
+};
+
+const RedirectPDF = styled(Link)`
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
+  width: fit-content;
+  display: flex;
+  color: ${({ theme }) => theme.darkGrey};
+  font-size: ${({ theme }) => theme.fontSize.ml};
+  line-height: 1.5;
+  text-decoration: none;
+  transition: 0.4s;
+  border-bottom: 1px solid transparent;
+
+  &:hover {
+    color: ${({ theme }) => theme.green};
+    border-bottom-color: ${({ theme }) => theme.green};
+  }
 `;
 
 const Summary = () => {
@@ -326,6 +364,15 @@ const Summary = () => {
             {clientSummary['zerniki-wroclawskie'].length ? (
               <SummaryDetailsItem bookingCityDetails={clientSummary['zerniki-wroclawskie']} />
             ) : null}
+            <RedirectPDF
+              to={{
+                pathname: `report-pdf/${clientSummary.client.id}`,
+                search: `?month=${monthValue}`
+              }}
+            >
+              Podgląd PDF
+              <BsFilePdf style={pdfIconStyles} />
+            </RedirectPDF>
           </>
         ) : (
           <DetailsParagraph bold className="empty">

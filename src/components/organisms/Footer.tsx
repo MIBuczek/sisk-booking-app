@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { IReduxState } from 'models';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
@@ -48,10 +48,12 @@ const FooterCredits = styled.section`
   max-width: 1470px;
   height: 60px;
   border-top: 2px solid #57694a;
+
   a,
   p {
     padding: 0 20px;
   }
+
   @media (max-width: 890px) {
     flex-direction: column;
   }
@@ -64,9 +66,11 @@ const ContentItem = styled.div`
   width: 20%;
   height: auto;
   padding: 0 20px;
+
   &:first-of-type {
     height: 100%;
   }
+
   &:nth-of-type(3) {
     border-right: 2px solid #57694a;
     width: 30%;
@@ -77,27 +81,32 @@ const ContentItem = styled.div`
       justify-content: center;
     }
   }
+
   &:last-of-type {
     @media (max-width: 890px) {
       justify-content: space-around;
       align-items: center;
     }
   }
+
   img {
     &:first-of-type {
       max-width: 250px;
       height: auto;
       padding: 10px 0;
     }
+
     &:last-of-type {
       width: 95%;
       max-width: 120px;
     }
+
     @media (max-width: 890px) {
       max-width: 150px;
       padding: 20px;
     }
   }
+
   @media (max-width: 890px) {
     flex-direction: row;
     align-items: center;
@@ -115,11 +124,13 @@ const FooterButton = styled(Button)`
   border: none;
   width: 150px;
   color: white;
+
   &:hover {
     text-decoration: underline;
     box-shadow: none;
     opacity: 1;
   }
+
   @media (max-width: 890px) {
     margin: 5px 10px;
     width: auto;
@@ -133,9 +144,11 @@ const FooterLinkItem = styled(NavLink)`
   color: white;
   margin-bottom: 15px;
   text-decoration: none;
+
   &:hover {
     text-decoration: underline;
   }
+
   @media (max-width: 890px) {
     margin: 5px 10px;
   }
@@ -157,8 +170,13 @@ const FooterAnchor = styled(Anchor)`
 `;
 
 const Footer = (): JSX.Element => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const { isOpen, type } = useSelector((state: IReduxState) => state.modal);
+
+  if (location.pathname.includes('report-pdf')) {
+    return <></>;
+  }
 
   return (
     <FooterWrapper>

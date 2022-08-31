@@ -1,7 +1,7 @@
 import { IUser } from 'models';
 
 /**
- * Function to check user credentials to booked usernames
+ * Function to check user credentials to see booked usernames
  * @param  loggedUsed
  * @returns {Boolean}
  */

@@ -46,7 +46,7 @@ const formatDisplayTime = (date: Date | string) => {
 };
 
 /**
- * Function to transform date object into accepted calender hours format
+ * Function to transform date object into accepted calendar hours format
  * @param date
  * @returns {String}
  */
@@ -58,7 +58,7 @@ const formatCalenderHours = (date: Date): string => {
 };
 
 /**
- * Function generate reservation calender object display into view
+ * Function generate reservation calendar object display into view
  * @param itemTitle
  * @param id
  * @param startDay
@@ -87,4 +87,22 @@ const prepareCalenderItem = (
   backgroundColor: `${accepted ? '' : '#5e5e5e'}`
 });
 
-export { formatDate, prepareCalenderItem, formatTime, formatCalenderDate, formatCalenderHours };
+/**
+ * Function to change day in Date object
+ * @param date
+ * @param newDay
+ * @returns {String}
+ */
+const changeDayInDate = (date: Date, newDay: number): Date => {
+  date.setDate(newDay);
+  return date;
+};
+
+export {
+  formatDate,
+  prepareCalenderItem,
+  formatTime,
+  formatCalenderDate,
+  formatCalenderHours,
+  changeDayInDate
+};

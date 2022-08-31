@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink, useLocation, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { IReduxState } from 'models';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
@@ -170,13 +170,8 @@ const FooterAnchor = styled(Anchor)`
 `;
 
 const Footer = (): JSX.Element => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const { isOpen, type } = useSelector((state: IReduxState) => state.modal);
-
-  if (location.pathname.includes('report-pdf')) {
-    return <></>;
-  }
 
   return (
     <FooterWrapper>

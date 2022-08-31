@@ -9,7 +9,6 @@ import ServerError from 'views/user-view/ServerError';
 const Main = React.lazy(() => import('./user-view/Main'));
 const Login = React.lazy(() => import('./admin-view/Login'));
 const Admin = React.lazy(() => import('./admin-view/Admin'));
-const PreviewPDF = React.lazy(() => import('./admin-view/PreviewPDF'));
 const NoMatch = React.lazy(() => import('./user-view/NoMatch'));
 const Contact = React.lazy(() => import('./user-view/Contact'));
 const TopNav = React.lazy(() => import('components/organisms/TopNav'));
@@ -44,11 +43,6 @@ const App: React.FC = (): JSX.Element => (
         <Route path="/admin">
           <Suspense fallback={<Loading />}>
             <Admin />
-          </Suspense>
-        </Route>
-        <Route path="/report-pdf/:id">
-          <Suspense fallback={<Loading />}>
-            <PreviewPDF />
           </Suspense>
         </Route>
         <Route path="/contact">

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BsEnvelopeFill, BsFillHouseFill, BsPower } from 'react-icons/bs';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { IReduxState } from 'models';
@@ -139,8 +139,6 @@ const active = { color: '#AFBF36' };
 const TopNav = (): JSX.Element => {
   const [isTop, setIsTop] = React.useState<boolean>(true);
 
-  const location = useLocation();
-
   const dispatch = useDispatch();
 
   const {
@@ -156,10 +154,6 @@ const TopNav = (): JSX.Element => {
    */
   if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
   else if (scrollPosition < 30 && !isTop) setIsTop(true);
-
-  if (location.pathname.includes('report-pdf')) {
-    return <></>;
-  }
 
   return (
     <NavWrapper isTop={isTop} isOpen={isOpen}>

@@ -17,7 +17,7 @@ const LoadingWrapper = styled.div`
   z-index: 100;
 `;
 
-const LoaderDots = styled(Loader)`
+export const LoaderDots = styled(Loader)`
   .ball-pulse > div {
     background-color: ${({ theme }) => theme.green};
   }

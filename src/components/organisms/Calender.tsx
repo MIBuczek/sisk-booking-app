@@ -131,10 +131,13 @@ const UserInfo = styled(Paragraph)`
 
 interface IProps {
   mainState?: IMainState | IAdminState;
-  isAdmin?: boolean;
+  hasRights?: boolean;
 }
 
-const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }): JSX.Element => {
+const BookingCalender: React.FunctionComponent<IProps> = ({
+  mainState,
+  hasRights
+}): JSX.Element => {
   const [events, setEvents] = React.useState<EventInput[]>([]);
 
   const dispatch = useDispatch();
@@ -151,10 +154,10 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
           mainState &&
           mainState.city.value === b.city &&
           mainState.building.value === b.building &&
-          (isAdmin || b.accepted)
+          (hasRights || b.accepted)
         ) {
           b.bookingTime.forEach((bt) => {
-            const itemTitle = `${isAdmin ? b.person : 'Rezerwacja'}`;
+            const itemTitle = `${hasRights ? b.person : 'Rezerwacja'}`;
             acc.push(
               prepareCalenderItem(
                 itemTitle,
@@ -207,7 +210,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({ mainState, isAdmin }
         eventContent={RenderEventContent}
         eventClick={handleEventClick}
       />
-      {!isAdmin && (
+      {!hasRights && (
         <UserInfo>
           <BsFillExclamationCircleFill />W kalendarzu są widoczne tylko zatwierdzone przez
           administratora rezerwacje.

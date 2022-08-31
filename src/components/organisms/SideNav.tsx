@@ -177,7 +177,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
           </ButtonIcon>
         </InnerNavigationPanel>
       )}
-      <BookingDetails />
+      {activeTab === ADMIN_TABS.CALENDER && <BookingDetails />}
     </SideWrapper>
   );
 };

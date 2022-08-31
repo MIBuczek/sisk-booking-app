@@ -13,7 +13,8 @@ import {
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
   initialAdminState,
-  sideNavCredentials
+  sideNavCredentials,
+  hasRightsToSeeContent
 } from 'utils';
 import Clients from 'components/organisms/Clients';
 import Bookings from 'components/organisms/Bookings';
@@ -91,7 +92,7 @@ const Admin = (): JSX.Element => {
       />
       {/* admin inner content */}
       {tab === ADMIN_TABS.CALENDER && (
-        <BookingCalender mainState={adminState} isAdmin={adminCredentials(user)} />
+        <BookingCalender mainState={adminState} hasRights={hasRightsToSeeContent(user)} />
       )}
       {tab === ADMIN_TABS.BOOKINGS && <Bookings mainState={adminState} />}
       {adminCredentials(user) && (

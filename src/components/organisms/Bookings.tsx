@@ -259,6 +259,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
             />
           )}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
+          {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}
         </Modal>
       )}
     </BookingsWrapper>

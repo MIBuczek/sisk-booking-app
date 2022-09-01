@@ -196,6 +196,7 @@ const Clients = () => {
             />
           )}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Klienci" />}
+          {type === MODAL_TYPES.ERROR && <ModalInfo header="Klienci" />}
         </Modal>
       )}
     </CalenderWrapper>

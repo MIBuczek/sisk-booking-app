@@ -89,7 +89,11 @@ export const getBookingDataForUser = () => async (
 /**
  * Booking store action to add records to firebase database bookings collection.
  */
-export const addBooking = (bookingData: IBooking, isAdmin: boolean) => async (
+export const addBooking = (
+  bookingData: IBooking,
+  isAdmin: boolean,
+  sendEmailNotification: boolean
+) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
@@ -107,6 +111,11 @@ export const addBooking = (bookingData: IBooking, isAdmin: boolean) => async (
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
 
     const building = buildings.find((b) => b.property === bookingData.building);
+
+    if (!sendEmailNotification) {
+      return;
+    }
+
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
       dispatch(
@@ -128,7 +137,11 @@ export const addBooking = (bookingData: IBooking, isAdmin: boolean) => async (
 /**
  * Booking store action to update records to firebase database bookings collection.
  */
-export const updateBooking = (bookingData: IBooking, isAdmin: boolean) => async (
+export const updateBooking = (
+  bookingData: IBooking,
+  isAdmin: boolean,
+  sendEmailNotification: boolean
+) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
@@ -148,6 +161,11 @@ export const updateBooking = (bookingData: IBooking, isAdmin: boolean) => async 
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została zaktualizowana pomyślnie'));
 
     const building = buildings.find((b) => b.property === bookingData.building);
+
+    if (!sendEmailNotification) {
+      return;
+    }
+
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
       dispatch(

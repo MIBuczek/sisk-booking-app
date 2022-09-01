@@ -25,6 +25,7 @@ const BookingStatusWrapper = styled.form`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
   button {
     align-self: flex-end;
   }
@@ -34,6 +35,7 @@ const BookingStatusHeader = styled(Header)`
   width: 100%;
   margin: 20px 0 40px;
   padding: 0 20px;
+
   &:after {
     left: 20px;
   }
@@ -68,6 +70,7 @@ const ButtonPanel = styled.div`
   justify-content: flex-end;
   width: 100%;
   margin: 3rem 20px;
+
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -120,7 +123,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
   const confirmSubmit = () => {
     if (!bookingData) return;
 
-    dispatch(updateBooking(bookingData, true));
+    dispatch(updateBooking(bookingData, true, false));
 
     createInitialState();
     dispatch(closeModal());

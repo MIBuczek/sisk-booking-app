@@ -37,7 +37,7 @@ import addMonths from 'date-fns/addMonths';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { cloneDeep } from 'lodash';
-import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import { BsFillExclamationCircleFill, BsQuestionCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from '../ConfirmAction';
 import BookingExtraOptions from '../BookingExtraOptions';
@@ -181,6 +181,12 @@ const ConflictParagraph = styled(Paragraph)`
   }
 `;
 
+const questionMarkIconStyle = {
+  fontSize: '2rem',
+  marginLeft: '1rem',
+  color: 'AFBF36'
+};
+
 interface BookingFormProps {
   mainState: IMainState;
   bookingsList: IBooking[];
@@ -206,6 +212,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
   const [police, setPolice] = React.useState<boolean>(false);
   const [conflict, setConflict] = React.useState<boolean>(false);
+  const [sendEmailNotification, setSendEmailNotification] = React.useState<boolean>(false);
 
   const { city, building } = mainState;
 
@@ -283,8 +290,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const confirmSubmit = () => {
     if (!bookingData) return;
 
-    if (bookingId) dispatch(updateBooking({ ...bookingData, id: bookingId }, isAdmin));
-    else dispatch(addBooking(bookingData, isAdmin));
+    if (bookingId) {
+      dispatch(updateBooking({ ...bookingData, id: bookingId }, isAdmin, sendEmailNotification));
+    } else {
+      const sendEmail = !isAdmin ? true : sendEmailNotification;
+      dispatch(addBooking(bookingData, isAdmin, sendEmail));
+    }
 
     createInitialState();
     // To not close modal if error
@@ -750,6 +761,21 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           <BsFillExclamationCircleFill />
           Ta rezerwacja ma konflikt z innymi rezerwacjami , czy napewno chcesz ją zatwierdzić
         </ConflictParagraph>
+      )}
+      {isAdmin && (
+        <RodoWrapper>
+          <Checkbox
+            checked={sendEmailNotification}
+            className="checkbox"
+            name="sendEmail"
+            changeHandler={() => setSendEmailNotification(!sendEmailNotification)}
+            disabled={displayConfirmation}
+          />
+          <Paragraph small>
+            Czy chcesz wysłać wiadomość e-mail do pracownika z informacją o rezerwacji
+            <BsQuestionCircleFill style={questionMarkIconStyle} />
+          </Paragraph>
+        </RodoWrapper>
       )}
       {!isAdmin && (
         <RodoWrapper>

@@ -1,5 +1,6 @@
 import { uniq } from 'lodash';
-import { IBooking } from 'models';
+import { IBooking, ISingleBookingDate } from 'models';
+import { BOOKING_STATUS } from '../variables/booking-status-const';
 
 /**
  * Function to check day into two date object.
@@ -43,6 +44,21 @@ const checkOverlapCase = (
   checkEndDate.getTime() >= endHour.getTime();
 
 /**
+ * Function to check if single booking time has conflict with other single booking time.
+ * @param bt
+ * @param cbt
+ * @returns Boolean
+ */
+const checkSingleBookingTime = (bt: ISingleBookingDate, cbt: ISingleBookingDate): boolean => {
+  const sameDay = checkDay(bt.day, cbt.day);
+  const checkStartHour = checkHoursRange(bt.startHour, cbt.startHour, cbt.endHour);
+  const checkEndHour = checkHoursRange(bt.endHour, cbt.startHour, cbt.endHour);
+  const isOverlap = checkOverlapCase(bt.startHour, bt.endHour, cbt.startHour, cbt.endHour);
+
+  return sameDay && (checkStartHour || checkEndHour || isOverlap);
+};
+
+/**
  * Function to check if one booking has conflict with others.
  * @param  currentBooking
  * @param  currentPlaceBookings
@@ -53,14 +69,9 @@ const checkConflicts = (currentBooking: IBooking, currentPlaceBookings: IBooking
   currentPlaceBookings.forEach((b) => {
     if (currentBooking.id !== b.id && currentBooking.month === b.month) {
       b.bookingTime.forEach((cbt) => {
-        const conflictDate = currentBooking.bookingTime.some((cb) => {
-          const sameDay = checkDay(cb.day, cbt.day);
-          const checkStartHour = checkHoursRange(cb.startHour, cbt.startHour, cbt.endHour);
-          const checkEndHour = checkHoursRange(cb.endHour, cbt.startHour, cbt.endHour);
-          const isOverlap = checkOverlapCase(cb.startHour, cb.endHour, cbt.startHour, cbt.endHour);
-
-          return sameDay && (checkStartHour || checkEndHour || isOverlap);
-        });
+        const conflictDate = currentBooking.bookingTime.some((cb): boolean =>
+          checkSingleBookingTime(cb, cbt)
+        );
         if (conflictDate) {
           isConflict = true;
         }
@@ -92,4 +103,38 @@ const checkAllBookingsConflicts = (currentPlaceBookings: IBooking[]): string[] =
   return uniq(conflictedBookingArray);
 };
 
-export { checkConflicts, checkAllBookingsConflicts };
+/**
+ * Function to check if single booking day has conflict with any of reservation on selected sprot object.
+ * @param singleBookingDay
+ * @param singleBookingId
+ * @param singleBookingMonth
+ * @param currentPlaceBookings
+ * @returns Boolean
+ */
+const checkSingleDayConflict = (
+  singleBookingDay: ISingleBookingDate,
+  singleBookingId: string,
+  singleBookingMonth: number,
+  currentPlaceBookings: IBooking[]
+): boolean => {
+  let conflictListIds: string[] = [];
+  const { status } = singleBookingDay;
+
+  currentPlaceBookings.forEach((bookingOnPlace) => {
+    if (
+      status === BOOKING_STATUS.INITIAL &&
+      singleBookingId !== bookingOnPlace.id &&
+      singleBookingMonth === bookingOnPlace.month
+    ) {
+      bookingOnPlace.bookingTime.forEach((checkedBookingTime) => {
+        if (checkSingleBookingTime(singleBookingDay, checkedBookingTime)) {
+          conflictListIds = [...conflictListIds, bookingOnPlace.id];
+        }
+      });
+    }
+  });
+
+  return !!conflictListIds.length;
+};
+
+export { checkConflicts, checkAllBookingsConflicts, checkSingleDayConflict };

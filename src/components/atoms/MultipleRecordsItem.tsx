@@ -20,7 +20,7 @@ import {
 } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { checkSelectedOption, modelDisplayValue } from 'utils';
+import { checkSelectedOption, checkSingleDayConflict, modelDisplayValue } from 'utils';
 import Collapse, { IRenderProps } from '../../providers/Collapse';
 import Button from './Button';
 
@@ -123,6 +123,10 @@ const SingleBookingTime = styled.div`
     background: transparent;
     border-bottom: none;
   }
+
+  &.conflict {
+    background: rosybrown;
+  }
 `;
 
 const RecordDetailSpan = styled.span`
@@ -175,151 +179,181 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   records,
   editHandler,
   deleteHandler
-}) => (
-  <Collapse
-    render={({ isCollapsed, toggle }: IRenderProps) => (
-      <>
-        <tr>
-          <RecordTableData>
-            {currentPage > 1 ? (currentPage - 1) * 20 + index + 1 : index + 1}
-          </RecordTableData>
-          {recordProperty.map((property) => (
-            <RecordTableData key={property}>
-              {modelDisplayValue(property, currentRecord[property])}
-            </RecordTableData>
-          ))}
-          {instanceOfBookings(records) && singleInstanceOfBookings(currentRecord) && (
+}) => {
+  /**
+   * Function to generate conflict class if single booking time has conflict.
+   * @param sbd
+   * @param sbId
+   * @param sbMonth
+   * @param isCollapsed
+   * @returns Boolean
+   */
+  const printConflictClass = (
+    sbd: ISingleBookingDate,
+    sbId: string = '',
+    sbMonth: number = -1,
+    isCollapsed: boolean
+  ): string => {
+    if (!isCollapsed || !instanceOfBookings(records)) {
+      return '';
+    }
+    return checkSingleDayConflict(sbd, sbId, sbMonth, records) ? 'conflict' : '';
+  };
+
+  return (
+    <Collapse
+      render={({ isCollapsed, toggle }: IRenderProps) => (
+        <>
+          <tr>
             <RecordTableData>
-              {isAdmin && hasConflicts ? (
-                <BsXCircleFill style={{ color: '#cc0000', marginLeft: '1rem' }} />
-              ) : (
-                <BsFillCheckCircleFill style={{ color: '#AFBF36', marginLeft: '1rem' }} />
+              {currentPage > 1 ? (currentPage - 1) * 20 + index + 1 : index + 1}
+            </RecordTableData>
+            {recordProperty.map((property) => (
+              <RecordTableData key={property}>
+                {modelDisplayValue(property, currentRecord[property])}
+              </RecordTableData>
+            ))}
+            {instanceOfBookings(records) && singleInstanceOfBookings(currentRecord) && (
+              <RecordTableData>
+                {isAdmin && hasConflicts ? (
+                  <BsXCircleFill style={{ color: '#cc0000', marginLeft: '1rem' }} />
+                ) : (
+                  <BsFillCheckCircleFill style={{ color: '#AFBF36', marginLeft: '1rem' }} />
+                )}
+              </RecordTableData>
+            )}
+            <RecordTableData>
+              <ListItemBtn onClick={toggle}>
+                <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
+              </ListItemBtn>
+              {isAdmin && (
+                <>
+                  <ListItemBtn
+                    onClick={() =>
+                      editHandler({
+                        itemIndex: index,
+                        isMainItem: true,
+                        subItemIndex: null,
+                        currentPage,
+                        postPerPage
+                      })
+                    }
+                  >
+                    <BsFillFileEarmarkTextFill />
+                  </ListItemBtn>
+                  <ListItemBtn
+                    onClick={() => deleteHandler({ itemIndex: index, currentPage, postPerPage })}
+                  >
+                    <BsTrashFill />
+                  </ListItemBtn>
+                </>
               )}
             </RecordTableData>
-          )}
-          <RecordTableData>
-            <ListItemBtn onClick={toggle}>
-              <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
-            </ListItemBtn>
-            {isAdmin && (
-              <>
-                <ListItemBtn
-                  onClick={() =>
-                    editHandler({
-                      itemIndex: index,
-                      isMainItem: true,
-                      subItemIndex: null,
-                      currentPage,
-                      postPerPage
-                    })
-                  }
-                >
-                  <BsFillFileEarmarkTextFill />
-                </ListItemBtn>
-                <ListItemBtn
-                  onClick={() => deleteHandler({ itemIndex: index, currentPage, postPerPage })}
-                >
-                  <BsTrashFill />
-                </ListItemBtn>
-              </>
-            )}
-          </RecordTableData>
-        </tr>
-        {isCollapsed ? (
-          <BookingDetailWrapper>
-            <RecordDetail>
-              {recordPropertyDetails.map((property) => {
-                if (property === 'bookingTime') {
-                  return (
-                    <BookingTimeWrapper key={property}>
-                      <RecordDetailSpan>
-                        <strong>{recordPropertyDisplayMap[property]} : </strong>
-                      </RecordDetailSpan>
-                      {(currentRecord[property] as ISingleBookingDate[]).map((sb, sbi) => (
-                        <SingleBookingTime key={`${sb.day.getMilliseconds() + sbi + index}`}>
-                          <RecordDetailSpan>
-                            <strong>Dzień: </strong>
-                            {modelDisplayValue(property, sb.day)}
-                          </RecordDetailSpan>
-                          <RecordDetailSpan>
-                            <strong>Godzina rozpoczęcia: </strong>
-                            {modelDisplayValue(property, sb.startHour, true)}
-                          </RecordDetailSpan>
-                          <RecordDetailSpan>
-                            <strong>Godzina zakończenia: </strong>
-                            {modelDisplayValue(property, sb.endHour, true)}
-                          </RecordDetailSpan>
-                          <RecordDetailSpan>
-                            <strong>Status: </strong>
-                            {modelDisplayValue(property, sb.status)}
-                          </RecordDetailSpan>
-                          {(isAdmin || isEmployee) && (
-                            <ListItemBtn
-                              disabled={!currentRecord.accepted}
-                              onClick={() =>
-                                editHandler({
-                                  itemIndex: index,
-                                  isMainItem: false,
-                                  subItemIndex: sbi,
-                                  currentPage,
-                                  postPerPage
-                                })
-                              }
-                            >
-                              <BsFillCheckSquareFill />
-                            </ListItemBtn>
-                          )}
-                          <CommentsSpan>
-                            <strong>Komentarz: </strong>
-                            {modelDisplayValue(property, sb.comments)}
-                          </CommentsSpan>
-                        </SingleBookingTime>
-                      ))}
-                    </BookingTimeWrapper>
-                  );
-                }
-                if (property === 'selectedOptions' && !isEmpty(currentRecord[property])) {
-                  return (
-                    <BookingTimeWrapper key={property}>
-                      <RecordDetailSpan>
-                        <strong>{recordPropertyDisplayMap[property]} : </strong>
-                      </RecordDetailSpan>
-                      {(currentRecord[property] as ISelectedExtraOptions[]).map(
-                        ({ options, fromHour, toHour }) => (
-                          <SingleBookingTime key={fromHour.getMilliseconds()}>
+          </tr>
+          {isCollapsed ? (
+            <BookingDetailWrapper>
+              <RecordDetail>
+                {recordPropertyDetails.map((property) => {
+                  if (property === 'bookingTime') {
+                    return (
+                      <BookingTimeWrapper key={property}>
+                        <RecordDetailSpan>
+                          <strong>{recordPropertyDisplayMap[property]} : </strong>
+                        </RecordDetailSpan>
+                        {(currentRecord[property] as ISingleBookingDate[]).map((sb, sbi) => (
+                          <SingleBookingTime
+                            key={`${sb.day.getMilliseconds() + sbi + index}`}
+                            className={printConflictClass(
+                              sb,
+                              currentRecord.id as string,
+                              currentRecord.month as number,
+                              isCollapsed
+                            )}
+                          >
                             <RecordDetailSpan>
-                              <strong>Opcje : </strong>
-                              {checkSelectedOption(options)}
+                              <strong>Dzień: </strong>
+                              {modelDisplayValue(property, sb.day)}
                             </RecordDetailSpan>
                             <RecordDetailSpan>
-                              <strong>Od godziny : </strong>
-                              {modelDisplayValue(property, fromHour, true)}
+                              <strong>Godzina rozpoczęcia: </strong>
+                              {modelDisplayValue(property, sb.startHour, true)}
                             </RecordDetailSpan>
                             <RecordDetailSpan>
-                              <strong>Do godziny: </strong>
-                              {modelDisplayValue(property, toHour, true)}
+                              <strong>Godzina zakończenia: </strong>
+                              {modelDisplayValue(property, sb.endHour, true)}
                             </RecordDetailSpan>
+                            <RecordDetailSpan>
+                              <strong>Status: </strong>
+                              {modelDisplayValue(property, sb.status)}
+                            </RecordDetailSpan>
+                            {(isAdmin || isEmployee) && (
+                              <ListItemBtn
+                                disabled={!currentRecord.accepted}
+                                onClick={() =>
+                                  editHandler({
+                                    itemIndex: index,
+                                    isMainItem: false,
+                                    subItemIndex: sbi,
+                                    currentPage,
+                                    postPerPage
+                                  })
+                                }
+                              >
+                                <BsFillCheckSquareFill />
+                              </ListItemBtn>
+                            )}
+                            <CommentsSpan>
+                              <strong>Komentarz: </strong>
+                              {modelDisplayValue(property, sb.comments)}
+                            </CommentsSpan>
                           </SingleBookingTime>
-                        )
-                      )}
-                    </BookingTimeWrapper>
-                  );
-                }
-                if (!isEmpty(currentRecord[property])) {
-                  return (
-                    <RecordDetailSpan key={property}>
-                      <strong>{recordPropertyDisplayMap[property]} : </strong>
-                      {modelDisplayValue(property, currentRecord[property])}
-                    </RecordDetailSpan>
-                  );
-                }
-                return null;
-              })}
-            </RecordDetail>
-          </BookingDetailWrapper>
-        ) : null}
-      </>
-    )}
-  />
-);
+                        ))}
+                      </BookingTimeWrapper>
+                    );
+                  }
+                  if (property === 'selectedOptions' && !isEmpty(currentRecord[property])) {
+                    return (
+                      <BookingTimeWrapper key={property}>
+                        <RecordDetailSpan>
+                          <strong>{recordPropertyDisplayMap[property]} : </strong>
+                        </RecordDetailSpan>
+                        {(currentRecord[property] as ISelectedExtraOptions[]).map(
+                          ({ options, fromHour, toHour }) => (
+                            <SingleBookingTime key={fromHour.getMilliseconds()}>
+                              <RecordDetailSpan>
+                                <strong>Opcje : </strong>
+                                {checkSelectedOption(options)}
+                              </RecordDetailSpan>
+                              <RecordDetailSpan>
+                                <strong>Od godziny : </strong>
+                                {modelDisplayValue(property, fromHour, true)}
+                              </RecordDetailSpan>
+                              <RecordDetailSpan>
+                                <strong>Do godziny: </strong>
+                                {modelDisplayValue(property, toHour, true)}
+                              </RecordDetailSpan>
+                            </SingleBookingTime>
+                          )
+                        )}
+                      </BookingTimeWrapper>
+                    );
+                  }
+                  if (!isEmpty(currentRecord[property])) {
+                    return (
+                      <RecordDetailSpan key={property}>
+                        <strong>{recordPropertyDisplayMap[property]} : </strong>
+                        {modelDisplayValue(property, currentRecord[property])}
+                      </RecordDetailSpan>
+                    );
+                  }
+                  return null;
+                })}
+              </RecordDetail>
+            </BookingDetailWrapper>
+          ) : null}
+        </>
+      )}
+    />
+  );
+};
 export default MultipleRecordItem;

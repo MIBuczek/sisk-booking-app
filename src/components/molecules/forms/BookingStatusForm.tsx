@@ -194,6 +194,7 @@ const BookingStatusForm: React.FunctionComponent<BookingStatusFormProps> = ({
               selected={value}
               value={value}
               isDisabled={displayConfirmation}
+              blurInputOnSelect
             />
           )}
         />

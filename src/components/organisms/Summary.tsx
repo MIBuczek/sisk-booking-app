@@ -374,6 +374,7 @@ const Summary = () => {
                 onBlur={onBlur}
                 selected={value}
                 value={value}
+                blurInputOnSelect
               />
             )}
           />

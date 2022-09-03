@@ -111,6 +111,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
             selected={city}
             value={city}
             isDisabled={blockSelectOptions}
+            blurInputOnSelect
           />
         </SelectWrapper>
         <SelectWrapper>
@@ -124,6 +125,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
             onChange={(val: TSelect) => stateHandler(val, 'building')}
             selected={building}
             isDisabled={!city}
+            blurInputOnSelect
           />
         </SelectWrapper>
       </InnerNavigationPanel>

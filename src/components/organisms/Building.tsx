@@ -74,6 +74,7 @@ const InnerContent = styled.div`
   width: 45%;
   height: 80%;
   padding: 20px 0 40px 40px;
+
   &:first-of-type {
     width: 35%;
     border-right: ${({ theme }) => `1px solid ${theme.green}`};
@@ -84,6 +85,7 @@ const InnerContent = styled.div`
     }
     padding: 20px 0 40px 0;
   }
+
   @media (max-width: 890px) {
     width: 90%;
     padding: 20px 0 40px 20px;
@@ -113,6 +115,7 @@ const ButtonPanel = styled.div`
   justify-content: flex-end;
   width: 100%;
   margin: 3rem 0;
+
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -246,6 +249,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
               value={value}
               isDisabled={displayConfirmation}
               defaultValue={building}
+              blurInputOnSelect
             />
           )}
         />

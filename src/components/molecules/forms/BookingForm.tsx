@@ -230,6 +230,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const {
     city: cityValue,
     building: buildingValue,
+    startDate,
     regular: regularValue,
     clientId: selectedClientId,
     person: personName
@@ -260,12 +261,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
   /**
    * Function to get building options into dropdown related to selected city.
-   * @param cv
-   * @param b
+   * @param city_value
+   * @param building_options
    */
-  const selectBuildingOptions = (cv: string, b: TSelect): TSelect[] => {
-    if (!cv) return [b];
-    return generateBuildingOptions(buildings)[cv];
+  const selectBuildingOptions = (city_value: string, building_options: TSelect): TSelect[] => {
+    if (!city_value) return [building_options];
+    return generateBuildingOptions(buildings)[city_value];
   };
 
   /**
@@ -373,6 +374,17 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   /**
+   * Function to update field endDate in form if cyclic reservation is selected.
+   */
+  const updateEndDataInForm = (): void => {
+    if (!regularValue) {
+      return;
+    }
+    const currentFormValues = getValues();
+    reset({ ...currentFormValues, endDate: startDate });
+  };
+
+  /**
    * Function compare is booking client id with dropdown selected option
    */
   const compareClientIds = (): boolean => {
@@ -401,6 +413,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     }
   }, [isEditing]);
 
+  React.useEffect(updateEndDataInForm, [startDate]);
+
   return (
     <BookingWrapper onSubmit={onSubmit}>
       <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
@@ -421,6 +435,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   selected={value}
                   value={value}
                   isDisabled={displayConfirmation}
+                  blurInputOnSelect
                 />
               )}
             />
@@ -470,6 +485,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               value={value}
               defaultValue={city}
               isDisabled={displayConfirmation}
+              blurInputOnSelect
             />
           )}
         />
@@ -493,6 +509,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               value={value}
               isDisabled={!cityValue || displayConfirmation}
               defaultValue={building}
+              blurInputOnSelect
             />
           )}
         />
@@ -604,6 +621,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 value={value}
                 defaultValue={PAYMENTS_OPTIONS[0]}
                 isDisabled={displayConfirmation}
+                blurInputOnSelect
               />
             )}
           />

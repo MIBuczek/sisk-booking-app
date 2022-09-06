@@ -15,9 +15,12 @@ const formatDate = (date: Date | null): string => {
  */
 const formatTime = (date: Date | null): string => {
   if (!date) return '';
-  const newDate = date.toLocaleTimeString();
-  const lastIndex = newDate.lastIndexOf(':');
-  return newDate.substring(0, lastIndex);
+  const dateHour: number = date.getHours();
+  let dateMinutes: number | string = date.getMinutes();
+  if (dateMinutes === 0) {
+    dateMinutes = '00';
+  }
+  return `${dateHour}:${dateMinutes}`;
 };
 
 /**
@@ -66,6 +69,7 @@ const formatCalenderHours = (date: Date): string => {
  * @param endHour
  * @param accepted
  * @param size
+ * @param index
  * @returns {Object}
  */
 const prepareCalenderItem = (
@@ -75,7 +79,8 @@ const prepareCalenderItem = (
   startHour: Date,
   endHour: Date,
   accepted: boolean,
-  size: string
+  size: string,
+  index: number
 ) => ({
   id,
   allDay: false,
@@ -84,7 +89,8 @@ const prepareCalenderItem = (
   textColor: `${size}`,
   start: `${formatCalenderDate(startDay)}${formatDisplayTime(startHour)}`,
   end: `${formatCalenderDate(startDay)}${formatDisplayTime(endHour)}`,
-  backgroundColor: `${accepted ? '' : '#5e5e5e'}`
+  backgroundColor: `${accepted ? '' : '#5e5e5e'}`,
+  itemIndex: index
 });
 
 /**

@@ -9,10 +9,12 @@ import Paragraph from 'components/atoms/Paragraph';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import { IAdminState, IBooking, IMainState } from 'models';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import { prepareCalenderItem } from '../../utils';
+import { MODAL_TYPES, prepareCalenderItem } from '../../utils';
 import RenderEventContent from '../atoms/CalenderEvent';
 import { IReduxState } from '../../models';
-import { getCurrentBooking } from '../../store';
+import { getCurrentBooking, openModal } from '../../store';
+import ModalResolveBooking from '../molecules/modals/ModalResolveBooking';
+import Modal from './Modal';
 
 const CalenderWrapper = styled.section`
   width: 60%;
@@ -141,7 +143,10 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
   const [events, setEvents] = React.useState<EventInput[]>([]);
 
   const dispatch = useDispatch();
-  const { bookings, errorMessage } = useSelector((state: IReduxState) => state.bookingStore);
+  const {
+    modal: { isOpen, type },
+    bookingStore: { bookings, errorMessage }
+  } = useSelector((state: IReduxState) => state);
 
   /**
    * Function create event into full calender component.
@@ -156,7 +161,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
           mainState.building.value === b.building &&
           (hasRights || b.accepted)
         ) {
-          b.bookingTime.forEach((bt) => {
+          b.bookingTime.forEach((bt, index) => {
             const itemTitle = `${hasRights ? b.person : 'Rezerwacja'}`;
             acc.push(
               prepareCalenderItem(
@@ -166,7 +171,8 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
                 bt.startHour,
                 bt.endHour,
                 b.accepted,
-                b.size
+                b.size,
+                index
               )
             );
           });
@@ -176,12 +182,18 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
     );
 
   /**
-   * Full calender event to get data and get current booking data from the store.
+   * Full calendar event to get data and get current booking data from the store.
    * @param clickInfo
    */
   const handleEventClick = async (clickInfo: EventClickArg) => {
     clickInfo.jsEvent.preventDefault();
-    dispatch(getCurrentBooking(clickInfo.event._def.publicId));
+    dispatch(
+      getCurrentBooking(clickInfo.event._def.publicId, clickInfo.event.extendedProps.itemIndex)
+    );
+
+    if (hasRights) {
+      dispatch(openModal(MODAL_TYPES.BOOKINGS_CALENDER_STATUS));
+    }
   };
 
   React.useEffect(() => {
@@ -215,6 +227,11 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
           <BsFillExclamationCircleFill />W kalendarzu są widoczne tylko zatwierdzone przez
           administratora rezerwacje.
         </UserInfo>
+      )}
+      {isOpen && type === MODAL_TYPES.BOOKINGS_CALENDER_STATUS && (
+        <Modal>
+          <ModalResolveBooking />
+        </Modal>
       )}
     </CalenderWrapper>
   );

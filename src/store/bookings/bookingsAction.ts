@@ -17,6 +17,7 @@ export const fetchingBookings = (): IBookingsAction => ({
     savingStage: SAVING_STAGE.INITIAL,
     errorMessage: '',
     booking: undefined,
+    bookingTimeIndex: null,
     bookings: []
   }
 });
@@ -28,6 +29,7 @@ export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBooki
     savingStage: SAVING_STAGE.SUCCESS,
     errorMessage: '',
     booking: undefined,
+    bookingTimeIndex: null,
     bookings
   }
 });
@@ -39,17 +41,23 @@ export const fetchingBookingsError = (errorMessage: string): IBookingsAction => 
     savingStage: SAVING_STAGE.ERROR,
     errorMessage,
     booking: undefined,
+    bookingTimeIndex: null,
     bookings: []
   }
 });
 
-export const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBookingsAction => ({
+export const getSingleBooking = (
+  bookings: IBooking[],
+  bookingTimeIndex: number | null,
+  booking?: IBooking
+): IBookingsAction => ({
   type: BOOKING_STATE.GET_BOOKING,
   payload: {
     isFetching: false,
     savingStage: SAVING_STAGE.SUCCESS,
     errorMessage: '',
     booking,
+    bookingTimeIndex,
     bookings
   }
 });
@@ -186,14 +194,14 @@ export const updateBooking = (
 /**
  * Booking store action to get current booking records from already stored bookings state.
  */
-export const getCurrentBooking = (id: string) => async (
+export const getCurrentBooking = (id: string, bookingTimeIndex: number) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   const { bookings } = getStore().bookingStore;
   const currentBooking = bookings.find((b) => b.id === id);
   if (currentBooking) {
-    dispatch(getSingleBooking(bookings, currentBooking));
+    dispatch(getSingleBooking(bookings, bookingTimeIndex, currentBooking));
   } else {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pokazac wybranej rezerwacji.'));
   }
@@ -207,7 +215,7 @@ export const clearCurrentBooking = () => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   const { bookings } = getStore().bookingStore;
-  dispatch(getSingleBooking(bookings, undefined));
+  dispatch(getSingleBooking(bookings, null, undefined));
 };
 
 /**

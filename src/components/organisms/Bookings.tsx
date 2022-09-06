@@ -29,7 +29,7 @@ import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/BookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
-import BookingStatusForm from 'components/molecules/forms/BookingStatusForm';
+import BookingStatus from 'components/molecules/BookingStatus';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import { cloneDeep } from 'lodash';
@@ -245,7 +245,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
             />
           )}
           {type === MODAL_TYPES.BOOKINGS_STATUS && (
-            <BookingStatusForm
+            <BookingStatus
               bookingsList={bookingsList}
               editedItemIndex={editedItemIndex}
               editedSubItemIndex={editedSubItemIndex}

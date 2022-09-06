@@ -26,6 +26,7 @@ const SideWrapper = styled.aside`
   justify-content: center;
   background: transparent;
   padding: 30px 80px 0;
+
   @media (max-width: 1400px) {
     flex-direction: row;
     flex-wrap: wrap;
@@ -34,6 +35,7 @@ const SideWrapper = styled.aside`
     align-items: end;
     justify-content: flex-start;
   }
+
   @media (max-width: 799px) {
     flex-wrap: nowrap;
     flex-direction: column;
@@ -44,6 +46,7 @@ const SideWrapper = styled.aside`
 const InnerNavigationPanel = styled.div`
   display: flex;
   flex-direction: column;
+
   @media (max-width: 1400px) {
     width: 80%;
     flex-direction: row;
@@ -51,10 +54,28 @@ const InnerNavigationPanel = styled.div`
     flex-wrap: wrap;
     padding: 30px 20px;
   }
+
   @media (max-width: 799px) {
     flex-direction: column;
     align-items: flex-start;
     padding: 20px 10px;
+  }
+`;
+
+const SideSelectWrapper = styled(SelectWrapper)`
+  min-width: 290px;
+
+  &:last-of-type {
+    margin-bottom: 60px;
+  }
+
+  @media (max-width: 1400px) {
+    min-width: 290px;
+    margin: 10px 60px 10px 10px;
+
+    &:last-of-type {
+      margin-bottom: 10px;
+    }
   }
 `;
 
@@ -100,7 +121,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
   return (
     <SideWrapper>
       <InnerNavigationPanel style={{ paddingBottom: '0px' }}>
-        <SelectWrapper>
+        <SideSelectWrapper>
           <Label>Miejscowość</Label>
           <SelectInputField
             defaultValue={city}
@@ -113,8 +134,8 @@ const SideNav: React.FunctionComponent<IProps> = ({
             isDisabled={blockSelectOptions}
             blurInputOnSelect
           />
-        </SelectWrapper>
-        <SelectWrapper>
+        </SideSelectWrapper>
+        <SideSelectWrapper>
           <Label>Obiekt</Label>
           <SelectInputField
             defaultValue={building}
@@ -127,7 +148,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
             isDisabled={!city}
             blurInputOnSelect
           />
-        </SelectWrapper>
+        </SideSelectWrapper>
       </InnerNavigationPanel>
       {isAdminPanel ? (
         <InnerNavigationPanel>
@@ -172,14 +193,16 @@ const SideNav: React.FunctionComponent<IProps> = ({
           )}
         </InnerNavigationPanel>
       ) : (
-        <InnerNavigationPanel>
-          <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-            <BsFileEarmarkBarGraph style={iconStyle} />{' '}
-            {isAdmin ? 'DODAJ REZERWACJĘ' : 'PROŚBA O REZERWACJĘ'}
-          </ButtonIcon>
-        </InnerNavigationPanel>
+        <>
+          <InnerNavigationPanel>
+            <ButtonIcon role="button" onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
+              <BsFileEarmarkBarGraph style={iconStyle} />{' '}
+              {isAdmin ? 'DODAJ REZERWACJĘ' : 'PROŚBA O REZERWACJĘ'}
+            </ButtonIcon>
+          </InnerNavigationPanel>
+          <BookingDetails />
+        </>
       )}
-      {activeTab === ADMIN_TABS.CALENDER && <BookingDetails />}
     </SideWrapper>
   );
 };

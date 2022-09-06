@@ -5,6 +5,8 @@ const INITIAL_STATE: IBookingsPayload = {
   isFetching: false,
   savingStage: SAVING_STAGE.INITIAL,
   errorMessage: '',
+  booking: undefined,
+  bookingTimeIndex: null,
   bookings: []
 };
 

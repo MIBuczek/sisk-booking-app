@@ -8,7 +8,7 @@ function singleInstanceOfBookings(obj: IClient | IBooking): obj is IBooking {
   return obj.person !== undefined;
 }
 
-function bookingIndexTypeChecker(index?: number): index is number {
+function bookingIndexTypeChecker(index: number | null | undefined): index is number {
   return typeof index === 'number';
 }
 

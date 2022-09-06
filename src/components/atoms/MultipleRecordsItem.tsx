@@ -197,7 +197,8 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
     if (!isCollapsed || !instanceOfBookings(records)) {
       return '';
     }
-    return checkSingleDayConflict(sbd, sbId, sbMonth, records) ? 'conflict' : '';
+    return '';
+    // return checkSingleDayConflict(sbd, sbId, sbMonth, records) ? 'conflict' : '';
   };
 
   return (

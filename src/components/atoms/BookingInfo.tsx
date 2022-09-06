@@ -27,17 +27,22 @@ const DetailsSpan = styled.span`
 `;
 
 interface IProps {
+  isAdmin: boolean;
   currentBooking: IBooking;
   bookingTimeIndex: number | null;
 }
 
 const BookingInfo: React.FunctionComponent<IProps> = ({
+  isAdmin,
   currentBooking,
   bookingTimeIndex
 }): JSX.Element => {
-  const { city, building, bookingTime, size } = currentBooking;
+  const { person, city, building, bookingTime, size } = currentBooking;
   return (
     <>
+      <DetailsParagraph bold>
+        Najemca :<DetailsSpan>{person}</DetailsSpan>
+      </DetailsParagraph>
       <DetailsParagraph bold>
         Dzień :
         <DetailsSpan>{formatDate(bookingTime[checkIndex(bookingTimeIndex)].day)}</DetailsSpan>

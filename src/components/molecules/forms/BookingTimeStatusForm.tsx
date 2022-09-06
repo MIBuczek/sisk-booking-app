@@ -27,6 +27,18 @@ const BookingTimeStatusWrapper = styled.form`
     align-self: flex-end;
   }
 
+  &.modalResolveBooking {
+    width: 380px;
+    margin-top: 10px;
+    padding-left: 40px;
+    border-left: ${({ theme }) => `1px solid ${theme.green}`};
+
+    @media (max-width: 800px) {
+      border: none;
+      padding-left: 0;
+    }
+  }
+
   &.bookingStatus {
     width: 80%;
   }
@@ -37,7 +49,7 @@ const ButtonPanel = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  margin: 3rem 20px;
+  margin: 20px 0;
 
   button {
     margin: 0 0 0 0.8rem;

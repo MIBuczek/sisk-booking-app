@@ -9,7 +9,7 @@ import { updateBooking } from '../../../store';
 import BookingTimeStatusForm from '../forms/BookingTimeStatusForm';
 
 const ResolveBookingWrapper = styled.div`
-  width: 670px;
+  min-width: 670px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -17,6 +17,7 @@ const ResolveBookingWrapper = styled.div`
   padding: 20px 40px;
 
   @media (max-width: 800px) {
+    min-width: 420px;
     width: 420px;
     justify-content: flex-start;
   }
@@ -62,7 +63,7 @@ const ModalResolveBooking: React.FunctionComponent = (): JSX.Element => {
       {!isNil(booking) ? (
         <>
           <BookingDetailsWrapper>
-            <BookingInfo currentBooking={booking} bookingTimeIndex={bookingTimeIndex} />
+            <BookingInfo isAdmin currentBooking={booking} bookingTimeIndex={bookingTimeIndex} />
           </BookingDetailsWrapper>
           <BookingTimeStatusForm
             confirmationClass="modalResolveBooking"

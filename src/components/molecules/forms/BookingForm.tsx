@@ -641,7 +641,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               shouldCloseOnSelect
               placeholderText="Wybierz"
               locale="pl"
-              minDate={new Date()}
+              minDate={!isAdmin ? new Date() : null}
               maxDate={addMonths(generateMaxRangDate(), 8)}
               dateFormat="dd-MM-yyyy"
               invalid={!!errors.startDate}
@@ -667,7 +667,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   shouldCloseOnSelect
                   placeholderText="Wybierz"
                   locale="pl"
-                  minDate={new Date()}
+                  minDate={!isAdmin ? new Date() : null}
                   maxDate={addMonths(generateMaxRangDate(), 8)}
                   dateFormat="dd-MM-yyyy"
                   invalid={!!errors.endDate}

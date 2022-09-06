@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { ExtraOptions, IBooking, IClient, TSelect } from 'models';
+import { bookingIndexTypeChecker, ExtraOptions, IBooking, IClient, TSelect } from 'models';
 import { SIZE_OPTIONS, SIZE_OPTIONS_BTN } from 'utils/variables/form-const';
 import { SIZE_FIELD_OPTIONS } from 'utils/variables/options-const';
 
@@ -113,6 +113,18 @@ const findCurrentItemIndex = (
   return itemIndex;
 };
 
+/**
+ * Function to check if index is number to return proper bookingTimeIndex
+ * @param index
+ * @return Number
+ */
+const checkIndex = (index: number | null): number => {
+  if (bookingIndexTypeChecker(index)) {
+    return index;
+  }
+  return 0;
+};
+
 export {
   selectSizeFieldOptions,
   selectClientOptions,
@@ -122,5 +134,6 @@ export {
   findSelectedOption,
   firstLetterUpperCase,
   checkSelectedOption,
-  findCurrentItemIndex
+  findCurrentItemIndex,
+  checkIndex
 };

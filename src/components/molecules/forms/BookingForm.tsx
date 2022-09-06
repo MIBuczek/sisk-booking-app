@@ -37,7 +37,7 @@ import addMonths from 'date-fns/addMonths';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import { cloneDeep } from 'lodash';
-import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import { BsFillExclamationCircleFill, BsQuestionCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from '../ConfirmAction';
 import BookingExtraOptions from '../BookingExtraOptions';
@@ -53,9 +53,17 @@ const BookingWrapper = styled.form`
     align-self: flex-end;
   }
 
-  @media (max-width: 890px) {
+  @media (max-width: 1400px) {
     align-items: center;
     justify-content: center;
+  }
+
+  @media (max-width: 890px) {
+    margin: 0 auto;
+  }
+
+  @media (max-width: 620px) {
+    flex-direction: column;
   }
 `;
 
@@ -75,8 +83,9 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   @media (max-width: 890px) {
-    width: 100%;
+    width: 50%;
   }
 `;
 
@@ -94,6 +103,7 @@ const AcceptWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+
   @media (max-width: 890px) {
     justify-content: center;
   }
@@ -123,12 +133,25 @@ const TextAreaLabel = styled(Label)`
 const MessageTextArea = styled(TextAreaField)`
   width: 100%;
   margin: 10px 20px;
+
+  @media (max-width: 620px) {
+    width: 80%;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
+
+  @media (max-width: 1400px) {
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 620px) {
+    width: 100%;
+  }
 `;
 
 const ButtonPanel = styled.div`
@@ -140,6 +163,10 @@ const ButtonPanel = styled.div`
 
   button {
     margin: 0 0 0 0.8rem;
+  }
+
+  @media (max-width: 620px) {
+    width: 80%;
   }
 `;
 
@@ -153,6 +180,12 @@ const ConflictParagraph = styled(Paragraph)`
     margin-right: 8px;
   }
 `;
+
+const questionMarkIconStyle = {
+  fontSize: '2rem',
+  marginLeft: '1rem',
+  color: 'AFBF36'
+};
 
 interface BookingFormProps {
   mainState: IMainState;
@@ -179,13 +212,13 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
   const [police, setPolice] = React.useState<boolean>(false);
   const [conflict, setConflict] = React.useState<boolean>(false);
+  const [sendEmailNotification, setSendEmailNotification] = React.useState<boolean>(false);
 
   const { city, building } = mainState;
 
   const dispatch = useDispatch();
 
   const {
-    bookingStore: { bookings },
     clientStore: { clients },
     buildingStore: { buildings }
   } = useSelector((state: IReduxState): IReduxState => state);
@@ -197,6 +230,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const {
     city: cityValue,
     building: buildingValue,
+    startDate,
     regular: regularValue,
     clientId: selectedClientId,
     person: personName
@@ -227,12 +261,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
   /**
    * Function to get building options into dropdown related to selected city.
-   * @param cv
-   * @param b
+   * @param city_value
+   * @param building_options
    */
-  const selectBuildingOptions = (cv: string, b: TSelect): TSelect[] => {
-    if (!cv) return [b];
-    return generateBuildingOptions(buildings)[cv];
+  const selectBuildingOptions = (city_value: string, building_options: TSelect): TSelect[] => {
+    if (!city_value) return [building_options];
+    return generateBuildingOptions(buildings)[city_value];
   };
 
   /**
@@ -247,7 +281,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     setBookingData(bookingToApprove);
     setDisplayConfirmation(true);
     if (isAdmin) {
-      setConflict(checkConflicts(bookingToApprove, bookings));
+      setConflict(checkConflicts(bookingToApprove, bookingsList));
     }
   });
 
@@ -257,8 +291,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const confirmSubmit = () => {
     if (!bookingData) return;
 
-    if (bookingId) dispatch(updateBooking({ ...bookingData, id: bookingId }, isAdmin));
-    else dispatch(addBooking(bookingData, isAdmin));
+    if (bookingId) {
+      dispatch(updateBooking({ ...bookingData, id: bookingId }, isAdmin, sendEmailNotification));
+    } else {
+      const sendEmail = !isAdmin ? true : sendEmailNotification;
+      dispatch(addBooking(bookingData, isAdmin, sendEmail));
+    }
 
     createInitialState();
     // To not close modal if error
@@ -274,8 +312,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     const clientId = selectedClientIdOption(clients, currentBooking.clientId);
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
-    setConflict(checkConflicts(currentBooking, bookings));
     setSelectedSize(currentBooking.size);
+    if (isAdmin) {
+      setConflict(checkConflicts(currentBooking, bookingsList));
+    }
   };
 
   /**
@@ -334,6 +374,17 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   /**
+   * Function to update field endDate in form if cyclic reservation is selected.
+   */
+  const updateEndDataInForm = (): void => {
+    if (!regularValue) {
+      return;
+    }
+    const currentFormValues = getValues();
+    reset({ ...currentFormValues, endDate: startDate });
+  };
+
+  /**
    * Function compare is booking client id with dropdown selected option
    */
   const compareClientIds = (): boolean => {
@@ -362,6 +413,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     }
   }, [isEditing]);
 
+  React.useEffect(updateEndDataInForm, [startDate]);
+
   return (
     <BookingWrapper onSubmit={onSubmit}>
       <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
@@ -382,6 +435,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   selected={value}
                   value={value}
                   isDisabled={displayConfirmation}
+                  blurInputOnSelect
                 />
               )}
             />
@@ -431,6 +485,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               value={value}
               defaultValue={city}
               isDisabled={displayConfirmation}
+              blurInputOnSelect
             />
           )}
         />
@@ -454,6 +509,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               value={value}
               isDisabled={!cityValue || displayConfirmation}
               defaultValue={building}
+              blurInputOnSelect
             />
           )}
         />
@@ -565,6 +621,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 value={value}
                 defaultValue={PAYMENTS_OPTIONS[0]}
                 isDisabled={displayConfirmation}
+                blurInputOnSelect
               />
             )}
           />
@@ -722,6 +779,21 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           <BsFillExclamationCircleFill />
           Ta rezerwacja ma konflikt z innymi rezerwacjami , czy napewno chcesz ją zatwierdzić
         </ConflictParagraph>
+      )}
+      {isAdmin && (
+        <RodoWrapper>
+          <Checkbox
+            checked={sendEmailNotification}
+            className="checkbox"
+            name="sendEmail"
+            changeHandler={() => setSendEmailNotification(!sendEmailNotification)}
+            disabled={displayConfirmation}
+          />
+          <Paragraph small>
+            Czy chcesz wysłać wiadomość e-mail do pracownika z informacją o rezerwacji
+            <BsQuestionCircleFill style={questionMarkIconStyle} />
+          </Paragraph>
+        </RodoWrapper>
       )}
       {!isAdmin && (
         <RodoWrapper>

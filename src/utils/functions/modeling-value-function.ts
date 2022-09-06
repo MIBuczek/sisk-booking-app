@@ -1,4 +1,5 @@
 import { TBooking } from 'models';
+import { isNil } from 'lodash';
 import { formatDate, formatTime } from './calender-functions';
 
 /**
@@ -35,7 +36,7 @@ const modelDisplayValue = (
   currentValue?: TBooking,
   isHours?: boolean
 ): null | string => {
-  if (typeof currentValue === 'undefined') {
+  if (isNil(currentValue)) {
     return null;
   }
   if (typeof currentValue === 'boolean') {

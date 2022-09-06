@@ -21,8 +21,12 @@ import {
 import { cloneDeep, isEmpty } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
 import { fadeInLeft } from 'style/animation';
-import SummaryDetailsItem from 'components/atoms/SummaryDetailItem';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
+import { BsFilePdf } from 'react-icons/bs';
+import Checkbox from '../atoms/Checkbox';
+import { printPDFReport } from '../molecules/modals/PreviewPDF';
+import { LoaderDots } from '../molecules/Loading';
+import ErrorMsg from '../atoms/ErrorMsg';
 
 registerLocale('pl', pl);
 
@@ -34,6 +38,7 @@ const SummaryWrapper = styled.section`
   flex-wrap: wrap;
   padding: 30px 0;
   z-index: 0;
+
   @media (max-width: 1400px) {
     width: 95%;
     height: fit-content;
@@ -44,6 +49,7 @@ const SummaryHeader = styled(Header)`
   margin: 20px 0 40px 20px;
   width: 100%;
   height: 40px;
+
   @media (max-width: 1400px) {
     width: 90%;
     margin: 20px 40px;
@@ -58,9 +64,11 @@ const SummaryInputContent = styled.div`
   align-items: center;
   padding: 20px 40px 20px 0;
   border-right: ${({ theme }) => `1px solid ${theme.green}`};
+
   @media (max-width: 1200px) {
     width: 45%;
   }
+
   @media (max-width: 890px) {
     width: 90%;
     border-right-color: transparent;
@@ -70,52 +78,87 @@ const SummaryInputContent = styled.div`
 `;
 
 const SummaryDetailContent = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 65%;
-  min-height: 90%;
-  padding: 20px 40px;
+  min-height: 550px;
+  padding: 20px 0 20px 40px;
   animation: ${fadeInLeft} 0.5s linear;
+
   @media (max-width: 1200px) {
     width: 55%;
   }
+
   @media (max-width: 890px) {
     width: 90%;
   }
 `;
 
+const InputWrapper = styled(SelectWrapper)`
+  flex-direction: row;
+
+  @media (max-width: 900px) {
+    justify-content: flex-start;
+  }
+`;
+
 const MonthPickerWrapper = styled(SelectWrapper)`
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  span {
+    display: block;
+    width: 100%;
+    text-align: center;
+
+    @media (max-width: 900px) {
+      width: 100%;
+    }
+  }
+
   .react-datepicker {
     border-color: ${({ theme }) => theme.green};
+
     .react-datepicker__header {
       height: 30px;
     }
+
     .react-datepicker__month {
       width: 290px;
       font-size: 14px;
     }
   }
+
+  @media (max-width: 900px) {
+    width: 290px;
+    justify-content: flex-start;
+  }
 `;
 
 const MonthPicker = styled(DataPickerField)`
-  width: 290px;
+  width: 120px;
   height: 35px;
   border-radius: 5px;
+  margin: 0 10px;
 `;
 
 const SummaryBtn = styled(Button)`
   width: 290px;
-  &:first-of-type {
-    margin-top: auto;
-  }
+  position: relative;
+  left: 0;
+  top: 150px;
+
   @media (max-width: 890px) {
     margin: 20px 10px;
+    position: static;
   }
 `;
 
 const DetailsParagraph = styled(Paragraph)`
   font-size: 14px;
   padding-top: 12px;
+
   &.empty {
     text-align: center;
   }
@@ -127,9 +170,12 @@ const ClientDetailTable = styled.table`
   display: block;
   padding: 0;
   border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+  margin-bottom: 20px;
+
   tbody {
     display: inherit;
     width: 100%;
+
     tr {
       display: flex;
       align-items: flex-start;
@@ -146,7 +192,6 @@ const ClientDetailWrapper = styled.tr`
 
 const DetailContent = styled.td`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   height: auto;
   font-size: ${({ theme }) => theme.fontSize.m};
@@ -154,14 +199,17 @@ const DetailContent = styled.td`
   word-break: break-word;
   width: 100%;
   padding: 5px 5px 5px 0;
+
   strong {
-    margin-bottom: 5px;
+    margin: 0 10px 5px 0;
   }
+
   &:first-of-type {
     strong {
       letter-spacing: 0.2px;
     }
   }
+
   &:last-of-type {
     padding-right: 0;
   }
@@ -173,7 +221,48 @@ const DetailsSpan = styled.span`
   font-size: 14px;
 `;
 
+const pdfIconStyles = {
+  fontSize: '2rem',
+  marginLeft: '1rem',
+  color: 'AFBF36'
+};
+
+const ButtonPanel = styled.div`
+  display: block;
+  margin-top: 32px;
+  border-top: ${({ theme }) => `1px solid ${theme.green}`};
+`;
+
+const PDFButton = styled(Button)`
+  width: 290px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.darkGrey};
+  font-size: ${({ theme }) => theme.fontSize.ml};
+  line-height: 1.5;
+  text-decoration: none;
+  transition: 0.4s;
+  background: transparent;
+
+  &:hover {
+    border-bottom-color: ${({ theme }) => theme.green};
+    background: ${({ theme }) => theme.middleGray};
+  }
+`;
+
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+`;
+
 const Summary = () => {
+  const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
   const [clientSummary, setClientSummary] = React.useState<ISummaryClientBookings>(
     cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)
   );
@@ -184,9 +273,9 @@ const Summary = () => {
     bookingStore: { bookings, errorMessage: errorBooking }
   } = useSelector((state: IReduxState) => state);
 
-  const { control, watch } = useForm();
+  const { handleSubmit, control, watch, reset, errors } = useForm();
 
-  const { client: clientValue, month: monthValue } = watch();
+  const { client: clientValue, fromMonth, toMonth, fromTheBeginning } = watch();
 
   /**
    * Function to generate client options into dropdown.
@@ -200,8 +289,13 @@ const Summary = () => {
   /**
    * Function to generate summary according selected client.
    */
-  const generateClientSummary = (): void => {
-    if (!clientValue || !monthValue || !clients) return;
+  const generateClientSummary = handleSubmit((): void => {
+    setIsGenerating(true);
+    if (!clientValue.value || !fromMonth || !clients) {
+      setIsSummaryGenerated(false);
+      setIsGenerating(false);
+      return;
+    }
 
     const currentClient = clients.find((c) => c.id === clientValue.value);
 
@@ -214,17 +308,50 @@ const Summary = () => {
       client: cloneDeep(currentClient)
     });
 
-    setClientSummary(generateReservationSummary(initialSummary, allClientReservations, monthValue));
+    setClientSummary(
+      generateReservationSummary(
+        initialSummary,
+        allClientReservations,
+        fromTheBeginning,
+        fromMonth,
+        toMonth
+      )
+    );
     setIsSummaryGenerated(true);
-  };
+
+    setTimeout(() => {
+      setIsGenerating(false);
+    }, 2000);
+  });
 
   /**
    * Function to restore initial status.
    */
-  const clearSummary = () => {
+  const clearSummary = (): void => {
     setClientSummary(cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS));
     setIsSummaryGenerated(false);
+    setIsGenerating(false);
+    reset({
+      client: { label: '', value: '' },
+      fromMonth: new Date(),
+      toMonth: new Date()
+    });
   };
+
+  /**
+   * Function to update field in toMonth in form if fromMonth change.
+   */
+  const updateToMonthDataInForm = (): void => {
+    reset({ client: clientValue, fromMonth, toMonth: fromMonth, fromTheBeginning });
+  };
+
+  const generatePdfReport = () => {
+    printPDFReport(clientSummary);
+  };
+
+  React.useEffect(() => {
+    updateToMonthDataInForm();
+  }, [fromMonth]);
 
   return (
     <SummaryWrapper>
@@ -247,14 +374,16 @@ const Summary = () => {
                 onBlur={onBlur}
                 selected={value}
                 value={value}
+                blurInputOnSelect
               />
             )}
           />
+          {errors.client && <ErrorMsg innerText="Pole nie może być puste" />}
         </SelectWrapper>
         <MonthPickerWrapper>
-          <Label>Wybierz miesiąc</Label>
+          <Label>Wybierz zakres daty</Label>
           <Controller
-            name="month"
+            name="fromMonth"
             defaultValue={new Date()}
             control={control}
             rules={{ required: true }}
@@ -268,10 +397,47 @@ const Summary = () => {
                 onChange={onChange}
                 onBlur={onBlur}
                 selected={value}
+                disabled={fromTheBeginning}
+              />
+            )}
+          />
+          <Controller
+            name="toMonth"
+            defaultValue={new Date()}
+            control={control}
+            rules={{ required: true }}
+            render={({ value, onChange, onBlur }: ControllerRenderProps) => (
+              <MonthPicker
+                placeholderText="Wybierz"
+                dateFormat="MM/yyyy"
+                showMonthYearPicker
+                shouldCloseOnSelect
+                locale="pl"
+                onChange={onChange}
+                onBlur={onBlur}
+                selected={value}
+                disabled={fromTheBeginning}
               />
             )}
           />
         </MonthPickerWrapper>
+        <InputWrapper>
+          <Label>Podsumowanie całościowe</Label>
+          <Controller
+            name="fromTheBeginning"
+            defaultValue={false}
+            control={control}
+            render={({ onChange, value }: ControllerRenderProps) => (
+              <Checkbox
+                checked={value}
+                className="checkbox"
+                name="fromTheBeginning"
+                changeHandler={onChange}
+                disabled={false}
+              />
+            )}
+          />
+        </InputWrapper>
         <SummaryBtn type="button" onClick={generateClientSummary}>
           Generuj podsumowanie
         </SummaryBtn>
@@ -280,54 +446,54 @@ const Summary = () => {
         </SummaryBtn>
       </SummaryInputContent>
       <SummaryDetailContent>
-        {isSummaryGenerated ? (
+        {isGenerating && (
+          <LoadingWrapper>
+            <LoaderDots type="ball-pulse" active />
+          </LoadingWrapper>
+        )}
+        {!isGenerating && isSummaryGenerated && (
           <>
             <ClientDetailTable>
               <tbody>
-                <ClientDetailWrapper>
-                  {RECORDS_CLIENTS_ROW_DETAILS.map((prop) => {
-                    if (!isEmpty(clientSummary.client[prop])) {
-                      return (
-                        <DetailContent key={prop}>
+                {RECORDS_CLIENTS_ROW_DETAILS.map((prop) => {
+                  if (!isEmpty(clientSummary.client[prop])) {
+                    return (
+                      <ClientDetailWrapper key={prop}>
+                        <DetailContent>
                           <strong>{RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]} : </strong>
                           {modelDisplayValue(prop, clientSummary.client[prop])}
                         </DetailContent>
-                      );
-                    }
-                    return null;
-                  })}
-                </ClientDetailWrapper>
+                      </ClientDetailWrapper>
+                    );
+                  }
+                  return null;
+                })}
               </tbody>
             </ClientDetailTable>
             <DetailsParagraph bold>
               Radwanice :<DetailsSpan>{clientSummary.radwanice.length} rezerwacji.</DetailsSpan>
             </DetailsParagraph>
-            {clientSummary.radwanice.length ? (
-              <SummaryDetailsItem bookingCityDetails={clientSummary.radwanice} />
-            ) : null}
             <DetailsParagraph bold>
               Siechnice:
               <DetailsSpan>{clientSummary.siechnice.length} rezerwacji.</DetailsSpan>
             </DetailsParagraph>
-            {clientSummary.siechnice.length ? (
-              <SummaryDetailsItem bookingCityDetails={clientSummary.siechnice} />
-            ) : null}
             <DetailsParagraph bold>
               Świeta Katarzyna :
               <DetailsSpan>{clientSummary['swieta-katarzyna'].length} rezerwacji.</DetailsSpan>
             </DetailsParagraph>
-            {clientSummary['swieta-katarzyna'].length ? (
-              <SummaryDetailsItem bookingCityDetails={clientSummary['swieta-katarzyna']} />
-            ) : null}
             <DetailsParagraph bold>
               Żerniki Wrocławskie :
               <DetailsSpan>{clientSummary['zerniki-wroclawskie'].length} rezerwacji.</DetailsSpan>
             </DetailsParagraph>
-            {clientSummary['zerniki-wroclawskie'].length ? (
-              <SummaryDetailsItem bookingCityDetails={clientSummary['zerniki-wroclawskie']} />
-            ) : null}
+            <ButtonPanel>
+              <PDFButton type="button" onClick={generatePdfReport}>
+                Wyświetl szczegóły
+                <BsFilePdf style={pdfIconStyles} />
+              </PDFButton>
+            </ButtonPanel>
           </>
-        ) : (
+        )}
+        {!isGenerating && !isSummaryGenerated && (
           <DetailsParagraph bold className="empty">
             Aby zobaczyć posumowanie, wybierz klienta oraz miesiąc.
           </DetailsParagraph>
@@ -338,5 +504,3 @@ const Summary = () => {
 };
 
 export default Summary;
-
-// Miejscowosc , ilość rezerwacji

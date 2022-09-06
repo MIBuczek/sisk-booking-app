@@ -29,7 +29,7 @@ import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/BookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
-import BookingStatusForm from 'components/molecules/forms/BookingStatusForm';
+import BookingStatus from 'components/molecules/BookingStatus';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import { cloneDeep } from 'lodash';
@@ -181,10 +181,19 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     setDeleteItemIndex(undefined);
   };
 
-  React.useEffect(() => {
-    setBookingsList(filterBookingsPerPlace(bookings, mainState, user?.isAdmin));
-    setConflicts(checkAllBookingsConflicts(bookings));
-  }, [bookings, mainState]);
+  /**
+   * Function for handle UseEffect call back.
+   */
+  const handlerEffectCallBack = () => {
+    const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
+    setBookingsList(bookingByPlace);
+    if (user?.isAdmin) {
+      const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
+      setConflicts(bookingWithConflicts);
+    }
+  };
+
+  React.useEffect(handlerEffectCallBack, [bookings, mainState]);
 
   return (
     <BookingsWrapper>
@@ -211,6 +220,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         recordPropertyDisplayMap={RECORDS_BOOKING_DETAILS_PROPERTY_MAP}
         isAdmin={adminCredentials(user)}
         isEmployee={user?.isEmployee || false}
+        conflicts={conflicts}
         records={bookingsList}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}
@@ -235,7 +245,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
             />
           )}
           {type === MODAL_TYPES.BOOKINGS_STATUS && (
-            <BookingStatusForm
+            <BookingStatus
               bookingsList={bookingsList}
               editedItemIndex={editedItemIndex}
               editedSubItemIndex={editedSubItemIndex}
@@ -249,6 +259,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
             />
           )}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
+          {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}
         </Modal>
       )}
     </BookingsWrapper>

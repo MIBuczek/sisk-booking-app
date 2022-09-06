@@ -177,6 +177,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                 value={value}
                 defaultValue={CLIENT_OPTIONS[0]}
                 isDisabled={displayConfirmation}
+                blurInputOnSelect
               />
             )}
           />

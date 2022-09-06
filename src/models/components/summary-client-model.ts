@@ -7,13 +7,17 @@ interface IBookedTime extends ISingleBookingDate {
   status: string;
 }
 
-interface ISummaryClientBookings {
-  client: IClient;
+interface IReportBookingByCity {
   radwanice: IBookedTime[];
   siechnice: IBookedTime[];
   'swieta-katarzyna': IBookedTime[];
   'zerniki-wroclawskie': IBookedTime[];
+}
+
+interface ISummaryClientBookings extends IReportBookingByCity {
+  client: IClient;
+
   [x: string]: string | IBookedTime[] | IClient | undefined;
 }
 
-export type { ISummaryClientBookings, IBookedTime };
+export type { ISummaryClientBookings, IBookedTime, IReportBookingByCity };

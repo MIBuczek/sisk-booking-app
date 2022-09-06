@@ -13,6 +13,24 @@ const ConfirmationWrapper = styled.div`
   justify-content: center;
   animation: ${fadeIn} 0.5s linear;
   border-radius: 5px;
+
+  &.modalResolveBooking {
+    width: 200%;
+    position: relative;
+    top: 10px;
+    left: -100%;
+
+    @media (max-width: 800px) {
+      width: 135%;
+      left: -10%;
+    }
+  }
+
+  &.bookingStatus {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
 `;
 
 const ConfirmationContent = styled.div`
@@ -27,6 +45,7 @@ const ConfirmationParagraph = styled(Paragraph)`
   color: ${({ theme }) => theme.white};
   position: relative;
   font-size: 16px;
+
   &:after {
     position: absolute;
     bottom: -14px;
@@ -57,10 +76,16 @@ interface IProps {
   message: string;
   callback: () => void;
   cancelCallback: () => void;
+  additionalClass?: string;
 }
 
-const ConfirmAction: React.FunctionComponent<IProps> = ({ message, callback, cancelCallback }) => (
-  <ConfirmationWrapper>
+const ConfirmAction: React.FunctionComponent<IProps> = ({
+  message,
+  callback,
+  cancelCallback,
+  additionalClass = ''
+}) => (
+  <ConfirmationWrapper className={`${additionalClass}`}>
     <ConfirmationContent>
       <ConfirmationParagraph>
         {message}

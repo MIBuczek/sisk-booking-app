@@ -64,7 +64,7 @@
     "@typescript-eslint/default-param-last": 0,
     "@typescript-eslint/naming-convention": 0,
     "indent": 0,
-    "@typescript-eslint/indent": ["error"],
+    "@typescript-eslint/indent": "warn",
     "@typescript-eslint/no-explicit-any": [
       "error",
       {

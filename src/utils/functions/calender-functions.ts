@@ -15,9 +15,12 @@ const formatDate = (date: Date | null): string => {
  */
 const formatTime = (date: Date | null): string => {
   if (!date) return '';
-  const newDate = date.toLocaleTimeString();
-  const lastIndex = newDate.lastIndexOf(':');
-  return newDate.substring(0, lastIndex);
+  const dateHour: number = date.getHours();
+  let dateMinutes: number | string = date.getMinutes();
+  if (dateMinutes === 0) {
+    dateMinutes = '00';
+  }
+  return `${dateHour}:${dateMinutes}`;
 };
 
 /**
@@ -32,11 +35,25 @@ const formatCalenderDate = (date: Date | string): string => {
 };
 
 /**
- * Function to transform date object into accepted calender hours format
+ * Function to transform date object into correct Warsaw time zone
  * @param date
  * @returns {String}
  */
-const formateCalenderHours = (date: Date): string => {
+const formatDisplayTime = (date: Date | string) => {
+  const formDate = new Date(date);
+  formDate.setHours(formDate.getHours() + 2);
+  const stringDate = formDate.toISOString();
+  const index = stringDate.indexOf('T');
+  const lastIndex = stringDate.lastIndexOf('.');
+  return stringDate.substring(index, lastIndex);
+};
+
+/**
+ * Function to transform date object into accepted calendar hours format
+ * @param date
+ * @returns {String}
+ */
+const formatCalenderHours = (date: Date): string => {
   const checkedDate = new Date(date).toISOString();
   const index = checkedDate.indexOf('T');
   const lastIndex = checkedDate.lastIndexOf('.');
@@ -44,7 +61,7 @@ const formateCalenderHours = (date: Date): string => {
 };
 
 /**
- * Function generate reservation calender object display into view
+ * Function generate reservation calendar object display into view
  * @param itemTitle
  * @param id
  * @param startDay
@@ -52,6 +69,7 @@ const formateCalenderHours = (date: Date): string => {
  * @param endHour
  * @param accepted
  * @param size
+ * @param index
  * @returns {Object}
  */
 const prepareCalenderItem = (
@@ -61,16 +79,36 @@ const prepareCalenderItem = (
   startHour: Date,
   endHour: Date,
   accepted: boolean,
-  size: string
+  size: string,
+  index: number
 ) => ({
   id,
   allDay: false,
   title: `${itemTitle}`,
   url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
   textColor: `${size}`,
-  start: `${formatCalenderDate(startDay)}${formateCalenderHours(startHour)}`,
-  end: `${formatCalenderDate(startDay)}${formateCalenderHours(endHour)}`,
-  backgroundColor: `${accepted ? '' : '#5e5e5e'}`
+  start: `${formatCalenderDate(startDay)}${formatDisplayTime(startHour)}`,
+  end: `${formatCalenderDate(startDay)}${formatDisplayTime(endHour)}`,
+  backgroundColor: `${accepted ? '' : '#5e5e5e'}`,
+  itemIndex: index
 });
 
-export { formatDate, prepareCalenderItem, formatTime, formatCalenderDate, formateCalenderHours };
+/**
+ * Function to change day in Date object
+ * @param date
+ * @param newDay
+ * @returns {String}
+ */
+const changeDayInDate = (date: Date, newDay: number): Date => {
+  date.setDate(newDay);
+  return date;
+};
+
+export {
+  formatDate,
+  prepareCalenderItem,
+  formatTime,
+  formatCalenderDate,
+  formatCalenderHours,
+  changeDayInDate
+};

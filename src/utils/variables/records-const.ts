@@ -15,7 +15,7 @@ const RECORDS_CLIENTS_ROW_DETAILS = [
 const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP: { [x: string]: string } = {
   name: 'Imię i nazwisko',
   type: 'Typ',
-  contactPerson: ' Osoba kontaktowa',
+  contactPerson: 'Osoba kontaktowa',
   phone: 'Telefon',
   email: 'E-mail',
   street: 'Ulica',

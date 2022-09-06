@@ -15,16 +15,28 @@ const ButtonIcon = styled.button`
   border: ${({ theme }) => `1px solid ${theme.green}`};
   width: 290px;
   border-radius: 5px;
+
+  &.active {
+    color: #fff;
+    background: #afbf36;
+
+    svg {
+      color: #fff !important;
+    }
+  }
+
   &:hover {
     box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
   }
+
   svg {
     color: inherit;
     width: 2rem;
     height: 2rem;
   }
+
   @media (max-width: 1400px) {
-    margin: 10px;
+    margin: 10px 60px 10px 10px;
   }
 `;
 

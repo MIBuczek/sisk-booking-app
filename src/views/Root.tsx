@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Cookies from 'components/molecules/Cookies';

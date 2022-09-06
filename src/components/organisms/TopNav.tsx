@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BsEnvelopeFill, BsFillHouseFill, BsPower } from 'react-icons/bs';
+import { BsEnvelopeFill, BsFillHouseFill, BsPower, BsPersonFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,6 +38,7 @@ const NavContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   @media (max-width: 889px) {
     flex-direction: column;
     align-items: flex-start;
@@ -52,13 +53,28 @@ const StyledLinksList = styled.ul`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+
   li {
     display: flex;
-    min-width: 100px;
+    min-width: 50px;
+    min-height: 30px;
+    height: 40px;
+    font-size: 2rem;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        font-size: 2rem;
+      }
+    }
+
     @media (max-width: 889px) {
       font-size: ${({ theme }) => theme.fontSize.m};
       text-align: center;
-      margin-top: 20px;
+      margin-top: 10px;
     }
   }
 `;
@@ -70,11 +86,13 @@ const NavigationLink = styled(NavLink)`
   line-height: 1.5;
   text-decoration: none;
   text-transform: uppercase;
-  padding: 16px 10px 17px 10px;
+  padding: 8px 5px 7px 5px;
   transition: 0.4s;
+
   &:hover {
     color: ${({ theme }) => theme.green};
   }
+
   @media (max-width: 889px) {
     font-size: ${({ theme }) => theme.fontSize.m};
   }
@@ -86,8 +104,10 @@ const NavButton = styled(Button)`
   font-size: 1.9rem;
   border: none;
   margin: 0;
-  padding: 16px 10px 17px 10px;
-  display: inline-flex;
+  padding: 8px 5px 7px 5px;
+  display: flex;
+  align-self: center;
+
   &.btn {
     color: ${({ theme }) => theme.green};
     font-weight: 600;
@@ -95,14 +115,17 @@ const NavButton = styled(Button)`
     text-transform: uppercase;
     padding: 5px 10px;
     border: 1px solid;
+
     &:hover {
       box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     }
   }
+
   &:hover {
     box-shadow: none;
     color: ${({ theme }) => theme.green};
   }
+
   svg {
     display: block;
     margin-left: 10px;
@@ -113,12 +136,15 @@ const NaviAnchor = styled(Anchor)`
   background: transparent;
   font-size: 1.9rem;
   padding: 16px 10px 17px 10px;
+
   &:hover {
     color: #afbf36;
   }
+
   svg {
     display: block;
   }
+
   @media (max-width: 889px) {
     padding: 5px 10px;
   }
@@ -161,12 +187,17 @@ const TopNav = (): JSX.Element => {
             </NavigationLink>
           </li>
           <li>
-            <NavButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
+            <NavButton type="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
               <BsEnvelopeFill />
             </NavButton>
             <NaviAnchor href="https://www.sisk-siechnice.pl/" target="_blank">
               <BsFillHouseFill />
             </NaviAnchor>
+            {!authStore.auth && (
+              <NavigationLink to="/login" activeStyle={active}>
+                <BsPersonFill />
+              </NavigationLink>
+            )}
           </li>
           {authStore.auth && (
             <li>

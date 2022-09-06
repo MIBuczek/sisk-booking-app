@@ -37,7 +37,7 @@ const ModalContent = styled.div`
   background: white;
   position: absolute;
   @media (max-width: 890px) {
-    min-width: 95%;
+    max-width: 95%;
   }
 `;
 

@@ -1,6 +1,17 @@
 import { IUser } from 'models';
 
 /**
+ * Function to check user credentials to see booked usernames
+ * @param  loggedUsed
+ * @returns {Boolean}
+ */
+const hasRightsToSeeContent = (loggedUsed: IUser | undefined): boolean => {
+  if (!loggedUsed) return false;
+  const { isAdmin, isEmployee, isOffice } = loggedUsed;
+  return isAdmin || isEmployee || isOffice;
+};
+
+/**
  * Function to check user credentials
  * @param  loggedUsed
  * @returns {Boolean}
@@ -24,4 +35,4 @@ const sideNavCredentials = (loggedUsed: IUser | undefined): boolean => {
   return isAdmin || isOffice;
 };
 
-export { adminCredentials, sideNavCredentials };
+export { hasRightsToSeeContent, adminCredentials, sideNavCredentials };

@@ -172,6 +172,7 @@ const Clients = () => {
         recordProperty={RECORDS_CLIENTS_ROW}
         recordPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}
         recordPropertyDisplayMap={RECORDS_CLIENTS_DETAILS_PROPERTY_MAP}
+        conflicts={[]}
         records={clientList}
         editHandler={editClientHandler}
         deleteHandler={deleteClientHandler}
@@ -195,6 +196,7 @@ const Clients = () => {
             />
           )}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Klienci" />}
+          {type === MODAL_TYPES.ERROR && <ModalInfo header="Klienci" />}
         </Modal>
       )}
     </CalenderWrapper>

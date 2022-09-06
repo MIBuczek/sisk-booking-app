@@ -17,6 +17,7 @@ export const fetchingBookings = (): IBookingsAction => ({
     savingStage: SAVING_STAGE.INITIAL,
     errorMessage: '',
     booking: undefined,
+    bookingTimeIndex: null,
     bookings: []
   }
 });
@@ -28,6 +29,7 @@ export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBooki
     savingStage: SAVING_STAGE.SUCCESS,
     errorMessage: '',
     booking: undefined,
+    bookingTimeIndex: null,
     bookings
   }
 });
@@ -39,17 +41,23 @@ export const fetchingBookingsError = (errorMessage: string): IBookingsAction => 
     savingStage: SAVING_STAGE.ERROR,
     errorMessage,
     booking: undefined,
+    bookingTimeIndex: null,
     bookings: []
   }
 });
 
-export const getSingleBooking = (bookings: IBooking[], booking?: IBooking): IBookingsAction => ({
+export const getSingleBooking = (
+  bookings: IBooking[],
+  bookingTimeIndex: number | null,
+  booking?: IBooking
+): IBookingsAction => ({
   type: BOOKING_STATE.GET_BOOKING,
   payload: {
     isFetching: false,
     savingStage: SAVING_STAGE.SUCCESS,
     errorMessage: '',
     booking,
+    bookingTimeIndex,
     bookings
   }
 });
@@ -89,7 +97,11 @@ export const getBookingDataForUser = () => async (
 /**
  * Booking store action to add records to firebase database bookings collection.
  */
-export const addBooking = (bookingData: IBooking, isAdmin: boolean) => async (
+export const addBooking = (
+  bookingData: IBooking,
+  isAdmin: boolean,
+  sendEmailNotification: boolean
+) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
@@ -107,6 +119,11 @@ export const addBooking = (bookingData: IBooking, isAdmin: boolean) => async (
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
 
     const building = buildings.find((b) => b.property === bookingData.building);
+
+    if (!sendEmailNotification) {
+      return;
+    }
+
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
       dispatch(
@@ -128,7 +145,11 @@ export const addBooking = (bookingData: IBooking, isAdmin: boolean) => async (
 /**
  * Booking store action to update records to firebase database bookings collection.
  */
-export const updateBooking = (bookingData: IBooking, isAdmin: boolean) => async (
+export const updateBooking = (
+  bookingData: IBooking,
+  isAdmin: boolean,
+  sendEmailNotification: boolean
+) => async (
   dispatch: Dispatch<IBookingsAction | IModalAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
@@ -148,6 +169,11 @@ export const updateBooking = (bookingData: IBooking, isAdmin: boolean) => async 
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została zaktualizowana pomyślnie'));
 
     const building = buildings.find((b) => b.property === bookingData.building);
+
+    if (!sendEmailNotification) {
+      return;
+    }
+
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
       dispatch(
@@ -168,14 +194,14 @@ export const updateBooking = (bookingData: IBooking, isAdmin: boolean) => async 
 /**
  * Booking store action to get current booking records from already stored bookings state.
  */
-export const getCurrentBooking = (id: string) => async (
+export const getCurrentBooking = (id: string, bookingTimeIndex: number) => async (
   dispatch: Dispatch<IBookingsAction>,
   getStore: () => IReduxState
 ): Promise<void> => {
   const { bookings } = getStore().bookingStore;
   const currentBooking = bookings.find((b) => b.id === id);
   if (currentBooking) {
-    dispatch(getSingleBooking(bookings, currentBooking));
+    dispatch(getSingleBooking(bookings, bookingTimeIndex, currentBooking));
   } else {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pokazac wybranej rezerwacji.'));
   }
@@ -189,7 +215,7 @@ export const clearCurrentBooking = () => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   const { bookings } = getStore().bookingStore;
-  dispatch(getSingleBooking(bookings, undefined));
+  dispatch(getSingleBooking(bookings, null, undefined));
 };
 
 /**

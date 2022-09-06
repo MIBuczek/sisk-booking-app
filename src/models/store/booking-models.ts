@@ -19,7 +19,8 @@ type TBooking =
   | number
   | ISingleBookingDate[]
   | ISelectedExtraOptions[]
-  | undefined;
+  | undefined
+  | null;
 
 interface IBooking {
   type: CLIENT_TYPE;
@@ -41,11 +42,13 @@ interface IBooking {
   payment: string;
   archive: boolean;
   id: string;
+
   [x: string]: TBooking;
 }
 
 interface IBookingsPayload extends IPayload {
   booking?: IBooking;
+  bookingTimeIndex: number | null;
   bookings: IBooking[];
 }
 

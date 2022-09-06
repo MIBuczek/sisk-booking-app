@@ -5,7 +5,7 @@ import BookingCalender from 'components/organisms/Calender';
 import SideNav from 'components/organisms/SideNav';
 import { fadeIn } from 'style/animation';
 import { IMainState, IReduxState, TSelect } from 'models';
-import { BUILDINGS_OPTIONS, initialMainState, MODAL_TYPES } from 'utils';
+import { ADMIN_TABS, BUILDINGS_OPTIONS, initialMainState, MODAL_TYPES } from 'utils';
 import { cloneDeep } from 'lodash';
 import { useSelector } from 'react-redux';
 import Modal from 'components/organisms/Modal';
@@ -63,6 +63,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
       <SideNav
         state={mainState}
         stateHandler={mainStateHandler}
+        activeTab={ADMIN_TABS.BOOKINGS}
         tabHandler={() => null}
         isAdmin={false}
       />

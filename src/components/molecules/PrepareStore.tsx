@@ -19,19 +19,6 @@ const PrepareStore: React.FC<IProps> = ({ children }): JSX.Element | null => {
     (state: IReduxState): IReduxState => state
   );
 
-  // const checkLocalStorage = (): boolean => {
-  //   const lastUpdate = localStorage.getItem('lastUpdate');
-  //   if (!lastUpdate) {
-  //     return true;
-  //   }
-  //   if (Number(lastUpdate) + 900000 < Date.now()) {
-  //     return true;
-  //   }
-  //   const bookingData = JSON.parse(localStorage.getItem('bookings') || '[]') as IBooking[];
-  //   dispatch(StoreActions.fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookingData));
-  //   return false;
-  // };
-
   const adminStoreReady =
     currentUserStore.savingStage === SAVING_STAGE.SUCCESS &&
     bookingStore.savingStage === SAVING_STAGE.SUCCESS &&

@@ -311,6 +311,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
       {isOpen && (
         <Modal>
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Wiadomość do Pracowników" />}
+          {type === MODAL_TYPES.ERROR && <ModalInfo header="Wiadomość do Pracowników" />}
         </Modal>
       )}
     </BuildingWrapper>

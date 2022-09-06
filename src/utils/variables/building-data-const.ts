@@ -36,7 +36,7 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
     name: 'Bieżnia na stadionie LA',
     property: 'bieznia-na-stadionie-la',
     city: 'siechnice',
-    size: [SIZE_OPTIONS['1/3'], SIZE_OPTIONS['2/3'], SIZE_OPTIONS['1/1']],
+    size: [SIZE_OPTIONS['1/1']],
     phone: '609 996 064',
     email: 'siechnice.hala@gmail.com',
     extra: {

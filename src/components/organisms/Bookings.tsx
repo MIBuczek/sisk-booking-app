@@ -207,11 +207,9 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           searchProperty="person"
           searchContentHandler={bookingListHandler}
         />
-        {adminCredentials(user) && (
-          <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-            Dodaj nową rezerwację
-          </OpenBookingsModalButton>
-        )}
+        <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
+          {adminCredentials(user) ? 'Dodaj nową rezerwację' : 'Wyślij prośbę o rezerwacje'}
+        </OpenBookingsModalButton>
       </RecordsActionContent>
       <MultipleRecords
         headers={RECORDS_BOOKINGS_HEADERS}
@@ -241,7 +239,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}
               initialEditingState={initialBookingState}
-              isAdmin
+              isAdmin={adminCredentials(user)}
             />
           )}
           {type === MODAL_TYPES.BOOKINGS_STATUS && (

@@ -125,6 +125,15 @@ const checkIndex = (index: number | null): number => {
   return 0;
 };
 
+/**
+ * Function to check is current item last on array
+ * @param currentIndex
+ * @param arrayLength
+ * @return Boolean
+ */
+const checkIsLastIndex = (currentIndex: number, arrayLength: number): boolean =>
+  currentIndex === arrayLength;
+
 export {
   selectSizeFieldOptions,
   selectClientOptions,
@@ -135,5 +144,6 @@ export {
   firstLetterUpperCase,
   checkSelectedOption,
   findCurrentItemIndex,
-  checkIndex
+  checkIndex,
+  checkIsLastIndex
 };

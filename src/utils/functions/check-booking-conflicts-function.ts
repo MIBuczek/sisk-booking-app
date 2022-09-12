@@ -116,8 +116,8 @@ const checkSingleDayConflict = (
   singleBookingId: string,
   singleBookingMonth: number,
   currentPlaceBookings: IBooking[]
-): boolean => {
-  let conflictListIds: string[] = [];
+): IBooking[] => {
+  let conflictListIds: IBooking[] = [];
   const { status } = singleBookingDay;
 
   currentPlaceBookings.forEach((bookingOnPlace) => {
@@ -128,13 +128,16 @@ const checkSingleDayConflict = (
     ) {
       bookingOnPlace.bookingTime.forEach((checkedBookingTime) => {
         if (checkSingleBookingTime(singleBookingDay, checkedBookingTime)) {
-          conflictListIds = [...conflictListIds, bookingOnPlace.id];
+          conflictListIds = [
+            ...conflictListIds,
+            { ...bookingOnPlace, bookingTime: [{ ...checkedBookingTime }] }
+          ];
         }
       });
     }
   });
 
-  return !!conflictListIds.length;
+  return conflictListIds;
 };
 
 export { checkConflicts, checkAllBookingsConflicts, checkSingleDayConflict };

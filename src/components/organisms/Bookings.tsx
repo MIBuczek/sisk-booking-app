@@ -232,7 +232,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           {`Aktualna liczba konfliktów: ${conflicts.length}`}
         </ConflictParagraph>
       )}
-      {isOpen && (
+      {isOpen && type !== MODAL_TYPES.BOOKING_CONFLICTS && (
         <Modal>
           {type === MODAL_TYPES.BOOKINGS && (
             <BookingForm

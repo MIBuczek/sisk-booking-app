@@ -41,7 +41,7 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
   return (
     <>
       <DetailsParagraph bold>
-        Najemca :<DetailsSpan>{person}</DetailsSpan>
+        Najemca :<DetailsSpan>{isAdmin ? person : 'Rezerwacja'}</DetailsSpan>
       </DetailsParagraph>
       <DetailsParagraph bold>
         Dzień :

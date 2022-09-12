@@ -9,7 +9,7 @@ import Paragraph from 'components/atoms/Paragraph';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import { IAdminState, IBooking, IMainState } from 'models';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import { MODAL_TYPES, prepareCalenderItem } from '../../utils';
+import { BOOKING_STATUS, MODAL_TYPES, prepareCalenderItem } from '../../utils';
 import RenderEventContent from '../atoms/CalenderEvent';
 import { IReduxState } from '../../models';
 import { getCurrentBooking, openModal } from '../../store';
@@ -45,7 +45,7 @@ const CalenderWrapper = styled.section`
       overflow: hidden;
 
       p {
-        margin: 3px 0;
+        margin: 3px 2px;
       }
     }
 
@@ -149,32 +149,23 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
   } = useSelector((state: IReduxState) => state);
 
   /**
-   * Function create event into full calender component.
+   * Function create event into full calendar component.
    * Event is related to the user or admin view.
    */
   const createEvents = (): void =>
     setEvents(
-      bookings.reduce((acc: EventInput[], b: IBooking) => {
+      bookings.reduce((acc: EventInput[], booking: IBooking) => {
         if (
           mainState &&
-          mainState.city.value === b.city &&
-          mainState.building.value === b.building &&
-          (hasRights || b.accepted)
+          mainState.city.value === booking.city &&
+          mainState.building.value === booking.building &&
+          (hasRights || booking.accepted)
         ) {
-          b.bookingTime.forEach((bt, index) => {
-            const itemTitle = `${hasRights ? b.person : 'Rezerwacja'}`;
-            acc.push(
-              prepareCalenderItem(
-                itemTitle,
-                b.id,
-                bt.day,
-                bt.startHour,
-                bt.endHour,
-                b.accepted,
-                b.size,
-                index
-              )
-            );
+          booking.bookingTime.forEach((bt, index) => {
+            const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
+            if (bt.status !== BOOKING_STATUS.QUIT) {
+              acc.push(prepareCalenderItem(itemTitle, booking, index));
+            }
           });
         }
         return acc;

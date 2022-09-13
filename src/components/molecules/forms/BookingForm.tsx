@@ -377,7 +377,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    * Function to update field endDate in form if cyclic reservation is selected.
    */
   const updateEndDataInForm = (): void => {
-    if (!regularValue) {
+    if (!regularValue || isEditing) {
       return;
     }
     const currentFormValues = getValues();

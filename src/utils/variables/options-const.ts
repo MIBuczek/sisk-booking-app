@@ -43,8 +43,10 @@ const SIZE_FIELD_OPTIONS: ISizeFieldOptions = {
 };
 
 const PAYMENTS_OPTIONS: TSelect[] = [
+  { value: 'transfer', label: 'Przelew' },
   { value: 'cash', label: 'Gotówka' },
-  { value: 'invoice', label: 'Faktura' }
+  { value: 'invoice', label: 'Faktura' },
+  { value: 'free', label: 'Bezpłatne' }
 ];
 
 export { CITY_OPTIONS, BUILDINGS_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS, PAYMENTS_OPTIONS };

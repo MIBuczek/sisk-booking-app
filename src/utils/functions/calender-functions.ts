@@ -1,3 +1,6 @@
+import { IBooking } from '../../models';
+import { BOOKING_STATUS } from '../variables/booking-status-const';
+
 /**
  * Function to transform date object into local date string
  * @param date
@@ -61,37 +64,43 @@ const formatCalenderHours = (date: Date): string => {
 };
 
 /**
+ * Function to generate background color for calendar item
+ * @param accepted
+ * @param status
+ * @returns {String}
+ */
+const generateStatusBackground = (accepted: boolean, status: string): string => {
+  if (status === BOOKING_STATUS.DONE) {
+    return '#454545';
+  }
+  if (accepted) {
+    return '#AFBF36';
+  }
+  return '#EEEEEE';
+};
+
+/**
  * Function generate reservation calendar object display into view
  * @param itemTitle
- * @param id
- * @param startDay
- * @param startHour
- * @param endHour
- * @param accepted
- * @param size
+ * @param booking
  * @param index
  * @returns {Object}
  */
-const prepareCalenderItem = (
-  itemTitle: string,
-  id: string,
-  startDay: Date,
-  startHour: Date,
-  endHour: Date,
-  accepted: boolean,
-  size: string,
-  index: number
-) => ({
-  id,
-  allDay: false,
-  title: `${itemTitle}`,
-  url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
-  textColor: `${size}`,
-  start: `${formatCalenderDate(startDay)}${formatDisplayTime(startHour)}`,
-  end: `${formatCalenderDate(startDay)}${formatDisplayTime(endHour)}`,
-  backgroundColor: `${accepted ? '' : '#5e5e5e'}`,
-  itemIndex: index
-});
+const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number) => {
+  const { id, size, accepted, bookingTime } = booking;
+  const { day, startHour, endHour, status } = bookingTime[index];
+  return {
+    id,
+    allDay: false,
+    title: `${itemTitle}`,
+    url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
+    textColor: `${size}`,
+    start: `${formatCalenderDate(day)}${formatDisplayTime(startHour)}`,
+    end: `${formatCalenderDate(day)}${formatDisplayTime(endHour)}`,
+    backgroundColor: `${generateStatusBackground(accepted, status)}`,
+    itemIndex: index
+  };
+};
 
 /**
  * Function to change day in Date object

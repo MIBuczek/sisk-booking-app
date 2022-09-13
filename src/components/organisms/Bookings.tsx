@@ -35,6 +35,7 @@ import Paragraph from 'components/atoms/Paragraph';
 import { cloneDeep } from 'lodash';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Modal from './Modal';
+import ModalConflictDetails from '../molecules/modals/ModalConflictDetails';
 
 const BookingsWrapper = styled.section`
   width: 60%;
@@ -230,7 +231,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           {`Aktualna liczba konfliktów: ${conflicts.length}`}
         </ConflictParagraph>
       )}
-      {isOpen && type !== MODAL_TYPES.BOOKING_CONFLICTS && (
+      {isOpen && (
         <Modal>
           {type === MODAL_TYPES.BOOKINGS && (
             <BookingForm
@@ -256,6 +257,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
               cancelCallback={cancelDeleteBookingAction}
             />
           )}
+          {type === MODAL_TYPES.BOOKING_CONFLICTS && <ModalConflictDetails />}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
           {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}
         </Modal>

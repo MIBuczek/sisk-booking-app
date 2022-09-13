@@ -50,6 +50,7 @@ interface IBookingsPayload extends IPayload {
   booking?: IBooking;
   bookingTimeIndex: number | null;
   bookings: IBooking[];
+  conflictedBookings: IBooking[];
 }
 
 interface IBookingsAction {

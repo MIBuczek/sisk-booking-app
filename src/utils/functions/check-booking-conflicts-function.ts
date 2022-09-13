@@ -95,7 +95,7 @@ const checkAllBookingsConflicts = (currentPlaceBookings: IBooking[]): string[] =
   }
 
   currentPlaceBookings.forEach((currentBooking) => {
-    if (checkConflicts(currentBooking, currentPlaceBookings)) {
+    if (!currentBooking.accepted && checkConflicts(currentBooking, currentPlaceBookings)) {
       conflictedBookingArray = [...conflictedBookingArray, currentBooking.id];
     }
   });
@@ -120,22 +120,23 @@ const checkSingleDayConflict = (
   let conflictListIds: IBooking[] = [];
   const { status } = singleBookingDay;
 
-  currentPlaceBookings.forEach((bookingOnPlace) => {
-    if (
-      status === BOOKING_STATUS.INITIAL &&
-      singleBookingId !== bookingOnPlace.id &&
-      singleBookingMonth === bookingOnPlace.month
-    ) {
-      bookingOnPlace.bookingTime.forEach((checkedBookingTime) => {
-        if (checkSingleBookingTime(singleBookingDay, checkedBookingTime)) {
-          conflictListIds = [
-            ...conflictListIds,
-            { ...bookingOnPlace, bookingTime: [{ ...checkedBookingTime }] }
-          ];
-        }
-      });
-    }
-  });
+  if (currentPlaceBookings)
+    currentPlaceBookings.forEach((bookingOnPlace) => {
+      if (
+        status === BOOKING_STATUS.INITIAL &&
+        singleBookingId !== bookingOnPlace.id &&
+        singleBookingMonth === bookingOnPlace.month
+      ) {
+        bookingOnPlace.bookingTime.forEach((checkedBookingTime) => {
+          if (checkSingleBookingTime(singleBookingDay, checkedBookingTime)) {
+            conflictListIds = [
+              ...conflictListIds,
+              { ...bookingOnPlace, bookingTime: [{ ...checkedBookingTime }] }
+            ];
+          }
+        });
+      }
+    });
 
   return conflictListIds;
 };

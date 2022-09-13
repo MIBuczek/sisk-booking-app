@@ -1,10 +1,10 @@
 import { Dispatch } from 'react';
 import {
-  db,
-  parseFirebaseBookingData,
   BOOKING_STATE,
-  SAVING_STAGE,
+  db,
   MODAL_TYPES,
+  parseFirebaseBookingData,
+  SAVING_STAGE,
   storeEmailNotification
 } from 'utils';
 import { IBooking, IBookingsAction, IModalAction, IReduxState } from 'models';
@@ -18,7 +18,8 @@ export const fetchingBookings = (): IBookingsAction => ({
     errorMessage: '',
     booking: undefined,
     bookingTimeIndex: null,
-    bookings: []
+    bookings: [],
+    conflictedBookings: []
   }
 });
 
@@ -30,7 +31,8 @@ export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBooki
     errorMessage: '',
     booking: undefined,
     bookingTimeIndex: null,
-    bookings
+    bookings,
+    conflictedBookings: []
   }
 });
 
@@ -42,7 +44,8 @@ export const fetchingBookingsError = (errorMessage: string): IBookingsAction => 
     errorMessage,
     booking: undefined,
     bookingTimeIndex: null,
-    bookings: []
+    bookings: [],
+    conflictedBookings: []
   }
 });
 
@@ -58,7 +61,37 @@ export const getSingleBooking = (
     errorMessage: '',
     booking,
     bookingTimeIndex,
-    bookings
+    bookings,
+    conflictedBookings: []
+  }
+});
+
+export const getBookingConflicts = (
+  bookings: IBooking[],
+  conflictedBookings: IBooking[]
+): IBookingsAction => ({
+  type: BOOKING_STATE.GET_BOOKING_CONFLICTS,
+  payload: {
+    isFetching: false,
+    savingStage: SAVING_STAGE.SUCCESS,
+    errorMessage: '',
+    booking: undefined,
+    bookingTimeIndex: null,
+    bookings,
+    conflictedBookings
+  }
+});
+
+export const clearBookingConflictsState = (bookings: IBooking[]): IBookingsAction => ({
+  type: BOOKING_STATE.CLEAR_BOOKING_CONFLICTS,
+  payload: {
+    isFetching: false,
+    savingStage: SAVING_STAGE.SUCCESS,
+    errorMessage: '',
+    booking: undefined,
+    bookingTimeIndex: null,
+    bookings,
+    conflictedBookings: []
   }
 });
 
@@ -235,4 +268,26 @@ export const deleteBooking = (id: string) => async (
     dispatch(openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie można skasować rezerwacji.'));
     throw new Error(JSON.stringify(err));
   }
+};
+
+/*
+ * Booking store action to updated booking state by conflicted bookings.
+ */
+export const updateBookingConflicts = (conflictedBookings: IBooking[]) => async (
+  dispatch: Dispatch<IBookingsAction>,
+  getStore: () => IReduxState
+): Promise<void> => {
+  const { bookings } = getStore().bookingStore;
+  dispatch(getBookingConflicts(bookings, conflictedBookings));
+};
+
+/*
+ * Booking store action to clear booking state by conflicted bookings.
+ */
+export const clearBookingConflicts = () => async (
+  dispatch: Dispatch<IBookingsAction>,
+  getStore: () => IReduxState
+): Promise<void> => {
+  const { bookings } = getStore().bookingStore;
+  dispatch(clearBookingConflictsState(bookings));
 };

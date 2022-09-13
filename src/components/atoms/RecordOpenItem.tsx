@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { BsCalendarXFill, BsFillCheckSquareFill } from 'react-icons/bs';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { IBooking, IEditHandler, IReduxState, ISingleBookingDate } from '../../models';
+import { useDispatch } from 'react-redux';
+import { IBooking, IEditHandler, ISingleBookingDate } from '../../models';
 import { checkSingleDayConflict, MODAL_TYPES, modelDisplayValue } from '../../utils';
 import Button from './Button';
-import { openModal } from '../../store';
-import Modal from '../organisms/Modal';
-import ModalConflictDetails from '../molecules/modals/ModalConflictDetails';
+import { openModal, updateBookingConflicts } from '../../store';
 
 const SingleBookingTime = styled.div`
   display: flex;
@@ -109,22 +107,30 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
   const [conflictedItems, setConflictedItems] = React.useState<IBooking[]>([]);
 
   const dispatch = useDispatch();
-  const { isOpen, type } = useSelector((state: IReduxState) => state.modal);
 
+  /* Method to check single reservation conflict and set component state */
   const checkSingleConflict = (
     sbd: ISingleBookingDate,
     sbId: string = '',
     sbMonth: number = -1
   ): void => {
-    setConflictedItems(checkSingleDayConflict(sbd, sbId, sbMonth, records));
+    if (currentRecord.accepted) {
+      setConflictedItems([]);
+    } else {
+      setConflictedItems(checkSingleDayConflict(sbd, sbId, sbMonth, records));
+    }
   };
+
+  /* Method to open conflict modal and set conflicted reservation in general store */
   const openConflictModal = (): void => {
+    dispatch(updateBookingConflicts(conflictedItems));
     dispatch(openModal(MODAL_TYPES.BOOKING_CONFLICTS));
   };
 
   React.useEffect(() => {
     checkSingleConflict(singleBooking, currentRecord.id as string, currentRecord.month as number);
   }, []);
+
   return (
     <SingleBookingTime className={`${conflictedItems.length ? 'conflict' : ''}`}>
       <RecordDetailSpan>
@@ -145,6 +151,11 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
       </RecordDetailSpan>
       {hasRight && (
         <ButtonWrapper>
+          {conflictedItems.length ? (
+            <ListItemBtn className="conflict-modal" type="button" onClick={openConflictModal}>
+              <BsCalendarXFill />
+            </ListItemBtn>
+          ) : null}
           <ListItemBtn
             type="button"
             disabled={!currentRecord.accepted}
@@ -160,22 +171,12 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
           >
             <BsFillCheckSquareFill />
           </ListItemBtn>
-          {conflictedItems.length ? (
-            <ListItemBtn className="conflict-modal" type="button" onClick={openConflictModal}>
-              <BsCalendarXFill />
-            </ListItemBtn>
-          ) : null}
         </ButtonWrapper>
       )}
       <CommentsSpan className={`${lastRecord ? 'lastRecord' : ''}`}>
         <strong>Komentarz: </strong>
         {modelDisplayValue(property, singleBooking.comments)}
       </CommentsSpan>
-      {isOpen && type === MODAL_TYPES.BOOKING_CONFLICTS && (
-        <Modal>
-          <ModalConflictDetails conflictBookings={conflictedItems} />
-        </Modal>
-      )}
     </SingleBookingTime>
   );
 };

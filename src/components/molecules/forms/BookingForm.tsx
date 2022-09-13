@@ -172,7 +172,7 @@ const ButtonPanel = styled.div`
 
 const ConflictParagraph = styled(Paragraph)`
   width: 100%;
-  text-align: center;
+  text-align: left;
   color: ${({ theme }) => theme.error};
   margin: 10px 20px;
 
@@ -774,12 +774,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           />
         </ArchiveWrapper>
       )}
-      {conflict && (
-        <ConflictParagraph small bold conflict={conflict}>
-          <BsFillExclamationCircleFill />
-          Ta rezerwacja ma konflikt z innymi rezerwacjami , czy napewno chcesz ją zatwierdzić
-        </ConflictParagraph>
-      )}
       {isAdmin && (
         <RodoWrapper>
           <Checkbox
@@ -812,6 +806,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.
           </Anchor>
         </RodoWrapper>
+      )}
+      {conflict && (
+        <ConflictParagraph small bold conflict={conflict}>
+          <BsFillExclamationCircleFill />
+          Ta rezerwacja ma konflikt z innymi rezerwacjami , czy napewno chcesz ją zatwierdzić
+        </ConflictParagraph>
       )}
       {displayConfirmation ? (
         <ConfirmAction

@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { IBooking, IClient, IDeleteHandler, IEditHandler } from 'models';
+import { IBooking, IClient, IDeleteHandler, IEditHandler, singleInstanceOfBookings } from 'models';
 import * as React from 'react';
 import { fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
@@ -162,6 +162,17 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
     if (typeof value === 'number') setPostPerPage(value);
   };
 
+  /* Method to check has single item has conflicts */
+  const singleItemConflictHandler = (record: IBooking | IClient): boolean => {
+    if (singleInstanceOfBookings(record)) {
+      if (record.accepted) {
+        return false;
+      }
+      return conflicts.includes(record.id || '');
+    }
+    return false;
+  };
+
   React.useEffect(() => undefined, [records]);
 
   return (
@@ -191,7 +202,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 recordPropertyDisplayMap={recordPropertyDisplayMap}
                 isAdmin={isAdmin}
                 isEmployee={isEmployee}
-                hasConflicts={conflicts.includes(record.id || '')}
+                hasConflicts={singleItemConflictHandler(record)}
                 currentRecord={record}
                 records={records}
                 editHandler={editHandler}

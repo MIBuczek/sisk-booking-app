@@ -7,7 +7,8 @@ const INITIAL_STATE: IBookingsPayload = {
   errorMessage: '',
   booking: undefined,
   bookingTimeIndex: null,
-  bookings: []
+  bookings: [],
+  conflictedBookings: []
 };
 
 export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => {
@@ -15,6 +16,8 @@ export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => 
   switch (type) {
     case BOOKING_STATE.ADD_BOOKING:
     case BOOKING_STATE.GET_BOOKING:
+    case BOOKING_STATE.GET_BOOKING_CONFLICTS:
+    case BOOKING_STATE.CLEAR_BOOKING_CONFLICTS:
     case BOOKING_STATE.UPDATE_BOOKING:
     case BOOKING_STATE.DELETE_BOOKING:
     case BOOKING_STATE.ERROR_BOOKING:

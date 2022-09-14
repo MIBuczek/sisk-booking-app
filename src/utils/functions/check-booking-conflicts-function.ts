@@ -66,6 +66,11 @@ const checkSingleBookingTime = (bt: ISingleBookingDate, cbt: ISingleBookingDate)
  */
 const checkConflicts = (currentBooking: IBooking, currentPlaceBookings: IBooking[]): boolean => {
   let isConflict = false;
+
+  if (currentBooking.accepted) {
+    return isConflict;
+  }
+
   currentPlaceBookings.forEach((b) => {
     if (currentBooking.id !== b.id && currentBooking.month === b.month) {
       b.bookingTime.forEach((cbt) => {

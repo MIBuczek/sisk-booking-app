@@ -190,6 +190,7 @@ const questionMarkIconStyle = {
 interface BookingFormProps {
   mainState: IMainState;
   bookingsList: IBooking[];
+  isSISKEmployee: boolean;
   isAdmin: boolean;
   isEditing: boolean;
   editedItemIndex?: number;
@@ -199,6 +200,7 @@ interface BookingFormProps {
 const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   bookingsList,
   mainState,
+  isSISKEmployee,
   isAdmin,
   isEditing,
   editedItemIndex,
@@ -280,6 +282,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     );
     setBookingData(bookingToApprove);
     setDisplayConfirmation(true);
+
     if (isAdmin) {
       setConflict(checkConflicts(bookingToApprove, bookingsList));
     }
@@ -418,7 +421,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   return (
     <BookingWrapper onSubmit={onSubmit}>
       <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
-      {isAdmin && (
+      {isSISKEmployee && (
         <AcceptWrapper>
           <SelectWrapper>
             <Label>Dodaj najemcę</Label>
@@ -440,23 +443,25 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               )}
             />
           </SelectWrapper>
-          <SelectWrapper>
-            <Label>Zakceptuj rezerwację</Label>
-            <Controller
-              name="accepted"
-              defaultValue={false}
-              control={control}
-              render={({ onChange, value }: ControllerRenderProps) => (
-                <Checkbox
-                  checked={value}
-                  className="checkbox"
-                  name="accepted"
-                  changeHandler={onChange}
-                  disabled={displayConfirmation}
-                />
-              )}
-            />
-          </SelectWrapper>
+          {isAdmin && (
+            <SelectWrapper>
+              <Label>Zakceptuj rezerwację</Label>
+              <Controller
+                name="accepted"
+                defaultValue={false}
+                control={control}
+                render={({ onChange, value }: ControllerRenderProps) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkbox"
+                    name="accepted"
+                    changeHandler={onChange}
+                    disabled={displayConfirmation}
+                  />
+                )}
+              />
+            </SelectWrapper>
+          )}
           {compareClientIds() && (
             <AutoFillContent>
               <Label>Czy chcesz autouzupełnić dane klienta</Label>

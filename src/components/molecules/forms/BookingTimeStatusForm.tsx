@@ -60,6 +60,7 @@ interface IProp {
   confirmationClass?: string;
   currentBooking: IBooking;
   bookingTimeIndex: number | null;
+  hasRights: boolean;
   submitHandler: (updatedBooking: IBooking) => void;
 }
 
@@ -67,6 +68,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
   confirmationClass = '',
   currentBooking,
   bookingTimeIndex,
+  hasRights,
   submitHandler
 }): JSX.Element => {
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
@@ -157,7 +159,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             onBlur={onBlur}
             selected={value}
             value={value}
-            isDisabled={displayConfirmation}
+            isDisabled={!hasRights || displayConfirmation}
             blurInputOnSelect
           />
         )}
@@ -175,7 +177,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             onChange={onChange}
             onBlur={onBlur}
             value={value}
-            disabled={displayConfirmation}
+            disabled={!hasRights || displayConfirmation}
             style={{ width: '100%' }}
           />
         )}
@@ -190,11 +192,13 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
       ) : (
         <ButtonPanel>
           <Button role="button" secondary onClick={cancelHandler}>
-            Anuluj
+            {hasRights ? 'Anuluj' : 'Zamknij'}
           </Button>
-          <Button role="button" onClick={onSubmit}>
-            Potwierdz
-          </Button>
+          {hasRights && (
+            <Button role="button" onClick={onSubmit}>
+              Potwierdz
+            </Button>
+          )}
         </ButtonPanel>
       )}
     </BookingTimeStatusWrapper>

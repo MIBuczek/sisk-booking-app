@@ -69,7 +69,7 @@ const OpenClientModalButton = styled(Button)`
   }
 `;
 
-const Clients = () => {
+const Clients = (): JSX.Element => {
   const [clientList, setClientList] = React.useState<IClient[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);

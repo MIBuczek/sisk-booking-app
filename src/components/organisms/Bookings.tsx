@@ -23,7 +23,8 @@ import {
   RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
   RECORDS_BOOKING_ROW_DETAILS,
   RECORDS_BOOKINGS_HEADERS,
-  RECORDS_BOOKINGS_ROW
+  RECORDS_BOOKINGS_ROW,
+  siskEmployeeCredentials
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/BookingForm';
@@ -240,6 +241,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}
               initialEditingState={initialBookingState}
+              isSISKEmployee={siskEmployeeCredentials(user)}
               isAdmin={adminCredentials(user)}
             />
           )}

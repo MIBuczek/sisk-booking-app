@@ -8,12 +8,11 @@ import SideNav from 'components/organisms/SideNav';
 import BookingCalender from 'components/organisms/Calender';
 import { IAdminState, IReduxState, TSelect } from 'models';
 import {
-  adminCredentials,
   ADMIN_TABS,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
   initialAdminState,
-  sideNavCredentials,
+  adminSeeContentCredentials,
   hasRightsToSeeContent
 } from 'utils';
 import Clients from 'components/organisms/Clients';
@@ -88,14 +87,14 @@ const Admin = (): JSX.Element => {
         stateHandler={stateHandler}
         activeTab={tab}
         tabHandler={tabHandler}
-        isAdmin={sideNavCredentials(user)}
+        isAdmin={adminSeeContentCredentials(user)}
       />
       {/* admin inner content */}
       {tab === ADMIN_TABS.CALENDER && (
         <BookingCalender mainState={adminState} hasRights={hasRightsToSeeContent(user)} />
       )}
       {tab === ADMIN_TABS.BOOKINGS && <Bookings mainState={adminState} />}
-      {adminCredentials(user) && (
+      {adminSeeContentCredentials(user) && (
         <>
           {tab === ADMIN_TABS.CLIENTS && <Clients />}
           {tab === ADMIN_TABS.BUILDINGS && <Building mainState={adminState} />}

@@ -439,6 +439,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   value={value}
                   isDisabled={displayConfirmation}
                   blurInputOnSelect
+                  isSearchable={false}
                 />
               )}
             />
@@ -491,6 +492,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               defaultValue={city}
               isDisabled={displayConfirmation}
               blurInputOnSelect
+              isSearchable={false}
             />
           )}
         />
@@ -515,6 +517,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               isDisabled={!cityValue || displayConfirmation}
               defaultValue={building}
               blurInputOnSelect
+              isSearchable={false}
             />
           )}
         />
@@ -627,6 +630,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 defaultValue={PAYMENTS_OPTIONS[0]}
                 isDisabled={displayConfirmation}
                 blurInputOnSelect
+                isSearchable={false}
               />
             )}
           />

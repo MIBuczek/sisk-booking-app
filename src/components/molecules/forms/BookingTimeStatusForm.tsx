@@ -161,6 +161,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             value={value}
             isDisabled={!hasRights || displayConfirmation}
             blurInputOnSelect
+            isSearchable={false}
           />
         )}
       />

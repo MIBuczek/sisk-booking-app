@@ -82,10 +82,12 @@ const RoundBtn = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
+
   svg {
     transform: rotate(45deg);
     width: 14px;
     height: 14px;
+    margin-top: 1px;
   }
 `;
 
@@ -102,6 +104,7 @@ const DisplaySelectedOptionElement = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-around;
+
   &.empty {
     text-align: center;
   }
@@ -112,6 +115,7 @@ const RecordDetailSpan = styled.span`
   padding: 10px 5px;
   min-width: 20%;
   width: auto;
+
   &:first-of-type {
     min-width: 30%;
   }
@@ -122,8 +126,10 @@ const RecordDetailsBtnPanel = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
   button {
     margin-left: 1rem;
+
     svg {
       transform: rotate(0deg);
     }
@@ -140,8 +146,9 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
   setExtraOptions
 }) => {
   const { handleSubmit, control, watch, reset } = useForm<IExtraOptionForm>();
-
   const { lights: lightValue, toilets: toiletsValue } = watch();
+
+  const anyOptionSelected = !(lightValue || toiletsValue);
 
   /**
    * Function to collect extra option form and add it to general booking object.
@@ -150,6 +157,9 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
    */
   const onSubmit = handleSubmit(async (cred) => {
     const { fromHour, toHour, lights, toilets } = cred;
+    if (!lights && !toilets) {
+      return;
+    }
     const singleRecord = { options: [{ lights }, { toilets }], fromHour, toHour };
     setExtraOptions([...extraOptions, singleRecord]);
     reset({ ...INITIAL_EXTRA_OPTIONS });
@@ -162,6 +172,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
    */
   const editExtraOption = (e: React.MouseEvent, index: number) => {
     e.preventDefault();
+    e.stopPropagation();
     const { options, fromHour, toHour } = extraOptions[index];
     reset({ fromHour, toHour, lights: options[0].lights, toilets: options[1].toilets });
     deleteExtraOption(e, index);
@@ -174,10 +185,9 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
    */
   const deleteExtraOption = (e: React.MouseEvent, index: number) => {
     e.preventDefault();
+    e.stopPropagation();
     setExtraOptions(extraOptions.filter((o, i) => i !== index));
   };
-
-  const disabledBtn = !(lightValue || toiletsValue);
 
   React.useEffect(() => undefined, [extraOptions]);
 
@@ -272,7 +282,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
             />
           </InputWrapper>
           <ButtonWrapper>
-            <RoundBtn role="button" onClick={onSubmit} disabled={disabledBtn}>
+            <RoundBtn role="button" onClick={onSubmit} disabled={anyOptionSelected}>
               <BsXLg />
             </RoundBtn>
           </ButtonWrapper>

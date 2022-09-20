@@ -297,7 +297,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     if (bookingId) {
       dispatch(updateBooking({ ...bookingData, id: bookingId }, isAdmin, sendEmailNotification));
     } else {
-      const sendEmail = !isAdmin ? true : sendEmailNotification;
+      const sendEmail = !isAdmin ? false : sendEmailNotification;
       dispatch(addBooking(bookingData, isAdmin, sendEmail));
     }
 

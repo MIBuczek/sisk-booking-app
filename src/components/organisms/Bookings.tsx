@@ -24,6 +24,7 @@ import {
   RECORDS_BOOKING_ROW_DETAILS,
   RECORDS_BOOKINGS_HEADERS,
   RECORDS_BOOKINGS_ROW,
+  searchSelectedContent,
   siskEmployeeCredentials
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
@@ -98,6 +99,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   const [editedSubItemIndex, setEditedSubItemIndex] = React.useState<number | undefined>(undefined);
   const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
   const [conflicts, setConflicts] = React.useState<string[]>([]);
+  const [searchPhase, setSearchPhase] = React.useState<string>('');
 
   const dispatch = useDispatch();
 
@@ -110,12 +112,15 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   /**
    * Function to handle the booking list. It is related to search input field.
    * @param searchResults
+   * @param phase
    */
-  const bookingListHandler = (searchResults: (IClient | IBooking)[]): void => {
+  const bookingListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
     if (searchResults.length && instanceOfBookings(searchResults)) {
       setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
+      setSearchPhase(phase);
     } else {
       setBookingsList([]);
+      setSearchPhase(phase);
     }
   };
 
@@ -161,7 +166,10 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     if (typeof deleteItemIndex === 'undefined') return;
     const currentBooking = cloneDeep(bookingsList[deleteItemIndex]);
     if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
-    bookingListHandler(bookings.filter((b) => b.id !== currentBooking.id));
+    bookingListHandler(
+      bookings.filter((b) => b.id !== currentBooking.id),
+      ''
+    );
     initialBookingState();
     dispatch(closeModal());
   };
@@ -188,7 +196,8 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
    */
   const handlerEffectCallBack = () => {
     const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
-    setBookingsList(bookingByPlace);
+    const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
+    if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
     if (user?.isAdmin) {
       const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
       setConflicts(bookingWithConflicts);

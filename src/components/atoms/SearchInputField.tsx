@@ -1,18 +1,34 @@
 import { debounce } from 'lodash';
 import { IBooking, IClient } from 'models';
 import * as React from 'react';
-import { BsSearch } from 'react-icons/bs';
+import { BsSearch, BsXLg } from 'react-icons/bs';
 import styled from 'styled-components';
 import TextInputField from './TextInputField';
+import { searchSelectedContent } from '../../utils';
+import Button from './Button';
 
 const SearchInputWrapper = styled.div`
   display: inline-block;
   position: relative;
+
   svg {
     position: absolute;
     top: 30%;
-    right: 5%;
+    left: 260px;
     color: #454545;
+  }
+`;
+
+const ClearBtn = styled(Button)`
+  position: absolute;
+  margin: 0;
+  right: 0;
+  padding: 3px 5px;
+  height: 35px;
+  width: 35px;
+
+  svg {
+    position: static;
   }
 `;
 
@@ -21,7 +37,7 @@ interface IProps {
   placeholder: string;
   searchContent: (IClient | IBooking)[];
   searchProperty: string;
-  searchContentHandler: (searchResults: (IClient | IBooking)[]) => void;
+  searchContentHandler: (searchResults: (IClient | IBooking)[], searchPhase: string) => void;
 }
 
 const SearchInputField: React.FunctionComponent<IProps> = ({
@@ -33,15 +49,12 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
 }) => {
   const [searchPhase, setSearchPhase] = React.useState('');
 
-  const formatData = (s: string): string => s.toLocaleLowerCase().trim();
-
   const searchHandler = (): void => {
-    if (!searchPhase) searchContentHandler(searchContent);
+    if (!searchPhase) searchContentHandler(searchContent, '');
     else
       searchContentHandler(
-        searchContent.filter((c) =>
-          formatData(c[searchProperty] as string).includes(formatData(searchPhase))
-        )
+        searchSelectedContent(searchContent, searchProperty, searchPhase),
+        searchPhase
       );
   };
 
@@ -62,7 +75,13 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
         placeholder={placeholder}
         onChange={(e) => setSearchPhase(e.target.value)}
       />
-      <BsSearch />
+      {searchPhase ? (
+        <ClearBtn type="button" onClick={() => setSearchPhase('')}>
+          <BsXLg />
+        </ClearBtn>
+      ) : (
+        <BsSearch />
+      )}
     </SearchInputWrapper>
   );
 };

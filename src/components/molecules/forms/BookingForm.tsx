@@ -316,6 +316,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     reset(generateBookingFormDetails(currentBooking, clientId, city));
     setBookingId(currentBooking.id);
     setSelectedSize(currentBooking.size);
+    if (currentBooking.extraOptions) {
+      setExtraOptions(currentBooking.selectedOptions);
+    }
     if (isAdmin) {
       setConflict(checkConflicts(currentBooking, bookingsList));
     }
@@ -330,6 +333,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     initialEditingState();
     setDisplayConfirmation(false);
     setBookingData(undefined);
+    setExtraOptions([]);
     setConflict(false);
   };
 

@@ -90,11 +90,13 @@ const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect |
  * @returns {String}
  */
 const checkSelectedOption = (options: ExtraOptions[]): string =>
-  options.reduce((acc: string, opt) => {
-    if (opt.lights) acc += 'Światła, ';
-    if (opt.toilets) acc += 'Zaplecze sanitarne';
-    return acc;
-  }, '');
+  options
+    .reduce((acc: string[], opt) => {
+      if (opt.lights) acc.push('Światła');
+      if (opt.toilets) acc.push('Zaplecze sanitarne');
+      return acc;
+    }, [])
+    .join(',');
 
 /**
  * Function to find current item index related to current page and post per page.

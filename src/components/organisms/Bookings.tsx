@@ -93,6 +93,7 @@ interface BookingsProps {
 }
 
 const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
+  const [allBookingsPerPlace, setAllBookingsPerPlace] = React.useState<IBooking[]>([]);
   const [bookingsList, setBookingsList] = React.useState<IBooking[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
@@ -196,6 +197,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
    */
   const handlerEffectCallBack = () => {
     const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
+    setAllBookingsPerPlace(bookingByPlace);
     const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
     if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
     if (user?.isAdmin) {
@@ -231,6 +233,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         isEmployee={user?.isEmployee || false}
         conflicts={conflicts}
         records={bookingsList}
+        allRecords={allBookingsPerPlace}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}
         emptyText="Nie ma żadnej dodanej rezerwacja do bazy danych."

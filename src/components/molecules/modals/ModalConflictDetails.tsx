@@ -88,16 +88,16 @@ const ModalConflictDetails = (): JSX.Element => {
   return (
     <ModalConflictWrapper>
       <ConflictHeader>Lista konfliktów z bierzącą rezerwacja</ConflictHeader>
-      {conflictedBookings.map(({ person, size, bookingTime }) => (
-        <React.Fragment key={`${new Date().getTime()}`}>
+      {conflictedBookings.map(({ person, size, bookingTime }, mainIndex) => (
+        <React.Fragment key={`${new Date().getTime() + mainIndex}`}>
           <ClientStatusDetails>
             <ClientInfoSpan>
               <strong>Klient: </strong>
               {person}
             </ClientInfoSpan>
           </ClientStatusDetails>
-          {bookingTime.map((sbt) => (
-            <BookingTimeDetailWrapper key={new Date(sbt.day).getTime()}>
+          {bookingTime.map((sbt, index) => (
+            <BookingTimeDetailWrapper key={new Date(sbt.startHour).getTime() + index}>
               <span>
                 <strong>Dzień: </strong>
                 {modelDisplayValue('day', sbt.day)}

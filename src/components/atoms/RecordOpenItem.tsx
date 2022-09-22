@@ -86,7 +86,7 @@ interface IProps {
   singleBookingIndex: number;
   hasRight: boolean;
   currentRecord: IBooking;
-  records: IBooking[];
+  allRecords: IBooking[];
   lastRecord: boolean;
   editHandler: (editDetails: IEditHandler) => void;
 }
@@ -100,7 +100,7 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
   singleBookingIndex,
   hasRight,
   currentRecord,
-  records,
+  allRecords,
   lastRecord,
   editHandler
 }): JSX.Element => {
@@ -117,7 +117,7 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
     if (currentRecord.accepted) {
       setConflictedItems([]);
     } else {
-      setConflictedItems(checkSingleDayConflict(sbd, sbId, sbMonth, records));
+      setConflictedItems(checkSingleDayConflict(sbd, sbId, sbMonth, allRecords));
     }
   };
 

@@ -155,6 +155,7 @@ interface MultipleRecordItemProps {
   currentRecord: IClient | IBooking;
   hasConflicts: boolean;
   records: (IClient | IBooking)[];
+  allRecords: (IClient | IBooking)[];
   editHandler: (editDetails: IEditHandler) => void;
   deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
@@ -171,6 +172,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   currentRecord,
   hasConflicts,
   records,
+  allRecords,
   editHandler,
   deleteHandler
 }) => {
@@ -253,7 +255,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                             singleBookingIndex={sbi}
                             hasRight={isAdmin || isEmployee}
                             currentRecord={currentRecord as IBooking}
-                            records={records as IBooking[]}
+                            allRecords={allRecords as IBooking[]}
                             editHandler={editHandler}
                             lastRecord={checkIsLastIndex(
                               sbi + 1,

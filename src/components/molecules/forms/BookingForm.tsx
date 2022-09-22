@@ -443,7 +443,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   value={value}
                   isDisabled={displayConfirmation}
                   blurInputOnSelect
-                  isSearchable={false}
                 />
               )}
             />

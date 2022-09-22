@@ -133,6 +133,7 @@ interface IProps {
   isEmployee: boolean;
   conflicts: string[];
   records?: (IClient | IBooking)[];
+  allRecords?: (IClient | IBooking)[];
   emptyText: string;
   editHandler: (editDetails: IEditHandler) => void;
   deleteHandler: (deleteDetails: IDeleteHandler) => void;
@@ -147,6 +148,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   isEmployee,
   conflicts = [],
   records = [],
+  allRecords = [],
   emptyText,
   editHandler,
   deleteHandler
@@ -205,6 +207,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 hasConflicts={singleItemConflictHandler(record)}
                 currentRecord={record}
                 records={records}
+                allRecords={allRecords}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}
               />

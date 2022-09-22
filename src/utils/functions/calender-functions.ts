@@ -76,7 +76,7 @@ const generateStatusBackground = (accepted: boolean, status: string): string => 
   if (accepted) {
     return '#AFBF36';
   }
-  return '#EEEEEE';
+  return '#3788d8';
 };
 
 /**

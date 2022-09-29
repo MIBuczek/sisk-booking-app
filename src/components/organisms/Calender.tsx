@@ -15,6 +15,7 @@ import { IReduxState } from '../../models';
 import { getCurrentBooking, openModal } from '../../store';
 import ModalResolveBooking from '../molecules/modals/ModalResolveBooking';
 import Modal from './Modal';
+import ModalInfo from '../molecules/modals/ModalInfo';
 
 const CalenderWrapper = styled.section`
   width: 60%;
@@ -182,7 +183,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
       getCurrentBooking(clickInfo.event._def.publicId, clickInfo.event.extendedProps.itemIndex)
     );
 
-    if (hasRights) {
+    if (hasRights && clickInfo.event.extendedProps.accepted) {
       dispatch(openModal(MODAL_TYPES.BOOKINGS_CALENDER_STATUS));
     }
   };
@@ -219,9 +220,11 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
           administratora rezerwacje.
         </UserInfo>
       )}
-      {isOpen && type === MODAL_TYPES.BOOKINGS_CALENDER_STATUS && (
+      {isOpen && (
         <Modal>
-          <ModalResolveBooking />
+          {type === MODAL_TYPES.BOOKINGS_CALENDER_STATUS && <ModalResolveBooking />}
+          {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
+          {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}
         </Modal>
       )}
     </CalenderWrapper>

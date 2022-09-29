@@ -1,3 +1,4 @@
+/* eslint  react/no-array-index-key: 0 */
 import * as React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';

@@ -33,7 +33,7 @@ const BookingTimeStatusWrapper = styled.form`
     padding-left: 40px;
     border-left: ${({ theme }) => `1px solid ${theme.green}`};
 
-    @media (max-width: 800px) {
+    @media (max-width: 835px) {
       border: none;
       padding-left: 0;
     }

@@ -14,7 +14,7 @@ const ResolveBookingWrapper = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding: 20px 40px;
+  padding: 20px 40px 100px 20px;
 
   @media (max-width: 800px) {
     min-width: 420px;

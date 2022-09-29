@@ -169,7 +169,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
     bookingListHandler(
       bookings.filter((b) => b.id !== currentBooking.id),
-      ''
+      searchPhase
     );
     initialBookingState();
     dispatch(closeModal());

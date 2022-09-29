@@ -17,12 +17,20 @@ const ConfirmationWrapper = styled.div`
   &.modalResolveBooking {
     width: 200%;
     position: relative;
-    top: 10px;
+    bottom: -100px;
     left: -100%;
 
+    @media (max-width: 850px) {
+      left: 0;
+    }
+
     @media (max-width: 800px) {
-      width: 135%;
-      left: -10%;
+      width: 110%;
+      left: -2%;
+
+      p {
+        text-align: left !important;
+      }
     }
   }
 

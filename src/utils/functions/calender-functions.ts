@@ -98,7 +98,8 @@ const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number
     start: `${formatCalenderDate(day)}${formatDisplayTime(startHour)}`,
     end: `${formatCalenderDate(day)}${formatDisplayTime(endHour)}`,
     backgroundColor: `${generateStatusBackground(accepted, status)}`,
-    itemIndex: index
+    itemIndex: index,
+    accepted
   };
 };
 

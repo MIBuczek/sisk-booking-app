@@ -2,6 +2,22 @@ import { IBooking } from '../../models';
 import { BOOKING_STATUS } from '../variables/booking-status-const';
 
 /**
+ * Function to format time zone off set
+ * @param d
+ * @param month
+ */
+const formatTimeZoneToCheck = (d: Date, month: number): number =>
+  new Date(d.getFullYear(), month, 1).getTimezoneOffset();
+
+/**
+ * Function to check if current date is Daylight Saving Time period
+ * @param date
+ */
+const checkIfWinterTimeZone = (date: Date): boolean =>
+  Math.max(formatTimeZoneToCheck(date, 0), formatTimeZoneToCheck(date, 6)) !==
+  date.getTimezoneOffset();
+
+/**
  * Function to transform date object into local date string
  * @param date
  * @returns {String}
@@ -44,7 +60,8 @@ const formatCalenderDate = (date: Date | string): string => {
  */
 const formatDisplayTime = (date: Date | string) => {
   const formDate = new Date(date);
-  formDate.setHours(formDate.getHours() + 2);
+  const addHours = checkIfWinterTimeZone(formDate) ? 2 : 1;
+  formDate.setHours(formDate.getHours() + addHours);
   const stringDate = formDate.toISOString();
   const index = stringDate.indexOf('T');
   const lastIndex = stringDate.lastIndexOf('.');

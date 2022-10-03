@@ -213,6 +213,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
         events={events}
         eventContent={RenderEventContent}
         eventClick={handleEventClick}
+        timeZone="local"
       />
       {!hasRights && (
         <UserInfo>

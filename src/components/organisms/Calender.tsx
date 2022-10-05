@@ -183,7 +183,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
       getCurrentBooking(clickInfo.event._def.publicId, clickInfo.event.extendedProps.itemIndex)
     );
 
-    if (hasRights && clickInfo.event.extendedProps.accepted) {
+    if (hasRights) {
       dispatch(openModal(MODAL_TYPES.BOOKINGS_CALENDER_STATUS));
     }
   };

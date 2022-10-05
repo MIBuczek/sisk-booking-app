@@ -1,7 +1,7 @@
 import { IBooking, IClient } from 'models';
 
 function instanceOfBookings(array: (IClient | IBooking)[]): array is IBooking[] {
-  return array[0].person !== undefined;
+  return !!array.length && array[0]?.person !== undefined;
 }
 
 function singleInstanceOfBookings(obj: IClient | IBooking): obj is IBooking {

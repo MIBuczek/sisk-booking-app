@@ -159,7 +159,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             onBlur={onBlur}
             selected={value}
             value={value}
-            isDisabled={!hasRights || displayConfirmation}
+            isDisabled={!hasRights || !currentBooking.accepted || displayConfirmation}
             blurInputOnSelect
             isSearchable={false}
           />
@@ -178,7 +178,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             onChange={onChange}
             onBlur={onBlur}
             value={value}
-            disabled={!hasRights || displayConfirmation}
+            disabled={!hasRights || !currentBooking.accepted || displayConfirmation}
             style={{ width: '100%' }}
           />
         )}
@@ -196,7 +196,11 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             {hasRights ? 'Anuluj' : 'Zamknij'}
           </Button>
           {hasRights && (
-            <Button role="button" onClick={onSubmit}>
+            <Button
+              role="button"
+              onClick={onSubmit}
+              disabled={!hasRights || !currentBooking.accepted}
+            >
               Potwierdz
             </Button>
           )}

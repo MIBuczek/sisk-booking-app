@@ -302,8 +302,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     }
 
     createInitialState();
-    // To not close modal if error
-    // dispatch(closeModal());
   };
 
   /**

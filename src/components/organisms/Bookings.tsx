@@ -23,7 +23,9 @@ import {
   RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
   RECORDS_BOOKING_ROW_DETAILS,
   RECORDS_BOOKINGS_HEADERS,
-  RECORDS_BOOKINGS_ROW
+  RECORDS_BOOKINGS_ROW,
+  searchSelectedContent,
+  siskEmployeeCredentials
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/BookingForm';
@@ -35,6 +37,7 @@ import Paragraph from 'components/atoms/Paragraph';
 import { cloneDeep } from 'lodash';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Modal from './Modal';
+import ModalConflictDetails from '../molecules/modals/ModalConflictDetails';
 
 const BookingsWrapper = styled.section`
   width: 60%;
@@ -90,12 +93,14 @@ interface BookingsProps {
 }
 
 const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
+  const [allBookingsPerPlace, setAllBookingsPerPlace] = React.useState<IBooking[]>([]);
   const [bookingsList, setBookingsList] = React.useState<IBooking[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
   const [editedSubItemIndex, setEditedSubItemIndex] = React.useState<number | undefined>(undefined);
   const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
   const [conflicts, setConflicts] = React.useState<string[]>([]);
+  const [searchPhase, setSearchPhase] = React.useState<string>('');
 
   const dispatch = useDispatch();
 
@@ -108,12 +113,15 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
   /**
    * Function to handle the booking list. It is related to search input field.
    * @param searchResults
+   * @param phase
    */
-  const bookingListHandler = (searchResults: (IClient | IBooking)[]): void => {
+  const bookingListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
     if (searchResults.length && instanceOfBookings(searchResults)) {
       setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
+      setSearchPhase(phase);
     } else {
       setBookingsList([]);
+      setSearchPhase(phase);
     }
   };
 
@@ -159,7 +167,10 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     if (typeof deleteItemIndex === 'undefined') return;
     const currentBooking = cloneDeep(bookingsList[deleteItemIndex]);
     if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
-    bookingListHandler(bookings.filter((b) => b.id !== currentBooking.id));
+    bookingListHandler(
+      bookings.filter((b) => b.id !== currentBooking.id),
+      searchPhase
+    );
     initialBookingState();
     dispatch(closeModal());
   };
@@ -186,7 +197,9 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
    */
   const handlerEffectCallBack = () => {
     const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
-    setBookingsList(bookingByPlace);
+    setAllBookingsPerPlace(bookingByPlace);
+    const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
+    if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
     if (user?.isAdmin) {
       const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
       setConflicts(bookingWithConflicts);
@@ -207,11 +220,9 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
           searchProperty="person"
           searchContentHandler={bookingListHandler}
         />
-        {adminCredentials(user) && (
-          <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
-            Dodaj nową rezerwację
-          </OpenBookingsModalButton>
-        )}
+        <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
+          {adminCredentials(user) ? 'Dodaj nową rezerwację' : 'Wyślij prośbę o rezerwacje'}
+        </OpenBookingsModalButton>
       </RecordsActionContent>
       <MultipleRecords
         headers={RECORDS_BOOKINGS_HEADERS}
@@ -222,6 +233,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
         isEmployee={user?.isEmployee || false}
         conflicts={conflicts}
         records={bookingsList}
+        allRecords={allBookingsPerPlace}
         editHandler={editBookingHandler}
         deleteHandler={deleteBookingHandler}
         emptyText="Nie ma żadnej dodanej rezerwacja do bazy danych."
@@ -241,7 +253,8 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
               isEditing={isEditing}
               editedItemIndex={editedItemIndex}
               initialEditingState={initialBookingState}
-              isAdmin
+              isSISKEmployee={siskEmployeeCredentials(user)}
+              isAdmin={adminCredentials(user)}
             />
           )}
           {type === MODAL_TYPES.BOOKINGS_STATUS && (
@@ -258,6 +271,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
               cancelCallback={cancelDeleteBookingAction}
             />
           )}
+          {type === MODAL_TYPES.BOOKING_CONFLICTS && <ModalConflictDetails />}
           {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
           {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}
         </Modal>

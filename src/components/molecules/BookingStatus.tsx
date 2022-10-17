@@ -106,6 +106,7 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
             confirmationClass="bookingStatus"
             currentBooking={currentBooking}
             bookingTimeIndex={editedSubItemIndex}
+            hasRights={true}
             submitHandler={submitHandler}
           />
         </>

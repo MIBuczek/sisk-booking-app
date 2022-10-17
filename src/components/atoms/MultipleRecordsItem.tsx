@@ -13,16 +13,16 @@ import * as React from 'react';
 import {
   BsChevronDown,
   BsFillCheckCircleFill,
-  BsFillCheckSquareFill,
   BsFillFileEarmarkTextFill,
   BsTrashFill,
   BsXCircleFill
 } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
-import { checkSelectedOption, checkSingleDayConflict, modelDisplayValue } from 'utils';
+import { checkIsLastIndex, checkSelectedOption, modelDisplayValue } from 'utils';
 import Collapse, { IRenderProps } from '../../providers/Collapse';
 import Button from './Button';
+import RecordOpenItem from './RecordOpenItem';
 
 const RecordTableData = styled.td`
   display: inline-block;
@@ -135,12 +135,6 @@ const RecordDetailSpan = styled.span`
   width: auto;
 `;
 
-const CommentsSpan = styled(RecordDetailSpan)`
-  width: 100% !important;
-  border-bottom: ${({ theme }) => `1px dotted ${theme.middleGray}`};
-  margin-bottom: 3px;
-`;
-
 const ChevronIcon = styled(BsChevronDown)`
   transition: 0.4s;
 
@@ -161,6 +155,7 @@ interface MultipleRecordItemProps {
   currentRecord: IClient | IBooking;
   hasConflicts: boolean;
   records: (IClient | IBooking)[];
+  allRecords: (IClient | IBooking)[];
   editHandler: (editDetails: IEditHandler) => void;
   deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
@@ -177,28 +172,16 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
   currentRecord,
   hasConflicts,
   records,
+  allRecords,
   editHandler,
   deleteHandler
 }) => {
-  /**
-   * Function to generate conflict class if single booking time has conflict.
-   * @param sbd
-   * @param sbId
-   * @param sbMonth
-   * @param isCollapsed
-   * @returns Boolean
-   */
-  const printConflictClass = (
-    sbd: ISingleBookingDate,
-    sbId: string = '',
-    sbMonth: number = -1,
-    isCollapsed: boolean
-  ): string => {
-    if (!isCollapsed || !instanceOfBookings(records)) {
-      return '';
+  /* Method to return single reservation for  current record */
+  const singleBookingTimeHandler = (singleRecord: IClient | IBooking): ISingleBookingDate[] => {
+    if (singleInstanceOfBookings(singleRecord)) {
+      return singleRecord.bookingTime;
     }
-    return '';
-    // return checkSingleDayConflict(sbd, sbId, sbMonth, records) ? 'conflict' : '';
+    return [];
   };
 
   return (
@@ -261,53 +244,24 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                         <RecordDetailSpan>
                           <strong>{recordPropertyDisplayMap[property]} : </strong>
                         </RecordDetailSpan>
-                        {(currentRecord[property] as ISingleBookingDate[]).map((sb, sbi) => (
-                          <SingleBookingTime
-                            key={`${sb.day.getMilliseconds() + sbi + index}`}
-                            className={printConflictClass(
-                              sb,
-                              currentRecord.id as string,
-                              currentRecord.month as number,
-                              isCollapsed
+                        {singleBookingTimeHandler(currentRecord).map((sb, sbi) => (
+                          <RecordOpenItem
+                            key={`${new Date(sb.day).getTime()}`}
+                            mainIndex={index}
+                            property={property}
+                            currentPage={currentPage}
+                            postPerPage={postPerPage}
+                            singleBooking={sb}
+                            singleBookingIndex={sbi}
+                            hasRight={isAdmin || isEmployee}
+                            currentRecord={currentRecord as IBooking}
+                            allRecords={allRecords as IBooking[]}
+                            editHandler={editHandler}
+                            lastRecord={checkIsLastIndex(
+                              sbi + 1,
+                              (currentRecord[property] as []).length
                             )}
-                          >
-                            <RecordDetailSpan>
-                              <strong>Dzień: </strong>
-                              {modelDisplayValue(property, sb.day)}
-                            </RecordDetailSpan>
-                            <RecordDetailSpan>
-                              <strong>Godzina rozpoczęcia: </strong>
-                              {modelDisplayValue(property, sb.startHour, true)}
-                            </RecordDetailSpan>
-                            <RecordDetailSpan>
-                              <strong>Godzina zakończenia: </strong>
-                              {modelDisplayValue(property, sb.endHour, true)}
-                            </RecordDetailSpan>
-                            <RecordDetailSpan>
-                              <strong>Status: </strong>
-                              {modelDisplayValue(property, sb.status)}
-                            </RecordDetailSpan>
-                            {(isAdmin || isEmployee) && (
-                              <ListItemBtn
-                                disabled={!currentRecord.accepted}
-                                onClick={() =>
-                                  editHandler({
-                                    itemIndex: index,
-                                    isMainItem: false,
-                                    subItemIndex: sbi,
-                                    currentPage,
-                                    postPerPage
-                                  })
-                                }
-                              >
-                                <BsFillCheckSquareFill />
-                              </ListItemBtn>
-                            )}
-                            <CommentsSpan>
-                              <strong>Komentarz: </strong>
-                              {modelDisplayValue(property, sb.comments)}
-                            </CommentsSpan>
-                          </SingleBookingTime>
+                          />
                         ))}
                       </BookingTimeWrapper>
                     );
@@ -357,4 +311,5 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
     />
   );
 };
+
 export default MultipleRecordItem;

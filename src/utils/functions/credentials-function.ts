@@ -25,14 +25,30 @@ const adminCredentials = (loggedUsed: IUser | undefined): boolean => {
 };
 
 /**
+ * Function to check user credentials to from SISK.
+ * @param  loggedUsed
+ * @returns {Boolean}
+ */
+const siskEmployeeCredentials = (loggedUsed: IUser | undefined) => {
+  if (!loggedUsed) return false;
+  const { isAdmin, isOffice, isEmployee } = loggedUsed;
+  return isAdmin || isOffice || isEmployee;
+};
+
+/**
  * Function to check user credentials to go true building a city navigation options.
  * @param  loggedUsed
  * @returns {Boolean}
  */
-const sideNavCredentials = (loggedUsed: IUser | undefined): boolean => {
+const adminSeeContentCredentials = (loggedUsed: IUser | undefined): boolean => {
   if (!loggedUsed) return false;
   const { isAdmin, isOffice } = loggedUsed;
   return isAdmin || isOffice;
 };
 
-export { hasRightsToSeeContent, adminCredentials, sideNavCredentials };
+export {
+  hasRightsToSeeContent,
+  adminCredentials,
+  siskEmployeeCredentials,
+  adminSeeContentCredentials
+};

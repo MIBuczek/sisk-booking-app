@@ -66,6 +66,11 @@ const checkSingleBookingTime = (bt: ISingleBookingDate, cbt: ISingleBookingDate)
  */
 const checkConflicts = (currentBooking: IBooking, currentPlaceBookings: IBooking[]): boolean => {
   let isConflict = false;
+
+  if (currentBooking.accepted) {
+    return isConflict;
+  }
+
   currentPlaceBookings.forEach((b) => {
     if (currentBooking.id !== b.id && currentBooking.month === b.month) {
       b.bookingTime.forEach((cbt) => {
@@ -95,7 +100,7 @@ const checkAllBookingsConflicts = (currentPlaceBookings: IBooking[]): string[] =
   }
 
   currentPlaceBookings.forEach((currentBooking) => {
-    if (checkConflicts(currentBooking, currentPlaceBookings)) {
+    if (!currentBooking.accepted && checkConflicts(currentBooking, currentPlaceBookings)) {
       conflictedBookingArray = [...conflictedBookingArray, currentBooking.id];
     }
   });
@@ -116,25 +121,29 @@ const checkSingleDayConflict = (
   singleBookingId: string,
   singleBookingMonth: number,
   currentPlaceBookings: IBooking[]
-): boolean => {
-  let conflictListIds: string[] = [];
+): IBooking[] => {
+  let conflictListIds: IBooking[] = [];
   const { status } = singleBookingDay;
 
-  currentPlaceBookings.forEach((bookingOnPlace) => {
-    if (
-      status === BOOKING_STATUS.INITIAL &&
-      singleBookingId !== bookingOnPlace.id &&
-      singleBookingMonth === bookingOnPlace.month
-    ) {
-      bookingOnPlace.bookingTime.forEach((checkedBookingTime) => {
-        if (checkSingleBookingTime(singleBookingDay, checkedBookingTime)) {
-          conflictListIds = [...conflictListIds, bookingOnPlace.id];
-        }
-      });
-    }
-  });
+  if (currentPlaceBookings)
+    currentPlaceBookings.forEach((bookingOnPlace) => {
+      if (
+        status === BOOKING_STATUS.INITIAL &&
+        singleBookingId !== bookingOnPlace.id &&
+        singleBookingMonth === bookingOnPlace.month
+      ) {
+        bookingOnPlace.bookingTime.forEach((checkedBookingTime) => {
+          if (checkSingleBookingTime(singleBookingDay, checkedBookingTime)) {
+            conflictListIds = [
+              ...conflictListIds,
+              { ...bookingOnPlace, bookingTime: [{ ...checkedBookingTime }] }
+            ];
+          }
+        });
+      }
+    });
 
-  return !!conflictListIds.length;
+  return conflictListIds;
 };
 
 export { checkConflicts, checkAllBookingsConflicts, checkSingleDayConflict };

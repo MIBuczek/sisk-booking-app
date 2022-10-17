@@ -21,7 +21,8 @@ import {
   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
   RECORDS_CLIENTS_HEADERS,
   RECORDS_CLIENTS_ROW,
-  RECORDS_CLIENTS_ROW_DETAILS
+  RECORDS_CLIENTS_ROW_DETAILS,
+  searchSelectedContent
 } from 'utils';
 import Modal from 'components/organisms/Modal';
 import SearchInputField from 'components/atoms/SearchInputField';
@@ -69,11 +70,12 @@ const OpenClientModalButton = styled(Button)`
   }
 `;
 
-const Clients = () => {
+const Clients = (): JSX.Element => {
   const [clientList, setClientList] = React.useState<IClient[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
   const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
+  const [searchPhase, setSearchPhase] = React.useState<string>('');
 
   const dispatch = useDispatch();
 
@@ -86,10 +88,15 @@ const Clients = () => {
   /**
    * Function to handle the client list. It is related to search input field.
    * @param searchResults
+   * @param phase
    */
-  const clientListHandler = (searchResults: (IClient | IBooking)[]): void => {
+  const clientListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
     if (searchResults.length && instanceOfClients(searchResults)) {
       setClientList(searchResults);
+      setSearchPhase(phase);
+    } else {
+      setClientList([]);
+      setSearchPhase(phase);
     }
   };
 
@@ -123,7 +130,10 @@ const Clients = () => {
     if (typeof deleteItemIndex === 'undefined') return;
     const currentClient = clientList[deleteItemIndex];
     if (currentClient.id) dispatch(deleteClient(currentClient.id));
-    clientListHandler(clientList.filter((c) => c.id !== currentClient.id));
+    clientListHandler(
+      clientList.filter((c) => c.id !== currentClient.id),
+      searchPhase
+    );
     initialClientState();
     dispatch(closeModal());
   };
@@ -145,7 +155,12 @@ const Clients = () => {
     setDeleteItemIndex(undefined);
   };
 
-  React.useEffect(() => setClientList(clients), [clients]);
+  const handlerEffectCallBack = () => {
+    const currentClientList = searchSelectedContent(clients, 'name', searchPhase);
+    clientListHandler(currentClientList, searchPhase);
+  };
+
+  React.useEffect(handlerEffectCallBack, [clients]);
 
   return (
     <CalenderWrapper>

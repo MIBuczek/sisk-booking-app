@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { IBooking, IClient, IDeleteHandler, IEditHandler } from 'models';
+import { IBooking, IClient, IDeleteHandler, IEditHandler, singleInstanceOfBookings } from 'models';
 import * as React from 'react';
 import { fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
@@ -133,6 +133,7 @@ interface IProps {
   isEmployee: boolean;
   conflicts: string[];
   records?: (IClient | IBooking)[];
+  allRecords?: (IClient | IBooking)[];
   emptyText: string;
   editHandler: (editDetails: IEditHandler) => void;
   deleteHandler: (deleteDetails: IDeleteHandler) => void;
@@ -147,6 +148,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
   isEmployee,
   conflicts = [],
   records = [],
+  allRecords = [],
   emptyText,
   editHandler,
   deleteHandler
@@ -160,6 +162,17 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (typeof value === 'number') setPostPerPage(value);
+  };
+
+  /* Method to check has single item has conflicts */
+  const singleItemConflictHandler = (record: IBooking | IClient): boolean => {
+    if (singleInstanceOfBookings(record)) {
+      if (record.accepted) {
+        return false;
+      }
+      return conflicts.includes(record.id || '');
+    }
+    return false;
   };
 
   React.useEffect(() => undefined, [records]);
@@ -191,9 +204,10 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                 recordPropertyDisplayMap={recordPropertyDisplayMap}
                 isAdmin={isAdmin}
                 isEmployee={isEmployee}
-                hasConflicts={conflicts.includes(record.id || '')}
+                hasConflicts={singleItemConflictHandler(record)}
                 currentRecord={record}
                 records={records}
+                allRecords={allRecords}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}
               />

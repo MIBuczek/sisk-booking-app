@@ -15,6 +15,8 @@ import { IBooking } from '../../models';
 const DetailsParagraph = styled(Paragraph)`
   font-size: 14px;
   animation: ${fadeIn} 0.5s linear;
+  word-break: break-word;
+  max-width: 350px;
 
   &:first-of-type {
     padding-top: 30px;
@@ -37,11 +39,11 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
   currentBooking,
   bookingTimeIndex
 }): JSX.Element => {
-  const { person, city, building, bookingTime, size } = currentBooking;
+  const { person, city, building, bookingTime, size, message } = currentBooking;
   return (
     <>
       <DetailsParagraph bold>
-        Najemca :<DetailsSpan>{person}</DetailsSpan>
+        Najemca :<DetailsSpan>{isAdmin ? person : 'Rezerwacja'}</DetailsSpan>
       </DetailsParagraph>
       <DetailsParagraph bold>
         Dzień :
@@ -65,6 +67,11 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
         Do godziny :
         <DetailsSpan>{formatTime(bookingTime[checkIndex(bookingTimeIndex)].endHour)}</DetailsSpan>
       </DetailsParagraph>
+      {isAdmin && (
+        <DetailsParagraph bold>
+          Komentarz :<DetailsSpan>{message || '[Brak]'}</DetailsSpan>
+        </DetailsParagraph>
+      )}
     </>
   );
 };

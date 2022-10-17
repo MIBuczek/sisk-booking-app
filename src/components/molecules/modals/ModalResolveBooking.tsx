@@ -9,12 +9,12 @@ import { updateBooking } from '../../../store';
 import BookingTimeStatusForm from '../forms/BookingTimeStatusForm';
 
 const ResolveBookingWrapper = styled.div`
-  min-width: 670px;
+  max-width: 870px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding: 20px 40px;
+  padding: 20px 40px 100px 20px;
 
   @media (max-width: 800px) {
     min-width: 420px;
@@ -34,10 +34,11 @@ const DetailsHeader = styled(Header)`
 `;
 
 const BookingDetailsWrapper = styled.article`
-  min-width: 290px;
+  min-width: 350px;
   height: auto;
   display: flex;
   flex-direction: column;
+  padding: 0 40px 0 20px;
 
   @media (max-width: 800px) {
     width: 100%;
@@ -47,7 +48,11 @@ const BookingDetailsWrapper = styled.article`
 
 const ModalResolveBooking: React.FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { booking, bookingTimeIndex } = useSelector((store: IReduxState) => store.bookingStore);
+
+  const {
+    currentUserStore: { user },
+    bookingStore: { booking, bookingTimeIndex }
+  } = useSelector((store: IReduxState) => store);
 
   /**
    * Function to dispatch update booking action with additional new booking time status
@@ -68,6 +73,7 @@ const ModalResolveBooking: React.FunctionComponent = (): JSX.Element => {
           <BookingTimeStatusForm
             confirmationClass="modalResolveBooking"
             currentBooking={booking}
+            hasRights={user?.isAdmin || user?.isEmployee || false}
             bookingTimeIndex={bookingTimeIndex}
             submitHandler={submitHandler}
           />

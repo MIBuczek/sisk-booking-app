@@ -46,7 +46,7 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
   endHour: today,
   accepted: false,
   message: '',
-  payment: { label: 'Gotówka', value: 'cash' },
+  payment: { value: 'transfer', label: 'Przelew' },
   archive: false
 };
 

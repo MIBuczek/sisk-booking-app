@@ -49,11 +49,12 @@
     "eject": "react-scripts eject",
     "format": "prettier --config .prettierrc --write .",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src --color",
-    "isready": "npm run format && npm run lint && npm run build"
+    "isready": "npm run format && npm run lint && npm run build && firebase deploy --only hosting"
   },
   "lint-staged": {
     "**/*": [
-      "npm run lint --fix"
+      "npm run lint --fix",
+      "npm run format"
     ]
   },
   "eslintConfig": {

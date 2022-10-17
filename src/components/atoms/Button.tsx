@@ -25,7 +25,10 @@ const Button = styled.button<ButtonProps>`
   }
 
   &:disabled {
+    border-color: ${({ theme }) => theme.middleGray};
     background: ${({ theme }) => theme.middleGray};
+    opacity: 1;
+    box-shadow: none;
   }
 `;
 

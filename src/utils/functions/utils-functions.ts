@@ -90,11 +90,13 @@ const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect |
  * @returns {String}
  */
 const checkSelectedOption = (options: ExtraOptions[]): string =>
-  options.reduce((acc: string, opt) => {
-    if (opt.lights) acc += 'Światła, ';
-    if (opt.toilets) acc += 'Zaplecze sanitarne';
-    return acc;
-  }, '');
+  options
+    .reduce((acc: string[], opt) => {
+      if (opt.lights) acc.push('Światła');
+      if (opt.toilets) acc.push('Zaplecze sanitarne');
+      return acc;
+    }, [])
+    .join(',');
 
 /**
  * Function to find current item index related to current page and post per page.
@@ -125,6 +127,15 @@ const checkIndex = (index: number | null): number => {
   return 0;
 };
 
+/**
+ * Function to check is current item last on array
+ * @param currentIndex
+ * @param arrayLength
+ * @return Boolean
+ */
+const checkIsLastIndex = (currentIndex: number, arrayLength: number): boolean =>
+  currentIndex === arrayLength;
+
 export {
   selectSizeFieldOptions,
   selectClientOptions,
@@ -135,5 +146,6 @@ export {
   firstLetterUpperCase,
   checkSelectedOption,
   findCurrentItemIndex,
-  checkIndex
+  checkIndex,
+  checkIsLastIndex
 };

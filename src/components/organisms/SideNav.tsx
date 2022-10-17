@@ -133,6 +133,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
             value={city}
             isDisabled={blockSelectOptions}
             blurInputOnSelect
+            isSearchable={false}
           />
         </SideSelectWrapper>
         <SideSelectWrapper>
@@ -147,6 +148,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
             selected={building}
             isDisabled={!city}
             blurInputOnSelect
+            isSearchable={false}
           />
         </SideSelectWrapper>
       </InnerNavigationPanel>

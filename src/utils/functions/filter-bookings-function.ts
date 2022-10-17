@@ -1,4 +1,7 @@
-import { IAdminState, IBooking } from 'models';
+import { IAdminState, IBooking, IClient } from 'models';
+
+/* Function to formalize string data to lower case */
+const formatData = (s: string): string => s.toLocaleLowerCase().trim();
 
 /**
  * Function to filter reservation related to the place
@@ -18,4 +21,14 @@ const filterBookingsPerPlace = (
   );
 };
 
-export { filterBookingsPerPlace };
+/* Method to search in content according passed phase and property */
+const searchSelectedContent = (
+  searchContent: (IClient | IBooking)[],
+  searchProperty: string,
+  searchPhase: string
+): (IClient | IBooking)[] =>
+  searchContent.filter((c) =>
+    formatData(c[searchProperty] as string).includes(formatData(searchPhase))
+  );
+
+export { filterBookingsPerPlace, searchSelectedContent };

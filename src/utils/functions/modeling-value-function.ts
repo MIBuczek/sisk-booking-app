@@ -19,7 +19,8 @@ const transformValue: { [x: string]: string } = {
   'hala-sportowa': 'Hala sportowa',
   'boisko-trawiaste-stadionie-la': 'Boisko trawiaste na stadionie LA',
   cash: 'Gotówka',
-  invoice: 'Faktura'
+  invoice: 'Faktura',
+  transfer: 'Przelew'
 };
 
 const propertyToModel: string[] = ['city', 'building'];

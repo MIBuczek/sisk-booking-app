@@ -1,5 +1,12 @@
-import { cloneDeep } from 'lodash';
-import { IBookedTime, IBooking, ISummaryClientBookings, TSelect } from 'models';
+import { cloneDeep, isEmpty } from 'lodash';
+import {
+  IBookedTime,
+  IBooking,
+  IGeneralBookingDetails,
+  ISingleBookingDate,
+  ISummaryClientBookings,
+  TSelect
+} from 'models';
 import { changeDayInDate } from './calender-functions';
 
 /**
@@ -47,25 +54,40 @@ const generateReservationSummary = (
   const initialAllReservationsState = cloneDeep(initialState);
   allClientReservations.forEach((r) => {
     if (Array.isArray(initialAllReservationsState[`${r.city}`])) {
+      const { payment, extraOptions, selectedOptions, message, bookingTime, size, building } = r;
+
+      /* Create booking time details information */
+      const bookingTimeDetails = bookingTime.reduce((acc: ISingleBookingDate[], bt) => {
+        const bookingDate = new Date(bt.day);
+        const fromSelectedMonth = changeDayInDate(new Date(fromMonth), 1);
+        const toSelectedMonth = changeDayInDate(new Date(toMonth), numberOfMonthDays(toMonth));
+        if (
+          fromTheBeginning ||
+          (bookingDate.getTime() >= fromSelectedMonth.getTime() &&
+            bookingDate.getTime() <= toSelectedMonth.getTime())
+        ) {
+          acc.push({ ...bt });
+        }
+        return acc;
+      }, []);
+
+      if (isEmpty(bookingTimeDetails)) {
+        return;
+      }
+
+      /* Create general booking information */
+      const generalBookingDetails: IGeneralBookingDetails = {
+        payment,
+        extraOptions,
+        selectedOptions,
+        message,
+        size,
+        building
+      };
+
       initialAllReservationsState[`${r.city}`] = [
         ...(initialAllReservationsState[r.city] as IBookedTime[]),
-        ...r.bookingTime.reduce((acc: IBookedTime[], bt) => {
-          const bookingDate = new Date(bt.day);
-          const fromSelectedMonth = changeDayInDate(new Date(fromMonth), 1);
-          const toSelectedMonth = changeDayInDate(new Date(toMonth), numberOfMonthDays(toMonth));
-          if (
-            fromTheBeginning ||
-            (bookingDate.getTime() >= fromSelectedMonth.getTime() &&
-              bookingDate.getTime() <= toSelectedMonth.getTime())
-          ) {
-            acc.push({
-              ...bt,
-              building: r.building,
-              size: r.size
-            });
-          }
-          return acc;
-        }, [])
+        { generalBookingDetails, bookingTimeDetails }
       ];
     }
   });

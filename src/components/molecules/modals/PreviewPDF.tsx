@@ -139,13 +139,41 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
               font-family: 'Oswald', sans-serif;
           }
           
+          .general-detail-info {
+              display: grid;
+              grid-template-columns: 1fr;
+              font-family: 'Oswald', sans-serif;
+              font-size: 14px;
+              background: #eaeaea;
+              padding: 0.5rem;
+              border: 1px solid #AFBF36;
+              border-bottom: none;
+          }
+          
+          .general-detail-info > p:last-of-type {
+            margin-top: 0;
+            word-break: break-word;
+          }
+          
+          .general-detail-info > p > span {
+            display: inline-block;
+            margin: 1rem 3.5rem 0 .5rem;
+            word-break: break-word;
+            line-height: 1.2rem;
+          }
+        
+          .general-detail-info > p:last-of-type > span {
+            display: initial;
+            margin: 0;
+          }
+        
           ul {
               width: 100%;
               height: auto;
               list-style: none;
               padding: 0 10px;
-              border-top: 1px solid #AFBF36;
-              border-bottom: 1px solid #AFBF36;
+              border: 1px solid #AFBF36;
+              margin-top: 0px;
           }
           
           li {
@@ -159,12 +187,20 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
           
           li > p {
               font-size: 14px;
-              padding-top: 5px;
+          }
+          
+          li > p:first-of-type{
+          margin-bottom: 0;
+          }
+          
+          li > p:last-of-type{
+          margin-top: 0;
           }
           
           li > p > span {
+              display: inline-block;
               font-weight: 400;
-              margin: 0 4rem 0 0.5rem;
+              margin: 0.5rem 5rem 0 0.5rem;
           }
            
            .hidden {
@@ -220,9 +256,10 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
   RECORDS_CLIENTS_ROW_DETAILS.forEach((prop) => {
     if (!isEmpty(client[prop])) {
       const paragraph_client = document.createElement('p');
-      paragraph_client.innerHTML = `<strong>${
-        RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]
-      }</strong> : ${modelDisplayValue(prop, client[prop]) || ''}`;
+      paragraph_client.innerHTML = `
+      <strong>${RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]}</strong> : ${
+        modelDisplayValue(prop, client[prop]) || ''
+      }`;
 
       const wrapper = document.createElement('div');
       wrapper.appendChild(paragraph_client);
@@ -233,41 +270,59 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
 
   const generateBookingCityDetails = (
     bookingCityDetails: IBookedTime[],
-    html_ul_element: HTMLUListElement
+    html_wrapper_element: HTMLDivElement
   ) => {
     if (bookingCityDetails.length) {
-      bookingCityDetails.forEach(
-        ({ day, startHour, endHour, size, building, status, comments }) => {
+      bookingCityDetails.forEach(({ generalBookingDetails, bookingTimeDetails }) => {
+        const {
+          payment,
+          selectedOptions,
+          extraOptions,
+          message,
+          size,
+          building
+        } = generalBookingDetails;
+
+        const booking_general_details_wrapper = document.createElement('div');
+        booking_general_details_wrapper.classList.add('general-detail-info');
+        booking_general_details_wrapper.innerHTML = `
+                <p>
+                Budynek : <span>${transformValue[building]}</span>
+                Wynajmowana powierzchnia : <span>${size}</span>
+                Metoda płatności : <span>${transformValue[payment]}</span>
+                Dodatkowe Opcje : <span>${extraOptions ? 'Tak' : 'Nie'}</span>
+                </p>
+                <p>
+                Dodatkowe infomracje : <span class="comments">
+                ${message.length ? message : '[Brak]'}</span>
+                </p>`;
+
+        const booking_time_detail_list = document.createElement('ul');
+
+        bookingTimeDetails.forEach(({ day, startHour, endHour, status, comments }) => {
           const booking_detail_list_item = document.createElement('li');
-
           const detail_paragraph_one = document.createElement('p');
-          detail_paragraph_one.innerHTML = `
-          Budynek : <span> ${building}</span> 
-          Powierzchnia : <span>${size}</span> 
-          Status : <span>${transformValue[status]}</span>
-          `;
-
           const detail_paragraph_two = document.createElement('p');
-          detail_paragraph_two.innerHTML = `Dzień : <span>${formatDate(
-            day
-          )}</span> Godzina rozpoczęcia  : <span>${formatTime(
-            startHour
-          )}</span>Godzina zakończenia : <span>${formatTime(endHour)}</span>`;
 
-          const detail_paragraph_three = document.createElement('p');
-          detail_paragraph_three.innerHTML = `Uwagi : <span class="detail">${comments}</span>`;
+          detail_paragraph_one.innerHTML = `
+                 Dzień : <span>${formatDate(day)}</span>
+                 Godzina rozpoczęcia : <span>${formatTime(startHour)}</span>
+                 Godzina zakończenia : <span>${formatTime(endHour)}</span>
+                 Status : <span>${transformValue[status]}</span>`;
 
-          booking_detail_list_item.append(
-            detail_paragraph_one,
-            detail_paragraph_two,
-            detail_paragraph_three
-          );
+          detail_paragraph_two.innerHTML = `Uwagi :
+            <span class="comments">
+            ${comments.length ? comments : '[Brak]'}
+            </span>`;
 
-          html_ul_element.appendChild(booking_detail_list_item);
-        }
-      );
+          booking_detail_list_item.append(detail_paragraph_one, detail_paragraph_two);
+          booking_time_detail_list.appendChild(booking_detail_list_item);
+        });
+
+        html_wrapper_element.append(booking_general_details_wrapper, booking_time_detail_list);
+      });
     } else {
-      html_ul_element.classList.add('hidden');
+      html_wrapper_element.classList.add('hidden');
     }
   };
 
@@ -275,36 +330,36 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
 
   const paragraph_citi_radwanice = document.createElement('p');
   paragraph_citi_radwanice.classList.add('city-details');
-  const booking_detail_list_radwanice = document.createElement('ul');
+  const booking_detail_wrapper_radwanice = document.createElement('div');
   paragraph_citi_radwanice.innerHTML = `<strong>Radwanice</strong> : ${clientSummary.radwanice.length} rezerwacji.`;
-  generateBookingCityDetails(clientSummary.radwanice, booking_detail_list_radwanice);
+  generateBookingCityDetails(clientSummary.radwanice, booking_detail_wrapper_radwanice);
 
   const paragraph_citi_siechnice = document.createElement('p');
   paragraph_citi_siechnice.classList.add('city-details');
-  const booking_detail_list_siechnice = document.createElement('ul');
+  const booking_detail_wrapper_siechnice = document.createElement('div');
   paragraph_citi_siechnice.innerHTML = `<strong>Siechnice</strong> : ${clientSummary.siechnice.length} rezerwacji.`;
-  generateBookingCityDetails(clientSummary.siechnice, booking_detail_list_siechnice);
+  generateBookingCityDetails(clientSummary.siechnice, booking_detail_wrapper_siechnice);
 
   const paragraph_citi_katarzyna = document.createElement('p');
   paragraph_citi_katarzyna.classList.add('city-details');
-  const booking_detail_list_katarzyna = document.createElement('ul');
+  const booking_detail_wrapper_katarzyna = document.createElement('div');
   paragraph_citi_katarzyna.innerHTML = `<strong>Święta Katarzyna</strong> : ${clientSummary['swieta-katarzyna'].length} rezerwacji.`;
-  generateBookingCityDetails(clientSummary['swieta-katarzyna'], booking_detail_list_katarzyna);
+  generateBookingCityDetails(clientSummary['swieta-katarzyna'], booking_detail_wrapper_katarzyna);
 
   const paragraph_citi_zerniki = document.createElement('p');
   paragraph_citi_zerniki.classList.add('city-details');
-  const booking_detail_list_zerniki = document.createElement('ul');
+  const booking_detail_wrapper_zerniki = document.createElement('div');
   paragraph_citi_zerniki.innerHTML = `<strong>Żerniki Wrocławskie</strong> : ${clientSummary['zerniki-wroclawskie'].length} rezerwacji.`;
-  generateBookingCityDetails(clientSummary['zerniki-wroclawskie'], booking_detail_list_zerniki);
+  generateBookingCityDetails(clientSummary['zerniki-wroclawskie'], booking_detail_wrapper_zerniki);
 
   client_booking_info.append(
     paragraph_citi_radwanice,
-    booking_detail_list_radwanice,
+    booking_detail_wrapper_radwanice,
     paragraph_citi_siechnice,
-    booking_detail_list_siechnice,
+    booking_detail_wrapper_siechnice,
     paragraph_citi_katarzyna,
-    booking_detail_list_katarzyna,
+    booking_detail_wrapper_katarzyna,
     paragraph_citi_zerniki,
-    booking_detail_list_zerniki
+    booking_detail_wrapper_zerniki
   );
 };

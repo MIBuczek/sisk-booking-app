@@ -1,10 +1,14 @@
-import { ISingleBookingDate } from 'models/store/booking-models';
+import { IBooking, ISingleBookingDate } from 'models/store/booking-models';
 import { IClient } from 'models/store/client-models';
 
-interface IBookedTime extends ISingleBookingDate {
-  building: string;
-  size: string;
-  status: string;
+type IGeneralBookingDetails = Pick<
+  IBooking,
+  'payment' | 'message' | 'extraOptions' | 'selectedOptions' | 'size' | 'building'
+>;
+
+interface IBookedTime {
+  generalBookingDetails: IGeneralBookingDetails;
+  bookingTimeDetails: ISingleBookingDate[];
 }
 
 interface IReportBookingByCity {
@@ -17,7 +21,7 @@ interface IReportBookingByCity {
 interface ISummaryClientBookings extends IReportBookingByCity {
   client: IClient;
 
-  [x: string]: string | IBookedTime[] | IClient | undefined;
+  [x: string]: string | IClient | IBookedTime[] | undefined;
 }
 
-export type { ISummaryClientBookings, IBookedTime, IReportBookingByCity };
+export type { ISummaryClientBookings, IBookedTime, IReportBookingByCity, IGeneralBookingDetails };

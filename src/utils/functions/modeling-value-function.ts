@@ -20,7 +20,8 @@ const transformValue: { [x: string]: string } = {
   'boisko-trawiaste-stadionie-la': 'Boisko trawiaste na stadionie LA',
   cash: 'Gotówka',
   invoice: 'Faktura',
-  transfer: 'Przelew'
+  transfer: 'Przelew',
+  free: 'Bezpłatne'
 };
 
 const propertyToModel: string[] = ['city', 'building'];

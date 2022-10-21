@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import { IBookedTime, ISummaryClientBookings } from 'models';
 import {
+  checkSelectedOption,
   formatDate,
   formatTime,
   modelDisplayValue,
@@ -150,14 +151,28 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
               border-bottom: none;
           }
           
-          .general-detail-info > p:last-of-type {
-            margin-top: 0;
-            word-break: break-word;
+          .general-detail-info > p {
+            margin: 0;
+            line-height: 2rem;
+          }
+
+          .general-detail-info > ul {
+            border: 1px dotted #AFBF36;
+            border-left: none;
+            border-right: none;
+          }
+          
+         .general-detail-info > ul > li {
+            padding: 5px 0;
+          }
+          
+          .general-detail-info > ul > li > p > span {
+            margin: 0.5rem 3rem 0 0.5rem;
           }
           
           .general-detail-info > p > span {
             display: inline-block;
-            margin: 1rem 3.5rem 0 .5rem;
+            margin: 0rem 3.5rem 0 .5rem;
             word-break: break-word;
             line-height: 1.2rem;
           }
@@ -173,7 +188,7 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
               list-style: none;
               padding: 0 10px;
               border: 1px solid #AFBF36;
-              margin-top: 0px;
+              margin-top: 0;
           }
           
           li {
@@ -283,12 +298,29 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
           building
         } = generalBookingDetails;
 
+        const selected_option_list = document.createElement('ul');
+
+        if (extraOptions) {
+          selectedOptions.forEach(({ options, fromHour, toHour }) => {
+            const selected_option_list_item = document.createElement('li');
+            selected_option_list_item.innerHTML = `<p>
+                Wybrana opcja : <span>${checkSelectedOption(options)}</span>
+                Od godziny : <span>${formatTime(fromHour)}</span>
+                Do godziny : <span>${formatTime(toHour)}</span>
+                </p>`;
+            selected_option_list.append(selected_option_list_item);
+          });
+        } else {
+          selected_option_list.classList.add('hidden');
+        }
+
         const booking_general_details_wrapper = document.createElement('div');
         booking_general_details_wrapper.classList.add('general-detail-info');
+
         booking_general_details_wrapper.innerHTML = `
                 <p>
                 Budynek : <span>${transformValue[building]}</span>
-                Wynajmowana powierzchnia : <span>${size}</span>
+                Wynajmowana powierzchnia : <span>${size}</span> <br>
                 Metoda płatności : <span>${transformValue[payment]}</span>
                 Dodatkowe Opcje : <span>${extraOptions ? 'Tak' : 'Nie'}</span>
                 </p>
@@ -296,6 +328,8 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
                 Dodatkowe infomracje : <span class="comments">
                 ${message.length ? message : '[Brak]'}</span>
                 </p>`;
+
+        booking_general_details_wrapper.append(selected_option_list);
 
         const booking_time_detail_list = document.createElement('ul');
 

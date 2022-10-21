@@ -159,12 +159,12 @@ export const addBooking = (
 
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
-      dispatch(
-        openModal(
-          MODAL_TYPES.ERROR,
-          'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
-        )
-      );
+      // dispatch(
+      //   openModal(
+      //     MODAL_TYPES.ERROR,
+      //     'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
+      //   )
+      // );
     }
   } catch (err) {
     dispatch(
@@ -209,12 +209,12 @@ export const updateBooking = (
 
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
-      dispatch(
-        openModal(
-          MODAL_TYPES.ERROR,
-          'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
-        )
-      );
+      // dispatch(
+      //   openModal(
+      //     MODAL_TYPES.ERROR,
+      //     'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
+      //   )
+      // );
     }
   } catch (err) {
     dispatch(
@@ -270,7 +270,7 @@ export const deleteBooking = (id: string) => async (
   }
 };
 
-/*
+/**
  * Booking store action to updated booking state by conflicted bookings.
  */
 export const updateBookingConflicts = (conflictedBookings: IBooking[]) => async (
@@ -281,7 +281,7 @@ export const updateBookingConflicts = (conflictedBookings: IBooking[]) => async 
   dispatch(getBookingConflicts(bookings, conflictedBookings));
 };
 
-/*
+/**
  * Booking store action to clear booking state by conflicted bookings.
  */
 export const clearBookingConflicts = () => async (

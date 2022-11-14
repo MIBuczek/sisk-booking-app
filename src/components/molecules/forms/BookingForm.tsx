@@ -11,6 +11,7 @@ import {
   BOOKING_INITIAL_VALUE,
   checkConflicts,
   CITY_OPTIONS,
+  concatBookingTime,
   generateBookingDetails,
   generateBookingFormDetails,
   generateBuildingOptions,
@@ -280,6 +281,16 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     const bookingToApprove = cloneDeep(
       generateBookingDetails(cred, selectedSize, extraOptions, bookingId)
     );
+
+    /* Case to update edited item times just if booking is not resolved */
+    if (typeof editedItemIndex === 'number') {
+      const currentBooking = cloneDeep(bookingsList[editedItemIndex]);
+      bookingToApprove.bookingTime = concatBookingTime(
+        currentBooking.bookingTime,
+        bookingToApprove.bookingTime
+      );
+    }
+
     setBookingData(bookingToApprove);
     setDisplayConfirmation(true);
 
@@ -293,7 +304,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    */
   const confirmSubmit = () => {
     if (!bookingData) return;
-
     if (bookingId) {
       dispatch(updateBooking({ ...bookingData, id: bookingId }, isAdmin, sendEmailNotification));
     } else {

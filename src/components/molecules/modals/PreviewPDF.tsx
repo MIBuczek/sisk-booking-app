@@ -325,7 +325,7 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
                 Dodatkowe Opcje : <span>${extraOptions ? 'Tak' : 'Nie'}</span>
                 </p>
                 <p>
-                Dodatkowe infomracje : <span class="comments">
+                Dodatkowe informacje : <span class="comments">
                 ${message.length ? message : '[Brak]'}</span>
                 </p>`;
 

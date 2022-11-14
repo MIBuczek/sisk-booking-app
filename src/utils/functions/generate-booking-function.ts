@@ -7,12 +7,12 @@ import {
   TSelect
 } from 'models';
 import {
+  BOOKING_STATUS,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
   CLIENT_TYPE,
-  SIZE_OPTIONS,
-  BOOKING_STATUS,
-  PAYMENTS_OPTIONS
+  PAYMENTS_OPTIONS,
+  SIZE_OPTIONS
 } from 'utils';
 import { formatCalenderDate, formatCalenderHours } from './calender-functions';
 import { findSelectedOption } from './utils-functions';
@@ -170,9 +170,22 @@ const generateBookingFormDetails = (
   clientId
 });
 
+const concatBookingTime = (
+  prevBookingTime: ISingleBookingDate[],
+  curBookingTime: ISingleBookingDate[]
+): ISingleBookingDate[] => {
+  return prevBookingTime.map((pbt, index) => {
+    if ([BOOKING_STATUS.DONE, BOOKING_STATUS.QUIT].includes(pbt.status as BOOKING_STATUS)) {
+      return pbt;
+    }
+    return curBookingTime[index];
+  });
+};
+
 export {
   generateBookingDetails,
   generateBookingFormDetails,
   generateBookingStatusDate,
+  concatBookingTime,
   overwriteDate
 };

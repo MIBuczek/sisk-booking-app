@@ -16,7 +16,8 @@ import {
   INITIAL_CLIENT_BOOKING_DETAILS,
   modelDisplayValue,
   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
-  RECORDS_CLIENTS_ROW_DETAILS
+  RECORDS_CLIENTS_ROW_DETAILS,
+  summaryTotalBookingsNumber
 } from 'utils';
 import { cloneDeep, isEmpty } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
@@ -471,19 +472,24 @@ const Summary = () => {
               </tbody>
             </ClientDetailTable>
             <DetailsParagraph bold>
-              Radwanice :<DetailsSpan>{clientSummary.radwanice.length} rezerwacji.</DetailsSpan>
+              Radwanice :
+              <DetailsSpan>{summaryTotalBookingsNumber(clientSummary.radwanice)}</DetailsSpan>
             </DetailsParagraph>
             <DetailsParagraph bold>
               Siechnice:
-              <DetailsSpan>{clientSummary.siechnice.length} rezerwacji.</DetailsSpan>
+              <DetailsSpan>{summaryTotalBookingsNumber(clientSummary.siechnice)}</DetailsSpan>
             </DetailsParagraph>
             <DetailsParagraph bold>
               Świeta Katarzyna :
-              <DetailsSpan>{clientSummary['swieta-katarzyna'].length} rezerwacji.</DetailsSpan>
+              <DetailsSpan>
+                {summaryTotalBookingsNumber(clientSummary['swieta-katarzyna'])}
+              </DetailsSpan>
             </DetailsParagraph>
             <DetailsParagraph bold>
               Żerniki Wrocławskie :
-              <DetailsSpan>{clientSummary['zerniki-wroclawskie'].length} rezerwacji.</DetailsSpan>
+              <DetailsSpan>
+                {summaryTotalBookingsNumber(clientSummary['zerniki-wroclawskie'])}
+              </DetailsSpan>
             </DetailsParagraph>
             <ButtonPanel>
               <PDFButton type="button" onClick={generatePdfReport}>

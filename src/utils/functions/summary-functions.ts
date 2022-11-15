@@ -8,6 +8,7 @@ import {
   TSelect
 } from 'models';
 import { changeDayInDate } from './calender-functions';
+import { BOOKING_STATUS } from '../variables/booking-status-const';
 
 /**
  * Function to find all reservation assigned to client id
@@ -37,8 +38,8 @@ const numberOfMonthDays = (date: Date): number => {
 /**
  * Function to model all client reservation and divide it into to cities.
  * Inside reducer looking for reservation time only on current month.
- * @param  initialState
- * @param  allClientReservations
+ * @param initialState
+ * @param allClientReservations
  * @param fromTheBeginning
  * @param fromMonth
  * @param toMonth
@@ -94,4 +95,24 @@ const generateReservationSummary = (
   return initialAllReservationsState;
 };
 
-export { findAllClientReservation, generateReservationSummary };
+/**
+ * Function to summary all reservation selected client per city.
+ * In return string with information about all reservation and also count done.
+ * @param  bookingByCity
+ */
+const summaryTotalBookingsNumber = (bookingByCity: IBookedTime[]): string => {
+  let allBookingItems = 0;
+  let doneBookingItems = 0;
+  bookingByCity.forEach((bt) => {
+    allBookingItems += bt.bookingTimeDetails.length;
+    bt.bookingTimeDetails.forEach((btd) => {
+      if (btd.status === BOOKING_STATUS.DONE) doneBookingItems += 1;
+    });
+  });
+  if (!allBookingItems) {
+    return '0 rezerwacji.';
+  }
+  return `${allBookingItems} rezerwacji, w tym ${doneBookingItems} zrealizowanych.`;
+};
+
+export { findAllClientReservation, generateReservationSummary, summaryTotalBookingsNumber };

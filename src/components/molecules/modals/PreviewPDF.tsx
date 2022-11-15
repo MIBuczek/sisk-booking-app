@@ -7,6 +7,7 @@ import {
   modelDisplayValue,
   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
   RECORDS_CLIENTS_ROW_DETAILS,
+  summaryTotalBookingsNumber,
   transformValue
 } from 'utils';
 
@@ -273,8 +274,8 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
       const paragraph_client = document.createElement('p');
       paragraph_client.innerHTML = `
       <strong>${RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]}</strong> : ${
-        modelDisplayValue(prop, client[prop]) || ''
-      }`;
+  modelDisplayValue(prop, client[prop]) || ''
+}`;
 
       const wrapper = document.createElement('div');
       wrapper.appendChild(paragraph_client);
@@ -365,25 +366,33 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
   const paragraph_citi_radwanice = document.createElement('p');
   paragraph_citi_radwanice.classList.add('city-details');
   const booking_detail_wrapper_radwanice = document.createElement('div');
-  paragraph_citi_radwanice.innerHTML = `<strong>Radwanice</strong> : ${clientSummary.radwanice.length} rezerwacji.`;
+  paragraph_citi_radwanice.innerHTML = `<strong>Radwanice</strong> : ${summaryTotalBookingsNumber(
+    clientSummary.radwanice
+  )}`;
   generateBookingCityDetails(clientSummary.radwanice, booking_detail_wrapper_radwanice);
 
   const paragraph_citi_siechnice = document.createElement('p');
   paragraph_citi_siechnice.classList.add('city-details');
   const booking_detail_wrapper_siechnice = document.createElement('div');
-  paragraph_citi_siechnice.innerHTML = `<strong>Siechnice</strong> : ${clientSummary.siechnice.length} rezerwacji.`;
+  paragraph_citi_siechnice.innerHTML = `<strong>Siechnice</strong> : ${summaryTotalBookingsNumber(
+    clientSummary.siechnice
+  )}`;
   generateBookingCityDetails(clientSummary.siechnice, booking_detail_wrapper_siechnice);
 
   const paragraph_citi_katarzyna = document.createElement('p');
   paragraph_citi_katarzyna.classList.add('city-details');
   const booking_detail_wrapper_katarzyna = document.createElement('div');
-  paragraph_citi_katarzyna.innerHTML = `<strong>Święta Katarzyna</strong> : ${clientSummary['swieta-katarzyna'].length} rezerwacji.`;
+  paragraph_citi_katarzyna.innerHTML = `<strong>Święta Katarzyna</strong> : ${summaryTotalBookingsNumber(
+    clientSummary['swieta-katarzyna']
+  )}`;
   generateBookingCityDetails(clientSummary['swieta-katarzyna'], booking_detail_wrapper_katarzyna);
 
   const paragraph_citi_zerniki = document.createElement('p');
   paragraph_citi_zerniki.classList.add('city-details');
   const booking_detail_wrapper_zerniki = document.createElement('div');
-  paragraph_citi_zerniki.innerHTML = `<strong>Żerniki Wrocławskie</strong> : ${clientSummary['zerniki-wroclawskie'].length} rezerwacji.`;
+  paragraph_citi_zerniki.innerHTML = `<strong>Żerniki Wrocławskie</strong> : ${summaryTotalBookingsNumber(
+    clientSummary['zerniki-wroclawskie']
+  )}`;
   generateBookingCityDetails(clientSummary['zerniki-wroclawskie'], booking_detail_wrapper_zerniki);
 
   client_booking_info.append(

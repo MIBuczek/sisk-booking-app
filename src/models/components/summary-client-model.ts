@@ -2,8 +2,8 @@ import { IBooking, ISingleBookingDate } from 'models/store/booking-models';
 import { IClient } from 'models/store/client-models';
 
 type IGeneralBookingDetails = Pick<
-  IBooking,
-  'payment' | 'message' | 'extraOptions' | 'selectedOptions' | 'size' | 'building'
+IBooking,
+'payment' | 'message' | 'extraOptions' | 'selectedOptions' | 'size' | 'building'
 >;
 
 interface IBookedTime {

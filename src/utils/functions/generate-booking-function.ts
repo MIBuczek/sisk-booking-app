@@ -173,14 +173,12 @@ const generateBookingFormDetails = (
 const concatBookingTime = (
   prevBookingTime: ISingleBookingDate[],
   curBookingTime: ISingleBookingDate[]
-): ISingleBookingDate[] => {
-  return prevBookingTime.map((pbt, index) => {
-    if ([BOOKING_STATUS.DONE, BOOKING_STATUS.QUIT].includes(pbt.status as BOOKING_STATUS)) {
-      return pbt;
-    }
-    return curBookingTime[index];
-  });
-};
+): ISingleBookingDate[] => prevBookingTime.map((pbt, index) => {
+  if ([BOOKING_STATUS.DONE, BOOKING_STATUS.QUIT].includes(pbt.status as BOOKING_STATUS)) {
+    return pbt;
+  }
+  return curBookingTime[index];
+});
 
 export {
   generateBookingDetails,

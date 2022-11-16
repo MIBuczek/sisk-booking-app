@@ -14,6 +14,7 @@ import {
   PAYMENTS_OPTIONS,
   SIZE_OPTIONS
 } from 'utils';
+import { cloneDeep } from 'lodash';
 import { formatCalenderDate, formatCalenderHours } from './calender-functions';
 import { findSelectedOption } from './utils-functions';
 
@@ -145,6 +146,33 @@ const generateBookingStatusDate = (
 };
 
 /**
+ * Function to find booking time item with initial status.
+ * @param  bookingTimeItems
+ * @param  lastItem
+ * @returns {Object<ISingleBookingDate>}
+ */
+const findCurrentBookingTimesItem = (
+  bookingTimeItems: ISingleBookingDate[],
+  lastItem: boolean
+): ISingleBookingDate => {
+  const clonedBookingTimesItems = cloneDeep(bookingTimeItems);
+
+  if (lastItem) {
+    clonedBookingTimesItems.reverse();
+  }
+
+  const initialBookingItem = clonedBookingTimesItems.find(
+    (bt) => bt.status === BOOKING_STATUS.INITIAL
+  );
+
+  if (!initialBookingItem) {
+    return { ...clonedBookingTimesItems[0] };
+  }
+
+  return { ...initialBookingItem };
+};
+
+/**
  * Function to generate form object user in React Hook Forms
  * @param  currentBooking
  * @param  clientId
@@ -155,30 +183,34 @@ const generateBookingFormDetails = (
   currentBooking: IBooking,
   clientId?: TSelect,
   city?: TSelect
-): IBookingForm => ({
-  ...currentBooking,
-  city: findSelectedOption(currentBooking.city, CITY_OPTIONS) || CITY_OPTIONS[0],
-  building: findSelectedOption(
-    currentBooking.building,
-    BUILDINGS_OPTIONS[city?.value || CITY_OPTIONS[0].value]
-  ),
-  payment: findSelectedOption(currentBooking.payment, PAYMENTS_OPTIONS),
-  startDate: currentBooking.bookingTime[0].day,
-  endDate: currentBooking.bookingTime[currentBooking.bookingTime.length - 1].day,
-  startHour: currentBooking.bookingTime[0].startHour,
-  endHour: currentBooking.bookingTime[0].endHour,
-  clientId
-});
-
+): IBookingForm => {
+  const firstBookingTimes = findCurrentBookingTimesItem(currentBooking.bookingTime, false);
+  const lastBookingTimes = findCurrentBookingTimesItem(currentBooking.bookingTime, true);
+  return {
+    ...currentBooking,
+    city: findSelectedOption(currentBooking.city, CITY_OPTIONS) || CITY_OPTIONS[0],
+    building: findSelectedOption(
+      currentBooking.building,
+      BUILDINGS_OPTIONS[city?.value || CITY_OPTIONS[0].value]
+    ),
+    payment: findSelectedOption(currentBooking.payment, PAYMENTS_OPTIONS),
+    startDate: firstBookingTimes.day,
+    endDate: lastBookingTimes.day,
+    startHour: firstBookingTimes.startHour,
+    endHour: firstBookingTimes.endHour,
+    clientId
+  };
+};
 const concatBookingTime = (
   prevBookingTime: ISingleBookingDate[],
   curBookingTime: ISingleBookingDate[]
-): ISingleBookingDate[] => prevBookingTime.map((pbt, index) => {
-  if ([BOOKING_STATUS.DONE, BOOKING_STATUS.QUIT].includes(pbt.status as BOOKING_STATUS)) {
-    return pbt;
-  }
-  return curBookingTime[index];
-});
+): ISingleBookingDate[] =>
+  prevBookingTime.map((pbt, index) => {
+    if ([BOOKING_STATUS.DONE, BOOKING_STATUS.QUIT].includes(pbt.status as BOOKING_STATUS)) {
+      return pbt;
+    }
+    return curBookingTime[index];
+  });
 
 export {
   generateBookingDetails,

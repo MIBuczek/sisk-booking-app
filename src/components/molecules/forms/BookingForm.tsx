@@ -284,9 +284,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
     /* Case to update edited item times just if booking is not resolved */
     if (typeof editedItemIndex === 'number') {
-      const currentBooking = cloneDeep(bookingsList[editedItemIndex]);
+      const previousBooking = cloneDeep(bookingsList[editedItemIndex]);
       bookingToApprove.bookingTime = concatBookingTime(
-        currentBooking.bookingTime,
+        previousBooking.bookingTime,
         bookingToApprove.bookingTime
       );
     }

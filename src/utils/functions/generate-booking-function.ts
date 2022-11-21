@@ -14,7 +14,7 @@ import {
   PAYMENTS_OPTIONS,
   SIZE_OPTIONS
 } from 'utils';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual, uniqWith } from 'lodash';
 import { formatCalenderDate, formatCalenderHours } from './calender-functions';
 import { findSelectedOption } from './utils-functions';
 
@@ -184,8 +184,8 @@ const generateBookingFormDetails = (
   clientId?: TSelect,
   city?: TSelect
 ): IBookingForm => {
-  const firstBookingTimes = findCurrentBookingTimesItem(currentBooking.bookingTime, false);
-  const lastBookingTimes = findCurrentBookingTimesItem(currentBooking.bookingTime, true);
+  const firstBookingTimes = currentBooking.bookingTime[0];
+  const lastBookingTimes = currentBooking.bookingTime[currentBooking.bookingTime.length - 1];
   return {
     ...currentBooking,
     city: findSelectedOption(currentBooking.city, CITY_OPTIONS) || CITY_OPTIONS[0],
@@ -204,13 +204,15 @@ const generateBookingFormDetails = (
 const concatBookingTime = (
   prevBookingTime: ISingleBookingDate[],
   curBookingTime: ISingleBookingDate[]
-): ISingleBookingDate[] =>
-  prevBookingTime.map((pbt, index) => {
-    if ([BOOKING_STATUS.DONE, BOOKING_STATUS.QUIT].includes(pbt.status as BOOKING_STATUS)) {
-      return pbt;
-    }
-    return curBookingTime[index];
+): ISingleBookingDate[] => {
+  const resolvedBT = prevBookingTime.filter((bt) => bt.status !== BOOKING_STATUS.INITIAL);
+  return uniqWith([...resolvedBT, ...curBookingTime], (a, b) =>
+    isEqual(a.day.getTime(), b.day.getTime())
+  ).sort((a, b) => {
+    if (a.day.getTime() < b.day.getTime()) return -1;
+    else return 1;
   });
+};
 
 export {
   generateBookingDetails,

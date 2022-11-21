@@ -188,7 +188,6 @@ export const updateBooking = (
 ): Promise<void> => {
   try {
     await db.collection('bookings').doc(bookingData.id).update(bookingData);
-
     const {
       bookingStore: { bookings },
       buildingStore: { buildings }

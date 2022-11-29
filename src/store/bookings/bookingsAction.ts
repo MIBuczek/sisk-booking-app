@@ -159,12 +159,12 @@ export const addBooking = (
 
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
-      // dispatch(
-      //   openModal(
-      //     MODAL_TYPES.ERROR,
-      //     'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
-      //   )
-      // );
+      dispatch(
+        openModal(
+          MODAL_TYPES.ERROR,
+          'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
+        )
+      );
     }
   } catch (err) {
     dispatch(
@@ -208,12 +208,12 @@ export const updateBooking = (
 
     const emailResp = await storeEmailNotification(bookingData, isAdmin, building?.email);
     if (emailResp > 200) {
-      // dispatch(
-      //   openModal(
-      //     MODAL_TYPES.ERROR,
-      //     'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
-      //   )
-      // );
+      dispatch(
+        openModal(
+          MODAL_TYPES.ERROR,
+          'Problem z serverem. Nie można było wysłać notyfikacji mailowej.'
+        )
+      );
     }
   } catch (err) {
     dispatch(

@@ -210,7 +210,7 @@ const concatBookingTime = (
     isEqual(a.day.getTime(), b.day.getTime())
   ).sort((a, b) => {
     if (a.day.getTime() < b.day.getTime()) return -1;
-    else return 1;
+    return 1;
   });
 };
 

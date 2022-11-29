@@ -13,7 +13,7 @@ import {
 
 export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
   const { client } = clientSummary;
-  const new_tab = window.open('', '_blank');
+  const new_tab = window.open('https://sisk-booking-app.web.app/#/raport-najmów', '_blank');
 
   if (!new_tab) return;
 
@@ -21,6 +21,7 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
       <html lang="pl">
       <head>
         <meta charset="utf-8" />
+        <link rel="icon" href="%PUBLIC_URL%/fav.ico" />
         <title>Raport Rezerwacji</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link

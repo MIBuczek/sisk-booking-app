@@ -1,5 +1,7 @@
 import { IBooking, ISingleBookingDate } from 'models/store/booking-models';
 import { IClient } from 'models/store/client-models';
+import { IClientForm } from '../forms/client-form-model';
+import { ISelectedExtraOptions } from '../forms/booking-extra-options-models';
 
 type IGeneralBookingDetails = Pick<
 IBooking,
@@ -24,4 +26,41 @@ interface ISummaryClientBookings extends IReportBookingByCity {
   [x: string]: string | IClient | IBookedTime[] | undefined;
 }
 
-export type { ISummaryClientBookings, IBookedTime, IReportBookingByCity, IGeneralBookingDetails };
+type CSVBookingKeys = keyof Pick<
+IBooking,
+'type' | 'payment' | 'size' | 'building' | 'message' | 'extraOptions' | 'selectedOptions'
+>;
+
+type CSVClientKeys = keyof Pick<
+IClientForm,
+'name' | 'contactPerson' | 'street' | 'city' | 'zipCode' | 'nip' | 'phone' | 'email'
+>;
+
+type CSVReportKeys =
+  | CSVBookingKeys
+  | CSVClientKeys
+  | keyof ISingleBookingDate
+  | 'startHourOption'
+  | 'endHourOption'
+  | 'cityBooking';
+
+interface ICSVHeaders {
+  label: string;
+  key: CSVReportKeys;
+}
+
+type CSVReportData = {
+  [x in CSVReportKeys]: string;
+};
+
+export type {
+  ISummaryClientBookings,
+  IBookedTime,
+  IReportBookingByCity,
+  IGeneralBookingDetails,
+  ICSVHeaders,
+  CSVReportData,
+  CSVBookingKeys,
+  CSVClientKeys,
+  CSVReportKeys
+};

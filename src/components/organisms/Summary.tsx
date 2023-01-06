@@ -3,7 +3,7 @@ import { DataPickerField } from 'components/atoms/DatapickerField';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
-import { IReduxState, ISummaryClientBookings, TSelect } from 'models';
+import { CSVReportData, IReduxState, ISummaryClientBookings, TSelect } from 'models';
 import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ import pl from 'date-fns/locale/pl';
 import { registerLocale } from 'react-datepicker';
 import Button from 'components/atoms/Button';
 import {
+  csvClientSummary,
   findAllClientReservation,
   generateReservationSummary,
   INITIAL_CLIENT_BOOKING_DETAILS,
@@ -23,11 +24,13 @@ import { cloneDeep, isEmpty } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
 import { fadeInLeft } from 'style/animation';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import { BsFilePdf } from 'react-icons/bs';
+import { BsFilePdf, BsFileEarmarkRuledFill } from 'react-icons/bs';
+import { CSVLink } from 'react-csv';
 import Checkbox from '../atoms/Checkbox';
 import { printPDFReport } from '../molecules/modals/PreviewPDF';
 import { LoaderDots } from '../molecules/Loading';
 import ErrorMsg from '../atoms/ErrorMsg';
+import { csvFileHeaders } from '../../utils/variables/csv-file-headers';
 
 registerLocale('pl', pl);
 
@@ -229,9 +232,12 @@ const pdfIconStyles = {
 };
 
 const ButtonPanel = styled.div`
-  display: block;
-  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   border-top: ${({ theme }) => `1px solid ${theme.green}`};
+  margin-top: 2rem;
 `;
 
 const PDFButton = styled(Button)`
@@ -253,6 +259,26 @@ const PDFButton = styled(Button)`
   }
 `;
 
+const CSVButton = styled(CSVLink)`
+  width: 290px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.darkGrey};
+  font-size: ${({ theme }) => theme.fontSize.ml};
+  line-height: 1.5;
+  text-decoration: none;
+  transition: 0.4s;
+  background: ${({ theme }) => theme.green};
+  margin-left: auto;
+
+  &:hover {
+    box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
+    opacity: 0.8;
+  }
+`;
+
 const LoadingWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -267,6 +293,7 @@ const Summary = () => {
   const [clientSummary, setClientSummary] = React.useState<ISummaryClientBookings>(
     cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)
   );
+  const [csvReportData, setCSVReportData] = React.useState<CSVReportData[]>([]);
   const [isSummaryGenerated, setIsSummaryGenerated] = React.useState<boolean>(false);
 
   const {
@@ -318,6 +345,10 @@ const Summary = () => {
         toMonth
       )
     );
+
+    setCSVReportData(
+      csvClientSummary(currentClient, allClientReservations, fromTheBeginning, fromMonth, toMonth)
+    );
     setIsSummaryGenerated(true);
 
     setTimeout(() => {
@@ -346,8 +377,24 @@ const Summary = () => {
     reset({ client: clientValue, fromMonth, toMonth: fromMonth, fromTheBeginning });
   };
 
+  /**
+   * Function to open current client pdf report in new window.
+   */
   const generatePdfReport = () => {
     printPDFReport(clientSummary);
+  };
+
+  /**
+   * Function to generate csv file name base on current client name and selected month.
+   */
+  const generateFileName = (): string => {
+    if (clientSummary.client) {
+      const partFileName = fromTheBeginning
+        ? 'od początku'
+        : `${fromMonth.getMonth()}-${toMonth.getMonth()}.${toMonth.getFullYear()}`;
+      return `${clientSummary.client.name} [${partFileName}]`.toLowerCase();
+    }
+    return 'raport clienta';
   };
 
   React.useEffect(() => {
@@ -496,6 +543,15 @@ const Summary = () => {
                 Wyświetl szczegóły
                 <BsFilePdf style={pdfIconStyles} />
               </PDFButton>
+              <CSVButton
+                data={csvReportData}
+                headers={csvFileHeaders}
+                filename={generateFileName()}
+              >
+                Pobierz plik [.csv]
+                <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />
+              </CSVButton>
+              ;
             </ButtonPanel>
           </>
         )}

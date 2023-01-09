@@ -10,7 +10,7 @@ import {
   BOOKING_STATUS,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
-  CLIENT_TYPE,
+  CLIENT_TYPE, DISCOUNT_OPTIONS,
   PAYMENTS_OPTIONS,
   SIZE_OPTIONS
 } from 'utils';
@@ -112,6 +112,7 @@ const generateBookingDetails = (
     accepted: cred.accepted || false,
     message: cred.message,
     payment: cred.payment.value,
+    discount: cred.discount,
     extraOptions: !!extraOptions.length,
     selectedOptions: extraOptions,
     archive: cred.archive || false,
@@ -194,6 +195,7 @@ const generateBookingFormDetails = (
       BUILDINGS_OPTIONS[city?.value || CITY_OPTIONS[0].value]
     ),
     payment: findSelectedOption(currentBooking.payment, PAYMENTS_OPTIONS),
+    discount : currentBooking.discount || DISCOUNT_OPTIONS[0],
     startDate: firstBookingTimes.day,
     endDate: lastBookingTimes.day,
     startHour: firstBookingTimes.startHour,

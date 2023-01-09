@@ -12,6 +12,7 @@ import {
   checkConflicts,
   CITY_OPTIONS,
   concatBookingTime,
+  DISCOUNT_OPTIONS,
   generateBookingDetails,
   generateBookingFormDetails,
   generateBuildingOptions,
@@ -42,6 +43,7 @@ import { BsFillExclamationCircleFill, BsQuestionCircleFill } from 'react-icons/b
 import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from '../ConfirmAction';
 import BookingExtraOptions from '../BookingExtraOptions';
+import Autocomplete from '../../atoms/Autocomplete';
 
 registerLocale('pl', pl);
 
@@ -155,6 +157,23 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const AutocompleteWrapper = styled(SelectWrapper)`
+  ul.react-autocomplete-input {
+    width: 190px;
+    border: ${({ theme }) => `1px solid ${theme.green}`};
+    border-radius: 10px;
+    left: unset !important;
+
+    li {
+      margin: 8px 0;
+    }
+
+    li.active {
+      background-color: ${({ theme }) => theme.green};
+    }
+  }
+`;
+
 const ButtonPanel = styled.div`
   display: flex;
   align-items: center;
@@ -226,7 +245,15 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     buildingStore: { buildings }
   } = useSelector((state: IReduxState): IReduxState => state);
 
-  const { handleSubmit, errors, control, watch, reset, getValues } = useForm<IBookingForm>({
+  const {
+    handleSubmit,
+    errors,
+    control,
+    watch,
+    reset,
+    getValues,
+    setValue
+  } = useForm<IBookingForm>({
     defaultValues: { ...cloneDeep(BOOKING_INITIAL_VALUE), ...mainState }
   });
 
@@ -755,6 +782,30 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           )}
         />
         {errors.endHour && <ErrorMsg innerText="Pole nie może być puste" />}
+        <AutocompleteWrapper>
+          <Label>Udzielony rabat</Label>
+          <Controller
+            name="discount"
+            defaultValue={DISCOUNT_OPTIONS[0]}
+            control={control}
+            rules={{ required: true }}
+            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+              <Autocomplete
+                trigger=""
+                Component="input"
+                placeholder="0%"
+                value={value}
+                options={DISCOUNT_OPTIONS}
+                onChange={onChange}
+                onSelect={(val: string) => {
+                  setValue('discount', val.split(' ')[0]);
+                }}
+                disabled={displayConfirmation}
+              />
+            )}
+          />
+          {errors.discount && <ErrorMsg innerText="Pole nie może być puste" />}
+        </AutocompleteWrapper>
       </InputContainer>
       {buildingValue.value === 'boisko-sztuczna-nawierzchnia' && (
         <BookingExtraOptions extraOptions={extraOptions} setExtraOptions={setExtraOptions} />

@@ -40,6 +40,7 @@ interface IBooking {
   extraOptions: boolean;
   selectedOptions: ISelectedExtraOptions[];
   payment: string;
+  discount: string;
   archive: boolean;
   id: string;
 

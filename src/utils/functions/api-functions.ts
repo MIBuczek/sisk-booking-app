@@ -50,6 +50,7 @@ const parseFirebaseBookingData = (doc: any) =>
     accepted: doc.data().accepted,
     message: doc.data().message,
     payment: doc.data().payment,
+    discount: doc.data().discount || '',
     archive: doc.data().archive,
     id: doc.id
   } as IBooking);

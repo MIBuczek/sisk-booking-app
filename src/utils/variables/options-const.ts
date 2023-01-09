@@ -49,4 +49,25 @@ const PAYMENTS_OPTIONS: TSelect[] = [
   { value: 'free', label: 'Bezpłatne' }
 ];
 
-export { CITY_OPTIONS, BUILDINGS_OPTIONS, CLIENT_OPTIONS, SIZE_FIELD_OPTIONS, PAYMENTS_OPTIONS };
+const DISCOUNT_OPTIONS: string[] = [
+  '0%',
+  '10%',
+  '20%',
+  '30%',
+  '40%',
+  '50%',
+  '60%',
+  '70%',
+  '80%',
+  '90%',
+  '100%'
+];
+
+export {
+  CITY_OPTIONS,
+  BUILDINGS_OPTIONS,
+  CLIENT_OPTIONS,
+  SIZE_FIELD_OPTIONS,
+  PAYMENTS_OPTIONS,
+  DISCOUNT_OPTIONS
+};

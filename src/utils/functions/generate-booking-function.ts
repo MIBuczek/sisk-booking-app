@@ -10,11 +10,12 @@ import {
   BOOKING_STATUS,
   BUILDINGS_OPTIONS,
   CITY_OPTIONS,
-  CLIENT_TYPE, DISCOUNT_OPTIONS,
+  CLIENT_TYPE,
+  DISCOUNT_OPTIONS,
   PAYMENTS_OPTIONS,
   SIZE_OPTIONS
 } from 'utils';
-import { cloneDeep, isEqual, uniqWith } from 'lodash';
+import { isEqual, uniqWith } from 'lodash';
 import { formatCalenderDate, formatCalenderHours } from './calender-functions';
 import { findSelectedOption } from './utils-functions';
 
@@ -57,6 +58,7 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
       startHour: overwriteDate(startDate, startHour),
       endHour: overwriteDate(startDate, endHour),
       comments: '',
+      participants: '',
       status: BOOKING_STATUS.INITIAL
     }
   ];
@@ -75,6 +77,7 @@ const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
       startHour: overwriteDate(day, startHour),
       endHour: overwriteDate(day, endHour),
       comments: '',
+      participants: '',
       status: BOOKING_STATUS.INITIAL
     });
     index += 1;
@@ -137,40 +140,14 @@ const generateBookingStatusDate = (
   updatedBT = {
     ...updatedBT,
     status: cred.bookingStatus.value,
-    comments: cred.bookingComments
+    comments: cred.bookingComments,
+    participants: cred.bookingParticipants
   };
   currentBooking.bookingTime.splice(subItemIndex, 1, updatedBT);
   return {
     ...currentBooking,
     bookingTime: [...currentBooking.bookingTime]
   };
-};
-
-/**
- * Function to find booking time item with initial status.
- * @param  bookingTimeItems
- * @param  lastItem
- * @returns {Object<ISingleBookingDate>}
- */
-const findCurrentBookingTimesItem = (
-  bookingTimeItems: ISingleBookingDate[],
-  lastItem: boolean
-): ISingleBookingDate => {
-  const clonedBookingTimesItems = cloneDeep(bookingTimeItems);
-
-  if (lastItem) {
-    clonedBookingTimesItems.reverse();
-  }
-
-  const initialBookingItem = clonedBookingTimesItems.find(
-    (bt) => bt.status === BOOKING_STATUS.INITIAL
-  );
-
-  if (!initialBookingItem) {
-    return { ...clonedBookingTimesItems[0] };
-  }
-
-  return { ...initialBookingItem };
 };
 
 /**
@@ -195,7 +172,7 @@ const generateBookingFormDetails = (
       BUILDINGS_OPTIONS[city?.value || CITY_OPTIONS[0].value]
     ),
     payment: findSelectedOption(currentBooking.payment, PAYMENTS_OPTIONS),
-    discount : currentBooking.discount || DISCOUNT_OPTIONS[0],
+    discount: currentBooking.discount || DISCOUNT_OPTIONS[0],
     startDate: firstBookingTimes.day,
     endDate: lastBookingTimes.day,
     startHour: firstBookingTimes.startHour,

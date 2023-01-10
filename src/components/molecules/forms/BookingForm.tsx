@@ -872,8 +872,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           <Anchor
             small
             href="https://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
-            target="_blank"
-          >
+            target="_blank">
             Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.
           </Anchor>
         </RodoWrapper>

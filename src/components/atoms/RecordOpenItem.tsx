@@ -167,8 +167,7 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
                 currentPage,
                 postPerPage
               })
-            }
-          >
+            }>
             <BsFillCheckSquareFill />
           </ListItemBtn>
         </ButtonWrapper>

@@ -66,8 +66,7 @@ const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
               key={option}
               active={value === option}
               onClick={(e) => optionsHandler(e, option)}
-              disabled={disabled}
-            >
+              disabled={disabled}>
               {option}
             </GroupBtn>
         )

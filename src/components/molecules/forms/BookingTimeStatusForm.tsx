@@ -16,6 +16,7 @@ import ConfirmAction from '../ConfirmAction';
 import Button from '../../atoms/Button';
 import { IBooking, IBookingStatusForm } from '../../../models';
 import { closeModal } from '../../../store';
+import TextInputField from '../../atoms/TextInputField';
 
 const BookingTimeStatusWrapper = styled.form`
   width: 290px;
@@ -77,7 +78,11 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
   const dispatch = useDispatch();
 
   const { handleSubmit, errors, control, reset } = useForm<IBookingStatusForm>({
-    defaultValues: { bookingStatus: BOOKING_STATUS_OPTIONS[0], bookingComments: '' }
+    defaultValues: {
+      bookingStatus: BOOKING_STATUS_OPTIONS[0],
+      bookingParticipants: '',
+      bookingComments: ''
+    }
   });
 
   /**
@@ -87,10 +92,10 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
     if (isNil(bookingTimeIndex)) {
       return;
     }
-    const { status, comments } = currentBooking.bookingTime[bookingTimeIndex];
+    const { status, participants, comments } = currentBooking.bookingTime[bookingTimeIndex];
     const bookingStatus =
       BOOKING_STATUS_OPTIONS.find((bso) => bso.value === status) || BOOKING_STATUS_OPTIONS[0];
-    reset({ bookingStatus, bookingComments: comments });
+    reset({ bookingStatus, bookingParticipants: participants, bookingComments: comments });
   };
 
   /**
@@ -166,6 +171,24 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
         )}
       />
       {errors.bookingStatus && <ErrorMsg innerText="Pole nie może być puste" />}
+      <Label>Liczba uczestników</Label>
+      <Controller
+        name="bookingParticipants"
+        defaultValue={''}
+        control={control}
+        rules={{ required: true }}
+        render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          <TextInputField
+            placeholder="Wpisz liczbe"
+            onChange={onChange}
+            onBlur={onBlur}
+            value={value}
+            disabled={!hasRights || !currentBooking.accepted || displayConfirmation}
+            style={{ width: '100%' }}
+          />
+        )}
+      />
+      {errors.bookingParticipants && <ErrorMsg innerText="Pole nie może być puste" />}
       <Label>Uwagi</Label>
       <Controller
         name="bookingComments"
@@ -199,8 +222,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             <Button
               role="button"
               onClick={onSubmit}
-              disabled={!hasRights || !currentBooking.accepted}
-            >
+              disabled={!hasRights || !currentBooking.accepted}>
               Potwierdz
             </Button>
           )}

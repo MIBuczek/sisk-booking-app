@@ -7,6 +7,7 @@ interface ISingleBookingDate {
   startHour: Date;
   endHour: Date;
   comments: string;
+  participants: string;
   status: string;
 }
 

@@ -12,6 +12,7 @@ const transformFirebaseBookingTimeData = (item: any): ISingleBookingDate => ({
   startHour: item.startHour.toDate(),
   endHour: item.endHour.toDate(),
   comments: item.comments,
+  participants: item.participants || '',
   status: item.status
 });
 

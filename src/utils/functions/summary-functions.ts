@@ -1,14 +1,22 @@
 import { cloneDeep, isEmpty } from 'lodash';
 import {
+  CSVBookingKeys,
+  CSVClientKeys,
+  CSVReportData,
   IBookedTime,
   IBooking,
+  IClient,
   IGeneralBookingDetails,
   ISingleBookingDate,
   ISummaryClientBookings,
-  TSelect
+  TSelect,
+  TBooking
 } from 'models';
 import { changeDayInDate } from './calender-functions';
 import { BOOKING_STATUS } from '../variables/booking-status-const';
+import { modelDisplayValue, transformValue } from './modeling-value-function';
+import { checkSelectedOption } from './utils-functions';
+import { csvBookingKeys, csvClientKeys } from '../variables/csv-file-headers';
 
 /**
  * Function to find all reservation assigned to client id
@@ -96,6 +104,87 @@ const generateReservationSummary = (
 };
 
 /**
+ * Function to change shape of given object by selected keys.
+ * @param  keys
+ * @param  obj
+ * */
+const changeObjectShape = (keys: string[], obj: IBooking | IClient) =>
+  keys.reduce((acc: any, key) => {
+    if (typeof obj[key] !== 'undefined') {
+      acc[key] = obj[key];
+    }
+    return acc;
+  }, {});
+
+/**
+ * Method to generate csv file report data for selected client.
+ * Report might be generated from the begging or from selected moth period.
+ * @param  currentClient
+ * @param  allClientReservations
+ * @param fromTheBeginning
+ * @param fromMonth
+ * @param toMonth
+ */
+const csvClientSummary = (
+  currentClient: IClient,
+  allClientReservations: IBooking[],
+  fromTheBeginning: boolean,
+  fromMonth: Date,
+  toMonth: Date
+): CSVReportData[] => {
+  const formattedClient = changeObjectShape(csvClientKeys, currentClient) as {
+    [x in CSVClientKeys]: string;
+  };
+
+  return allClientReservations.reduce((acc: CSVReportData[], booking) => {
+    const formattedBooking = changeObjectShape(csvBookingKeys, booking) as {
+      [x in CSVBookingKeys]: string;
+    };
+
+    booking.bookingTime.forEach((bt) => {
+      const bookingDate = new Date(bt.day);
+      const fromSelectedMonth = changeDayInDate(new Date(fromMonth), 1);
+      const toSelectedMonth = changeDayInDate(new Date(toMonth), numberOfMonthDays(toMonth));
+
+      if (
+        fromTheBeginning ||
+        (bookingDate.getTime() >= fromSelectedMonth.getTime() &&
+          bookingDate.getTime() <= toSelectedMonth.getTime())
+      ) {
+        let selectedOptions = '';
+        let startHourOption = '';
+        let endHourOption = '';
+
+        /* If extra rent option is selected then pick first from the array */
+        if (booking.extraOptions) {
+          const firstOption = booking.selectedOptions[0];
+          selectedOptions = checkSelectedOption(firstOption.options);
+          startHourOption = modelDisplayValue('', firstOption.fromHour, true) || '';
+          endHourOption = modelDisplayValue('', firstOption.toHour, true) || '';
+        }
+
+        acc.push({
+          ...bt,
+          ...formattedBooking,
+          ...formattedClient,
+          status: transformValue[bt.status],
+          payment: transformValue[formattedBooking.payment],
+          day: modelDisplayValue('', bt.startHour) || '',
+          startHour: modelDisplayValue('', bt.startHour, true) || '',
+          endHour: modelDisplayValue('', bt.endHour, true) || '',
+          cityBooking: booking.city,
+          extraOptions: modelDisplayValue('', booking.extraOptions) || '',
+          selectedOptions,
+          startHourOption,
+          endHourOption
+        });
+      }
+    });
+    return acc;
+  }, []);
+};
+
+/**
  * Function to summary all reservation selected client per city.
  * In return string with information about all reservation and also count done.
  * @param  bookingByCity
@@ -115,4 +204,9 @@ const summaryTotalBookingsNumber = (bookingByCity: IBookedTime[]): string => {
   return `${allBookingItems} rezerwacji, w tym ${doneBookingItems} zrealizowanych.`;
 };
 
-export { findAllClientReservation, generateReservationSummary, summaryTotalBookingsNumber };
+export {
+  findAllClientReservation,
+  generateReservationSummary,
+  summaryTotalBookingsNumber,
+  csvClientSummary
+};

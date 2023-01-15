@@ -84,7 +84,6 @@ const sendEmailNotification = async (
     await emailjs.send(userServiceId, userTemplateId, message, userId);
     return 200;
   } catch (err) {
-    console.log(err);
     return 400;
   }
 };

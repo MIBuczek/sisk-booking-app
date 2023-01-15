@@ -1,6 +1,6 @@
 {
   "name": "sisk-book-tool",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.5.0",
@@ -16,6 +16,7 @@
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-app-polyfill": "^2.0.0",
+    "react-autocomplete-input": "^1.0.19",
     "react-csv": "^2.2.2",
     "react-datepicker": "^3.8.0",
     "react-dom": "^17.0.2",

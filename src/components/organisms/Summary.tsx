@@ -272,7 +272,8 @@ const CSVButton = styled(CSVLink)`
   transition: 0.4s;
   background: ${({ theme }) => theme.green};
   margin-left: auto;
-
+  border-radius: 3px;
+  
   &:hover {
     box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     opacity: 0.8;
@@ -546,12 +547,10 @@ const Summary = () => {
               <CSVButton
                 data={csvReportData}
                 headers={csvFileHeaders}
-                filename={generateFileName()}
-              >
+                filename={generateFileName()}>
                 Pobierz plik [.csv]
                 <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />
               </CSVButton>
-              ;
             </ButtonPanel>
           </>
         )}

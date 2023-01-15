@@ -28,7 +28,7 @@ interface ISummaryClientBookings extends IReportBookingByCity {
 
 type CSVBookingKeys = keyof Pick<
 IBooking,
-'type' | 'payment' | 'size' | 'building' | 'message' | 'extraOptions' | 'selectedOptions'
+'type' | 'payment' | 'size' | 'building' | 'message' | 'extraOptions' | 'selectedOptions' | 'discount'
 >;
 
 type CSVClientKeys = keyof Pick<

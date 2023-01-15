@@ -10,7 +10,6 @@ import {
   ISingleBookingDate,
   ISummaryClientBookings,
   TSelect,
-  TBooking
 } from 'models';
 import { changeDayInDate } from './calender-functions';
 import { BOOKING_STATUS } from '../variables/booking-status-const';
@@ -112,6 +111,8 @@ const changeObjectShape = (keys: string[], obj: IBooking | IClient) =>
   keys.reduce((acc: any, key) => {
     if (typeof obj[key] !== 'undefined') {
       acc[key] = obj[key];
+    } else {
+      acc[key] = ''
     }
     return acc;
   }, {});

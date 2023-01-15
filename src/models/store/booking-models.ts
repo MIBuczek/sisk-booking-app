@@ -7,6 +7,7 @@ interface ISingleBookingDate {
   startHour: Date;
   endHour: Date;
   comments: string;
+  participants: string;
   status: string;
 }
 
@@ -40,6 +41,7 @@ interface IBooking {
   extraOptions: boolean;
   selectedOptions: ISelectedExtraOptions[];
   payment: string;
+  discount: string;
   archive: boolean;
   id: string;
 

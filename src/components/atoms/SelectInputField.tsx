@@ -11,6 +11,16 @@ export const SelectWrapper = styled.div`
   margin: 10px 0;
   min-width: 50%;
 
+  ul.react-autocomplete-input {
+    width: 190px;
+    border: 1px solid #afbf36;
+    border-radius: 10px;
+
+    li.active {
+      background-color: ${({ theme }) => theme.darkGrey};
+    }
+  }
+
   @media (max-width: 1400px) {
     min-width: 45%;
     margin: 10px;

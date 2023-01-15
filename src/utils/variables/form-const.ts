@@ -47,6 +47,7 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
   accepted: false,
   message: '',
   payment: { value: 'transfer', label: 'Przelew' },
+  discount: '0%',
   archive: false
 };
 

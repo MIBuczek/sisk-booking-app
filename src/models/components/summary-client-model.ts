@@ -1,11 +1,10 @@
 import { IBooking, ISingleBookingDate } from 'models/store/booking-models';
 import { IClient } from 'models/store/client-models';
 import { IClientForm } from '../forms/client-form-model';
-import { ISelectedExtraOptions } from '../forms/booking-extra-options-models';
 
 type IGeneralBookingDetails = Pick<
 IBooking,
-'payment' | 'message' | 'extraOptions' | 'selectedOptions' | 'size' | 'building'
+'payment' | 'message' | 'extraOptions' | 'selectedOptions' | 'size' | 'building' | 'discount'
 >;
 
 interface IBookedTime {
@@ -28,7 +27,14 @@ interface ISummaryClientBookings extends IReportBookingByCity {
 
 type CSVBookingKeys = keyof Pick<
 IBooking,
-'type' | 'payment' | 'size' | 'building' | 'message' | 'extraOptions' | 'selectedOptions' | 'discount'
+| 'type'
+| 'payment'
+| 'size'
+| 'building'
+| 'message'
+| 'extraOptions'
+| 'selectedOptions'
+| 'discount'
 >;
 
 type CSVClientKeys = keyof Pick<

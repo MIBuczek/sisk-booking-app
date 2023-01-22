@@ -15,7 +15,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
-    "object-curly-spacing": 0,
+    "object-curly-spacing": "off",
     "import/no-cycle": 0,
     "no-unused-vars": 0,
     "max-len": [

@@ -273,7 +273,7 @@ const CSVButton = styled(CSVLink)`
   background: ${({ theme }) => theme.green};
   margin-left: auto;
   border-radius: 3px;
-  
+
   &:hover {
     box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     opacity: 0.8;
@@ -350,6 +350,7 @@ const Summary = () => {
     setCSVReportData(
       csvClientSummary(currentClient, allClientReservations, fromTheBeginning, fromMonth, toMonth)
     );
+
     setIsSummaryGenerated(true);
 
     setTimeout(() => {
@@ -392,10 +393,10 @@ const Summary = () => {
     if (clientSummary.client) {
       const partFileName = fromTheBeginning
         ? 'od początku'
-        : `${fromMonth.getMonth()}-${toMonth.getMonth()}.${toMonth.getFullYear()}`;
-      return `${clientSummary.client.name} [${partFileName}]`.toLowerCase();
+        : `${fromMonth.getMonth() + 1}-${toMonth.getMonth() + 1}.${toMonth.getFullYear()}`;
+      return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
     }
-    return 'raport clienta';
+    return 'raport clienta.csv';
   };
 
   React.useEffect(() => {
@@ -541,7 +542,7 @@ const Summary = () => {
             </DetailsParagraph>
             <ButtonPanel>
               <PDFButton type="button" onClick={generatePdfReport}>
-                Wyświetl szczegóły
+                Wyświetl szczegóły [.pdf]
                 <BsFilePdf style={pdfIconStyles} />
               </PDFButton>
               <CSVButton

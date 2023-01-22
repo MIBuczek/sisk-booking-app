@@ -297,7 +297,8 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
           extraOptions,
           message,
           size,
-          building
+          building,
+          discount = ''
         } = generalBookingDetails;
 
         const selected_option_list = document.createElement('ul');
@@ -322,7 +323,8 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
         booking_general_details_wrapper.innerHTML = `
                 <p>
                 Budynek : <span>${transformValue[building]}</span>
-                Wynajmowana powierzchnia : <span>${size}</span> <br>
+                Wynajmowana powierzchnia : <span>${size}</span> 
+                Udzielony rabat : <span>${discount || '0%'}</span><br>
                 Metoda płatności : <span>${transformValue[payment]}</span>
                 Dodatkowe Opcje : <span>${extraOptions ? 'Tak' : 'Nie'}</span>
                 </p>
@@ -335,25 +337,29 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
 
         const booking_time_detail_list = document.createElement('ul');
 
-        bookingTimeDetails.forEach(({ day, startHour, endHour, status, comments }) => {
-          const booking_detail_list_item = document.createElement('li');
-          const detail_paragraph_one = document.createElement('p');
-          const detail_paragraph_two = document.createElement('p');
+        bookingTimeDetails.forEach(
+          ({ day, startHour, endHour, status, participants = '', comments }) => {
+            const booking_detail_list_item = document.createElement('li');
+            const detail_paragraph_one = document.createElement('p');
+            const detail_paragraph_two = document.createElement('p');
 
-          detail_paragraph_one.innerHTML = `
+            detail_paragraph_one.innerHTML = `
                  Dzień : <span>${formatDate(day)}</span>
                  Godzina rozpoczęcia : <span>${formatTime(startHour)}</span>
                  Godzina zakończenia : <span>${formatTime(endHour)}</span>
-                 Status : <span>${transformValue[status]}</span>`;
+                 Liczba uczestników : <span>${participants || '[Brak]'}</span>
+                 Status : <span>${transformValue[status]}</span>
+                 `;
 
-          detail_paragraph_two.innerHTML = `Uwagi :
+            detail_paragraph_two.innerHTML = `Uwagi :
             <span class="comments">
             ${comments.length ? comments : '[Brak]'}
             </span>`;
 
-          booking_detail_list_item.append(detail_paragraph_one, detail_paragraph_two);
-          booking_time_detail_list.appendChild(booking_detail_list_item);
-        });
+            booking_detail_list_item.append(detail_paragraph_one, detail_paragraph_two);
+            booking_time_detail_list.appendChild(booking_detail_list_item);
+          }
+        );
 
         html_wrapper_element.append(booking_general_details_wrapper, booking_time_detail_list);
       });

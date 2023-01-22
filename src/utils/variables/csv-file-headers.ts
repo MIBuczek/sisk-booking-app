@@ -1,6 +1,15 @@
 import { ICSVHeaders } from '../../models';
 
-const csvBookingKeys = ['type', 'payment', 'size', 'building', 'message', 'building', 'city', 'discount' ];
+const csvBookingKeys = [
+  'type',
+  'payment',
+  'size',
+  'building',
+  'message',
+  'building',
+  'city',
+  'discount'
+];
 
 const csvClientKeys = [
   'name',

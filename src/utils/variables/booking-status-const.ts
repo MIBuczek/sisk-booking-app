@@ -23,6 +23,7 @@ const BOOKING_STATUS_OPTIONS: TSelect[] = [
 
 const INITIAL_BOOKING_STATUS_FORM: IBookingStatusForm = {
   bookingStatus: BOOKING_STATUS_OPTIONS[0],
+  bookingParticipants: '',
   bookingComments: ''
 };
 

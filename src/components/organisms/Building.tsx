@@ -187,9 +187,9 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
     if (resp === 200) {
       dispatch(openModal(MODAL_TYPES.SUCCESS, 'Wiadomość została wysłana pomyślnie'));
     } else {
-      dispatch(
-        openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie udało sie wysłać Twojej wiadomości')
-      );
+      // dispatch(
+      //   openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie udało sie wysłać Twojej wiadomości')
+      // );
     }
     initialState();
   };

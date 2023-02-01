@@ -77,6 +77,12 @@ const CommentsSpan = styled(RecordDetailSpan)`
   }
 `;
 
+const ParticipantSpan = styled(CommentsSpan)`
+  width: auto;
+  border: none;
+  padding-bottom: 10px !important;
+`;
+
 interface IProps {
   mainIndex: number;
   property: string;
@@ -167,12 +173,15 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
                 currentPage,
                 postPerPage
               })
-            }
-          >
+            }>
             <BsFillCheckSquareFill />
           </ListItemBtn>
         </ButtonWrapper>
       )}
+      <ParticipantSpan>
+        <strong>Liczba uczestników: </strong>
+        {singleBooking.participants || '[Brak informacji]'}
+      </ParticipantSpan>
       <CommentsSpan className={`${lastRecord ? 'lastRecord' : ''}`}>
         <strong>Komentarz: </strong>
         {modelDisplayValue(property, singleBooking.comments)}

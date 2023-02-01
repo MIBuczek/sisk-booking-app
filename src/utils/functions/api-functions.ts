@@ -12,6 +12,7 @@ const transformFirebaseBookingTimeData = (item: any): ISingleBookingDate => ({
   startHour: item.startHour.toDate(),
   endHour: item.endHour.toDate(),
   comments: item.comments,
+  participants: item.participants || '',
   status: item.status
 });
 
@@ -50,6 +51,7 @@ const parseFirebaseBookingData = (doc: any) =>
     accepted: doc.data().accepted,
     message: doc.data().message,
     payment: doc.data().payment,
+    discount: doc.data().discount || '',
     archive: doc.data().archive,
     id: doc.id
   } as IBooking);

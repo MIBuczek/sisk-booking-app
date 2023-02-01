@@ -15,11 +15,15 @@ const transformValue: { [x: string]: string } = {
   'swieta-katarzyna': 'Święta Katarzyna',
   'zerniki-wroclawskie': 'Żerniki Wrocławskie',
   'boisko-sztuczna-nawierzchnia': 'Boisko ze sztuczną nawierzchnią',
+  'boisko-trawiaste-stadionie-la': 'Boisko trawiaste na stadionie LA',
+  'bieznia-na-stadionie-la': 'Bieżnia na stadionie LA',
   'sala-fitness': 'Sala fitness',
   'hala-sportowa': 'Hala sportowa',
-  'boisko-trawiaste-stadionie-la': 'Boisko trawiaste na stadionie LA',
+  orlik: 'Orlik',
   cash: 'Gotówka',
-  invoice: 'Faktura'
+  invoice: 'Faktura',
+  transfer: 'Przelew',
+  free: 'Bezpłatne'
 };
 
 const propertyToModel: string[] = ['city', 'building'];

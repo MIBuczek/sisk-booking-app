@@ -16,7 +16,7 @@ class Collapse extends Component<IProps | any> {
   }
 
   /**
-   * Toggler function to open or close component instances.
+   * Toggle function to open or close component instances.
    */
   toggle = () => {
     this.setState((prevState: IProps) => ({

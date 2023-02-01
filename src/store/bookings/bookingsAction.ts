@@ -188,7 +188,6 @@ export const updateBooking = (
 ): Promise<void> => {
   try {
     await db.collection('bookings').doc(bookingData.id).update(bookingData);
-
     const {
       bookingStore: { bookings },
       buildingStore: { buildings }
@@ -270,7 +269,7 @@ export const deleteBooking = (id: string) => async (
   }
 };
 
-/*
+/**
  * Booking store action to updated booking state by conflicted bookings.
  */
 export const updateBookingConflicts = (conflictedBookings: IBooking[]) => async (
@@ -281,7 +280,7 @@ export const updateBookingConflicts = (conflictedBookings: IBooking[]) => async 
   dispatch(getBookingConflicts(bookings, conflictedBookings));
 };
 
-/*
+/**
  * Booking store action to clear booking state by conflicted bookings.
  */
 export const clearBookingConflicts = () => async (

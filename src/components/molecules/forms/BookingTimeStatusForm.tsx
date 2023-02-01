@@ -45,6 +45,16 @@ const BookingTimeStatusWrapper = styled.form`
   }
 `;
 
+const ParticipantInput = styled(TextInputField)`
+  width: 290px;
+  text-align: left;
+
+  &::placeholder {
+    color: #b9b8b8;
+    text-align: left;
+  }
+`;
+
 const ButtonPanel = styled.div`
   display: flex;
   align-items: center;
@@ -178,13 +188,12 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
         control={control}
         rules={{ required: true }}
         render={({ onChange, onBlur, value }: ControllerRenderProps) => (
-          <TextInputField
+          <ParticipantInput
             placeholder="Wpisz liczbe"
             onChange={onChange}
             onBlur={onBlur}
             value={value}
             disabled={!hasRights || !currentBooking.accepted || displayConfirmation}
-            style={{ width: '100%' }}
           />
         )}
       />

@@ -9,8 +9,7 @@ import {
   IGeneralBookingDetails,
   ISingleBookingDate,
   ISummaryClientBookings,
-  TSelect,
-  TBooking
+  TSelect
 } from 'models';
 import { changeDayInDate } from './calender-functions';
 import { BOOKING_STATUS } from '../variables/booking-status-const';
@@ -63,7 +62,16 @@ const generateReservationSummary = (
   const initialAllReservationsState = cloneDeep(initialState);
   allClientReservations.forEach((r) => {
     if (Array.isArray(initialAllReservationsState[`${r.city}`])) {
-      const { payment, extraOptions, selectedOptions, message, bookingTime, size, building } = r;
+      const {
+        payment,
+        extraOptions,
+        selectedOptions,
+        message,
+        bookingTime,
+        size,
+        building,
+        discount = ''
+      } = r;
 
       /* Create booking time details information */
       const bookingTimeDetails = bookingTime.reduce((acc: ISingleBookingDate[], bt) => {
@@ -87,6 +95,7 @@ const generateReservationSummary = (
       /* Create general booking information */
       const generalBookingDetails: IGeneralBookingDetails = {
         payment,
+        discount,
         extraOptions,
         selectedOptions,
         message,
@@ -109,9 +118,11 @@ const generateReservationSummary = (
  * @param  obj
  * */
 const changeObjectShape = (keys: string[], obj: IBooking | IClient) =>
-  keys.reduce((acc: any, key) => {
+  keys.reduce((acc: { [x: keyof IBooking | keyof IClient]: string }, key) => {
     if (typeof obj[key] !== 'undefined') {
-      acc[key] = obj[key];
+      acc[key] = String(obj[key]);
+    } else {
+      acc[key] = '';
     }
     return acc;
   }, {});

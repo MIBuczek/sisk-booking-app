@@ -1,6 +1,15 @@
 import { ICSVHeaders } from '../../models';
 
-const csvBookingKeys = ['type', 'payment', 'size', 'building', 'message', 'building', 'city'];
+const csvBookingKeys = [
+  'type',
+  'payment',
+  'size',
+  'building',
+  'message',
+  'building',
+  'city',
+  'discount'
+];
 
 const csvClientKeys = [
   'name',
@@ -27,9 +36,11 @@ const csvFileHeaders: ICSVHeaders[] = [
   { label: 'Budynek', key: 'building' },
   { label: 'Wynajmowana powierzchnia', key: 'size' },
   { label: 'Metoda płatności', key: 'payment' },
+  { label: 'Udzielony Rabat', key: 'discount' },
   { label: 'Data', key: 'day' },
   { label: 'Godzina rozpoczęcia', key: 'startHour' },
   { label: 'Godzina zakończenia', key: 'endHour' },
+  { label: 'Liczba uczestników', key: 'participants' },
   { label: 'Status', key: 'status' },
   { label: 'Dodatkowe opcje', key: 'extraOptions' },
   { label: 'Wybrane Opcje', key: 'selectedOptions' },

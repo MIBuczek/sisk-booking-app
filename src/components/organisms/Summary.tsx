@@ -548,7 +548,8 @@ const Summary = () => {
               <CSVButton
                 data={csvReportData}
                 headers={csvFileHeaders}
-                filename={generateFileName()}>
+                filename={generateFileName()}
+                separator=";">
                 Pobierz plik [.csv]
                 <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />
               </CSVButton>

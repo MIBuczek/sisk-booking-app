@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import emailjs from '@emailjs/browser';
-import {IBooking, ISingleBookingDate} from 'models';
+import { IBooking, ISingleBookingDate } from 'models';
 import {
   ADMIN_TEMPLATE_BOOKING_ID,
   USER_ID,
   USER_SERVICE_ID,
   USER_TEMPLATE_BOOKING_ID
 } from 'utils/variables/email-service-data';
-import {formatDate, formatTime} from './calender-functions';
-import {modelDisplayValue} from './modeling-value-function';
+import { formatDate, formatTime } from './calender-functions';
+import { modelDisplayValue } from './modeling-value-function';
 
 /**
  * Function to flat bookingTime array into string data with all booking information.
@@ -75,10 +75,10 @@ const emailUserBodyBooking = (booking: IBooking) => {
  * @returns {Promise<number>}
  */
 const sendEmailNotification = async (
-    userServiceId: string,
-    userTemplateId: string,
-    message: any,
-    userId: string
+  userServiceId: string,
+  userTemplateId: string,
+  message: any,
+  userId: string
 ): Promise<number> => {
   try {
     await emailjs.send(userServiceId, userTemplateId, message, userId);
@@ -96,20 +96,20 @@ const sendEmailNotification = async (
  * @returns {Promise<number>}
  */
 const storeEmailNotification = (
-    bookingData: IBooking,
-    isAdmin: boolean,
-    buildingEmail: string = ''
+  bookingData: IBooking,
+  isAdmin: boolean,
+  buildingEmail: string = ''
 ): Promise<number> => {
   if (isAdmin) {
     return sendEmailNotification(
-        USER_SERVICE_ID,
-        ADMIN_TEMPLATE_BOOKING_ID,
-        emailAdminBodyBooking(bookingData, buildingEmail),
-        USER_ID
+      USER_SERVICE_ID,
+      ADMIN_TEMPLATE_BOOKING_ID,
+      emailAdminBodyBooking(bookingData, buildingEmail),
+      USER_ID
     );
   }
   return sendEmailNotification(
-      USER_SERVICE_ID,
+    USER_SERVICE_ID,
     USER_TEMPLATE_BOOKING_ID,
     emailUserBodyBooking(bookingData),
     USER_ID

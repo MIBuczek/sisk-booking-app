@@ -61,13 +61,16 @@ const StyledCheckbox = styled.div<CheckboxInput>`
   border-radius: 3px;
   transition: all 150ms;
   cursor: pointer;
+
   ${HiddenCheckbox}:focus + & {
     box-shadow: 0 0 0 3px pink;
   }
+
   ${Icon} {
     visibility: ${({ checked, disabled }) =>
       (checked && disabled) || checked ? 'visible' : 'hidden'};
   }
+
   ${({ checked, disabled, isAccepted }) => {
     if (disabled) {
       return disabledStyles;

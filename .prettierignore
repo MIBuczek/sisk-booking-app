@@ -1,4 +1,9 @@
-build
+build/*
+public/*
+
+src/react-app-env.d.ts
+src/serviceWorker.ts
+
 .eslint
 .eslintignore
 .prettierrc

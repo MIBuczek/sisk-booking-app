@@ -1,6 +1,6 @@
 {
   "name": "sisk-book-tool",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.5.0",

@@ -24,7 +24,7 @@ import { csvBookingKeys, csvClientKeys } from '../variables/csv-file-headers';
  * @returns {Array<IBooking>}
  */
 const findAllClientReservation = (bookings: IBooking[], clientValue: TSelect): IBooking[] =>
-  bookings.filter((b) => b.clientId === clientValue.value);
+  bookings.filter((b) => b.clientId === clientValue.value && b.accepted);
 
 /**
  * Function to return correct number of day in month
@@ -212,7 +212,7 @@ const csvAllClientSummary = (
   toMonth: Date
 ): CSVReportData[] =>
   allClients.reduce((acc: CSVReportData[], client) => {
-    const clientBookings = allBookings.filter((cb) => cb.clientId === client.id);
+    const clientBookings = allBookings.filter((cb) => cb.clientId === client.id && cb.accepted);
     const currentClientReport = csvClientSummary(
       client,
       clientBookings,

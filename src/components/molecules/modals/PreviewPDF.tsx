@@ -21,7 +21,6 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
       <html lang="pl">
       <head>
         <meta charset="utf-8" />
-        <link rel="icon" href="%PUBLIC_URL%/fav.ico" />
         <title>Raport Rezerwacji</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -174,7 +173,7 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
           
           .general-detail-info > p > span {
             display: inline-block;
-            margin: 0rem 3.5rem 0 .5rem;
+            margin: 0 3.5rem 0 .5rem;
             word-break: break-word;
             line-height: 1.2rem;
           }

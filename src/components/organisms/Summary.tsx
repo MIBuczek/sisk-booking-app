@@ -1,14 +1,14 @@
 import * as React from 'react';
-import {DataPickerField} from 'components/atoms/DatapickerField';
+import { DataPickerField } from 'components/atoms/DatapickerField';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
-import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/SelectInputField';
-import {CSVReportData, IReduxState, ISummaryClientBookings, TSelect} from 'models';
-import {Controller, ControllerRenderProps, useForm} from 'react-hook-form';
-import {useSelector} from 'react-redux';
+import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
+import { CSVReportData, IReduxState, ISummaryClientBookings, TSelect } from 'models';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import pl from 'date-fns/locale/pl';
-import {registerLocale} from 'react-datepicker';
+import { registerLocale } from 'react-datepicker';
 import Button from 'components/atoms/Button';
 import {
   csvAllClientSummary,
@@ -21,17 +21,17 @@ import {
   RECORDS_CLIENTS_ROW_DETAILS,
   summaryTotalBookingsNumber
 } from 'utils';
-import {cloneDeep, isEmpty} from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
-import {fadeInLeft} from 'style/animation';
+import { fadeInLeft } from 'style/animation';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import {BsFileEarmarkRuledFill, BsFilePdf} from 'react-icons/bs';
-import {CSVLink} from 'react-csv';
+import { BsFileEarmarkRuledFill, BsFilePdf } from 'react-icons/bs';
+import { CSVLink } from 'react-csv';
 import Checkbox from '../atoms/Checkbox';
-import {printPDFReport} from '../molecules/modals/PreviewPDF';
-import {LoaderDots} from '../molecules/Loading';
+import { printPDFReport } from '../molecules/modals/PreviewPDF';
+import { LoaderDots } from '../molecules/Loading';
 import ErrorMsg from '../atoms/ErrorMsg';
-import {csvFileHeaders} from '../../utils/variables/csv-file-headers';
+import { csvFileHeaders } from '../../utils/variables/csv-file-headers';
 
 registerLocale('pl', pl);
 
@@ -513,13 +513,13 @@ const Summary = () => {
         <SelectWrapper>
           <Label>Generuj raport wszystkich klientów</Label>
           <CSVAllClients
-              type="button"
-              data={generateReportForAllClients()}
-              headers={csvFileHeaders}
-              filename={generateFileName(true)}
-              separator=";">
+            type="button"
+            data={generateReportForAllClients()}
+            headers={csvFileHeaders}
+            filename={generateFileName(true)}
+            separator=";">
             Pobierz raport [.csv]
-            <BsFileEarmarkRuledFill style={{...pdfIconStyles, color: '#FFF'}}/>
+            <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />
           </CSVAllClients>
         </SelectWrapper>
         <SummaryBtn type="button" onClick={generateClientSummary}>

@@ -410,7 +410,7 @@ const Summary = () => {
 
     if (!fromTheBeginning && fromMonth && toMonth) {
       partFileName = `${fromMonth.getMonth() + 1}-${
-          toMonth.getMonth() + 1
+        toMonth.getMonth() + 1
       }.${toMonth.getFullYear()}`;
     }
 

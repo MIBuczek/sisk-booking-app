@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import emailjs from '@emailjs/browser';
-import { IBooking, ISingleBookingDate } from 'models';
+import {IBooking, ISingleBookingDate} from 'models';
 import {
+  ADMIN_TEMPLATE_BOOKING_ID,
   USER_ID,
   USER_SERVICE_ID,
-  USER_TEMPLATE_BOOKING_ID,
-  ADMIN_TEMPLATE_BOOKING_ID
+  USER_TEMPLATE_BOOKING_ID
 } from 'utils/variables/email-service-data';
-import { formatDate, formatTime } from './calender-functions';
-import { modelDisplayValue } from './modeling-value-function';
+import {formatDate, formatTime} from './calender-functions';
+import {modelDisplayValue} from './modeling-value-function';
 
 /**
  * Function to flat bookingTime array into string data with all booking information.
@@ -33,12 +33,12 @@ const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
   return {
     building: modelDisplayValue('building', building),
     city: modelDisplayValue('city', city),
+    payment: modelDisplayValue('payment', payment),
     person,
     club,
     email,
     phone,
     parsedBookingTime,
-    payment,
     message,
     buildingEmail
   };
@@ -56,11 +56,11 @@ const emailUserBodyBooking = (booking: IBooking) => {
   return {
     building: modelDisplayValue('building', building),
     city: modelDisplayValue('city', city),
+    payment: modelDisplayValue('payment', payment),
     person,
     club,
     email,
     phone,
-    payment,
     parsedBookingTime,
     message
   };
@@ -72,14 +72,14 @@ const emailUserBodyBooking = (booking: IBooking) => {
  * @param userTemplateId
  * @param message
  * @param userId
- * @returns {Promise<EmailJSResponseStatus>}
+ * @returns {Promise<number>}
  */
 const sendEmailNotification = async (
-  userServiceId: string,
-  userTemplateId: string,
-  message: any,
-  userId: string
-) => {
+    userServiceId: string,
+    userTemplateId: string,
+    message: any,
+    userId: string
+): Promise<number> => {
   try {
     await emailjs.send(userServiceId, userTemplateId, message, userId);
     return 200;
@@ -93,23 +93,23 @@ const sendEmailNotification = async (
  * @param bookingData
  * @param isAdmin
  * @param buildingEmail
- * @returns {Promise<EmailJSResponseStatus>}
+ * @returns {Promise<number>}
  */
 const storeEmailNotification = (
-  bookingData: IBooking,
-  isAdmin: boolean,
-  buildingEmail: string = ''
-) => {
+    bookingData: IBooking,
+    isAdmin: boolean,
+    buildingEmail: string = ''
+): Promise<number> => {
   if (isAdmin) {
     return sendEmailNotification(
-      USER_SERVICE_ID,
-      ADMIN_TEMPLATE_BOOKING_ID,
-      emailAdminBodyBooking(bookingData, buildingEmail),
-      USER_ID
+        USER_SERVICE_ID,
+        ADMIN_TEMPLATE_BOOKING_ID,
+        emailAdminBodyBooking(bookingData, buildingEmail),
+        USER_ID
     );
   }
   return sendEmailNotification(
-    USER_SERVICE_ID,
+      USER_SERVICE_ID,
     USER_TEMPLATE_BOOKING_ID,
     emailUserBodyBooking(bookingData),
     USER_ID

@@ -196,6 +196,35 @@ const csvClientSummary = (
 };
 
 /**
+ * Method to generate csv file report data for all database clients.
+ * Report might be generated from the begging or from selected moth period.
+ * @param  allClients
+ * @param  allBookings
+ * @param fromTheBeginning
+ * @param fromMonth
+ * @param toMonth
+ */
+const csvAllClientSummary = (
+  allClients: IClient[],
+  allBookings: IBooking[],
+  fromTheBeginning: boolean,
+  fromMonth: Date,
+  toMonth: Date
+): CSVReportData[] =>
+  allClients.reduce((acc: CSVReportData[], client) => {
+    const clientBookings = allBookings.filter((cb) => cb.clientId === client.id);
+    const currentClientReport = csvClientSummary(
+      client,
+      clientBookings,
+      fromTheBeginning,
+      fromMonth,
+      toMonth
+    );
+    acc.push(...currentClientReport);
+    return acc;
+  }, []);
+
+/**
  * Function to summary all reservation selected client per city.
  * In return string with information about all reservation and also count done.
  * @param  bookingByCity
@@ -219,5 +248,6 @@ export {
   findAllClientReservation,
   generateReservationSummary,
   summaryTotalBookingsNumber,
-  csvClientSummary
+  csvClientSummary,
+  csvAllClientSummary
 };

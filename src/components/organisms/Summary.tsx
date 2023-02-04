@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { DataPickerField } from 'components/atoms/DatapickerField';
+import {DataPickerField} from 'components/atoms/DatapickerField';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
-import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
-import { CSVReportData, IReduxState, ISummaryClientBookings, TSelect } from 'models';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/SelectInputField';
+import {CSVReportData, IReduxState, ISummaryClientBookings, TSelect} from 'models';
+import {Controller, ControllerRenderProps, useForm} from 'react-hook-form';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import pl from 'date-fns/locale/pl';
-import { registerLocale } from 'react-datepicker';
+import {registerLocale} from 'react-datepicker';
 import Button from 'components/atoms/Button';
 import {
+  csvAllClientSummary,
   csvClientSummary,
   findAllClientReservation,
   generateReservationSummary,
@@ -20,17 +21,17 @@ import {
   RECORDS_CLIENTS_ROW_DETAILS,
   summaryTotalBookingsNumber
 } from 'utils';
-import { cloneDeep, isEmpty } from 'lodash';
+import {cloneDeep, isEmpty} from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
-import { fadeInLeft } from 'style/animation';
+import {fadeInLeft} from 'style/animation';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import { BsFilePdf, BsFileEarmarkRuledFill } from 'react-icons/bs';
-import { CSVLink } from 'react-csv';
+import {BsFileEarmarkRuledFill, BsFilePdf} from 'react-icons/bs';
+import {CSVLink} from 'react-csv';
 import Checkbox from '../atoms/Checkbox';
-import { printPDFReport } from '../molecules/modals/PreviewPDF';
-import { LoaderDots } from '../molecules/Loading';
+import {printPDFReport} from '../molecules/modals/PreviewPDF';
+import {LoaderDots} from '../molecules/Loading';
 import ErrorMsg from '../atoms/ErrorMsg';
-import { csvFileHeaders } from '../../utils/variables/csv-file-headers';
+import {csvFileHeaders} from '../../utils/variables/csv-file-headers';
 
 registerLocale('pl', pl);
 
@@ -271,13 +272,17 @@ const CSVButton = styled(CSVLink)`
   text-decoration: none;
   transition: 0.4s;
   background: ${({ theme }) => theme.green};
-  margin-left: auto;
   border-radius: 3px;
 
   &:hover {
     box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     opacity: 0.8;
   }
+`;
+
+const CSVAllClients = styled(CSVButton)`
+  background: ${({ theme }) => theme.middleGray};
+  margin: 0;
 `;
 
 const LoadingWrapper = styled.div`
@@ -320,7 +325,7 @@ const Summary = () => {
    */
   const generateClientSummary = handleSubmit((): void => {
     setIsGenerating(true);
-    if (!clientValue.value || !fromMonth || !clients) {
+    if (!clientValue?.value || !fromMonth || !clients) {
       setIsSummaryGenerated(false);
       setIsGenerating(false);
       return;
@@ -359,12 +364,19 @@ const Summary = () => {
   });
 
   /**
+   * Function to generate all clients booking report for csv file.
+   */
+  const generateReportForAllClients = (): CSVReportData[] =>
+    csvAllClientSummary(clients, bookings, fromTheBeginning, fromMonth, toMonth);
+
+  /**
    * Function to restore initial status.
    */
   const clearSummary = (): void => {
     setClientSummary(cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS));
     setIsSummaryGenerated(false);
     setIsGenerating(false);
+    setCSVReportData([]);
     reset({
       client: { label: '', value: '' },
       fromMonth: new Date(),
@@ -389,19 +401,29 @@ const Summary = () => {
   /**
    * Function to generate csv file name base on current client name and selected month.
    */
-  const generateFileName = (): string => {
-    if (clientSummary.client) {
-      const partFileName = fromTheBeginning
-        ? 'od początku'
-        : `${fromMonth.getMonth() + 1}-${toMonth.getMonth() + 1}.${toMonth.getFullYear()}`;
-      return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
+  const generateFileName = (forAll: boolean = false): string => {
+    if (!clientSummary.client) {
+      return 'Raport clienta.csv';
     }
-    return 'raport clienta.csv';
+
+    let partFileName = 'od początku';
+
+    if (!fromTheBeginning && fromMonth && toMonth) {
+      partFileName = `${fromMonth.getMonth() + 1}-${
+          toMonth.getMonth() + 1
+      }.${toMonth.getFullYear()}`;
+    }
+
+    if (forAll) {
+      return `Wszyscy klienci [${partFileName}].csv`.toLowerCase();
+    }
+
+    return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
   };
 
   React.useEffect(() => {
     updateToMonthDataInForm();
-  }, [fromMonth]);
+  }, [fromMonth, fromTheBeginning]);
 
   return (
     <SummaryWrapper>
@@ -488,10 +510,22 @@ const Summary = () => {
             )}
           />
         </InputWrapper>
+        <SelectWrapper>
+          <Label>Generuj raport wszystkich klientów</Label>
+          <CSVAllClients
+              type="button"
+              data={generateReportForAllClients()}
+              headers={csvFileHeaders}
+              filename={generateFileName(true)}
+              separator=";">
+            Pobierz raport [.csv]
+            <BsFileEarmarkRuledFill style={{...pdfIconStyles, color: '#FFF'}}/>
+          </CSVAllClients>
+        </SelectWrapper>
         <SummaryBtn type="button" onClick={generateClientSummary}>
           Generuj podsumowanie
         </SummaryBtn>
-        <SummaryBtn type="button" onClick={clearSummary} secondary>
+        <SummaryBtn type="button" onClick={clearSummary} tertiary>
           Wyczyść
         </SummaryBtn>
       </SummaryInputContent>
@@ -548,7 +582,7 @@ const Summary = () => {
               <CSVButton
                 data={csvReportData}
                 headers={csvFileHeaders}
-                filename={generateFileName()}
+                filename={generateFileName(false)}
                 separator=";">
                 Pobierz plik [.csv]
                 <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />

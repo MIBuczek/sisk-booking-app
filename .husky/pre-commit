@@ -3,3 +3,4 @@
 
 npx tsc
 npx lint-staged
+git add .

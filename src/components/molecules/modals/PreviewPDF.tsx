@@ -275,8 +275,8 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
       const paragraph_client = document.createElement('p');
       paragraph_client.innerHTML = `
       <strong>${RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]}</strong> : ${
-  modelDisplayValue(prop, client[prop]) || ''
-}`;
+        modelDisplayValue(prop, client[prop]) || ''
+      }`;
 
       const wrapper = document.createElement('div');
       wrapper.appendChild(paragraph_client);

@@ -29,9 +29,9 @@ const GroupBtn = styled(Button)<GroupBtnProps>`
 
   &:disabled {
     background: ${({ theme, active, disabled }) =>
-      active && disabled ? theme.darkGrey : theme.middleGray};
+    active && disabled ? theme.darkGrey : theme.middleGray};
     color: ${({ theme, active, disabled }) =>
-      active && disabled ? theme.lightGray : theme.darkGrey};
+    active && disabled ? theme.lightGray : theme.darkGrey};
   }
 
   &.itemPerPageItem {
@@ -60,7 +60,7 @@ const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
   <ButtonGroupWrapper className={`${itemPerPage ? 'itemPerPageContainer' : ''}`}>
     {!isEmpty(options)
       ? options.map(
-          (option): JSX.Element => (
+        (option): JSX.Element => (
             <GroupBtn
               className={`${itemPerPage ? 'itemPerPageItem' : ''}`}
               key={option}
@@ -69,8 +69,8 @@ const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
               disabled={disabled}>
               {option}
             </GroupBtn>
-          )
         )
+      )
       : null}
   </ButtonGroupWrapper>
 );

@@ -136,6 +136,25 @@ const checkIndex = (index: number | null): number => {
 const checkIsLastIndex = (currentIndex: number, arrayLength: number): boolean =>
   currentIndex === arrayLength;
 
+/**
+ * Function to generate Date of last day of selected month.
+ * @param {Date}date
+ * @return Date
+ */
+const makeLastDayOfMonth = (date: Date): Date => {
+  let fullYear = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = 0;
+
+  if (month > 11) {
+    fullYear += 1;
+    month = 0;
+    day = 31;
+  }
+
+  return new Date(fullYear, month, day);
+};
+
 export {
   selectSizeFieldOptions,
   selectClientOptions,
@@ -147,5 +166,6 @@ export {
   checkSelectedOption,
   findCurrentItemIndex,
   checkIndex,
-  checkIsLastIndex
+  checkIsLastIndex,
+  makeLastDayOfMonth
 };

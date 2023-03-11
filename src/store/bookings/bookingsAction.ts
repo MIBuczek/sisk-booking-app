@@ -1,5 +1,15 @@
 import { Dispatch } from 'react';
 import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where
+} from 'firebase/firestore';
+import {
   BOOKING_STATE,
   db,
   MODAL_TYPES,
@@ -9,6 +19,8 @@ import {
 } from 'utils';
 import { IBooking, IBookingsAction, IModalAction, IReduxState } from 'models';
 import { openModal } from 'store';
+
+const BOOKING_COLLECTION_KEY: Readonly<'bookings'> = 'bookings';
 
 export const fetchingBookings = (): IBookingsAction => ({
   type: BOOKING_STATE.INITIAL_BOOKING,
@@ -101,8 +113,9 @@ export const clearBookingConflictsState = (bookings: IBooking[]): IBookingsActio
 export const getBookingsData = () => async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
   dispatch(fetchingBookings());
   try {
-    const resp = await db.collection('bookings').get();
-    const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
+    const bookingCollection = await collection(db, BOOKING_COLLECTION_KEY);
+    const documents = await getDocs(bookingCollection);
+    const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
@@ -118,8 +131,12 @@ export const getBookingDataForUser = () => async (
 ): Promise<void> => {
   dispatch(fetchingBookings());
   try {
-    const resp = await db.collection('bookings').where('accepted', '==', true).get();
-    const bookings: IBooking[] = resp.docs.map(parseFirebaseBookingData);
+    const bookingsQuery = await query(
+      collection(db, BOOKING_COLLECTION_KEY),
+      where('accepted', '==', true)
+    );
+    const documents = await getDocs(bookingsQuery);
+    const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
     dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
   } catch (err) {
     dispatch(fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.'));
@@ -139,14 +156,14 @@ export const addBooking = (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    const resp = await db.collection('bookings').add(bookingData);
+    const addedDocument = await addDoc(collection(db, BOOKING_COLLECTION_KEY), bookingData);
 
     const {
       bookingStore: { bookings },
       buildingStore: { buildings }
     } = getStore();
 
-    const newBookings: IBooking[] = [{ ...bookingData, id: resp.id }, ...bookings];
+    const newBookings: IBooking[] = [{ ...bookingData, id: addedDocument.id }, ...bookings];
 
     dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
@@ -187,17 +204,17 @@ export const updateBooking = (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    await db.collection('bookings').doc(bookingData.id).update(bookingData);
+    await updateDoc(doc(db, BOOKING_COLLECTION_KEY, bookingData.id), bookingData);
+
     const {
       bookingStore: { bookings },
       buildingStore: { buildings }
     } = getStore();
 
-    const newBookings: IBooking[] = bookings.map((booking: IBooking) =>
-      booking.id === bookingData.id ? bookingData : booking
-    );
+    const bookingIndex = bookings.findIndex((b) => b.id === bookingData.id);
+    bookings.splice(bookingIndex, 1, bookingData);
 
-    dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, newBookings));
+    dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, bookings));
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została zaktualizowana pomyślnie'));
 
     const building = buildings.find((b) => b.property === bookingData.building);
@@ -258,7 +275,7 @@ export const deleteBooking = (id: string) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    await db.collection('bookings').doc(id).delete();
+    await deleteDoc(doc(db, BOOKING_COLLECTION_KEY, id));
     const { bookings } = getStore().bookingStore;
     const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
     dispatch(fetchingBookingsDone(BOOKING_STATE.DELETE_BOOKING, newBookings));

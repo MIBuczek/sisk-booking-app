@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch } from 'redux';
 import { IClient, IClientsActions, IModalAction, IReduxState } from 'models';
-import { db, CLIENTS_STATE, SAVING_STAGE, parseFirebaseClientData, MODAL_TYPES } from 'utils';
+import { CLIENTS_STATE, db, MODAL_TYPES, parseFirebaseClientData, SAVING_STAGE } from 'utils';
 import { openModal } from 'store';
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
+
+const CLIENT_COLLECTION_KEY: Readonly<'clients'> = 'clients';
 
 export const fetchingClients = (): IClientsActions => ({
   type: CLIENTS_STATE.GET_CLIENT,
@@ -40,8 +43,9 @@ const fetchingClientsError = (errorMessage: string): IClientsActions => ({
 export const getClientsData = () => async (dispatch: Dispatch<IClientsActions>): Promise<void> => {
   dispatch(fetchingClients());
   try {
-    const resp = await db.collection('clients').get();
-    const clients: IClient[] = resp.docs.map(parseFirebaseClientData);
+    const clientsCollection = await collection(db, CLIENT_COLLECTION_KEY);
+    const documents = await getDocs(clientsCollection);
+    const clients: IClient[] = documents.docs.map(parseFirebaseClientData);
     dispatch(fetchingClientsDone(CLIENTS_STATE.GET_CLIENT, clients));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można pobrać bazy danych z klientami.'));
@@ -57,10 +61,13 @@ export const addClient = (clientData: IClient) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    const resp = await db.collection('clients').add(clientData);
+    const addedDocument = await addDoc(collection(db, CLIENT_COLLECTION_KEY), clientData);
     const { clients } = getStore().clientStore;
     dispatch(
-      fetchingClientsDone(CLIENTS_STATE.ADD_CLIENT, [...clients, { ...clientData, id: resp.id }])
+      fetchingClientsDone(CLIENTS_STATE.ADD_CLIENT, [
+        { ...clientData, id: addedDocument.id },
+        ...clients
+      ])
     );
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Klient został dodany pomyślnie do bazy danych'));
   } catch (err) {
@@ -77,12 +84,12 @@ export const updateClient = (clientData: IClient) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    await db.collection('clients').doc(clientData.id).update(clientData);
+    if (!clientData.id) return;
+    await updateDoc(doc(db, CLIENT_COLLECTION_KEY, clientData.id), clientData);
     const { clients } = getStore().clientStore;
-    const newClients: IClient[] = clients.map((client: IClient) =>
-      client.id === clientData.id ? clientData : client
-    );
-    dispatch(fetchingClientsDone(CLIENTS_STATE.UPDATE_CLIENT, newClients));
+    const clientIndex = clients.findIndex((c) => c.id === clientData.id);
+    clients.splice(clientIndex, 1, clientData);
+    dispatch(fetchingClientsDone(CLIENTS_STATE.UPDATE_CLIENT, clients));
     dispatch(openModal(MODAL_TYPES.SUCCESS, 'Dane klienta zostały zmienione pomyślnie'));
   } catch (err) {
     dispatch(fetchingClientsError('Problem z serverem. Nie można zaktualizować danych klienta.'));
@@ -98,7 +105,7 @@ export const deleteClient = (id: string) => async (
   getStore: () => IReduxState
 ): Promise<void> => {
   try {
-    await db.collection('clients').doc(id).delete();
+    await deleteDoc(doc(db, CLIENT_COLLECTION_KEY, id));
     const { clients } = getStore().clientStore;
     const updatedClients: IClient[] = clients.filter((client: IClient) => client.id !== id);
     dispatch(fetchingClientsDone(CLIENTS_STATE.DELETE_CLIENT, updatedClients));

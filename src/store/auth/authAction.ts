@@ -1,6 +1,7 @@
 import { Dispatch } from 'react';
 import { IAuth, IAuthAction } from 'models';
 import { auth, LOGIN_STATE, SAVING_STAGE } from 'utils';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 export const fetchingAuth = (): IAuthAction => ({
   type: LOGIN_STATE.LOG_IN,
@@ -42,7 +43,7 @@ export const logInUser = (email: string, password: string) => async (
 ): Promise<void> => {
   dispatch(fetchingAuth());
   try {
-    const resp = (await auth.signInWithEmailAndPassword(email, password)).user?.uid;
+    const resp = (await signInWithEmailAndPassword(auth, email, password)).user?.uid;
     if (resp) {
       const credentials: IAuth = {
         email,
@@ -62,7 +63,7 @@ export const logInUser = (email: string, password: string) => async (
 export const logOutUser = () => async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
   dispatch(fetchingAuth());
   try {
-    await auth.signOut();
+    await signOut(auth);
     dispatch(fetchingAuthDone(LOGIN_STATE.LOG_OUT, undefined));
     window.location.reload();
   } catch (err) {

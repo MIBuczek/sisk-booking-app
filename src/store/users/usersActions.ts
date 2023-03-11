@@ -2,6 +2,9 @@
 import { Dispatch } from 'redux';
 import { IReduxState, IUser, IUserAction } from 'models';
 import { db, SAVING_STAGE, USER_STATE } from 'utils';
+import { doc, getDoc } from 'firebase/firestore';
+
+const USER_COLLECTION_KEY: Readonly<'users'> = 'users';
 
 const fetchingUserStart = (): IUserAction => ({
   type: USER_STATE.GET_USER,
@@ -43,10 +46,13 @@ const getUserData = () => async (
   dispatch(fetchingUserStart());
   try {
     const { auth } = getState().authStore;
-    if (auth?.uid) {
-      const resp = await db.collection('users').doc(auth.uid).get();
-      dispatch(fetchingUserDone({ ...resp.data() } as IUser));
-    }
+
+    if (!auth?.uid) return;
+
+    const userRef = doc(db, USER_COLLECTION_KEY, auth.uid);
+    const currentUser = await getDoc(userRef);
+
+    dispatch(fetchingUserDone({ ...(currentUser.data() as IUser) }));
   } catch (err) {
     dispatch(fetchingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
     throw new Error(JSON.stringify(err));

@@ -2,6 +2,9 @@
 import { Dispatch } from 'redux';
 import { IBuilding, IBuildingAction } from 'models';
 import { BUILDING_STATE, db, parseFirebaseBuildingData, SAVING_STAGE } from 'utils';
+import { collection, getDocs } from 'firebase/firestore';
+
+const BUILDINGS_COLLECTION_KEY: Readonly<'buildings'> = 'buildings';
 
 const fetchingBuildingsStart = (): IBuildingAction => ({
   type: BUILDING_STATE.GET_BUILDING,
@@ -39,8 +42,9 @@ const fetchingBuildingsError = (errorMessage: string): IBuildingAction => ({
 const getBuildingsData = () => async (dispatch: Dispatch<IBuildingAction>): Promise<void> => {
   dispatch(fetchingBuildingsStart());
   try {
-    const resp = await db.collection('buildings').get();
-    const buildings = resp.docs.map(parseFirebaseBuildingData);
+    const buildingsCollection = await collection(db, BUILDINGS_COLLECTION_KEY);
+    const documents = await getDocs(buildingsCollection);
+    const buildings = documents.docs.map(parseFirebaseBuildingData);
     dispatch(fetchingBuildingsDone(buildings));
   } catch (err) {
     dispatch(fetchingBuildingsError('Problem z serverem. Nie można pobrac danych o budynkach.'));

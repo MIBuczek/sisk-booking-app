@@ -83,16 +83,16 @@ const Contact = () => (
     <ContactInfo>
       <Header>Osoba do kontaktu w sprawie rezerwacji</Header>
       <Paragraph>
-        <strong>Sara Buczek</strong>
+        <strong>Michał Hoffman</strong>
       </Paragraph>
       <Paragraph small>Kierownik obsługi obiektów sportowych i rekreacyjnych</Paragraph>
       <Anchor href="tel:+48691113592">
         <BsPhone style={iconNormal} />
         tel. 691 113 592
       </Anchor>
-      <Anchor href="mailto:sara.buczek@sisk-siechnice.pl">
+      <Anchor href="mailto:michal.hoffman@sisk-siechnice.pl">
         <BsEnvelope style={iconNormal} />
-        sara.buczek@sisk-siechnice.pl
+        michal.hoffman@sisk-siechnice.pl
       </Anchor>
     </ContactInfo>
   </ContactWrapper>

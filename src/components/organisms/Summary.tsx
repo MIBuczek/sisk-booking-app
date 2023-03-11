@@ -11,6 +11,7 @@ import pl from 'date-fns/locale/pl';
 import { registerLocale } from 'react-datepicker';
 import Button from 'components/atoms/Button';
 import {
+  csvAllClientSummary,
   csvClientSummary,
   findAllClientReservation,
   generateReservationSummary,
@@ -20,11 +21,11 @@ import {
   RECORDS_CLIENTS_ROW_DETAILS,
   summaryTotalBookingsNumber
 } from 'utils';
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep, isEmpty, isEqual } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
 import { fadeInLeft } from 'style/animation';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import { BsFilePdf, BsFileEarmarkRuledFill } from 'react-icons/bs';
+import { BsFileEarmarkRuledFill, BsFilePdf } from 'react-icons/bs';
 import { CSVLink } from 'react-csv';
 import Checkbox from '../atoms/Checkbox';
 import { printPDFReport } from '../molecules/modals/PreviewPDF';
@@ -271,13 +272,17 @@ const CSVButton = styled(CSVLink)`
   text-decoration: none;
   transition: 0.4s;
   background: ${({ theme }) => theme.green};
-  margin-left: auto;
   border-radius: 3px;
 
   &:hover {
     box-shadow: 0 0 17px -7px rgba(66, 68, 90, 1);
     opacity: 0.8;
   }
+`;
+
+const CSVAllClients = styled(CSVButton)`
+  background: ${({ theme }) => theme.middleGray};
+  margin: 0;
 `;
 
 const LoadingWrapper = styled.div`
@@ -295,6 +300,7 @@ const Summary = () => {
     cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)
   );
   const [csvReportData, setCSVReportData] = React.useState<CSVReportData[]>([]);
+  const [csvAllReportData, setCsvAllReportData] = React.useState<CSVReportData[]>([]);
   const [isSummaryGenerated, setIsSummaryGenerated] = React.useState<boolean>(false);
 
   const {
@@ -317,10 +323,11 @@ const Summary = () => {
 
   /**
    * Function to generate summary according selected client.
+   * @return {VoidFunction}
    */
   const generateClientSummary = handleSubmit((): void => {
     setIsGenerating(true);
-    if (!clientValue.value || !fromMonth || !clients) {
+    if (!clientValue?.value || !fromMonth || !clients) {
       setIsSummaryGenerated(false);
       setIsGenerating(false);
       return;
@@ -359,12 +366,33 @@ const Summary = () => {
   });
 
   /**
+   * Function to generate all clients booking report for csv file.
+   * @param {Date} fromSelectedMont
+   * @param {Date} toSelectedMonth
+   * @return {VoidFunction}
+   */
+  const generateReportForAllClients = (
+    fromSelectedMont = new Date(),
+    toSelectedMonth = new Date()
+  ): void => {
+    const cvsGeneratedReport = csvAllClientSummary(
+      clients,
+      bookings,
+      fromTheBeginning,
+      fromSelectedMont,
+      toSelectedMonth
+    );
+    if (!isEqual(csvAllReportData, cvsGeneratedReport)) setCsvAllReportData(cvsGeneratedReport);
+  };
+  /**
    * Function to restore initial status.
+   * @return {VoidFunction}
    */
   const clearSummary = (): void => {
     setClientSummary(cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS));
     setIsSummaryGenerated(false);
     setIsGenerating(false);
+    setCSVReportData([]);
     reset({
       client: { label: '', value: '' },
       fromMonth: new Date(),
@@ -374,6 +402,7 @@ const Summary = () => {
 
   /**
    * Function to update field in toMonth in form if fromMonth change.
+   * @return {VoidFunction}
    */
   const updateToMonthDataInForm = (): void => {
     reset({ client: clientValue, fromMonth, toMonth: fromMonth, fromTheBeginning });
@@ -381,6 +410,7 @@ const Summary = () => {
 
   /**
    * Function to open current client pdf report in new window.
+   * @return {VoidFunction}
    */
   const generatePdfReport = () => {
     printPDFReport(clientSummary);
@@ -388,20 +418,42 @@ const Summary = () => {
 
   /**
    * Function to generate csv file name base on current client name and selected month.
+   * @param {Boolean} forAll
+   * @param {Date} fromSelectedMont
+   * @param {Date} toSelectedMonth
+   * @return {String}
    */
-  const generateFileName = (): string => {
-    if (clientSummary.client) {
-      const partFileName = fromTheBeginning
-        ? 'od początku'
-        : `${fromMonth.getMonth() + 1}-${toMonth.getMonth() + 1}.${toMonth.getFullYear()}`;
-      return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
+  const generateFileName = (
+    forAll: boolean = false,
+    fromSelectedMont = new Date(),
+    toSelectedMonth = new Date()
+  ): string => {
+    if (!clientSummary.client) {
+      return 'Raport clienta.csv';
     }
-    return 'raport clienta.csv';
+
+    let partFileName = 'od początku';
+
+    if (!fromTheBeginning) {
+      partFileName = `${fromSelectedMont.getMonth() + 1}-${
+        toSelectedMonth.getMonth() + 1
+      }.${toSelectedMonth.getFullYear()}`;
+    }
+
+    if (forAll) {
+      return `Wszyscy klienci [${partFileName}].csv`.toLowerCase();
+    }
+
+    return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
   };
 
   React.useEffect(() => {
     updateToMonthDataInForm();
-  }, [fromMonth]);
+  }, [fromMonth, fromTheBeginning]);
+
+  React.useEffect(() => {
+    generateReportForAllClients(fromMonth, toMonth);
+  }, [fromMonth, toMonth]);
 
   return (
     <SummaryWrapper>
@@ -488,10 +540,22 @@ const Summary = () => {
             )}
           />
         </InputWrapper>
+        <SelectWrapper>
+          <Label>Generuj raport wszystkich klientów</Label>
+          <CSVAllClients
+            type="button"
+            data={csvAllReportData}
+            headers={csvFileHeaders}
+            filename={generateFileName(true, fromMonth, toMonth)}
+            separator=";">
+            Pobierz raport [.csv]
+            <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />
+          </CSVAllClients>
+        </SelectWrapper>
         <SummaryBtn type="button" onClick={generateClientSummary}>
           Generuj podsumowanie
         </SummaryBtn>
-        <SummaryBtn type="button" onClick={clearSummary} secondary>
+        <SummaryBtn type="button" onClick={clearSummary} tertiary>
           Wyczyść
         </SummaryBtn>
       </SummaryInputContent>
@@ -548,7 +612,7 @@ const Summary = () => {
               <CSVButton
                 data={csvReportData}
                 headers={csvFileHeaders}
-                filename={generateFileName()}
+                filename={generateFileName(false, fromMonth, toMonth)}
                 separator=";">
                 Pobierz plik [.csv]
                 <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />

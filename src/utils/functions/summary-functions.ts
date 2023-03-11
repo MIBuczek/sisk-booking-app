@@ -13,8 +13,12 @@ import {
 } from 'models';
 import { changeDayInDate } from './calender-functions';
 import { BOOKING_STATUS } from '../variables/booking-status-const';
-import { modelDisplayValue, transformValue } from './modeling-value-function';
-import { checkSelectedOption } from './utils-functions';
+import {
+  modelDisplayValue,
+  transformToPercentage,
+  transformValue
+} from './modeling-value-function';
+import { checkSelectedOption, makeLastDayOfMonth } from './utils-functions';
 import { csvBookingKeys, csvClientKeys } from '../variables/csv-file-headers';
 
 /**
@@ -24,7 +28,7 @@ import { csvBookingKeys, csvClientKeys } from '../variables/csv-file-headers';
  * @returns {Array<IBooking>}
  */
 const findAllClientReservation = (bookings: IBooking[], clientValue: TSelect): IBooking[] =>
-  bookings.filter((b) => b.clientId === clientValue.value);
+  bookings.filter((b) => b.clientId === clientValue.value && b.accepted);
 
 /**
  * Function to return correct number of day in month
@@ -135,6 +139,7 @@ const changeObjectShape = (keys: string[], obj: IBooking | IClient) =>
  * @param fromTheBeginning
  * @param fromMonth
  * @param toMonth
+ * @return {Array<CSVReportData>}
  */
 const csvClientSummary = (
   currentClient: IClient,
@@ -160,7 +165,7 @@ const csvClientSummary = (
       if (
         fromTheBeginning ||
         (bookingDate.getTime() >= fromSelectedMonth.getTime() &&
-          bookingDate.getTime() <= toSelectedMonth.getTime())
+          bookingDate.getTime() <= makeLastDayOfMonth(toSelectedMonth).getTime())
       ) {
         let selectedOptions = '';
         let startHourOption = '';
@@ -180,6 +185,7 @@ const csvClientSummary = (
           ...formattedClient,
           status: transformValue[bt.status],
           payment: transformValue[formattedBooking.payment],
+          size: transformToPercentage(formattedBooking.size),
           day: modelDisplayValue('', bt.startHour) || '',
           startHour: modelDisplayValue('', bt.startHour, true) || '',
           endHour: modelDisplayValue('', bt.endHour, true) || '',
@@ -196,9 +202,40 @@ const csvClientSummary = (
 };
 
 /**
+ * Method to generate csv file report data for all database clients.
+ * Report might be generated from the begging or from selected moth period.
+ * @param  allClients
+ * @param  allBookings
+ * @param fromTheBeginning
+ * @param fromMonth
+ * @param toMonth
+ * @return {Array<CSVReportData>}
+ */
+const csvAllClientSummary = (
+  allClients: IClient[],
+  allBookings: IBooking[],
+  fromTheBeginning: boolean,
+  fromMonth: Date,
+  toMonth: Date
+): CSVReportData[] =>
+  allClients.reduce((acc: CSVReportData[], client) => {
+    const clientBookings = allBookings.filter((cb) => cb.clientId === client.id && cb.accepted);
+    const currentClientReport = csvClientSummary(
+      client,
+      clientBookings,
+      fromTheBeginning,
+      fromMonth,
+      toMonth
+    );
+    acc.push(...currentClientReport);
+    return acc;
+  }, []);
+
+/**
  * Function to summary all reservation selected client per city.
  * In return string with information about all reservation and also count done.
  * @param  bookingByCity
+ * @return {String}
  */
 const summaryTotalBookingsNumber = (bookingByCity: IBookedTime[]): string => {
   let allBookingItems = 0;
@@ -219,5 +256,6 @@ export {
   findAllClientReservation,
   generateReservationSummary,
   summaryTotalBookingsNumber,
-  csvClientSummary
+  csvClientSummary,
+  csvAllClientSummary
 };

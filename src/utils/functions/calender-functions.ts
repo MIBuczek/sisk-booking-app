@@ -39,6 +39,9 @@ const formatTime = (date: Date | null): string => {
   if (dateMinutes === 0) {
     dateMinutes = '00';
   }
+  if (dateMinutes > 0 && dateMinutes < 10) {
+    dateMinutes = `0${dateMinutes}`;
+  }
   return `${dateHour}:${dateMinutes}`;
 };
 

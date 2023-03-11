@@ -61,4 +61,19 @@ const modelDisplayValue = (
   return currentValue.toString();
 };
 
-export { modelDisplayValue, transformValue };
+/**
+ * Function to model value and display it as a percentage value.
+ * @param  size
+ * @returns {String}
+ */
+const transformToPercentage = (size: string): string => {
+  const [one, two] = size.split('/');
+  let percentage = ((Number(one) / Number(two)) * 100).toString();
+  const dotIndex = percentage.indexOf('.');
+  if (dotIndex > -1) {
+    percentage = percentage.slice(0, dotIndex);
+  }
+  return `${percentage}%`;
+};
+
+export { modelDisplayValue, transformValue, transformToPercentage };

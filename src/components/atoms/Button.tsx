@@ -3,11 +3,16 @@ import styled from 'styled-components';
 type ButtonProps = {
   large?: boolean;
   secondary?: boolean;
+  tertiary?: boolean;
 };
 
 const Button = styled.button<ButtonProps>`
   color: ${({ theme }) => theme.darkGrey};
-  background: ${({ theme, secondary }) => (secondary ? theme.middleGray : theme.green)};
+  background: ${({ theme, secondary, tertiary }) => {
+    if (secondary) return theme.middleGray;
+    if (tertiary) return 'transparent';
+    return theme.green;
+  }};
   font-size: ${({ theme }) => theme.fontSize.ml};
   font-weight: ${({ theme }) => theme.regular};
   border: ${({ theme }) => `1px solid ${theme.green}`};

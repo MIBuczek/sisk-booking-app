@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EventContentArg } from '@fullcalendar/react';
+import { EventContentArg } from '@fullcalendar/common';
 
 const RenderEventContent = (eventContent: EventContentArg) => (
   <>

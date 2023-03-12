@@ -1,10 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import FullCalendar, { EventClickArg, EventInput } from '@fullcalendar/react';
+import FullCalendar from '@fullcalendar/react';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { EventClickArg, EventInput } from '@fullcalendar/core';
 import { useDispatch, useSelector } from 'react-redux';
+
 import Paragraph from 'components/atoms/Paragraph';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import { IAdminState, IBooking, IMainState } from 'models';
@@ -174,13 +176,12 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
 
   /**
    * Full calendar event to get data and get current booking data from the store.
-   * @param clickInfo
+   * @param arg
    */
-  const handleEventClick = async (clickInfo: EventClickArg) => {
-    clickInfo.jsEvent.preventDefault();
-    dispatch(
-      getCurrentBooking(clickInfo.event._def.publicId, clickInfo.event.extendedProps.itemIndex)
-    );
+  const handleEventClick = (arg: EventClickArg): void => {
+    arg.jsEvent.preventDefault();
+
+    dispatch(getCurrentBooking(arg.event._def.publicId, arg.event.extendedProps.itemIndex));
 
     if (hasRights) {
       dispatch(openModal(MODAL_TYPES.BOOKINGS_CALENDER_STATUS));

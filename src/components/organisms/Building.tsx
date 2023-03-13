@@ -12,13 +12,14 @@ import ModalInfo from 'components/molecules/modals/ModalInfo';
 import {
   IAdminState,
   IBuilding,
+  ICredential,
   IEmployeeMessage,
   IEmployeeMessageForm,
   IReduxState,
   TSelect
 } from 'models';
 import * as React from 'react';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from 'store';
 import { fadeIn } from 'style/animation';
@@ -138,7 +139,12 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
     buildingStore: { buildings, errorMessage }
   } = useSelector((state: IReduxState) => state);
 
-  const { control, handleSubmit, errors, reset } = useForm<IEmployeeMessageForm>();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm<IEmployeeMessageForm>();
 
   /**
    * Function to get all building employees.
@@ -169,10 +175,19 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
    * It will be dispatched to database it user confirm action.
    * @param cred
    */
-  const onSubmit = handleSubmit<IEmployeeMessageForm>((cred): void => {
+  const onSubmit: SubmitHandler<IEmployeeMessageForm> = (cred): void => {
     setMessage({ ...cred, person: cred.person.value });
     setDisplayConfirmation(true);
-  });
+  };
+
+  /**
+   * Function to dispatch errors on action to log user into platform
+   * @param err
+   * @param e
+   */
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
   /**
    * Function to confirm dispatch action. If so then sent notification to pointed email address.
@@ -238,7 +253,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           defaultValue={{ label: '', value: '' }}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <SelectInputField
               options={getEmployeesOptions(currentCity)}
               styles={customStyles(!!errors.person)}
@@ -260,7 +275,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           defaultValue={currentCity.email || ''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -279,7 +294,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <EmployeeTextArea
               onBlur={onBlur}
               value={value}
@@ -304,7 +319,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             <Button secondary onClick={initialState}>
               Wyczyść
             </Button>
-            <Button onClick={onSubmit}>Wyślij</Button>
+            <Button onClick={handleSubmit(onSubmit, onError)}>Wyślij</Button>
           </ButtonPanel>
         )}
       </InnerContent>

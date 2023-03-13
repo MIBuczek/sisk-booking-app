@@ -68,7 +68,7 @@ const StyledCheckbox = styled.div<CheckboxInput>`
 
   ${Icon} {
     visibility: ${({ checked, disabled }) =>
-    (checked && disabled) || checked ? 'visible' : 'hidden'};
+      (checked && disabled) || checked ? 'visible' : 'hidden'};
   }
 
   ${({ checked, disabled, isAccepted }) => {
@@ -100,7 +100,8 @@ interface ICheckbox {
 const Checkbox: React.FC<ICheckbox> = ({ className, checked, name, disabled, changeHandler }) => (
   <CheckboxContainer
     className={className}
-    onClick={() => changeHandler(disabled ? checked : !checked, name)}>
+    onClick={() => changeHandler(disabled ? checked : !checked, name)}
+  >
     <HiddenCheckbox checked={checked} disabled={disabled} name={name} type="checkbox" readOnly />
     <StyledCheckbox isAccepted={name === 'accepted'} checked={checked} disabled={disabled}>
       <Icon viewBox="0 0 24 24">

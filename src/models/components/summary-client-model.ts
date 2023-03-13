@@ -3,8 +3,8 @@ import { IClient } from 'models/store/client-models';
 import { IClientForm } from '../forms/client-form-model';
 
 type IGeneralBookingDetails = Pick<
-IBooking,
-'payment' | 'message' | 'extraOptions' | 'selectedOptions' | 'size' | 'building' | 'discount'
+  IBooking,
+  'payment' | 'message' | 'extraOptions' | 'selectedOptions' | 'size' | 'building' | 'discount'
 >;
 
 interface IBookedTime {
@@ -26,20 +26,20 @@ interface ISummaryClientBookings extends IReportBookingByCity {
 }
 
 type CSVBookingKeys = keyof Pick<
-IBooking,
-| 'type'
-| 'payment'
-| 'size'
-| 'building'
-| 'message'
-| 'extraOptions'
-| 'selectedOptions'
-| 'discount'
+  IBooking,
+  | 'type'
+  | 'payment'
+  | 'size'
+  | 'building'
+  | 'message'
+  | 'extraOptions'
+  | 'selectedOptions'
+  | 'discount'
 >;
 
 type CSVClientKeys = keyof Pick<
-IClientForm,
-'name' | 'contactPerson' | 'street' | 'city' | 'zipCode' | 'nip' | 'phone' | 'email'
+  IClientForm,
+  'name' | 'contactPerson' | 'street' | 'city' | 'zipCode' | 'nip' | 'phone' | 'email'
 >;
 
 type CSVReportKeys =

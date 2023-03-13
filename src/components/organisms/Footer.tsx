@@ -212,7 +212,8 @@ const Footer = (): JSX.Element => {
           © Copyright 2018 SISK / Created by
           <FooterAnchor
             style={{ display: 'inline-block', paddingLeft: '8px', textDecoration: 'underline' }}
-            href="https://gecko-web-services.web.app">
+            href="https://gecko-web-services.web.app"
+          >
             GECKO Web Services
           </FooterAnchor>
         </FooterParagraph>

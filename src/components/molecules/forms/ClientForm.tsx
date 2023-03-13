@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import Button from 'components/atoms/Button';
 import ErrorMsg from 'components/atoms/ErrorMsg';
@@ -9,7 +9,7 @@ import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/
 import TextInputField from 'components/atoms/TextInputField';
 import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, findSelectedOption } from 'utils';
 import { useDispatch } from 'react-redux';
-import { IClient } from 'models';
+import { IClient, ICredential } from 'models';
 import { IClientForm } from 'models/forms/client-form-model';
 import { addClient, closeModal, updateClient } from 'store';
 import ConfirmAction from '../ConfirmAction';
@@ -86,7 +86,13 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
 
   const dispatch = useDispatch();
-  const { handleSubmit, errors, control, reset, watch } = useForm<IClientForm>();
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+    watch
+  } = useForm<IClientForm>();
 
   const { type: clientType } = watch();
 
@@ -103,13 +109,21 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
    * It will be dispatched to database it user confirm action.
    * @param cred
    */
-  const onSubmit = handleSubmit<IClientForm>(async (cred) => {
+  const onSubmit: SubmitHandler<IClientForm> = (cred) => {
     setClientData({
       ...cred,
       type: cred.type.value
     } as IClient);
     setDisplayConfirmation(true);
-  });
+  };
+  /**
+   * Function to dispatch errors on action to log user into platform
+   * @param err
+   * @param e
+   */
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
   /**
    * Function to confirm dispatch action. If so then add or update firebase clients collection.
@@ -166,7 +180,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
             defaultValue={CLIENT_OPTIONS[0]}
             control={control}
             rules={{ required: true }}
-            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <SelectInputField
                 options={CLIENT_OPTIONS}
                 styles={customStyles(!!errors.type)}
@@ -192,7 +206,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -213,7 +227,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
               defaultValue={''}
               control={control}
               rules={{ required: true }}
-              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInputField
                   onBlur={onBlur}
                   value={value}
@@ -234,7 +248,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -253,7 +267,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -276,7 +290,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
               defaultValue={''}
               control={control}
               rules={{ required: true }}
-              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInputField
                   onBlur={onBlur}
                   value={value}
@@ -297,7 +311,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -316,7 +330,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -335,7 +349,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -360,7 +374,9 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
           <Button secondary onClick={cancelHandler}>
             Anuluj
           </Button>
-          <Button onClick={onSubmit}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>
+          <Button onClick={handleSubmit(onSubmit, onError)}>
+            {isEditing ? 'Zapisz' : 'Dodaj'}
+          </Button>
         </ButtonPanel>
       )}
     </ClientWrapper>

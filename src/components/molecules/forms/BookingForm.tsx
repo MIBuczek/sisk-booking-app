@@ -1,9 +1,16 @@
 /* eslint-disable import/no-duplicates */
-import { IBooking, IMainState, IReduxState, ISelectedExtraOptions, TSelect } from 'models';
+import {
+  IBooking,
+  ICredential,
+  IMainState,
+  IReduxState,
+  ISelectedExtraOptions,
+  TSelect
+} from 'models';
 import { IBookingForm } from 'models/forms/booking-form-models';
 import * as React from 'react';
 import { registerLocale } from 'react-datepicker';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBooking, closeModal, updateBooking } from 'store';
 import styled from 'styled-components';
@@ -247,7 +254,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 
   const {
     handleSubmit,
-    errors,
+    formState: { errors },
     control,
     watch,
     reset,
@@ -304,7 +311,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    * It will be dispatched to database it user confirm action.
    * @param cred
    */
-  const onSubmit = handleSubmit<IBookingForm>(async (cred) => {
+  const onSubmit: SubmitHandler<IBookingForm> = (cred) => {
     const bookingToApprove = cloneDeep(
       generateBookingDetails(cred, selectedSize, extraOptions, bookingId)
     );
@@ -324,7 +331,16 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     if (isAdmin) {
       setConflict(checkConflicts(bookingToApprove, bookingsList));
     }
-  });
+  };
+
+  /**
+   * Function to dispatch errors on action to log user into platform
+   * @param err
+   * @param e
+   */
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
   /**
    * Function to confirm dispatch action. If so then add or update firebase booking collection.
@@ -458,7 +474,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   React.useEffect(updateEndDataInForm, [startDate]);
 
   return (
-    <BookingWrapper onSubmit={onSubmit}>
+    <BookingWrapper>
       <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
       {isSISKEmployee && (
         <AcceptWrapper>
@@ -468,7 +484,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               name="clientId"
               control={control}
               defaultValue={{ label: '', value: '' }}
-              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <SelectInputField
                   options={selectClientOptions(clients)}
                   placeholder="Wybierz"
@@ -489,7 +505,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                 name="accepted"
                 defaultValue={false}
                 control={control}
-                render={({ onChange, value }: ControllerRenderProps) => (
+                render={({ field: { onChange, value } }) => (
                   <Checkbox
                     checked={value}
                     className="checkbox"
@@ -518,7 +534,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={city}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <SelectInputField
               options={CITY_OPTIONS}
               styles={customStyles(!!errors.city)}
@@ -543,7 +559,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={building}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <SelectInputField
               options={selectBuildingOptions(cityValue.value, building)}
               styles={customStyles(!!errors.building)}
@@ -579,7 +595,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             name="regular"
             defaultValue={false}
             control={control}
-            render={({ onChange, value }: ControllerRenderProps) => (
+            render={({ field: { onChange, value } }) => (
               <Checkbox
                 checked={value}
                 className="checkbox"
@@ -598,7 +614,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -617,7 +633,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -636,7 +652,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -656,7 +672,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             defaultValue={PAYMENTS_OPTIONS[0]}
             control={control}
             rules={{ required: true }}
-            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <SelectInputField
                 options={PAYMENTS_OPTIONS}
                 styles={customStyles(!!errors.payment)}
@@ -682,7 +698,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           defaultValue={new Date()}
           control={control}
           rules={{ required: true }}
-          render={({ value, onChange, onBlur }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <DataPickerField
               showTimeSelect={false}
               shouldCloseOnSelect
@@ -708,7 +724,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
               defaultValue={new Date()}
               control={control}
               rules={{ required: true }}
-              render={({ value, onChange, onBlur }: ControllerRenderProps) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <DataPickerField
                   showTimeSelect={false}
                   shouldCloseOnSelect
@@ -731,10 +747,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         <Label>Od godziny</Label>
         <Controller
           name="startHour"
-          defaultValue={null}
+          defaultValue={undefined}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <DataPickerField
               placeholderText="Wybierz"
               showTimeSelect
@@ -758,10 +774,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         <Label>Do godziny</Label>
         <Controller
           name="endHour"
-          defaultValue={null}
+          defaultValue={undefined}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <DataPickerField
               placeholderText="Wybierz"
               showTimeSelect
@@ -789,7 +805,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             defaultValue={DISCOUNT_OPTIONS[0]}
             control={control}
             rules={{ required: true }}
-            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+            render={({ field: { onChange, value } }) => (
               <Autocomplete
                 trigger=""
                 Component="input"
@@ -816,7 +832,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
         defaultValue={''}
         control={control}
         rules={{ required: false }}
-        render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+        render={({ field: { onChange, onBlur, value } }) => (
           <MessageTextArea
             placeholder="Wiadomość"
             onChange={onChange}
@@ -833,7 +849,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             name="archive"
             defaultValue={false}
             control={control}
-            render={({ onChange, value }: ControllerRenderProps) => (
+            render={({ field: { onChange, value } }) => (
               <Checkbox
                 checked={value}
                 className="checkbox"
@@ -872,7 +888,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           <Anchor
             small
             href="https://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
-            target="_blank">
+            target="_blank"
+          >
             Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.
           </Anchor>
         </RodoWrapper>
@@ -897,7 +914,11 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
           <Button role="button" secondary onClick={cancelHandler}>
             Anuluj
           </Button>
-          <Button role="button" onClick={onSubmit} disabled={isAdmin ? false : !police}>
+          <Button
+            role="button"
+            onClick={handleSubmit(onSubmit, onError)}
+            disabled={isAdmin ? false : !police}
+          >
             {isAdmin
               ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwację`
               : 'Wyślij prośbę o rezerwację'}

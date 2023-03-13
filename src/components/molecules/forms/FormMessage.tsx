@@ -1,6 +1,6 @@
-import { IMessageForm } from 'models';
+import { ICredential, IMessageForm } from 'models';
 import * as React from 'react';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'store';
@@ -8,8 +8,8 @@ import styled from 'styled-components';
 import {
   sendEmailNotification,
   USER_MIB_ID,
-  USER_MIB_TEMPLATE_MESSAGE_ID,
-  USER_MIB_SERVICE_ID
+  USER_MIB_SERVICE_ID,
+  USER_MIB_TEMPLATE_MESSAGE_ID
 } from 'utils';
 import Anchor from '../../atoms/Anchor';
 import Button from '../../atoms/Button';
@@ -25,9 +25,11 @@ const MessageWrapper = styled.form`
   display: flex;
   flex-direction: column;
   min-width: 500px;
+
   button {
     align-self: flex-end;
   }
+
   @media (max-width: 890px) {
     min-width: 300px;
   }
@@ -48,9 +50,11 @@ const MessageHeader = styled(Header)`
   padding: 20px 40px;
   display: flex;
   flex-wrap: wrap;
+
   &:after {
     left: 40px;
   }
+
   @media (max-width: 890px) {
     padding: 10px 40px;
   }
@@ -71,6 +75,7 @@ const ButtonPanel = styled.div`
   width: 100%;
   margin: 3rem 0;
   padding: 0 20px;
+
   button {
     margin: 0 0 0 0.8rem;
   }
@@ -85,6 +90,7 @@ const ErrorServer = styled.span`
   letter-spacing: -0.5px;
   width: 100%;
   padding: 10px 40px;
+
   svg {
     height: 20px;
     width: 15px;
@@ -99,17 +105,30 @@ const FormMessage = () => {
   const [error, setError] = React.useState(false);
 
   const dispatch = useDispatch();
-  const { control, handleSubmit, errors } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IMessageForm>();
 
   /**
    * Function to submit actual form values into form message state.
    * It will be dispatched to database it user confirm action.
    * @param cred
    */
-  const onSubmit = handleSubmit<IMessageForm>((cred): void => {
+  const onSubmit: SubmitHandler<IMessageForm> = (cred) => {
     setMessage({ ...cred });
     setDisplayConfirmation(true);
-  });
+  };
+
+  /**
+   * Function to dispatch errors on action to log user into platform
+   * @param err
+   * @param e
+   */
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
   /**
    * Function to confirm dispatch action. If so then sent notification to pointed email address.
@@ -140,7 +159,7 @@ const FormMessage = () => {
   };
 
   return (
-    <MessageWrapper onSubmit={onSubmit}>
+    <MessageWrapper>
       <MessageHeader>Skontaktuj się z nami</MessageHeader>
       {error && (
         <ErrorServer>
@@ -155,7 +174,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -174,7 +193,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -193,7 +212,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInputField
               onBlur={onBlur}
               value={value}
@@ -212,7 +231,7 @@ const FormMessage = () => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextAreaField
               onBlur={onBlur}
               value={value}
@@ -236,7 +255,8 @@ const FormMessage = () => {
           <Anchor
             small
             href="https://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
-            target="_blank">
+            target="_blank"
+          >
             Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.
           </Anchor>
         </RodoWrapper>
@@ -252,7 +272,7 @@ const FormMessage = () => {
           <Button secondary onClick={initialState}>
             Anuluj
           </Button>
-          <Button onClick={onSubmit} disabled={!police}>
+          <Button onClick={handleSubmit(onSubmit, onError)} disabled={!police}>
             Wyślij
           </Button>
         </ButtonPanel>

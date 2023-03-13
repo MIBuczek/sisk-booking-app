@@ -157,13 +157,15 @@ const SideNav: React.FunctionComponent<IProps> = ({
           <ButtonIcon
             className={setActiveTab(ADMIN_TABS.CALENDER)}
             role="button"
-            onClick={() => tabHandler(ADMIN_TABS.CALENDER)}>
+            onClick={() => tabHandler(ADMIN_TABS.CALENDER)}
+          >
             <BsFillCalendar2DateFill style={iconStyle} /> KALENDARZ
           </ButtonIcon>
           <ButtonIcon
             className={setActiveTab(ADMIN_TABS.BOOKINGS)}
             role="button"
-            onClick={() => tabHandler(ADMIN_TABS.BOOKINGS)}>
+            onClick={() => tabHandler(ADMIN_TABS.BOOKINGS)}
+          >
             <BsFillPinFill style={iconStyle} /> REZERWACJE
           </ButtonIcon>
           {isAdmin && (
@@ -171,19 +173,22 @@ const SideNav: React.FunctionComponent<IProps> = ({
               <ButtonIcon
                 className={setActiveTab(ADMIN_TABS.CLIENTS)}
                 role="button"
-                onClick={() => tabHandler(ADMIN_TABS.CLIENTS)}>
+                onClick={() => tabHandler(ADMIN_TABS.CLIENTS)}
+              >
                 <BsFileEarmarkPersonFill style={iconStyle} /> NAJEMCY
               </ButtonIcon>
               <ButtonIcon
                 className={setActiveTab(ADMIN_TABS.BUILDINGS)}
                 role="button"
-                onClick={() => tabHandler(ADMIN_TABS.BUILDINGS)}>
+                onClick={() => tabHandler(ADMIN_TABS.BUILDINGS)}
+              >
                 <BsBuilding style={iconStyle} /> OBIEKTY
               </ButtonIcon>
               <ButtonIcon
                 className={setActiveTab(ADMIN_TABS.SUMMARY)}
                 role="button"
-                onClick={() => tabHandler(ADMIN_TABS.SUMMARY)}>
+                onClick={() => tabHandler(ADMIN_TABS.SUMMARY)}
+              >
                 <BsFileEarmarkBarGraphFill style={iconStyle} /> PODSUMOWANIE NAJMÓW
               </ButtonIcon>
             </>

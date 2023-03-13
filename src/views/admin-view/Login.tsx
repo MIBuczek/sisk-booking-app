@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import TextInputField from 'components/atoms/TextInputField';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Button from 'components/atoms/Button';
@@ -49,9 +49,13 @@ const LoginTextInputs = styled(TextInputField)`
   margin-bottom: 10px;
 `;
 
-const Login: React.FC = (): JSX.Element => {
-  const { handleSubmit, errors, control, getValues } = useForm<ICredential>();
-
+const Login: React.FC = () => {
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    getValues
+  } = useForm<ICredential>();
   const dispatch = useDispatch();
   const { auth, errorMessage } = useSelector((store: IReduxState) => store.authStore);
 
@@ -59,9 +63,18 @@ const Login: React.FC = (): JSX.Element => {
    * Function to dispatch action to log user into platform
    * @param cred
    */
-  const onSubmit = handleSubmit<ICredential>((cred) => {
+  const onSubmit: SubmitHandler<ICredential> = (cred) => {
     dispatch(logInUser(cred.email, cred.password));
-  });
+  };
+
+  /**
+   * Function to dispatch errors on action to log user into platform
+   * @param err
+   * @param e
+   */
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
   if (auth) {
     return <Redirect to={'/admin'} />;
@@ -80,7 +93,7 @@ const Login: React.FC = (): JSX.Element => {
             required: true,
             validate: () => getValues('email').includes('@')
           }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <LoginTextInputs
               onBlur={onBlur}
               value={value}
@@ -98,7 +111,7 @@ const Login: React.FC = (): JSX.Element => {
           defaultValue={''}
           control={control}
           rules={{ required: true }}
-          render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <LoginTextInputs
               onBlur={onBlur}
               value={value}
@@ -113,7 +126,7 @@ const Login: React.FC = (): JSX.Element => {
         />
         {errors.password && <ErrorMsg innerText="Pole nie może być puste" />}
         {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
-        <Button role="button" onClick={onSubmit} disabled={false}>
+        <Button role="button" onClick={handleSubmit(onSubmit, onError)} disabled={false}>
           Zaloguj się
         </Button>
       </LoginPanel>

@@ -45,13 +45,13 @@
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
-    "react-app-polyfill": "^2.0.0",
+    "react-app-polyfill": "^3.0.0",
     "react-autocomplete-input": "^1.0.19",
     "react-csv": "^2.2.2",
     "react-datepicker": "^4.10.0",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "^6.15.8",
+    "react-hook-form": "^7.43.5",
     "react-icons": "^4.3.1",
     "react-loaders": "^3.0.1",
     "react-redux": "^7.2.5",
@@ -64,11 +64,11 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.3.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^3.3.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.175",
-    "@types/node": "^14.17.22",
+    "@types/node": "^18.15.0",
     "@types/react": "^17.0.29",
     "@types/react-csv": "^1.1.3",
     "@types/react-datepicker": "^4.1.7",
@@ -82,7 +82,7 @@
     "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^8.12.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^16.2.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
@@ -90,8 +90,8 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "husky": "^8.0.0",
-    "prettier": "2.2.1",
-    "prettier-eslint": "^13.0.0",
-    "prettier-eslint-cli": "^5.0.1"
+    "prettier": "^2.8.4",
+    "prettier-eslint": "^15.0.1",
+    "prettier-eslint-cli": "^7.1.0"
   }
 }

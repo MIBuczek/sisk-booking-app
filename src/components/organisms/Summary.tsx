@@ -4,7 +4,7 @@ import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
 import { CSVReportData, IReduxState, ISummaryClientBookings, TSelect } from 'models';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import pl from 'date-fns/locale/pl';
@@ -308,7 +308,13 @@ const Summary = () => {
     bookingStore: { bookings, errorMessage: errorBooking }
   } = useSelector((state: IReduxState) => state);
 
-  const { handleSubmit, control, watch, reset, errors } = useForm();
+  const {
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    formState: { errors }
+  } = useForm();
 
   const { client: clientValue, fromMonth, toMonth, fromTheBeginning } = watch();
 
@@ -467,7 +473,7 @@ const Summary = () => {
             defaultValue={{ label: '', value: '' }}
             control={control}
             rules={{ required: true }}
-            render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <SelectInputField
                 options={generateClientsOptions()}
                 styles={customStyles(false)}
@@ -489,7 +495,7 @@ const Summary = () => {
             defaultValue={new Date()}
             control={control}
             rules={{ required: true }}
-            render={({ value, onChange, onBlur }: ControllerRenderProps) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <MonthPicker
                 placeholderText="Wybierz"
                 dateFormat="MM/yyyy"
@@ -508,7 +514,7 @@ const Summary = () => {
             defaultValue={new Date()}
             control={control}
             rules={{ required: true }}
-            render={({ value, onChange, onBlur }: ControllerRenderProps) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <MonthPicker
                 placeholderText="Wybierz"
                 dateFormat="MM/yyyy"
@@ -529,7 +535,7 @@ const Summary = () => {
             name="fromTheBeginning"
             defaultValue={false}
             control={control}
-            render={({ onChange, value }: ControllerRenderProps) => (
+            render={({ field: { onChange, value } }) => (
               <Checkbox
                 checked={value}
                 className="checkbox"
@@ -547,7 +553,8 @@ const Summary = () => {
             data={csvAllReportData}
             headers={csvFileHeaders}
             filename={generateFileName(true, fromMonth, toMonth)}
-            separator=";">
+            separator=";"
+          >
             Pobierz raport [.csv]
             <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />
           </CSVAllClients>
@@ -613,7 +620,8 @@ const Summary = () => {
                 data={csvReportData}
                 headers={csvFileHeaders}
                 filename={generateFileName(false, fromMonth, toMonth)}
-                separator=";">
+                separator=";"
+              >
                 Pobierz plik [.csv]
                 <BsFileEarmarkRuledFill style={{ ...pdfIconStyles, color: '#FFF' }} />
               </CSVButton>

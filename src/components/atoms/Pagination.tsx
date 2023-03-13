@@ -53,7 +53,8 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({
         type="button"
         key={number}
         onClick={() => nextPage(number)}
-        className={`${number === currentPage ? 'active' : ''}`}>
+        className={`${number === currentPage ? 'active' : ''}`}
+      >
         {number}
       </PaginationBtn>
     ))}

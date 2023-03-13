@@ -2,7 +2,12 @@
 import { DataPickerField } from 'components/atoms/DatapickerField';
 import Label from 'components/atoms/Label';
 import * as React from 'react';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm
+} from 'react-hook-form';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
 import setHours from 'date-fns/setHours';
@@ -12,7 +17,7 @@ import Button from 'components/atoms/Button';
 import { BsFillFileTextFill, BsTrashFill, BsXLg } from 'react-icons/bs';
 import { isEmpty } from 'lodash';
 import { checkSelectedOption, INITIAL_EXTRA_OPTIONS, modelDisplayValue } from 'utils';
-import { IExtraOptionForm, ISelectedExtraOptions } from 'models';
+import { ICredential, IExtraOptionForm, ISelectedExtraOptions } from 'models';
 
 const ExtraOptionsWrapper = styled.section`
   width: 100%;
@@ -155,7 +160,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
    * It also set what option was selected into array.
    * @param cred
    */
-  const onSubmit = handleSubmit(async (cred) => {
+  const onSubmit: SubmitHandler<IExtraOptionForm> = (cred) => {
     const { fromHour, toHour, lights, toilets } = cred;
     if (!lights && !toilets) {
       return;
@@ -163,7 +168,16 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     const singleRecord = { options: [{ lights }, { toilets }], fromHour, toHour };
     setExtraOptions([...extraOptions, singleRecord]);
     reset({ ...INITIAL_EXTRA_OPTIONS });
-  });
+  };
+
+  /**
+   * Function to dispatch errors on action to log user into platform
+   * @param err
+   * @param e
+   */
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
   /**
    * Function edit selected extra option and updated form state.
@@ -202,7 +216,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               name="lights"
               defaultValue={false}
               control={control}
-              render={({ onChange, value }: ControllerRenderProps) => (
+              render={({ field: { onChange, value } }) => (
                 <Checkbox
                   checked={value}
                   className="checkbox"
@@ -219,7 +233,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               name="toilets"
               defaultValue={false}
               control={control}
-              render={({ onChange, value }: ControllerRenderProps) => (
+              render={({ field: { onChange, value } }) => (
                 <Checkbox
                   checked={value}
                   className="checkbox"
@@ -236,7 +250,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               name="fromHour"
               defaultValue={new Date()}
               control={control}
-              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <HourPickerField
                   placeholderText="Wybierz"
                   showTimeSelect
@@ -262,7 +276,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
               defaultValue={new Date()}
               control={control}
               rules={{ required: true }}
-              render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <HourPickerField
                   placeholderText="Wybierz"
                   showTimeSelect
@@ -282,7 +296,11 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
             />
           </InputWrapper>
           <ButtonWrapper>
-            <RoundBtn role="button" onClick={onSubmit} disabled={anyOptionSelected}>
+            <RoundBtn
+              role="button"
+              onClick={handleSubmit(onSubmit, onError)}
+              disabled={anyOptionSelected}
+            >
               <BsXLg />
             </RoundBtn>
           </ButtonWrapper>

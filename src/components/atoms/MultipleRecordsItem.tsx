@@ -221,11 +221,13 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                         currentPage,
                         postPerPage
                       })
-                    }>
+                    }
+                  >
                     <BsFillFileEarmarkTextFill />
                   </ListItemBtn>
                   <ListItemBtn
-                    onClick={() => deleteHandler({ itemIndex: index, currentPage, postPerPage })}>
+                    onClick={() => deleteHandler({ itemIndex: index, currentPage, postPerPage })}
+                  >
                     <BsTrashFill />
                   </ListItemBtn>
                 </>

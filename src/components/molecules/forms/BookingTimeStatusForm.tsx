@@ -1,6 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm
+} from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { isNil } from 'lodash';
 import Label from '../../atoms/Label';
@@ -14,7 +19,7 @@ import ErrorMsg from '../../atoms/ErrorMsg';
 import TextAreaField from '../../atoms/TextAreaField';
 import ConfirmAction from '../ConfirmAction';
 import Button from '../../atoms/Button';
-import { IBooking, IBookingStatusForm } from '../../../models';
+import { IBooking,IBookingStatusForm, ICredential } from '../../../models';
 import { closeModal } from '../../../store';
 import TextInputField from '../../atoms/TextInputField';
 
@@ -87,7 +92,12 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
 
   const dispatch = useDispatch();
 
-  const { handleSubmit, errors, control, reset } = useForm<IBookingStatusForm>({
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset
+  } = useForm<IBookingStatusForm>({
     defaultValues: {
       bookingStatus: BOOKING_STATUS_OPTIONS[0],
       bookingParticipants: '',
@@ -113,12 +123,21 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
    * This is related to admin and employee. To change the status of selected reservation.
    * @param cred
    */
-  const onSubmit = handleSubmit<IBookingStatusForm>(async (cred) => {
+  const onSubmit: SubmitHandler<IBookingStatusForm> = (cred) => {
     if (isNil(bookingTimeIndex)) return;
 
     setBookingData(generateBookingStatusDate(cred, currentBooking, bookingTimeIndex));
     setDisplayConfirmation(true);
-  });
+  };
+
+  /**
+   * Function to dispatch errors on action to log user into platform
+   * @param err
+   * @param e
+   */
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
   /**
    * Function to confirm submission action and pass it to parent component.
@@ -165,7 +184,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
         defaultValue={BOOKING_STATUS_OPTIONS[0]}
         control={control}
         rules={{ required: true }}
-        render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+        render={({ field: { onChange, onBlur, value } }) => (
           <SelectInputField
             options={BOOKING_STATUS_OPTIONS}
             styles={customStyles(false)}
@@ -187,7 +206,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
         defaultValue={''}
         control={control}
         rules={{ required: true }}
-        render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+        render={({ field: { onChange, onBlur, value } }) => (
           <ParticipantInput
             placeholder="Wpisz liczbe"
             onChange={onChange}
@@ -204,7 +223,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
         defaultValue={''}
         control={control}
         rules={{ required: false }}
-        render={({ onChange, onBlur, value }: ControllerRenderProps) => (
+        render={({ field: { onChange, onBlur, value } }) => (
           <TextAreaField
             placeholder="Wiadomość"
             onChange={onChange}
@@ -230,8 +249,9 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
           {hasRights && (
             <Button
               role="button"
-              onClick={onSubmit}
-              disabled={!hasRights || !currentBooking.accepted}>
+              onClick={handleSubmit(onSubmit, onError)}
+              disabled={!hasRights || !currentBooking.accepted}
+            >
               Potwierdz
             </Button>
           )}

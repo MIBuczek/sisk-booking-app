@@ -15,7 +15,7 @@ import { Redirect } from 'react-router';
 
 const MainWrapper = styled.section`
   width: 100%;
-  min-height: 82vh;
+  min-height: 100vh;
   margin-top: 5vh;
   display: flex;
   align-items: flex-start;

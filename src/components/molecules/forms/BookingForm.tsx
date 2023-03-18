@@ -94,6 +94,11 @@ const InputContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
+  .react-datepicker__input-container {
+    display: flex;
+    justify-content: center;
+  }
+
   @media (max-width: 890px) {
     width: 50%;
   }
@@ -150,7 +155,7 @@ const MessageTextArea = styled(TextAreaField)`
 `;
 
 const ButtonWrapper = styled.div`
-  width: 50%;
+  width: 70%;
   display: flex;
   align-items: center;
 
@@ -237,7 +242,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   const [extraOptions, setExtraOptions] = React.useState<ISelectedExtraOptions[]>([]);
   const [bookingId, setBookingId] = React.useState<string | undefined>(undefined);
   const [selectedSize, setSelectedSize] = React.useState(SIZE_OPTIONS['1/1']);
-  const [sizeOptions, setSizeOptions] = React.useState(SIZE_OPTIONS_BTN);
+  const [sizeOptions, setSizeOptions] = React.useState<SIZE_OPTIONS[]>(SIZE_OPTIONS_BTN);
   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
   const [police, setPolice] = React.useState<boolean>(false);
   const [conflict, setConflict] = React.useState<boolean>(false);
@@ -460,8 +465,23 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
   };
 
   React.useEffect(() => {
-    setSizeOptions(selectSizeFieldOptions(cityValue.value, buildingValue.value));
-  }, [cityValue, buildingValue]);
+    const sub = watch((value, { name }) => {
+      const currentCity = value.city?.value ?? '';
+      const currentBuilding = value.building?.value ?? '';
+      switch (name) {
+        case 'city':
+          const defaultBuilding = selectBuildingOptions(currentCity, building)[0];
+          setValue('building', defaultBuilding);
+          break;
+        case 'building':
+          setSizeOptions(selectSizeFieldOptions(currentCity, currentBuilding));
+          break;
+        default:
+          break;
+      }
+    });
+    return () => sub.unsubscribe();
+  }, [watch]);
 
   React.useEffect(() => {
     if (isEditing && typeof editedItemIndex === 'number') {
@@ -470,6 +490,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       createInitialState();
     }
   }, [isEditing]);
+
+  React.useEffect(() => {
+    setSizeOptions(selectSizeFieldOptions(city.value, building.value));
+  }, []);
 
   React.useEffect(updateEndDataInForm, [startDate]);
 

@@ -41,17 +41,17 @@ const fetchingBuildingsError = (errorMessage: string): IBuildingAction => ({
  */
 const getBuildingsData =
   () =>
-  async (dispatch: Dispatch<IBuildingAction>): Promise<void> => {
-    dispatch(fetchingBuildingsStart());
-    try {
-      const buildingsCollection = await collection(db, BUILDINGS_COLLECTION_KEY);
-      const documents = await getDocs(buildingsCollection);
-      const buildings = documents.docs.map(parseFirebaseBuildingData);
-      dispatch(fetchingBuildingsDone(buildings));
-    } catch (err) {
-      dispatch(fetchingBuildingsError('Problem z serverem. Nie można pobrac danych o budynkach.'));
-      throw new Error(JSON.stringify(err));
-    }
-  };
+    async (dispatch: Dispatch<IBuildingAction>): Promise<void> => {
+      dispatch(fetchingBuildingsStart());
+      try {
+        const buildingsCollection = await collection(db, BUILDINGS_COLLECTION_KEY);
+        const documents = await getDocs(buildingsCollection);
+        const buildings = documents.docs.map(parseFirebaseBuildingData);
+        dispatch(fetchingBuildingsDone(buildings));
+      } catch (err) {
+        dispatch(fetchingBuildingsError('Problem z serverem. Nie można pobrac danych o budynkach.'));
+        throw new Error(JSON.stringify(err));
+      }
+    };
 
 export { getBuildingsData, fetchingBuildingsStart };

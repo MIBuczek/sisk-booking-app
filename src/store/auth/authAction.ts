@@ -40,38 +40,38 @@ export const fetchingAuthError = (errorMessage: string): IAuthAction => ({
  */
 export const logInUser =
   (email: string, password: string) =>
-  async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
-    dispatch(fetchingAuth());
-    try {
-      const resp = (await signInWithEmailAndPassword(auth, email, password)).user?.uid;
-      if (resp) {
-        const credentials: IAuth = {
-          email,
-          uid: resp
-        };
-        dispatch(fetchingAuthDone(LOGIN_STATE.LOG_IN, credentials));
-      } else {
-        dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
+    async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
+      dispatch(fetchingAuth());
+      try {
+        const resp = (await signInWithEmailAndPassword(auth, email, password)).user?.uid;
+        if (resp) {
+          const credentials: IAuth = {
+            email,
+            uid: resp
+          };
+          dispatch(fetchingAuthDone(LOGIN_STATE.LOG_IN, credentials));
+        } else {
+          dispatch(fetchingAuthError('Nie udane logowanie do aplikacji.'));
+        }
+      } catch (err) {
+        dispatch(
+          fetchingAuthError('Nie udane logowanie do aplikacji. Błedny adres e-mail lub hasło.')
+        );
+        throw new Error(JSON.stringify(err));
       }
-    } catch (err) {
-      dispatch(
-        fetchingAuthError('Nie udane logowanie do aplikacji. Błedny adres e-mail lub hasło.')
-      );
-      throw new Error(JSON.stringify(err));
-    }
-  };
+    };
 
 /* Store logout user action. */
 export const logOutUser =
   () =>
-  async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
-    dispatch(fetchingAuth());
-    try {
-      await signOut(auth);
-      dispatch(fetchingAuthDone(LOGIN_STATE.LOG_OUT, undefined));
-      window.location.reload();
-    } catch (err) {
-      dispatch(fetchingAuthError('Problem z serwerem. Nieudane wylogowanie z aplikacji.'));
-      throw new Error(JSON.stringify(err));
-    }
-  };
+    async (dispatch: Dispatch<IAuthAction>): Promise<void> => {
+      dispatch(fetchingAuth());
+      try {
+        await signOut(auth);
+        dispatch(fetchingAuthDone(LOGIN_STATE.LOG_OUT, undefined));
+        window.location.reload();
+      } catch (err) {
+        dispatch(fetchingAuthError('Problem z serwerem. Nieudane wylogowanie z aplikacji.'));
+        throw new Error(JSON.stringify(err));
+      }
+    };

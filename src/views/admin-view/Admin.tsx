@@ -22,7 +22,7 @@ import Summary from 'components/organisms/Summary';
 
 const AdminWrapper = styled.section`
   width: 100%;
-  min-height: 82vh;
+  min-height: 100vh;
   margin-top: 5vh;
   display: flex;
   justify-content: center;

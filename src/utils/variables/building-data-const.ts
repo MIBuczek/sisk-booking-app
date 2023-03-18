@@ -33,8 +33,8 @@ const RADWANICE_BUILDINGS: IBuilding[] = [
 
 const SIECHNICE_BUILDINGS: IBuilding[] = [
   {
-    name: 'Bieżnia na stadionie LA',
-    property: 'bieznia-na-stadionie-la',
+    name: 'Bieżnia trawiasta na stadionie LA',
+    property: 'boisko-trawiaste-stadionie-la',
     city: 'siechnice',
     size: [SIZE_OPTIONS['1/1']],
     phone: '609 996 064',

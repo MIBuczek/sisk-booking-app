@@ -41,21 +41,21 @@ const fetchingUserError = (errorMessage: string): IUserAction => ({
  */
 const getUserData =
   () =>
-  async (dispatch: Dispatch<IUserAction>, getState: () => IReduxState): Promise<void> => {
-    dispatch(fetchingUserStart());
-    try {
-      const { auth } = getState().authStore;
+    async (dispatch: Dispatch<IUserAction>, getState: () => IReduxState): Promise<void> => {
+      dispatch(fetchingUserStart());
+      try {
+        const { auth } = getState().authStore;
 
-      if (!auth?.uid) return;
+        if (!auth?.uid) return;
 
-      const userRef = doc(db, USER_COLLECTION_KEY, auth.uid);
-      const currentUser = await getDoc(userRef);
+        const userRef = doc(db, USER_COLLECTION_KEY, auth.uid);
+        const currentUser = await getDoc(userRef);
 
-      dispatch(fetchingUserDone({ ...(currentUser.data() as IUser) }));
-    } catch (err) {
-      dispatch(fetchingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
-      throw new Error(JSON.stringify(err));
-    }
-  };
+        dispatch(fetchingUserDone({ ...(currentUser.data() as IUser) }));
+      } catch (err) {
+        dispatch(fetchingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
+        throw new Error(JSON.stringify(err));
+      }
+    };
 
 export { fetchingUserStart, getUserData };

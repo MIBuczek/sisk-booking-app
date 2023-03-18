@@ -1,11 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm
-} from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { isNil } from 'lodash';
 import Label from '../../atoms/Label';
@@ -19,7 +14,7 @@ import ErrorMsg from '../../atoms/ErrorMsg';
 import TextAreaField from '../../atoms/TextAreaField';
 import ConfirmAction from '../ConfirmAction';
 import Button from '../../atoms/Button';
-import { IBooking,IBookingStatusForm, ICredential } from '../../../models';
+import { IBooking, IBookingStatusForm, ICredential } from '../../../models';
 import { closeModal } from '../../../store';
 import TextInputField from '../../atoms/TextInputField';
 

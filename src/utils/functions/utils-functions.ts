@@ -60,8 +60,8 @@ const paginationItems = (totalPost: number, postPerPage: number): number[] => {
  * @param  cityValue
  * @returns {Array<SIZE_OPTIONS>}
  */
-const selectSizeFieldOptions = (buildingValue: string, cityValue: string): SIZE_OPTIONS[] => {
-  if (buildingValue && cityValue) return SIZE_FIELD_OPTIONS[buildingValue][cityValue];
+const selectSizeFieldOptions = (cityValue: string, buildingValue: string): SIZE_OPTIONS[] => {
+  if (cityValue && buildingValue) return SIZE_FIELD_OPTIONS[cityValue][buildingValue];
   return SIZE_OPTIONS_BTN;
 };
 

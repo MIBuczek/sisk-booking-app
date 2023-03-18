@@ -2,12 +2,7 @@
 import { DataPickerField } from 'components/atoms/DatapickerField';
 import Label from 'components/atoms/Label';
 import * as React from 'react';
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm
-} from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { fadeIn } from 'style/animation';
 import styled from 'styled-components';
 import setHours from 'date-fns/setHours';

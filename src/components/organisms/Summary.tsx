@@ -111,7 +111,7 @@ const InputWrapper = styled(SelectWrapper)`
 const MonthPickerWrapper = styled(SelectWrapper)`
   flex-direction: row;
   flex-wrap: wrap;
-
+  
   span {
     display: block;
     width: 100%;
@@ -121,9 +121,15 @@ const MonthPickerWrapper = styled(SelectWrapper)`
       width: 100%;
     }
   }
-
-  .react-datepicker {
+  
+  .react-datepicker-wrapper {
     border-color: ${({ theme }) => theme.green};
+
+    .react-datepicker__input-container {
+      display: flex;
+      justify-content: center;
+      margin: 5px 0;
+    }
 
     .react-datepicker__header {
       height: 30px;

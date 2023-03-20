@@ -9,7 +9,7 @@ import { SIZE_FIELD_OPTIONS } from 'utils/variables/options-const';
  * @returns {String}
  */
 const firstLetterUpperCase = (s: string): string =>
-  s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
+   s.charAt(0).toLocaleUpperCase() + s.substring(1).toLowerCase();
 
 /**
  * Function to find which option was already selected.
@@ -18,9 +18,9 @@ const firstLetterUpperCase = (s: string): string =>
  * @returns {TSelect}
  */
 const findSelectedOption = (value: string, options: TSelect[]): TSelect => {
-  const selectedOption = options.find((c) => c.value === value);
-  if (selectedOption) return selectedOption;
-  return options[0];
+   const selectedOption = options.find((c) => c.value === value);
+   if (selectedOption) return selectedOption;
+   return options[0];
 };
 
 /**
@@ -31,13 +31,13 @@ const findSelectedOption = (value: string, options: TSelect[]): TSelect => {
  * @returns {Array<IClient | IBooking>}
  */
 const pagination = (
-  items: (IClient | IBooking)[],
-  currentPage: number,
-  postPerPage: number
+   items: (IClient | IBooking)[],
+   currentPage: number,
+   postPerPage: number
 ): (IClient | IBooking)[] => {
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  return items.slice(indexOfFirstPost, indexOfLastPost);
+   const indexOfLastPost = currentPage * postPerPage;
+   const indexOfFirstPost = indexOfLastPost - postPerPage;
+   return items.slice(indexOfFirstPost, indexOfLastPost);
 };
 
 /**
@@ -47,11 +47,11 @@ const pagination = (
  * @returns {Array<Number>}
  */
 const paginationItems = (totalPost: number, postPerPage: number): number[] => {
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalPost / postPerPage); i += 1) {
-    pageNumbers.push(i);
-  }
-  return pageNumbers;
+   const pageNumbers = [];
+   for (let i = 1; i <= Math.ceil(totalPost / postPerPage); i += 1) {
+      pageNumbers.push(i);
+   }
+   return pageNumbers;
 };
 
 /**
@@ -61,8 +61,8 @@ const paginationItems = (totalPost: number, postPerPage: number): number[] => {
  * @returns {Array<SIZE_OPTIONS>}
  */
 const selectSizeFieldOptions = (cityValue: string, buildingValue: string): SIZE_OPTIONS[] => {
-  if (cityValue && buildingValue) return SIZE_FIELD_OPTIONS[cityValue][buildingValue];
-  return SIZE_OPTIONS_BTN;
+   if (cityValue && buildingValue) return SIZE_FIELD_OPTIONS[cityValue][buildingValue];
+   return SIZE_OPTIONS_BTN;
 };
 
 /**
@@ -71,8 +71,8 @@ const selectSizeFieldOptions = (cityValue: string, buildingValue: string): SIZE_
  * @returns {Array<TSelect>}
  */
 const selectClientOptions = (clients: IClient[]): TSelect[] => {
-  if (!clients) return [];
-  return clients.map((c) => ({ label: c.name, value: c.id || '' }));
+   if (!clients) return [];
+   return clients.map((c) => ({ label: c.name, value: c.id || '' }));
 };
 
 /**
@@ -82,7 +82,7 @@ const selectClientOptions = (clients: IClient[]): TSelect[] => {
  * @returns {Array<TSelect>}
  */
 const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect | undefined =>
-  selectClientOptions(clients).find((o) => o.value === clientId);
+   selectClientOptions(clients).find((o) => o.value === clientId);
 
 /**
  * Function to check selected options and return value to display in list.
@@ -90,13 +90,13 @@ const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect |
  * @returns {String}
  */
 const checkSelectedOption = (options: ExtraOptions[]): string =>
-  options
-    .reduce((acc: string[], opt) => {
-      if (opt.lights) acc.push('Światła');
-      if (opt.toilets) acc.push('Zaplecze sanitarne');
-      return acc;
-    }, [])
-    .join(',');
+   options
+      .reduce((acc: string[], opt) => {
+         if (opt.lights) acc.push('Światła');
+         if (opt.toilets) acc.push('Zaplecze sanitarne');
+         return acc;
+      }, [])
+      .join(',');
 
 /**
  * Function to find current item index related to current page and post per page.
@@ -105,14 +105,14 @@ const checkSelectedOption = (options: ExtraOptions[]): string =>
  * @param postPerPage
  */
 const findCurrentItemIndex = (
-  itemIndex: number,
-  currentPage: number,
-  postPerPage: number
+   itemIndex: number,
+   currentPage: number,
+   postPerPage: number
 ): number => {
-  if (currentPage > 1) {
-    return (currentPage - 1) * postPerPage + itemIndex;
-  }
-  return itemIndex;
+   if (currentPage > 1) {
+      return (currentPage - 1) * postPerPage + itemIndex;
+   }
+   return itemIndex;
 };
 
 /**
@@ -121,10 +121,10 @@ const findCurrentItemIndex = (
  * @return Number
  */
 const checkIndex = (index: number | null): number => {
-  if (bookingIndexTypeChecker(index)) {
-    return index;
-  }
-  return 0;
+   if (bookingIndexTypeChecker(index)) {
+      return index;
+   }
+   return 0;
 };
 
 /**
@@ -134,7 +134,7 @@ const checkIndex = (index: number | null): number => {
  * @return Boolean
  */
 const checkIsLastIndex = (currentIndex: number, arrayLength: number): boolean =>
-  currentIndex === arrayLength;
+   currentIndex === arrayLength;
 
 /**
  * Function to generate Date of last day of selected month.
@@ -142,30 +142,30 @@ const checkIsLastIndex = (currentIndex: number, arrayLength: number): boolean =>
  * @return Date
  */
 const makeLastDayOfMonth = (date: Date): Date => {
-  let fullYear = date.getFullYear();
-  let month = date.getMonth() + 1;
-  let day = 0;
+   let fullYear = date.getFullYear();
+   let month = date.getMonth() + 1;
+   let day = 0;
 
-  if (month > 11) {
-    fullYear += 1;
-    month = 0;
-    day = 31;
-  }
+   if (month > 11) {
+      fullYear += 1;
+      month = 0;
+      day = 31;
+   }
 
-  return new Date(fullYear, month, day);
+   return new Date(fullYear, month, day);
 };
 
 export {
-  selectSizeFieldOptions,
-  selectClientOptions,
-  selectedClientIdOption,
-  pagination,
-  paginationItems,
-  findSelectedOption,
-  firstLetterUpperCase,
-  checkSelectedOption,
-  findCurrentItemIndex,
-  checkIndex,
-  checkIsLastIndex,
-  makeLastDayOfMonth
+   selectSizeFieldOptions,
+   selectClientOptions,
+   selectedClientIdOption,
+   pagination,
+   paginationItems,
+   findSelectedOption,
+   firstLetterUpperCase,
+   checkSelectedOption,
+   findCurrentItemIndex,
+   checkIndex,
+   checkIsLastIndex,
+   makeLastDayOfMonth
 };

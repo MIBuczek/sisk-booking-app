@@ -6,9 +6,9 @@ import { IUser } from 'models';
  * @returns {Boolean}
  */
 const hasRightsToSeeContent = (loggedUsed: IUser | undefined): boolean => {
-  if (!loggedUsed) return false;
-  const { isAdmin, isEmployee, isOffice } = loggedUsed;
-  return isAdmin || isEmployee || isOffice;
+   if (!loggedUsed) return false;
+   const { isAdmin, isEmployee, isOffice } = loggedUsed;
+   return isAdmin || isEmployee || isOffice;
 };
 
 /**
@@ -17,11 +17,11 @@ const hasRightsToSeeContent = (loggedUsed: IUser | undefined): boolean => {
  * @returns {Boolean}
  */
 const adminCredentials = (loggedUsed: IUser | undefined): boolean => {
-  if (!loggedUsed) return false;
-  const { isAdmin, isEmployee, isOffice } = loggedUsed;
-  if (isAdmin) return true;
-  if (isEmployee || isOffice) return false;
-  return false;
+   if (!loggedUsed) return false;
+   const { isAdmin, isEmployee, isOffice } = loggedUsed;
+   if (isAdmin) return true;
+   if (isEmployee || isOffice) return false;
+   return false;
 };
 
 /**
@@ -30,9 +30,9 @@ const adminCredentials = (loggedUsed: IUser | undefined): boolean => {
  * @returns {Boolean}
  */
 const siskEmployeeCredentials = (loggedUsed: IUser | undefined) => {
-  if (!loggedUsed) return false;
-  const { isAdmin, isOffice, isEmployee } = loggedUsed;
-  return isAdmin || isOffice || isEmployee;
+   if (!loggedUsed) return false;
+   const { isAdmin, isOffice, isEmployee } = loggedUsed;
+   return isAdmin || isOffice || isEmployee;
 };
 
 /**
@@ -41,14 +41,14 @@ const siskEmployeeCredentials = (loggedUsed: IUser | undefined) => {
  * @returns {Boolean}
  */
 const adminSeeContentCredentials = (loggedUsed: IUser | undefined): boolean => {
-  if (!loggedUsed) return false;
-  const { isAdmin, isOffice } = loggedUsed;
-  return isAdmin || isOffice;
+   if (!loggedUsed) return false;
+   const { isAdmin, isOffice } = loggedUsed;
+   return isAdmin || isOffice;
 };
 
 export {
-  hasRightsToSeeContent,
-  adminCredentials,
-  siskEmployeeCredentials,
-  adminSeeContentCredentials
+   hasRightsToSeeContent,
+   adminCredentials,
+   siskEmployeeCredentials,
+   adminSeeContentCredentials
 };

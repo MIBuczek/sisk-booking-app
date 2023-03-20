@@ -5,92 +5,92 @@ import { isNil } from 'lodash';
 import Paragraph from '../atoms/Paragraph';
 import Header from '../atoms/Header';
 import Button from '../atoms/Button';
-import { clearCurrentBooking, closeModal } from '../../store';
-import { fadeIn } from '../../style/animation';
-import { IBookingsPayload, IReduxState } from '../../models';
+import { clearCurrentBooking, closeModal } from 'store';
+import { fadeIn } from 'style/animation';
+import { IBookingsPayload, IReduxState } from 'models';
 import BookingInfo from '../atoms/BookingInfo';
 
 const BookingDetailsWrapper = styled.article`
-  width: 290px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
+   width: 290px;
+   height: auto;
+   display: flex;
+   flex-direction: column;
 
-  @media (max-width: 1400px) {
-    width: 85%;
-    padding: 30px 20px;
-  }
+   @media (max-width: 1400px) {
+      width: 85%;
+      padding: 30px 20px;
+   }
 
-  @media (max-width: 890px) {
-    width: 75%;
-  }
+   @media (max-width: 890px) {
+      width: 75%;
+   }
 `;
 
 const DetailsHeader = styled(Header)`
-  font-size: 18px;
-  margin: 60px 0 20px;
+   font-size: 18px;
+   margin: 60px 0 20px;
 
-  @media (max-width: 1400px) {
-    margin: 20px 0;
-    width: 100%;
-  }
+   @media (max-width: 1400px) {
+      margin: 20px 0;
+      width: 100%;
+   }
 `;
 
 const DetailsParagraph = styled(Paragraph)`
-  font-size: 14px;
-  animation: ${fadeIn} 0.5s linear;
+   font-size: 14px;
+   animation: ${fadeIn} 0.5s linear;
 
-  &:first-of-type {
-    padding-top: 30px;
-  }
+   &:first-of-type {
+      padding-top: 30px;
+   }
 `;
 
 const ClearButton = styled(Button)`
-  background-color: #eaeaea;
-  border-color: ${({ theme }) => theme.green};
-  color: ${({ theme }) => theme.darkGrey};
+   background-color: #eaeaea;
+   border-color: ${({ theme }) => theme.green};
+   color: ${({ theme }) => theme.darkGrey};
 
-  &:hover {
-    background-color: ${({ theme }) => theme.green};
-    border-color: #b9b8b8;
-    box-shadow: none;
-    opacity: 1;
-  }
+   &:hover {
+      background-color: ${({ theme }) => theme.green};
+      border-color: #b9b8b8;
+      box-shadow: none;
+      opacity: 1;
+   }
 `;
 
 const BookingDetails = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const { booking, bookingTimeIndex } = useSelector(
-    (state: IReduxState): IBookingsPayload => state.bookingStore
-  );
+   const dispatch = useDispatch();
+   const { booking, bookingTimeIndex } = useSelector(
+      (state: IReduxState): IBookingsPayload => state.bookingStore
+   );
 
-  /**
-   * Function to clear selected booking
-   */
-  const clear = (): void => {
-    dispatch(clearCurrentBooking());
-    dispatch(closeModal());
-  };
+   /**
+    * Function to clear selected booking
+    */
+   const clear = (): void => {
+      dispatch(clearCurrentBooking());
+      dispatch(closeModal());
+   };
 
-  return (
-    <BookingDetailsWrapper>
-      <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
-      {!isNil(booking) ? (
-        <>
-          <BookingInfo
-            isAdmin={false}
-            currentBooking={booking}
-            bookingTimeIndex={bookingTimeIndex}
-          />
-          <ClearButton onClick={clear}>Wyczyść</ClearButton>
-        </>
-      ) : (
-        <DetailsParagraph bold>
-          Aby zobaczyć szczegóły, kliknij kalendarzu na wybraną rezerwację.
-        </DetailsParagraph>
-      )}
-    </BookingDetailsWrapper>
-  );
+   return (
+      <BookingDetailsWrapper>
+         <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
+         {!isNil(booking) ? (
+            <>
+               <BookingInfo
+                  isAdmin={false}
+                  currentBooking={booking}
+                  bookingTimeIndex={bookingTimeIndex}
+               />
+               <ClearButton onClick={clear}>Wyczyść</ClearButton>
+            </>
+         ) : (
+            <DetailsParagraph bold>
+               Aby zobaczyć szczegóły, kliknij kalendarzu na wybraną rezerwację.
+            </DetailsParagraph>
+         )}
+      </BookingDetailsWrapper>
+   );
 };
 
 export default BookingDetails;

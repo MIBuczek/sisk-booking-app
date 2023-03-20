@@ -1,23 +1,23 @@
 import { isEmpty } from 'lodash';
 import { IBookedTime, ISummaryClientBookings } from 'models';
 import {
-  checkSelectedOption,
-  formatDate,
-  formatTime,
-  modelDisplayValue,
-  RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
-  RECORDS_CLIENTS_ROW_DETAILS,
-  summaryTotalBookingsNumber,
-  transformValue
+   checkSelectedOption,
+   formatDate,
+   formatTime,
+   modelDisplayValue,
+   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
+   RECORDS_CLIENTS_ROW_DETAILS,
+   summaryTotalBookingsNumber,
+   transformValue
 } from 'utils';
 
 export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
-  const { client } = clientSummary;
-  const new_tab = window.open('https://sisk-booking-app.web.app/#/raport-najmów', '_blank');
+   const { client } = clientSummary;
+   const new_tab = window.open('https://sisk-booking-app.web.app/#/raport-najmów', '_blank');
 
-  if (!new_tab) return;
+   if (!new_tab) return;
 
-  new_tab.document.write(`
+   new_tab.document.write(`
       <html lang="pl">
       <head>
         <meta charset="utf-8" />
@@ -267,59 +267,59 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
       </html>
     `);
 
-  const [client_basic_info] = new_tab.document.getElementsByClassName('client-basic-info');
+   const [client_basic_info] = new_tab.document.getElementsByClassName('client-basic-info');
 
-  RECORDS_CLIENTS_ROW_DETAILS.forEach((prop) => {
-    if (!isEmpty(client[prop])) {
-      const paragraph_client = document.createElement('p');
-      paragraph_client.innerHTML = `
+   RECORDS_CLIENTS_ROW_DETAILS.forEach((prop) => {
+      if (!isEmpty(client[prop])) {
+         const paragraph_client = document.createElement('p');
+         paragraph_client.innerHTML = `
       <strong>${RECORDS_CLIENTS_DETAILS_PROPERTY_MAP[prop]}</strong> : ${
-  modelDisplayValue(prop, client[prop]) || ''
-}`;
+            modelDisplayValue(prop, client[prop]) || ''
+         }`;
 
-      const wrapper = document.createElement('div');
-      wrapper.appendChild(paragraph_client);
+         const wrapper = document.createElement('div');
+         wrapper.appendChild(paragraph_client);
 
-      client_basic_info.appendChild(wrapper);
-    }
-  });
+         client_basic_info.appendChild(wrapper);
+      }
+   });
 
-  const generateBookingCityDetails = (
-    bookingCityDetails: IBookedTime[],
-    html_wrapper_element: HTMLDivElement
-  ) => {
-    if (bookingCityDetails.length) {
-      bookingCityDetails.forEach(({ generalBookingDetails, bookingTimeDetails }) => {
-        const {
-          payment,
-          selectedOptions,
-          extraOptions,
-          message,
-          size,
-          building,
-          discount = ''
-        } = generalBookingDetails;
+   const generateBookingCityDetails = (
+      bookingCityDetails: IBookedTime[],
+      html_wrapper_element: HTMLDivElement
+   ) => {
+      if (bookingCityDetails.length) {
+         bookingCityDetails.forEach(({ generalBookingDetails, bookingTimeDetails }) => {
+            const {
+               payment,
+               selectedOptions,
+               extraOptions,
+               message,
+               size,
+               building,
+               discount = ''
+            } = generalBookingDetails;
 
-        const selected_option_list = document.createElement('ul');
+            const selected_option_list = document.createElement('ul');
 
-        if (extraOptions) {
-          selectedOptions.forEach(({ options, fromHour, toHour }) => {
-            const selected_option_list_item = document.createElement('li');
-            selected_option_list_item.innerHTML = `<p>
+            if (extraOptions) {
+               selectedOptions.forEach(({ options, fromHour, toHour }) => {
+                  const selected_option_list_item = document.createElement('li');
+                  selected_option_list_item.innerHTML = `<p>
                 Wybrana opcja : <span>${checkSelectedOption(options)}</span>
                 Od godziny : <span>${formatTime(fromHour)}</span>
                 Do godziny : <span>${formatTime(toHour)}</span>
                 </p>`;
-            selected_option_list.append(selected_option_list_item);
-          });
-        } else {
-          selected_option_list.classList.add('hidden');
-        }
+                  selected_option_list.append(selected_option_list_item);
+               });
+            } else {
+               selected_option_list.classList.add('hidden');
+            }
 
-        const booking_general_details_wrapper = document.createElement('div');
-        booking_general_details_wrapper.classList.add('general-detail-info');
+            const booking_general_details_wrapper = document.createElement('div');
+            booking_general_details_wrapper.classList.add('general-detail-info');
 
-        booking_general_details_wrapper.innerHTML = `
+            booking_general_details_wrapper.innerHTML = `
                 <p>
                 Budynek : <span>${transformValue[building]}</span>
                 Wynajmowana powierzchnia : <span>${size}</span> 
@@ -332,17 +332,17 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
                 ${message.length ? message : '[Brak]'}</span>
                 </p>`;
 
-        booking_general_details_wrapper.append(selected_option_list);
+            booking_general_details_wrapper.append(selected_option_list);
 
-        const booking_time_detail_list = document.createElement('ul');
+            const booking_time_detail_list = document.createElement('ul');
 
-        bookingTimeDetails.forEach(
-          ({ day, startHour, endHour, status, participants = '', comments }) => {
-            const booking_detail_list_item = document.createElement('li');
-            const detail_paragraph_one = document.createElement('p');
-            const detail_paragraph_two = document.createElement('p');
+            bookingTimeDetails.forEach(
+               ({ day, startHour, endHour, status, participants = '', comments }) => {
+                  const booking_detail_list_item = document.createElement('li');
+                  const detail_paragraph_one = document.createElement('p');
+                  const detail_paragraph_two = document.createElement('p');
 
-            detail_paragraph_one.innerHTML = `
+                  detail_paragraph_one.innerHTML = `
                  Dzień : <span>${formatDate(day)}</span>
                  Godzina rozpoczęcia : <span>${formatTime(startHour)}</span>
                  Godzina zakończenia : <span>${formatTime(endHour)}</span>
@@ -350,65 +350,65 @@ export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
                  Status : <span>${transformValue[status]}</span>
                  `;
 
-            detail_paragraph_two.innerHTML = `Uwagi :
+                  detail_paragraph_two.innerHTML = `Uwagi :
             <span class="comments">
             ${comments.length ? comments : '[Brak]'}
             </span>`;
 
-            booking_detail_list_item.append(detail_paragraph_one, detail_paragraph_two);
-            booking_time_detail_list.appendChild(booking_detail_list_item);
-          }
-        );
+                  booking_detail_list_item.append(detail_paragraph_one, detail_paragraph_two);
+                  booking_time_detail_list.appendChild(booking_detail_list_item);
+               }
+            );
 
-        html_wrapper_element.append(booking_general_details_wrapper, booking_time_detail_list);
-      });
-    } else {
-      html_wrapper_element.classList.add('hidden');
-    }
-  };
+            html_wrapper_element.append(booking_general_details_wrapper, booking_time_detail_list);
+         });
+      } else {
+         html_wrapper_element.classList.add('hidden');
+      }
+   };
 
-  const [client_booking_info] = new_tab.document.getElementsByClassName('client-booking-info');
+   const [client_booking_info] = new_tab.document.getElementsByClassName('client-booking-info');
 
-  const paragraph_citi_radwanice = document.createElement('p');
-  paragraph_citi_radwanice.classList.add('city-details');
-  const booking_detail_wrapper_radwanice = document.createElement('div');
-  paragraph_citi_radwanice.innerHTML = `<strong>Radwanice</strong> : ${summaryTotalBookingsNumber(
-    clientSummary.radwanice
-  )}`;
-  generateBookingCityDetails(clientSummary.radwanice, booking_detail_wrapper_radwanice);
+   const paragraph_citi_radwanice = document.createElement('p');
+   paragraph_citi_radwanice.classList.add('city-details');
+   const booking_detail_wrapper_radwanice = document.createElement('div');
+   paragraph_citi_radwanice.innerHTML = `<strong>Radwanice</strong> : ${summaryTotalBookingsNumber(
+      clientSummary.radwanice
+   )}`;
+   generateBookingCityDetails(clientSummary.radwanice, booking_detail_wrapper_radwanice);
 
-  const paragraph_citi_siechnice = document.createElement('p');
-  paragraph_citi_siechnice.classList.add('city-details');
-  const booking_detail_wrapper_siechnice = document.createElement('div');
-  paragraph_citi_siechnice.innerHTML = `<strong>Siechnice</strong> : ${summaryTotalBookingsNumber(
-    clientSummary.siechnice
-  )}`;
-  generateBookingCityDetails(clientSummary.siechnice, booking_detail_wrapper_siechnice);
+   const paragraph_citi_siechnice = document.createElement('p');
+   paragraph_citi_siechnice.classList.add('city-details');
+   const booking_detail_wrapper_siechnice = document.createElement('div');
+   paragraph_citi_siechnice.innerHTML = `<strong>Siechnice</strong> : ${summaryTotalBookingsNumber(
+      clientSummary.siechnice
+   )}`;
+   generateBookingCityDetails(clientSummary.siechnice, booking_detail_wrapper_siechnice);
 
-  const paragraph_citi_katarzyna = document.createElement('p');
-  paragraph_citi_katarzyna.classList.add('city-details');
-  const booking_detail_wrapper_katarzyna = document.createElement('div');
-  paragraph_citi_katarzyna.innerHTML = `<strong>Święta Katarzyna</strong> : ${summaryTotalBookingsNumber(
-    clientSummary['swieta-katarzyna']
-  )}`;
-  generateBookingCityDetails(clientSummary['swieta-katarzyna'], booking_detail_wrapper_katarzyna);
+   const paragraph_citi_katarzyna = document.createElement('p');
+   paragraph_citi_katarzyna.classList.add('city-details');
+   const booking_detail_wrapper_katarzyna = document.createElement('div');
+   paragraph_citi_katarzyna.innerHTML = `<strong>Święta Katarzyna</strong> : ${summaryTotalBookingsNumber(
+      clientSummary['swieta-katarzyna']
+   )}`;
+   generateBookingCityDetails(clientSummary['swieta-katarzyna'], booking_detail_wrapper_katarzyna);
 
-  const paragraph_citi_zerniki = document.createElement('p');
-  paragraph_citi_zerniki.classList.add('city-details');
-  const booking_detail_wrapper_zerniki = document.createElement('div');
-  paragraph_citi_zerniki.innerHTML = `<strong>Żerniki Wrocławskie</strong> : ${summaryTotalBookingsNumber(
-    clientSummary['zerniki-wroclawskie']
-  )}`;
-  generateBookingCityDetails(clientSummary['zerniki-wroclawskie'], booking_detail_wrapper_zerniki);
+   const paragraph_citi_zerniki = document.createElement('p');
+   paragraph_citi_zerniki.classList.add('city-details');
+   const booking_detail_wrapper_zerniki = document.createElement('div');
+   paragraph_citi_zerniki.innerHTML = `<strong>Żerniki Wrocławskie</strong> : ${summaryTotalBookingsNumber(
+      clientSummary['zerniki-wroclawskie']
+   )}`;
+   generateBookingCityDetails(clientSummary['zerniki-wroclawskie'], booking_detail_wrapper_zerniki);
 
-  client_booking_info.append(
-    paragraph_citi_radwanice,
-    booking_detail_wrapper_radwanice,
-    paragraph_citi_siechnice,
-    booking_detail_wrapper_siechnice,
-    paragraph_citi_katarzyna,
-    booking_detail_wrapper_katarzyna,
-    paragraph_citi_zerniki,
-    booking_detail_wrapper_zerniki
-  );
+   client_booking_info.append(
+      paragraph_citi_radwanice,
+      booking_detail_wrapper_radwanice,
+      paragraph_citi_siechnice,
+      booking_detail_wrapper_siechnice,
+      paragraph_citi_katarzyna,
+      booking_detail_wrapper_katarzyna,
+      paragraph_citi_zerniki,
+      booking_detail_wrapper_zerniki
+   );
 };

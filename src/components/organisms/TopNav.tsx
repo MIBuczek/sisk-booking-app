@@ -4,18 +4,18 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { IReduxState } from 'models';
-import { logOutUser } from 'store';
+import { logOutUser, openModal } from 'store';
+import { fadeIn } from 'style/animation';
+import { MODAL_TYPES } from 'utils';
 import Logo from '../atoms/Logo';
 import useScrollPosition from '../../hooks/useScrollPosition ';
 import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
-import { fadeIn } from 'style/animation';
-import { openModal } from 'store';
-import { MODAL_TYPES } from 'utils';
+
 
 type Navigation = {
-   isTop: boolean;
-   isOpen: boolean;
+  isTop: boolean;
+  isOpen: boolean;
 };
 
 const NavWrapper = styled.nav<Navigation>`
@@ -155,25 +155,25 @@ const NaviAnchor = styled(Anchor)`
 `;
 
 const TopNav = (): JSX.Element => {
-   const [isTop, setIsTop] = React.useState<boolean>(true);
+  const [isTop, setIsTop] = React.useState<boolean>(true);
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   const {
-      authStore,
-      currentUserStore: { user },
-      modal: { isOpen }
-   } = useSelector((store: IReduxState): IReduxState => store);
+  const {
+    authStore,
+    currentUserStore: { user },
+    modal: { isOpen }
+  } = useSelector((store: IReduxState): IReduxState => store);
 
-   const scrollPosition = useScrollPosition();
+  const scrollPosition = useScrollPosition();
 
-   /**
+  /**
     * Condition to check if we on top of the page.
     */
-   if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
-   else if (scrollPosition < 30 && !isTop) setIsTop(true);
+  if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
+  else if (scrollPosition < 30 && !isTop) setIsTop(true);
 
-   return (
+  return (
       <NavWrapper isTop={isTop} isOpen={isOpen}>
          <NavContent>
             <Logo />
@@ -225,7 +225,7 @@ const TopNav = (): JSX.Element => {
             </StyledLinksList>
          </NavContent>
       </NavWrapper>
-   );
+  );
 };
 
 export default TopNav;

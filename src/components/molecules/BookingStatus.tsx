@@ -45,41 +45,41 @@ const DetailsSpan = styled.span`
 `;
 
 interface BookingStatusFormProps {
-   bookingsList: IBooking[];
-   editedItemIndex?: number;
-   editedSubItemIndex?: number;
+  bookingsList: IBooking[];
+  editedItemIndex?: number;
+  editedSubItemIndex?: number;
 }
 
 const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
-   bookingsList,
-   editedItemIndex,
-   editedSubItemIndex
+  bookingsList,
+  editedItemIndex,
+  editedSubItemIndex
 }) => {
-   const [currentBooking, setCurrentBooking] = React.useState<IBooking | undefined>(undefined);
+  const [currentBooking, setCurrentBooking] = React.useState<IBooking | undefined>(undefined);
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   const editBookingStatusHandler = () => {
-      if (isNil(editedItemIndex) || isNil(editedSubItemIndex)) return;
-      setCurrentBooking(bookingsList[editedItemIndex]);
-   };
+  const editBookingStatusHandler = () => {
+    if (isNil(editedItemIndex) || isNil(editedSubItemIndex)) return;
+    setCurrentBooking(bookingsList[editedItemIndex]);
+  };
 
-   /**
+  /**
     * Function to dispatch update booking action with additional new booking time status
     * @param updatedBooking
     */
-   const submitHandler = (updatedBooking: IBooking): void => {
-      dispatch(updateBooking(updatedBooking, true, false));
-   };
+  const submitHandler = (updatedBooking: IBooking): void => {
+    dispatch(updateBooking(updatedBooking, true, false));
+  };
 
-   React.useEffect(() => {
-      editBookingStatusHandler();
-      return () => {
-         setCurrentBooking(undefined);
-      };
-   }, []);
+  React.useEffect(() => {
+    editBookingStatusHandler();
+    return () => {
+      setCurrentBooking(undefined);
+    };
+  }, []);
 
-   return (
+  return (
       <BookingStatusWrapper>
          <BookingStatusHeader>ROZLICZ REZERWACJĘ</BookingStatusHeader>
          {!isNil(currentBooking) && !isNil(editedSubItemIndex) ? (
@@ -112,7 +112,7 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
             </>
          ) : null}
       </BookingStatusWrapper>
-   );
+  );
 };
 
 export default BookingStatus;

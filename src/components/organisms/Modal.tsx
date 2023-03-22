@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import bgModal from '../../assets/images/background-modal.jpg';
 import { IReduxState } from 'models';
 import { fadeIn } from 'style/animation';
+import bgModal from '../../assets/images/background-modal.jpg';
 
 const ModalWrapper = styled.div`
    width: 100%;
@@ -42,20 +42,20 @@ const ModalContent = styled.div`
 `;
 
 export interface IProps {
-   children: JSX.Element | boolean | (JSX.Element | boolean)[];
+  children: JSX.Element | boolean | (JSX.Element | boolean)[];
 }
 
 const Modal: React.FC<IProps> = ({ children }): JSX.Element | null => {
-   const { isOpen } = useSelector((state: IReduxState) => state.modal);
-   if (isOpen) {
-      return (
+  const { isOpen } = useSelector((state: IReduxState) => state.modal);
+  if (isOpen) {
+    return (
          <ModalWrapper>
             <BGImage src={bgModal} alt="bg" />
             <ModalContent>{children}</ModalContent>
          </ModalWrapper>
-      );
-   }
-   return null;
+    );
+  }
+  return null;
 };
 
 export default Modal;

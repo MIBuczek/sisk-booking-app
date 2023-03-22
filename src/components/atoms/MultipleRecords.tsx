@@ -9,7 +9,7 @@ import MultipleRecordItem from './MultipleRecordsItem';
 import Pagination from './Pagination';
 
 type RecordDataType = {
-   empty?: boolean;
+  empty?: boolean;
 };
 
 const RecordWrapper = styled.div`
@@ -125,59 +125,59 @@ const RecordTableData = styled.td<RecordDataType>`
 `;
 
 interface IProps {
-   headers: string[];
-   recordProperty: string[];
-   recordPropertyDetails: string[];
-   recordPropertyDisplayMap: { [x: string]: string };
-   isAdmin: boolean;
-   isEmployee: boolean;
-   conflicts: string[];
-   records?: (IClient | IBooking)[];
-   allRecords?: (IClient | IBooking)[];
-   emptyText: string;
-   editHandler: (editDetails: IEditHandler) => void;
-   deleteHandler: (deleteDetails: IDeleteHandler) => void;
+  headers: string[];
+  recordProperty: string[];
+  recordPropertyDetails: string[];
+  recordPropertyDisplayMap: { [x: string]: string };
+  isAdmin: boolean;
+  isEmployee: boolean;
+  conflicts: string[];
+  records?: (IClient | IBooking)[];
+  allRecords?: (IClient | IBooking)[];
+  emptyText: string;
+  editHandler: (editDetails: IEditHandler) => void;
+  deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
 const MultipleRecords: React.FunctionComponent<IProps> = ({
-   headers,
-   recordProperty,
-   recordPropertyDetails,
-   recordPropertyDisplayMap,
-   isAdmin,
-   isEmployee,
-   conflicts = [],
-   records = [],
-   allRecords = [],
-   emptyText,
-   editHandler,
-   deleteHandler
+  headers,
+  recordProperty,
+  recordPropertyDetails,
+  recordPropertyDisplayMap,
+  isAdmin,
+  isEmployee,
+  conflicts = [],
+  records = [],
+  allRecords = [],
+  emptyText,
+  editHandler,
+  deleteHandler
 }) => {
-   const [currentPage, setCurrentPage] = React.useState<number>(1);
-   const [postPerPage, setPostPerPage] = React.useState<number>(20);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [postPerPage, setPostPerPage] = React.useState<number>(20);
 
-   const nextPage = (num: number): void => setCurrentPage(num);
+  const nextPage = (num: number): void => setCurrentPage(num);
 
-   const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (typeof value === 'number') setPostPerPage(value);
-   };
+  const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof value === 'number') setPostPerPage(value);
+  };
 
-   /* Method to check has single item has conflicts */
-   const singleItemConflictHandler = (record: IBooking | IClient): boolean => {
-      if (singleInstanceOfBookings(record)) {
-         if (record.accepted) {
-            return false;
-         }
-         return conflicts.includes(record.id || '');
+  /* Method to check has single item has conflicts */
+  const singleItemConflictHandler = (record: IBooking | IClient): boolean => {
+    if (singleInstanceOfBookings(record)) {
+      if (record.accepted) {
+        return false;
       }
-      return false;
-   };
+      return conflicts.includes(record.id || '');
+    }
+    return false;
+  };
 
-   React.useEffect(() => undefined, [records]);
+  React.useEffect(() => undefined, [records]);
 
-   return (
+  return (
       <RecordWrapper>
          <RecordTable>
             <thead>
@@ -193,7 +193,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                      <RecordTableData empty>{emptyText}</RecordTableData>
                   </tr>
                ) : (
-                  pagination(records, currentPage, postPerPage).map((record, index) => (
+                 pagination(records, currentPage, postPerPage).map((record, index) => (
                      <MultipleRecordItem
                         key={record.id}
                         index={index}
@@ -211,7 +211,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                         editHandler={editHandler}
                         deleteHandler={deleteHandler}
                      />
-                  ))
+                 ))
                )}
             </tbody>
             <tfoot>
@@ -235,7 +235,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
             </tfoot>
          </RecordTable>
       </RecordWrapper>
-   );
+  );
 };
 
 export default MultipleRecords;

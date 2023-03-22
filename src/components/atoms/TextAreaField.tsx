@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type TextAreaType = {
-   invalid?: boolean;
+  invalid?: boolean;
 };
 
 const TextAreaField = styled.textarea<TextAreaType>`

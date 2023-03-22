@@ -3,29 +3,29 @@ import Button from 'components/atoms/Button';
 import Header from 'components/atoms/Header';
 import SearchInputField from 'components/atoms/SearchInputField';
 import {
-   IAdminState,
-   IBooking,
-   IClient,
-   IDeleteHandler,
-   IEditHandler,
-   instanceOfBookings,
-   IReduxState
+  IAdminState,
+  IBooking,
+  IClient,
+  IDeleteHandler,
+  IEditHandler,
+  instanceOfBookings,
+  IReduxState
 } from 'models';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, deleteBooking, openModal } from 'store';
 import styled from 'styled-components';
 import {
-   adminCredentials,
-   checkAllBookingsConflicts,
-   filterBookingsPerPlace,
-   findCurrentItemIndex,
-   MODAL_TYPES,
-   RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
-   RECORDS_BOOKING_ROW_DETAILS,
-   RECORDS_BOOKINGS_HEADERS,
-   RECORDS_BOOKINGS_ROW,
-   searchSelectedContent,
-   siskEmployeeCredentials
+  adminCredentials,
+  checkAllBookingsConflicts,
+  filterBookingsPerPlace,
+  findCurrentItemIndex,
+  MODAL_TYPES,
+  RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
+  RECORDS_BOOKING_ROW_DETAILS,
+  RECORDS_BOOKINGS_HEADERS,
+  RECORDS_BOOKINGS_ROW,
+  searchSelectedContent,
+  siskEmployeeCredentials
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/BookingForm';
@@ -89,45 +89,45 @@ const ConflictParagraph = styled(Paragraph)`
 `;
 
 interface BookingsProps {
-   mainState: IAdminState;
+  mainState: IAdminState;
 }
 
 const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
-   const [allBookingsPerPlace, setAllBookingsPerPlace] = React.useState<IBooking[]>([]);
-   const [bookingsList, setBookingsList] = React.useState<IBooking[]>([]);
-   const [isEditing, setIsEditing] = React.useState(false);
-   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
-   const [editedSubItemIndex, setEditedSubItemIndex] = React.useState<number | undefined>(
-      undefined
-   );
-   const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
-   const [conflicts, setConflicts] = React.useState<string[]>([]);
-   const [searchPhase, setSearchPhase] = React.useState<string>('');
+  const [allBookingsPerPlace, setAllBookingsPerPlace] = React.useState<IBooking[]>([]);
+  const [bookingsList, setBookingsList] = React.useState<IBooking[]>([]);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
+  const [editedSubItemIndex, setEditedSubItemIndex] = React.useState<number | undefined>(
+    undefined
+  );
+  const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
+  const [conflicts, setConflicts] = React.useState<string[]>([]);
+  const [searchPhase, setSearchPhase] = React.useState<string>('');
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   const {
-      bookingStore: { bookings, errorMessage: errorBooking },
-      currentUserStore: { user, errorMessage: errorUser },
-      modal: { isOpen, type }
-   } = useSelector((state: IReduxState) => state);
+  const {
+    bookingStore: { bookings, errorMessage: errorBooking },
+    currentUserStore: { user, errorMessage: errorUser },
+    modal: { isOpen, type }
+  } = useSelector((state: IReduxState) => state);
 
-   /**
+  /**
     * Function to handle the booking list. It is related to search input field.
     * @param searchResults
     * @param phase
     */
-   const bookingListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
-      if (searchResults.length && instanceOfBookings(searchResults)) {
-         setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
-         setSearchPhase(phase);
-      } else {
-         setBookingsList([]);
-         setSearchPhase(phase);
-      }
-   };
+  const bookingListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
+    if (searchResults.length && instanceOfBookings(searchResults)) {
+      setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
+      setSearchPhase(phase);
+    } else {
+      setBookingsList([]);
+      setSearchPhase(phase);
+    }
+  };
 
-   /**
+  /**
     * Function to handle edited item and set related property edit item and fill up booking form.
     * @param itemIndex
     * @param isMainItem
@@ -135,82 +135,82 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
     * @param currentPage
     * @param postPerPage
     */
-   const editBookingHandler = ({
-      itemIndex,
-      isMainItem,
-      subItemIndex,
-      currentPage,
-      postPerPage
-   }: IEditHandler) => {
-      const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
-      setIsEditing(isMainItem);
-      setEditedItemIndex(currentIndex);
-      dispatch(openModal(isMainItem ? MODAL_TYPES.BOOKINGS : MODAL_TYPES.BOOKINGS_STATUS));
-      if (typeof subItemIndex === 'number') {
-         setEditedSubItemIndex(subItemIndex);
-      }
-   };
-   /**
+  const editBookingHandler = ({
+    itemIndex,
+    isMainItem,
+    subItemIndex,
+    currentPage,
+    postPerPage
+  }: IEditHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
+    setIsEditing(isMainItem);
+    setEditedItemIndex(currentIndex);
+    dispatch(openModal(isMainItem ? MODAL_TYPES.BOOKINGS : MODAL_TYPES.BOOKINGS_STATUS));
+    if (typeof subItemIndex === 'number') {
+      setEditedSubItemIndex(subItemIndex);
+    }
+  };
+  /**
     * Function to handle delete booking item and display related confirmation modal.
     * @param itemIndex
     * @param currentPage
     * @param postPerPage
     */
-   const deleteBookingHandler = ({ itemIndex, currentPage, postPerPage }: IDeleteHandler) => {
-      const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
-      setDeleteItemIndex(currentIndex);
-      dispatch(openModal(MODAL_TYPES.DELETE));
-   };
+  const deleteBookingHandler = ({ itemIndex, currentPage, postPerPage }: IDeleteHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
+    setDeleteItemIndex(currentIndex);
+    dispatch(openModal(MODAL_TYPES.DELETE));
+  };
 
-   /**
+  /**
     * Function to dispatch deleting action into firebase booking data collection.
     */
-   const deleteBookingAction = () => {
-      if (typeof deleteItemIndex === 'undefined') return;
-      const currentBooking = cloneDeep(bookingsList[deleteItemIndex]);
-      if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
-      bookingListHandler(
-         bookings.filter((b) => b.id !== currentBooking.id),
-         searchPhase
-      );
-      initialBookingState();
-      dispatch(closeModal());
-   };
+  const deleteBookingAction = () => {
+    if (typeof deleteItemIndex === 'undefined') return;
+    const currentBooking = cloneDeep(bookingsList[deleteItemIndex]);
+    if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
+    bookingListHandler(
+      bookings.filter((b) => b.id !== currentBooking.id),
+      searchPhase
+    );
+    initialBookingState();
+    dispatch(closeModal());
+  };
 
-   /**
+  /**
     * Function to cancel deleting action.
     */
-   const cancelDeleteBookingAction = () => {
-      initialBookingState();
-      dispatch(closeModal());
-   };
+  const cancelDeleteBookingAction = () => {
+    initialBookingState();
+    dispatch(closeModal());
+  };
 
-   /**
+  /**
     * Function to restore initial status.
     */
-   const initialBookingState = () => {
-      setIsEditing(false);
-      setEditedItemIndex(undefined);
-      setDeleteItemIndex(undefined);
-   };
+  const initialBookingState = () => {
+    setIsEditing(false);
+    setEditedItemIndex(undefined);
+    setDeleteItemIndex(undefined);
+  };
 
-   /**
+  /**
     * Function for handle UseEffect call back.
     */
-   const handlerEffectCallBack = () => {
-      const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
-      setAllBookingsPerPlace(bookingByPlace);
-      const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
-      if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
-      if (user?.isAdmin) {
-         const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
-         setConflicts(bookingWithConflicts);
-      }
-   };
+  const handlerEffectCallBack = () => {
+    const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
+    setAllBookingsPerPlace(bookingByPlace);
+    const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
+    if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
+    if (user?.isAdmin) {
+      const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
+      setConflicts(bookingWithConflicts);
+    }
+  };
 
-   React.useEffect(handlerEffectCallBack, [bookings, mainState]);
+  React.useEffect(handlerEffectCallBack, [bookings, mainState]);
 
-   return (
+  return (
       <BookingsWrapper>
          <BookingsHeader>Lista Rezerwacji</BookingsHeader>
          {(errorBooking || errorUser) && <ErrorMsgServer innerText={errorBooking || errorUser} />}
@@ -279,7 +279,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({ mainState }) => {
             </Modal>
          )}
       </BookingsWrapper>
-   );
+  );
 };
 
 export default Bookings;

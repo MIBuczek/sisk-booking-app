@@ -47,33 +47,33 @@ const CookieParagraph = styled(Paragraph)`
 `;
 
 const Cookies = () => {
-   const [showInfo, setShowInfo] = React.useState(true);
+  const [showInfo, setShowInfo] = React.useState(true);
 
-   /**
+  /**
     * Function to set local storage if user accept cookies politic.
     */
-   const setLocalStorage = () => {
-      localStorage.setItem('cookies', 'false');
-      setShowInfo(false);
-   };
+  const setLocalStorage = () => {
+    localStorage.setItem('cookies', 'false');
+    setShowInfo(false);
+  };
 
-   /**
+  /**
     * Function to get local storage and check if current user accept cookies politic.
     */
-   const getLocalStorage = () => {
-      const userCookies: string | null = localStorage.getItem('cookies');
-      if (!userCookies) setShowInfo(true);
-      else setShowInfo(false);
-   };
+  const getLocalStorage = () => {
+    const userCookies: string | null = localStorage.getItem('cookies');
+    if (!userCookies) setShowInfo(true);
+    else setShowInfo(false);
+  };
 
-   React.useEffect(() => {
-      getLocalStorage();
-      return () => {
-         setShowInfo(true);
-      };
-   }, []);
-   if (!showInfo) return null;
-   return (
+  React.useEffect(() => {
+    getLocalStorage();
+    return () => {
+      setShowInfo(true);
+    };
+  }, []);
+  if (!showInfo) return null;
+  return (
       <CookiesWrapper>
          <CookieHeader>Pliki Cookies</CookieHeader>
          <CookieParagraph>
@@ -87,7 +87,7 @@ const Cookies = () => {
             Ok, rozumiem
          </Button>
       </CookiesWrapper>
-   );
+  );
 };
 
 export default Cookies;

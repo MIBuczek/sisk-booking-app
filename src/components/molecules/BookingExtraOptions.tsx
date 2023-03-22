@@ -137,70 +137,70 @@ const RecordDetailsBtnPanel = styled.div`
 `;
 
 interface BookingExtraOptionsProps {
-   extraOptions: ISelectedExtraOptions[];
-   setExtraOptions: React.Dispatch<React.SetStateAction<ISelectedExtraOptions[]>>;
+  extraOptions: ISelectedExtraOptions[];
+  setExtraOptions: React.Dispatch<React.SetStateAction<ISelectedExtraOptions[]>>;
 }
 
 const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = ({
-   extraOptions,
-   setExtraOptions
+  extraOptions,
+  setExtraOptions
 }) => {
-   const { handleSubmit, control, watch, reset } = useForm<IExtraOptionForm>();
-   const { lights: lightValue, toilets: toiletsValue } = watch();
+  const { handleSubmit, control, watch, reset } = useForm<IExtraOptionForm>();
+  const { lights: lightValue, toilets: toiletsValue } = watch();
 
-   const anyOptionSelected = !(lightValue || toiletsValue);
+  const anyOptionSelected = !(lightValue || toiletsValue);
 
-   /**
+  /**
     * Function to collect extra option form and add it to general booking object.
     * It also set what option was selected into array.
     * @param cred
     */
-   const onSubmit: SubmitHandler<IExtraOptionForm> = (cred) => {
-      const { fromHour, toHour, lights, toilets } = cred;
-      if (!lights && !toilets) {
-         return;
-      }
-      const singleRecord = { options: [{ lights }, { toilets }], fromHour, toHour };
-      setExtraOptions([...extraOptions, singleRecord]);
-      reset({ ...INITIAL_EXTRA_OPTIONS });
-   };
+  const onSubmit: SubmitHandler<IExtraOptionForm> = (cred) => {
+    const { fromHour, toHour, lights, toilets } = cred;
+    if (!lights && !toilets) {
+      return;
+    }
+    const singleRecord = { options: [{ lights }, { toilets }], fromHour, toHour };
+    setExtraOptions([...extraOptions, singleRecord]);
+    reset({ ...INITIAL_EXTRA_OPTIONS });
+  };
 
-   /**
+  /**
     * Function to dispatch errors on action to log user into platform
     * @param err
     * @param e
     */
-   const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-      console.log(err, e);
-   };
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
-   /**
+  /**
     * Function edit selected extra option and updated form state.
     * @param e
     * @param index
     */
-   const editExtraOption = (e: React.MouseEvent, index: number) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const { options, fromHour, toHour } = extraOptions[index];
-      reset({ fromHour, toHour, lights: options[0].lights, toilets: options[1].toilets });
-      deleteExtraOption(e, index);
-   };
+  const editExtraOption = (e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { options, fromHour, toHour } = extraOptions[index];
+    reset({ fromHour, toHour, lights: options[0].lights, toilets: options[1].toilets });
+    deleteExtraOption(e, index);
+  };
 
-   /**
+  /**
     * Function to deleted selected extra option from current booking state.
     * @param e
     * @param index
     */
-   const deleteExtraOption = (e: React.MouseEvent, index: number) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setExtraOptions(extraOptions.filter((o, i) => i !== index));
-   };
+  const deleteExtraOption = (e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setExtraOptions(extraOptions.filter((o, i) => i !== index));
+  };
 
-   React.useEffect(() => undefined, [extraOptions]);
+  React.useEffect(() => undefined, [extraOptions]);
 
-   return (
+  return (
       <ExtraOptionsWrapper>
          <ExtraOptionsContent>
             <ExtraOptionHeader>Dodatkowe opcje wynajmu</ExtraOptionHeader>
@@ -302,7 +302,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
             </ExtraOptionsForm>
             <DisplaySelectedOptions>
                {!isEmpty(extraOptions) ? (
-                  extraOptions.map(({ fromHour, toHour, options }, index) => (
+                 extraOptions.map(({ fromHour, toHour, options }, index) => (
                      <DisplaySelectedOptionElement key={fromHour.getMilliseconds()}>
                         <RecordDetailSpan>
                            <strong>Opcje : </strong>
@@ -331,7 +331,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                            </RoundBtn>
                         </RecordDetailsBtnPanel>
                      </DisplaySelectedOptionElement>
-                  ))
+                 ))
                ) : (
                   <DisplaySelectedOptionElement className="empty">
                      Nie zostały dodane żadne dodatkowe opcje
@@ -340,7 +340,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
             </DisplaySelectedOptions>
          </ExtraOptionsContent>
       </ExtraOptionsWrapper>
-   );
+  );
 };
 
 export default BookingExtraOptions;

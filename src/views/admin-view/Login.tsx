@@ -50,37 +50,37 @@ const LoginTextInputs = styled(TextInputField)`
 `;
 
 const Login: React.FC = () => {
-   const {
-      handleSubmit,
-      formState: { errors },
-      control,
-      getValues
-   } = useForm<ICredential>();
-   const dispatch = useDispatch();
-   const { auth, errorMessage } = useSelector((store: IReduxState) => store.authStore);
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    getValues
+  } = useForm<ICredential>();
+  const dispatch = useDispatch();
+  const { auth, errorMessage } = useSelector((store: IReduxState) => store.authStore);
 
-   /**
+  /**
     * Function to dispatch action to log user into platform
     * @param cred
     */
-   const onSubmit: SubmitHandler<ICredential> = (cred) => {
-      dispatch(logInUser(cred.email, cred.password));
-   };
+  const onSubmit: SubmitHandler<ICredential> = (cred) => {
+    dispatch(logInUser(cred.email, cred.password));
+  };
 
-   /**
+  /**
     * Function to dispatch errors on action to log user into platform
     * @param err
     * @param e
     */
-   const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-      console.log(err, e);
-   };
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
-   if (auth) {
-      return <Navigate to={'/admin'} />;
-   }
+  if (auth) {
+    return <Navigate to={'/admin'} />;
+  }
 
-   return (
+  return (
       <LoginWrapper>
          <LoginPanel>
             <LoginHeader>
@@ -92,8 +92,8 @@ const Login: React.FC = () => {
                defaultValue={''}
                control={control}
                rules={{
-                  required: true,
-                  validate: () => getValues('email').includes('@')
+                 required: true,
+                 validate: () => getValues('email').includes('@')
                }}
                render={({ field: { onChange, onBlur, value } }) => (
                   <LoginTextInputs
@@ -133,7 +133,7 @@ const Login: React.FC = () => {
             </Button>
          </LoginPanel>
       </LoginWrapper>
-   );
+  );
 };
 
 export default Login;

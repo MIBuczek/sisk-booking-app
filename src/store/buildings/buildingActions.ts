@@ -7,33 +7,33 @@ import { collection, getDocs } from 'firebase/firestore';
 const BUILDINGS_COLLECTION_KEY: Readonly<'buildings'> = 'buildings';
 
 const fetchingBuildingsStart = (): IBuildingAction => ({
-   type: BUILDING_STATE.GET_BUILDING,
-   payload: {
-      isFetching: true,
-      savingStage: SAVING_STAGE.INITIAL,
-      errorMessage: '',
-      buildings: []
-   }
+  type: BUILDING_STATE.GET_BUILDING,
+  payload: {
+    isFetching: true,
+    savingStage: SAVING_STAGE.INITIAL,
+    errorMessage: '',
+    buildings: []
+  }
 });
 
 const fetchingBuildingsDone = (buildings: IBuilding[]): IBuildingAction => ({
-   type: BUILDING_STATE.GET_BUILDING,
-   payload: {
-      isFetching: false,
-      savingStage: SAVING_STAGE.SUCCESS,
-      errorMessage: '',
-      buildings
-   }
+  type: BUILDING_STATE.GET_BUILDING,
+  payload: {
+    isFetching: false,
+    savingStage: SAVING_STAGE.SUCCESS,
+    errorMessage: '',
+    buildings
+  }
 });
 
 const fetchingBuildingsError = (errorMessage: string): IBuildingAction => ({
-   type: BUILDING_STATE.ERROR_BUILDING,
-   payload: {
-      isFetching: false,
-      savingStage: SAVING_STAGE.ERROR,
-      errorMessage,
-      buildings: []
-   }
+  type: BUILDING_STATE.ERROR_BUILDING,
+  payload: {
+    isFetching: false,
+    savingStage: SAVING_STAGE.ERROR,
+    errorMessage,
+    buildings: []
+  }
 });
 
 /**
@@ -41,19 +41,19 @@ const fetchingBuildingsError = (errorMessage: string): IBuildingAction => ({
  */
 const getBuildingsData =
    () =>
-   async (dispatch: Dispatch<IBuildingAction>): Promise<void> => {
-      dispatch(fetchingBuildingsStart());
-      try {
+     async (dispatch: Dispatch<IBuildingAction>): Promise<void> => {
+       dispatch(fetchingBuildingsStart());
+       try {
          const buildingsCollection = await collection(db, BUILDINGS_COLLECTION_KEY);
          const documents = await getDocs(buildingsCollection);
          const buildings = documents.docs.map(parseFirebaseBuildingData);
          dispatch(fetchingBuildingsDone(buildings));
-      } catch (err) {
+       } catch (err) {
          dispatch(
-            fetchingBuildingsError('Problem z serverem. Nie można pobrac danych o budynkach.')
+           fetchingBuildingsError('Problem z serverem. Nie można pobrac danych o budynkach.')
          );
          throw new Error(JSON.stringify(err));
-      }
-   };
+       }
+     };
 
 export { getBuildingsData, fetchingBuildingsStart };

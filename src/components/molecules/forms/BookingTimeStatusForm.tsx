@@ -3,19 +3,19 @@ import styled from 'styled-components';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { isNil } from 'lodash';
-import Label from '../../atoms/Label';
 import {
-   BOOKING_STATUS_OPTIONS,
-   generateBookingStatusDate,
-   INITIAL_BOOKING_STATUS_FORM
+  BOOKING_STATUS_OPTIONS,
+  generateBookingStatusDate,
+  INITIAL_BOOKING_STATUS_FORM
 } from 'utils';
+import { IBooking, IBookingStatusForm, ICredential } from 'models';
+import { closeModal } from 'store';
+import Label from '../../atoms/Label';
 import SelectInputField, { customStyles } from '../../atoms/SelectInputField';
 import ErrorMsg from '../../atoms/ErrorMsg';
 import TextAreaField from '../../atoms/TextAreaField';
 import ConfirmAction from '../ConfirmAction';
 import Button from '../../atoms/Button';
-import { IBooking, IBookingStatusForm, ICredential } from 'models';
-import { closeModal } from 'store';
 import TextInputField from '../../atoms/TextInputField';
 
 const BookingTimeStatusWrapper = styled.form`
@@ -68,110 +68,110 @@ const ButtonPanel = styled.div`
 `;
 
 interface IProp {
-   confirmationClass?: string;
-   currentBooking: IBooking;
-   bookingTimeIndex: number | null;
-   hasRights: boolean;
-   submitHandler: (updatedBooking: IBooking) => void;
+  confirmationClass?: string;
+  currentBooking: IBooking;
+  bookingTimeIndex: number | null;
+  hasRights: boolean;
+  submitHandler: (updatedBooking: IBooking) => void;
 }
 
 const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
-   confirmationClass = '',
-   currentBooking,
-   bookingTimeIndex,
-   hasRights,
-   submitHandler
+  confirmationClass = '',
+  currentBooking,
+  bookingTimeIndex,
+  hasRights,
+  submitHandler
 }): JSX.Element => {
-   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
-   const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
+  const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
+  const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   const {
-      handleSubmit,
-      formState: { errors },
-      control,
-      reset
-   } = useForm<IBookingStatusForm>({
-      defaultValues: {
-         bookingStatus: BOOKING_STATUS_OPTIONS[0],
-         bookingParticipants: '',
-         bookingComments: ''
-      }
-   });
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset
+  } = useForm<IBookingStatusForm>({
+    defaultValues: {
+      bookingStatus: BOOKING_STATUS_OPTIONS[0],
+      bookingParticipants: '',
+      bookingComments: ''
+    }
+  });
 
-   /**
+  /**
     * Function to update initial form state of already saved data.
     */
-   const editBookingStatusHandler = () => {
-      if (isNil(bookingTimeIndex)) {
-         return;
-      }
-      const { status, participants, comments } = currentBooking.bookingTime[bookingTimeIndex];
-      const bookingStatus =
+  const editBookingStatusHandler = () => {
+    if (isNil(bookingTimeIndex)) {
+      return;
+    }
+    const { status, participants, comments } = currentBooking.bookingTime[bookingTimeIndex];
+    const bookingStatus =
          BOOKING_STATUS_OPTIONS.find((bso) => bso.value === status) || BOOKING_STATUS_OPTIONS[0];
-      reset({ bookingStatus, bookingParticipants: participants, bookingComments: comments });
-   };
+    reset({ bookingStatus, bookingParticipants: participants, bookingComments: comments });
+  };
 
-   /**
+  /**
     * Function to submit additional status form fields.
     * This is related to admin and employee. To change the status of selected reservation.
     * @param cred
     */
-   const onSubmit: SubmitHandler<IBookingStatusForm> = (cred) => {
-      if (isNil(bookingTimeIndex)) return;
+  const onSubmit: SubmitHandler<IBookingStatusForm> = (cred) => {
+    if (isNil(bookingTimeIndex)) return;
 
-      setBookingData(generateBookingStatusDate(cred, currentBooking, bookingTimeIndex));
-      setDisplayConfirmation(true);
-   };
+    setBookingData(generateBookingStatusDate(cred, currentBooking, bookingTimeIndex));
+    setDisplayConfirmation(true);
+  };
 
-   /**
+  /**
     * Function to dispatch errors on action to log user into platform
     * @param err
     * @param e
     */
-   const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-      console.log(err, e);
-   };
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
-   /**
+  /**
     * Function to confirm submission action and pass it to parent component.
     */
-   const confirmSubmit = () => {
-      if (!bookingData) return;
+  const confirmSubmit = () => {
+    if (!bookingData) return;
 
-      submitHandler(bookingData);
+    submitHandler(bookingData);
 
-      createInitialState();
-      dispatch(closeModal());
-   };
+    createInitialState();
+    dispatch(closeModal());
+  };
 
-   /**
+  /**
     * Function to restore initial status.
     */
-   const createInitialState = () => {
-      reset({ ...INITIAL_BOOKING_STATUS_FORM });
-      setDisplayConfirmation(false);
-      setBookingData(undefined);
-   };
+  const createInitialState = () => {
+    reset({ ...INITIAL_BOOKING_STATUS_FORM });
+    setDisplayConfirmation(false);
+    setBookingData(undefined);
+  };
 
-   /**
+  /**
     * Function handle cancel action.
     */
-   const cancelHandler = () => {
-      createInitialState();
-      dispatch(closeModal());
-   };
+  const cancelHandler = () => {
+    createInitialState();
+    dispatch(closeModal());
+  };
 
-   React.useEffect(() => {
-      editBookingStatusHandler();
+  React.useEffect(() => {
+    editBookingStatusHandler();
 
-      return () => {
-         cancelHandler();
-      };
-   }, []);
+    return () => {
+      cancelHandler();
+    };
+  }, []);
 
-   return (
+  return (
       <BookingTimeStatusWrapper className={confirmationClass}>
          <Label>Status</Label>
          <Controller
@@ -186,7 +186,6 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
                   placeholder="Wybierz"
                   onChange={onChange}
                   onBlur={onBlur}
-                  selected={value}
                   value={value}
                   isDisabled={!hasRights || !currentBooking.accepted || displayConfirmation}
                   blurInputOnSelect
@@ -253,7 +252,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             </ButtonPanel>
          )}
       </BookingTimeStatusWrapper>
-   );
+  );
 };
 
 export default BookingTimeStatusForm;

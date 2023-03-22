@@ -81,17 +81,17 @@ const ConfirmationBtn = styled(Button)`
 `;
 
 interface IProps {
-   message: string;
-   callback: () => void;
-   cancelCallback: () => void;
-   additionalClass?: string;
+  message: string;
+  callback: () => void;
+  cancelCallback: () => void;
+  additionalClass?: string;
 }
 
 const ConfirmAction: React.FunctionComponent<IProps> = ({
-   message,
-   callback,
-   cancelCallback,
-   additionalClass = ''
+  message,
+  callback,
+  cancelCallback,
+  additionalClass = ''
 }) => (
    <ConfirmationWrapper className={`${additionalClass}`}>
       <ConfirmationContent>

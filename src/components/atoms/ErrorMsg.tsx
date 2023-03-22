@@ -19,7 +19,7 @@ const ErrorTextContent = styled.span`
 `;
 
 interface IProps {
-   innerText: string;
+  innerText: string;
 }
 
 const ErrorMsg: React.FC<IProps> = ({ innerText }) => (

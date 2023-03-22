@@ -33,31 +33,31 @@ const MainWrapper = styled.section`
 export interface IProps {}
 
 const Main: React.FC<IProps> = (): JSX.Element => {
-   const [mainState, setNavState] = React.useState<IMainState>(cloneDeep(initialMainState));
+  const [mainState, setNavState] = React.useState<IMainState>(cloneDeep(initialMainState));
 
-   /**
+  /**
     * Function to handler main state on user view.
     * @param value
     * @param field
     */
-   const mainStateHandler = (value: TSelect, field: string) => {
-      if (field === 'city') {
-         setNavState(() => cloneDeep({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
-      } else {
-         setNavState((prev) => ({ ...prev, building: value }));
-      }
-   };
+  const mainStateHandler = (value: TSelect, field: string) => {
+    if (field === 'city') {
+      setNavState(() => cloneDeep({ city: value, building: BUILDINGS_OPTIONS[value.value][0] }));
+    } else {
+      setNavState((prev) => ({ ...prev, building: value }));
+    }
+  };
 
-   const {
-      modal: { isOpen, type },
-      authStore: { auth }
-   } = useSelector((state: IReduxState) => state);
+  const {
+    modal: { isOpen, type },
+    authStore: { auth }
+  } = useSelector((state: IReduxState) => state);
 
-   if (auth) {
-      return <Navigate to="/admin" />;
-   }
+  if (auth) {
+    return <Navigate to="/admin" />;
+  }
 
-   return (
+  return (
       <MainWrapper>
          <Header>KALENDARZ REZERWACJI OBIEKTÓW</Header>
          <SideNav
@@ -76,7 +76,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
             </Modal>
          )}
       </MainWrapper>
-   );
+  );
 };
 
 export default Main;

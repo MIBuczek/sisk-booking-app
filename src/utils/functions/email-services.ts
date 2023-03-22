@@ -2,10 +2,10 @@
 import emailjs from '@emailjs/browser';
 import { IBooking, ISingleBookingDate } from 'models';
 import {
-   ADMIN_TEMPLATE_BOOKING_ID,
-   USER_ID,
-   USER_SERVICE_ID,
-   USER_TEMPLATE_BOOKING_ID
+  ADMIN_TEMPLATE_BOOKING_ID,
+  USER_ID,
+  USER_SERVICE_ID,
+  USER_TEMPLATE_BOOKING_ID
 } from 'utils/variables/email-service-data';
 import { formatDate, formatTime } from './calender-functions';
 import { modelDisplayValue } from './modeling-value-function';
@@ -28,20 +28,20 @@ const flatBookingTime = (b: ISingleBookingDate): string => `
  * @returns {Object}
  */
 const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
-   const { person, club, email, phone, message, bookingTime, city, building, payment } = booking;
-   const parsedBookingTime = bookingTime.map(flatBookingTime).join().replace(',', '\n');
-   return {
-      building: modelDisplayValue('building', building),
-      city: modelDisplayValue('city', city),
-      payment: modelDisplayValue('payment', payment),
-      person,
-      club,
-      email,
-      phone,
-      parsedBookingTime,
-      message,
-      buildingEmail
-   };
+  const { person, club, email, phone, message, bookingTime, city, building, payment } = booking;
+  const parsedBookingTime = bookingTime.map(flatBookingTime).join().replace(',', '\n');
+  return {
+    building: modelDisplayValue('building', building),
+    city: modelDisplayValue('city', city),
+    payment: modelDisplayValue('payment', payment),
+    person,
+    club,
+    email,
+    phone,
+    parsedBookingTime,
+    message,
+    buildingEmail
+  };
 };
 
 /**
@@ -50,20 +50,20 @@ const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
  * @returns {Object}
  */
 const emailUserBodyBooking = (booking: IBooking) => {
-   const { person, club, email, phone, message, bookingTime, city, building, payment } = booking;
-   const parsedBookingTime = bookingTime.map(flatBookingTime).join().replace(',', ' / ');
+  const { person, club, email, phone, message, bookingTime, city, building, payment } = booking;
+  const parsedBookingTime = bookingTime.map(flatBookingTime).join().replace(',', ' / ');
 
-   return {
-      building: modelDisplayValue('building', building),
-      city: modelDisplayValue('city', city),
-      payment: modelDisplayValue('payment', payment),
-      person,
-      club,
-      email,
-      phone,
-      parsedBookingTime,
-      message
-   };
+  return {
+    building: modelDisplayValue('building', building),
+    city: modelDisplayValue('city', city),
+    payment: modelDisplayValue('payment', payment),
+    person,
+    club,
+    email,
+    phone,
+    parsedBookingTime,
+    message
+  };
 };
 
 /**
@@ -75,17 +75,17 @@ const emailUserBodyBooking = (booking: IBooking) => {
  * @returns {Promise<number>}
  */
 const sendEmailNotification = async (
-   userServiceId: string,
-   userTemplateId: string,
-   message: any,
-   userId: string
+  userServiceId: string,
+  userTemplateId: string,
+  message: any,
+  userId: string
 ): Promise<number> => {
-   try {
-      await emailjs.send(userServiceId, userTemplateId, message, userId);
-      return 200;
-   } catch (err) {
-      return 400;
-   }
+  try {
+    await emailjs.send(userServiceId, userTemplateId, message, userId);
+    return 200;
+  } catch (err) {
+    return 400;
+  }
 };
 
 /**
@@ -96,24 +96,24 @@ const sendEmailNotification = async (
  * @returns {Promise<number>}
  */
 const storeEmailNotification = (
-   bookingData: IBooking,
-   isAdmin: boolean,
-   buildingEmail: string = ''
+  bookingData: IBooking,
+  isAdmin: boolean,
+  buildingEmail: string = ''
 ): Promise<number> => {
-   if (isAdmin) {
-      return sendEmailNotification(
-         USER_SERVICE_ID,
-         ADMIN_TEMPLATE_BOOKING_ID,
-         emailAdminBodyBooking(bookingData, buildingEmail),
-         USER_ID
-      );
-   }
-   return sendEmailNotification(
+  if (isAdmin) {
+    return sendEmailNotification(
       USER_SERVICE_ID,
-      USER_TEMPLATE_BOOKING_ID,
-      emailUserBodyBooking(bookingData),
+      ADMIN_TEMPLATE_BOOKING_ID,
+      emailAdminBodyBooking(bookingData, buildingEmail),
       USER_ID
-   );
+    );
+  }
+  return sendEmailNotification(
+    USER_SERVICE_ID,
+    USER_TEMPLATE_BOOKING_ID,
+    emailUserBodyBooking(bookingData),
+    USER_ID
+  );
 };
 
 export { sendEmailNotification, storeEmailNotification };

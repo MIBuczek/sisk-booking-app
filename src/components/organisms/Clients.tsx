@@ -3,26 +3,26 @@ import Header from 'components/atoms/Header';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ClientForm from 'components/molecules/forms/ClientForm';
 import {
-   IBooking,
-   IClient,
-   IDeleteHandler,
-   IEditHandler,
-   instanceOfClients,
-   IReduxState
+  IBooking,
+  IClient,
+  IDeleteHandler,
+  IEditHandler,
+  instanceOfClients,
+  IReduxState
 } from 'models';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, deleteClient, openModal } from 'store';
 import styled from 'styled-components';
 import {
-   adminCredentials,
-   findCurrentItemIndex,
-   MODAL_TYPES,
-   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
-   RECORDS_CLIENTS_HEADERS,
-   RECORDS_CLIENTS_ROW,
-   RECORDS_CLIENTS_ROW_DETAILS,
-   searchSelectedContent
+  adminCredentials,
+  findCurrentItemIndex,
+  MODAL_TYPES,
+  RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
+  RECORDS_CLIENTS_HEADERS,
+  RECORDS_CLIENTS_ROW,
+  RECORDS_CLIENTS_ROW_DETAILS,
+  searchSelectedContent
 } from 'utils';
 import Modal from 'components/organisms/Modal';
 import SearchInputField from 'components/atoms/SearchInputField';
@@ -71,98 +71,98 @@ const OpenClientModalButton = styled(Button)`
 `;
 
 const Clients = (): JSX.Element => {
-   const [clientList, setClientList] = React.useState<IClient[]>([]);
-   const [isEditing, setIsEditing] = React.useState(false);
-   const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
-   const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
-   const [searchPhase, setSearchPhase] = React.useState<string>('');
+  const [clientList, setClientList] = React.useState<IClient[]>([]);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [editedItemIndex, setEditedItemIndex] = React.useState<number | undefined>(undefined);
+  const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
+  const [searchPhase, setSearchPhase] = React.useState<string>('');
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   const {
-      clientStore: { clients, errorMessage: errorClient },
-      currentUserStore: { user, errorMessage: errorUser },
-      modal: { isOpen, type }
-   } = useSelector((state: IReduxState) => state);
+  const {
+    clientStore: { clients, errorMessage: errorClient },
+    currentUserStore: { user, errorMessage: errorUser },
+    modal: { isOpen, type }
+  } = useSelector((state: IReduxState) => state);
 
-   /**
+  /**
     * Function to handle the client list. It is related to search input field.
     * @param searchResults
     * @param phase
     */
-   const clientListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
-      if (searchResults.length && instanceOfClients(searchResults)) {
-         setClientList(searchResults);
-         setSearchPhase(phase);
-      } else {
-         setClientList([]);
-         setSearchPhase(phase);
-      }
-   };
+  const clientListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
+    if (searchResults.length && instanceOfClients(searchResults)) {
+      setClientList(searchResults);
+      setSearchPhase(phase);
+    } else {
+      setClientList([]);
+      setSearchPhase(phase);
+    }
+  };
 
-   /**
+  /**
     * Function to handle edited client data and set related data into client form.
     * @param itemIndex
     * @param currentPage
     * @param postPerPage
     */
-   const editClientHandler = ({ itemIndex, currentPage, postPerPage }: IEditHandler) => {
-      const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
-      setIsEditing(true);
-      setEditedItemIndex(currentIndex);
-      dispatch(openModal(MODAL_TYPES.CLIENT));
-   };
+  const editClientHandler = ({ itemIndex, currentPage, postPerPage }: IEditHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
+    setIsEditing(true);
+    setEditedItemIndex(currentIndex);
+    dispatch(openModal(MODAL_TYPES.CLIENT));
+  };
 
-   /**
+  /**
     * Function to handle delete client item and display related confirmation modal.
     * @param index
     */
-   const deleteClientHandler = ({ itemIndex, currentPage, postPerPage }: IDeleteHandler) => {
-      const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
-      setDeleteItemIndex(currentIndex);
-      dispatch(openModal(MODAL_TYPES.DELETE));
-   };
+  const deleteClientHandler = ({ itemIndex, currentPage, postPerPage }: IDeleteHandler) => {
+    const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
+    setDeleteItemIndex(currentIndex);
+    dispatch(openModal(MODAL_TYPES.DELETE));
+  };
 
-   /**
+  /**
     * Function to dispatch deleting action into firebase client data collection.
     */
-   const deleteClientAction = () => {
-      if (typeof deleteItemIndex === 'undefined') return;
-      const currentClient = clientList[deleteItemIndex];
-      if (currentClient.id) dispatch(deleteClient(currentClient.id));
-      clientListHandler(
-         clientList.filter((c) => c.id !== currentClient.id),
-         searchPhase
-      );
-      initialClientState();
-      dispatch(closeModal());
-   };
+  const deleteClientAction = () => {
+    if (typeof deleteItemIndex === 'undefined') return;
+    const currentClient = clientList[deleteItemIndex];
+    if (currentClient.id) dispatch(deleteClient(currentClient.id));
+    clientListHandler(
+      clientList.filter((c) => c.id !== currentClient.id),
+      searchPhase
+    );
+    initialClientState();
+    dispatch(closeModal());
+  };
 
-   /**
+  /**
     * Function to cancel deleting action.
     */
-   const cancelDeleteClientAction = () => {
-      initialClientState();
-      dispatch(closeModal());
-   };
+  const cancelDeleteClientAction = () => {
+    initialClientState();
+    dispatch(closeModal());
+  };
 
-   /**
+  /**
     * Function to restore initial status.
     */
-   const initialClientState = () => {
-      setIsEditing(false);
-      setEditedItemIndex(undefined);
-      setDeleteItemIndex(undefined);
-   };
+  const initialClientState = () => {
+    setIsEditing(false);
+    setEditedItemIndex(undefined);
+    setDeleteItemIndex(undefined);
+  };
 
-   const handlerEffectCallBack = () => {
-      const currentClientList = searchSelectedContent(clients, 'name', searchPhase);
-      clientListHandler(currentClientList, searchPhase);
-   };
+  const handlerEffectCallBack = () => {
+    const currentClientList = searchSelectedContent(clients, 'name', searchPhase);
+    clientListHandler(currentClientList, searchPhase);
+  };
 
-   React.useEffect(handlerEffectCallBack, [clients]);
+  React.useEffect(handlerEffectCallBack, [clients]);
 
-   return (
+  return (
       <CalenderWrapper>
          <ClientHeader>Najemcy</ClientHeader>
          {(errorClient || errorUser) && <ErrorMsgServer innerText={errorClient || errorUser} />}
@@ -215,7 +215,7 @@ const Clients = (): JSX.Element => {
             </Modal>
          )}
       </CalenderWrapper>
-   );
+  );
 };
 
 export default Clients;

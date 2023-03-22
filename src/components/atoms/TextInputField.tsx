@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type InputType = {
-   invalid?: boolean;
+  invalid?: boolean;
 };
 
 const TextInputField = styled.input<InputType>`

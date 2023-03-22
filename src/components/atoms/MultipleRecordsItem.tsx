@@ -1,21 +1,21 @@
 import { isEmpty } from 'lodash';
 import {
-   IBooking,
-   IClient,
-   IDeleteHandler,
-   IEditHandler,
-   instanceOfBookings,
-   ISelectedExtraOptions,
-   ISingleBookingDate,
-   singleInstanceOfBookings
+  IBooking,
+  IClient,
+  IDeleteHandler,
+  IEditHandler,
+  instanceOfBookings,
+  ISelectedExtraOptions,
+  ISingleBookingDate,
+  singleInstanceOfBookings
 } from 'models';
 import * as React from 'react';
 import {
-   BsChevronDown,
-   BsFillCheckCircleFill,
-   BsFillFileEarmarkTextFill,
-   BsTrashFill,
-   BsXCircleFill
+  BsChevronDown,
+  BsFillCheckCircleFill,
+  BsFillFileEarmarkTextFill,
+  BsTrashFill,
+  BsXCircleFill
 } from 'react-icons/bs';
 import { fadeIn, fadeInLeft } from 'style/animation';
 import styled from 'styled-components';
@@ -144,47 +144,47 @@ const ChevronIcon = styled(BsChevronDown)`
 `;
 
 interface MultipleRecordItemProps {
-   index: number;
-   currentPage: number;
-   postPerPage: number;
-   isAdmin: boolean;
-   isEmployee: boolean;
-   recordProperty: string[];
-   recordPropertyDetails: string[];
-   recordPropertyDisplayMap: { [x: string]: string };
-   currentRecord: IClient | IBooking;
-   hasConflicts: boolean;
-   records: (IClient | IBooking)[];
-   allRecords: (IClient | IBooking)[];
-   editHandler: (editDetails: IEditHandler) => void;
-   deleteHandler: (deleteDetails: IDeleteHandler) => void;
+  index: number;
+  currentPage: number;
+  postPerPage: number;
+  isAdmin: boolean;
+  isEmployee: boolean;
+  recordProperty: string[];
+  recordPropertyDetails: string[];
+  recordPropertyDisplayMap: { [x: string]: string };
+  currentRecord: IClient | IBooking;
+  hasConflicts: boolean;
+  records: (IClient | IBooking)[];
+  allRecords: (IClient | IBooking)[];
+  editHandler: (editDetails: IEditHandler) => void;
+  deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
-   index,
-   currentPage,
-   postPerPage,
-   isAdmin,
-   isEmployee,
-   recordProperty,
-   recordPropertyDetails,
-   recordPropertyDisplayMap,
-   currentRecord,
-   hasConflicts,
-   records,
-   allRecords,
-   editHandler,
-   deleteHandler
+  index,
+  currentPage,
+  postPerPage,
+  isAdmin,
+  isEmployee,
+  recordProperty,
+  recordPropertyDetails,
+  recordPropertyDisplayMap,
+  currentRecord,
+  hasConflicts,
+  records,
+  allRecords,
+  editHandler,
+  deleteHandler
 }) => {
-   /* Method to return single reservation for  current record */
-   const singleBookingTimeHandler = (singleRecord: IClient | IBooking): ISingleBookingDate[] => {
-      if (singleInstanceOfBookings(singleRecord)) {
-         return singleRecord.bookingTime;
-      }
-      return [];
-   };
+  /* Method to return single reservation for  current record */
+  const singleBookingTimeHandler = (singleRecord: IClient | IBooking): ISingleBookingDate[] => {
+    if (singleInstanceOfBookings(singleRecord)) {
+      return singleRecord.bookingTime;
+    }
+    return [];
+  };
 
-   return (
+  return (
       <Collapse
          render={({ isCollapsed, toggle }: IRenderProps) => (
             <>
@@ -216,20 +216,20 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                         <>
                            <ListItemBtn
                               onClick={() =>
-                                 editHandler({
-                                    itemIndex: index,
-                                    isMainItem: true,
-                                    subItemIndex: null,
-                                    currentPage,
-                                    postPerPage
-                                 })
+                                editHandler({
+                                  itemIndex: index,
+                                  isMainItem: true,
+                                  subItemIndex: null,
+                                  currentPage,
+                                  postPerPage
+                                })
                               }
                            >
                               <BsFillFileEarmarkTextFill />
                            </ListItemBtn>
                            <ListItemBtn
                               onClick={() =>
-                                 deleteHandler({ itemIndex: index, currentPage, postPerPage })
+                                deleteHandler({ itemIndex: index, currentPage, postPerPage })
                               }
                            >
                               <BsTrashFill />
@@ -242,8 +242,8 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                   <BookingDetailWrapper>
                      <RecordDetail>
                         {recordPropertyDetails.map((property) => {
-                           if (property === 'bookingTime') {
-                              return (
+                          if (property === 'bookingTime') {
+                            return (
                                  <BookingTimeWrapper key={property}>
                                     <RecordDetailSpan>
                                        <strong>{recordPropertyDisplayMap[property]} : </strong>
@@ -262,25 +262,25 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                                           allRecords={allRecords as IBooking[]}
                                           editHandler={editHandler}
                                           lastRecord={checkIsLastIndex(
-                                             sbi + 1,
-                                             (currentRecord[property] as []).length
+                                            sbi + 1,
+                                            (currentRecord[property] as []).length
                                           )}
                                        />
                                     ))}
                                  </BookingTimeWrapper>
-                              );
-                           }
-                           if (
-                              property === 'selectedOptions' &&
+                            );
+                          }
+                          if (
+                            property === 'selectedOptions' &&
                               !isEmpty(currentRecord[property])
-                           ) {
-                              return (
+                          ) {
+                            return (
                                  <BookingTimeWrapper key={property}>
                                     <RecordDetailSpan>
                                        <strong>{recordPropertyDisplayMap[property]} : </strong>
                                     </RecordDetailSpan>
                                     {(currentRecord[property] as ISelectedExtraOptions[]).map(
-                                       ({ options, fromHour, toHour }) => (
+                                      ({ options, fromHour, toHour }) => (
                                           <SingleBookingTime key={fromHour.getMilliseconds()}>
                                              <RecordDetailSpan>
                                                 <strong>Opcje : </strong>
@@ -295,20 +295,20 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                                                 {modelDisplayValue(property, toHour, true)}
                                              </RecordDetailSpan>
                                           </SingleBookingTime>
-                                       )
+                                      )
                                     )}
                                  </BookingTimeWrapper>
-                              );
-                           }
-                           if (!isEmpty(currentRecord[property])) {
-                              return (
+                            );
+                          }
+                          if (!isEmpty(currentRecord[property])) {
+                            return (
                                  <RecordDetailSpan key={property}>
                                     <strong>{recordPropertyDisplayMap[property]} : </strong>
                                     {modelDisplayValue(property, currentRecord[property])}
                                  </RecordDetailSpan>
-                              );
-                           }
-                           return null;
+                            );
+                          }
+                          return null;
                         })}
                      </RecordDetail>
                   </BookingDetailWrapper>
@@ -316,7 +316,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
             </>
          )}
       />
-   );
+  );
 };
 
 export default MultipleRecordItem;

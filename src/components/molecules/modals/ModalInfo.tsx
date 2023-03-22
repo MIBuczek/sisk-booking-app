@@ -26,14 +26,14 @@ const InfoParagraph = styled(Paragraph)`
 `;
 
 interface IProps {
-   header: string;
+  header: string;
 }
 
 const ModalInfo: React.FunctionComponent<IProps> = ({ header }) => {
-   const dispatch = useDispatch();
-   const { message } = useSelector((store: IReduxState) => store.modal);
+  const dispatch = useDispatch();
+  const { message } = useSelector((store: IReduxState) => store.modal);
 
-   return (
+  return (
       <InfoWrapper>
          <MessageHeader>{header}</MessageHeader>
          <InfoParagraph small>{message}</InfoParagraph>
@@ -41,7 +41,7 @@ const ModalInfo: React.FunctionComponent<IProps> = ({ header }) => {
             Zamknij
          </Button>
       </InfoWrapper>
-   );
+  );
 };
 
 export default ModalInfo;

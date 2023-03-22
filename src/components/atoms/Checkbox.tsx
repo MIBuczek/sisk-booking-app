@@ -4,9 +4,9 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 
 type CheckboxInput = {
-   checked: boolean;
-   disabled: boolean;
-   isAccepted: boolean;
+  checked: boolean;
+  disabled: boolean;
+  isAccepted: boolean;
 };
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -68,21 +68,21 @@ const StyledCheckbox = styled.div<CheckboxInput>`
 
    ${Icon} {
       visibility: ${({ checked, disabled }) =>
-         (checked && disabled) || checked ? 'visible' : 'hidden'};
+    (checked && disabled) || checked ? 'visible' : 'hidden'};
    }
 
    ${({ checked, disabled, isAccepted }) => {
-      if (disabled) {
-         return disabledStyles;
-      }
-      if (isAccepted) {
-         return acceptedStyles;
-      }
-      if (checked) {
-         return checkedStyles;
-      }
-      return uncheckedStyles;
-   }}
+    if (disabled) {
+      return disabledStyles;
+    }
+    if (isAccepted) {
+      return acceptedStyles;
+    }
+    if (checked) {
+      return checkedStyles;
+    }
+    return uncheckedStyles;
+  }}
 `;
 
 const CheckboxContainer = styled.div`
@@ -90,11 +90,11 @@ const CheckboxContainer = styled.div`
 `;
 
 interface ICheckbox {
-   className: string;
-   checked: boolean;
-   name: string;
-   disabled: boolean;
-   changeHandler: (value: string | boolean, name: string) => void;
+  className: string;
+  checked: boolean;
+  name: string;
+  disabled: boolean;
+  changeHandler: (value: string | boolean, name: string) => void;
 }
 
 const Checkbox: React.FC<ICheckbox> = ({ className, checked, name, disabled, changeHandler }) => (

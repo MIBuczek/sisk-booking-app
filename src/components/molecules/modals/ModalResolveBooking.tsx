@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { isNil } from 'lodash';
 import { IBooking, IReduxState } from 'models';
+import { updateBooking } from 'store';
 import Header from '../../atoms/Header';
 import BookingInfo from '../../atoms/BookingInfo';
-import { updateBooking } from 'store';
 import BookingTimeStatusForm from '../forms/BookingTimeStatusForm';
 
 const ResolveBookingWrapper = styled.div`
@@ -47,22 +47,22 @@ const BookingDetailsWrapper = styled.article`
 `;
 
 const ModalResolveBooking: React.FunctionComponent = (): JSX.Element => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   const {
-      currentUserStore: { user },
-      bookingStore: { booking, bookingTimeIndex }
-   } = useSelector((store: IReduxState) => store);
+  const {
+    currentUserStore: { user },
+    bookingStore: { booking, bookingTimeIndex }
+  } = useSelector((store: IReduxState) => store);
 
-   /**
+  /**
     * Function to dispatch update booking action with additional new booking time status
     * @param updatedBooking
     */
-   const submitHandler = (updatedBooking: IBooking): void => {
-      dispatch(updateBooking(updatedBooking, true, false));
-   };
+  const submitHandler = (updatedBooking: IBooking): void => {
+    dispatch(updateBooking(updatedBooking, true, false));
+  };
 
-   return (
+  return (
       <ResolveBookingWrapper>
          <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
          {!isNil(booking) ? (
@@ -84,7 +84,7 @@ const ModalResolveBooking: React.FunctionComponent = (): JSX.Element => {
             </>
          ) : null}
       </ResolveBookingWrapper>
-   );
+  );
 };
 
 export default ModalResolveBooking;

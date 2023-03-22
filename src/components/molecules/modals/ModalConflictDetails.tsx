@@ -2,10 +2,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../atoms/Button';
 import { clearBookingConflicts, closeModal } from 'store';
 import { IReduxState } from 'models';
 import { modelDisplayValue } from 'utils';
+import Button from '../../atoms/Button';
 import Header from '../../atoms/Header';
 
 const ModalConflictWrapper = styled.div`
@@ -78,15 +78,15 @@ const BookingTimeDetailWrapper = styled.div`
 `;
 
 const ModalConflictDetails = (): JSX.Element => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   const { conflictedBookings } = useSelector((state: IReduxState) => state.bookingStore);
-   const closeConflictModal = (): void => {
-      dispatch(clearBookingConflicts());
-      dispatch(closeModal());
-   };
+  const { conflictedBookings } = useSelector((state: IReduxState) => state.bookingStore);
+  const closeConflictModal = (): void => {
+    dispatch(clearBookingConflicts());
+    dispatch(closeModal());
+  };
 
-   return (
+  return (
       <ModalConflictWrapper>
          <ConflictHeader>Lista konfliktów z bierzącą rezerwacja</ConflictHeader>
          {conflictedBookings.map(({ person, size, bookingTime }, mainIndex) => (
@@ -123,7 +123,7 @@ const ModalConflictDetails = (): JSX.Element => {
             Zamknij
          </Button>
       </ModalConflictWrapper>
-   );
+  );
 };
 
 export default ModalConflictDetails;

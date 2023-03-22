@@ -5,8 +5,8 @@ import { SIZE_OPTIONS } from 'utils/variables/form-const';
 import Button from './Button';
 
 type GroupBtnProps = {
-   active?: boolean;
-   disabled: boolean;
+  active?: boolean;
+  disabled: boolean;
 };
 
 const ButtonGroupWrapper = styled.div`
@@ -29,9 +29,9 @@ const GroupBtn = styled(Button)<GroupBtnProps>`
 
    &:disabled {
       background: ${({ theme, active, disabled }) =>
-         active && disabled ? theme.darkGrey : theme.middleGray};
+    active && disabled ? theme.darkGrey : theme.middleGray};
       color: ${({ theme, active, disabled }) =>
-         active && disabled ? theme.lightGray : theme.darkGrey};
+    active && disabled ? theme.lightGray : theme.darkGrey};
    }
 
    &.itemPerPageItem {
@@ -43,24 +43,24 @@ const GroupBtn = styled(Button)<GroupBtnProps>`
 `;
 
 export type TProps<T> = {
-   itemPerPage?: boolean;
-   value: T;
-   options: Array<T>;
-   disabled: boolean;
-   optionsHandler: (e: React.MouseEvent, value: T) => void;
+  itemPerPage?: boolean;
+  value: T;
+  options: Array<T>;
+  disabled: boolean;
+  optionsHandler: (e: React.MouseEvent, value: T) => void;
 };
 
 const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
-   itemPerPage = false,
-   value,
-   options,
-   disabled,
-   optionsHandler
+  itemPerPage = false,
+  value,
+  options,
+  disabled,
+  optionsHandler
 }) => (
    <ButtonGroupWrapper className={`${itemPerPage ? 'itemPerPageContainer' : ''}`}>
       {!isEmpty(options)
-         ? options.map(
-              (option): JSX.Element => (
+        ? options.map(
+          (option): JSX.Element => (
                  <GroupBtn
                     className={`${itemPerPage ? 'itemPerPageItem' : ''}`}
                     key={option}
@@ -70,9 +70,9 @@ const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
                  >
                     {option}
                  </GroupBtn>
-              )
-           )
-         : null}
+          )
+        )
+        : null}
    </ButtonGroupWrapper>
 );
 export default ButtonGroup;

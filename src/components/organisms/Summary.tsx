@@ -11,15 +11,15 @@ import pl from 'date-fns/locale/pl';
 import { registerLocale } from 'react-datepicker';
 import Button from 'components/atoms/Button';
 import {
-   csvAllClientSummary,
-   csvClientSummary,
-   findAllClientReservation,
-   generateReservationSummary,
-   INITIAL_CLIENT_BOOKING_DETAILS,
-   modelDisplayValue,
-   RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
-   RECORDS_CLIENTS_ROW_DETAILS,
-   summaryTotalBookingsNumber
+  csvAllClientSummary,
+  csvClientSummary,
+  findAllClientReservation,
+  generateReservationSummary,
+  INITIAL_CLIENT_BOOKING_DETAILS,
+  modelDisplayValue,
+  RECORDS_CLIENTS_DETAILS_PROPERTY_MAP,
+  RECORDS_CLIENTS_ROW_DETAILS,
+  summaryTotalBookingsNumber
 } from 'utils';
 import { cloneDeep, isEmpty, isEqual } from 'lodash';
 import Paragraph from 'components/atoms/Paragraph';
@@ -27,11 +27,11 @@ import { fadeInLeft } from 'style/animation';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import { BsFileEarmarkRuledFill, BsFilePdf } from 'react-icons/bs';
 import { CSVLink } from 'react-csv';
+import { csvFileHeaders } from 'utils/variables/csv-file-headers';
 import Checkbox from '../atoms/Checkbox';
 import { printPDFReport } from '../molecules/modals/PreviewPDF';
 import { LoaderDots } from '../molecules/Loading';
 import ErrorMsg from '../atoms/ErrorMsg';
-import { csvFileHeaders } from 'utils/variables/csv-file-headers';
 
 registerLocale('pl', pl);
 
@@ -233,9 +233,9 @@ const DetailsSpan = styled.span`
 `;
 
 const pdfIconStyles = {
-   fontSize: '2rem',
-   marginLeft: '1rem',
-   color: 'AFBF36'
+  fontSize: '2rem',
+  marginLeft: '1rem',
+  color: 'AFBF36'
 };
 
 const ButtonPanel = styled.div`
@@ -301,179 +301,179 @@ const LoadingWrapper = styled.div`
 `;
 
 const Summary = () => {
-   const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
-   const [clientSummary, setClientSummary] = React.useState<ISummaryClientBookings>(
-      cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)
-   );
-   const [csvReportData, setCSVReportData] = React.useState<CSVReportData[]>([]);
-   const [csvAllReportData, setCsvAllReportData] = React.useState<CSVReportData[]>([]);
-   const [isSummaryGenerated, setIsSummaryGenerated] = React.useState<boolean>(false);
+  const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
+  const [clientSummary, setClientSummary] = React.useState<ISummaryClientBookings>(
+    cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)
+  );
+  const [csvReportData, setCSVReportData] = React.useState<CSVReportData[]>([]);
+  const [csvAllReportData, setCsvAllReportData] = React.useState<CSVReportData[]>([]);
+  const [isSummaryGenerated, setIsSummaryGenerated] = React.useState<boolean>(false);
 
-   const {
-      clientStore: { clients, errorMessage: errorClient },
-      bookingStore: { bookings, errorMessage: errorBooking }
-   } = useSelector((state: IReduxState) => state);
+  const {
+    clientStore: { clients, errorMessage: errorClient },
+    bookingStore: { bookings, errorMessage: errorBooking }
+  } = useSelector((state: IReduxState) => state);
 
-   const {
-      handleSubmit,
-      control,
-      watch,
-      reset,
-      formState: { errors }
-   } = useForm();
+  const {
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    formState: { errors }
+  } = useForm();
 
-   const { client: clientValue, fromMonth, toMonth, fromTheBeginning } = watch();
+  const { client: clientValue, fromMonth, toMonth, fromTheBeginning } = watch();
 
-   /**
+  /**
     * Function to generate client options into dropdown.
     * @returns {Array<TSelect>}
     */
-   const generateClientsOptions = (): TSelect[] => {
-      if (!clients.length) return [];
-      return clients.map((c) => ({ label: c.name, value: c?.id || c.name }));
-   };
+  const generateClientsOptions = (): TSelect[] => {
+    if (!clients.length) return [];
+    return clients.map((c) => ({ label: c.name, value: c?.id || c.name }));
+  };
 
-   /**
+  /**
     * Function to generate summary according selected client.
     * @return {VoidFunction}
     */
-   const generateClientSummary = handleSubmit((): void => {
-      setIsGenerating(true);
-      if (!clientValue?.value || !fromMonth || !clients) {
-         setIsSummaryGenerated(false);
-         setIsGenerating(false);
-         return;
-      }
+  const generateClientSummary = handleSubmit((): void => {
+    setIsGenerating(true);
+    if (!clientValue?.value || !fromMonth || !clients) {
+      setIsSummaryGenerated(false);
+      setIsGenerating(false);
+      return;
+    }
 
-      const currentClient = clients.find((c) => c.id === clientValue.value);
+    const currentClient = clients.find((c) => c.id === clientValue.value);
 
-      if (!currentClient) return;
+    if (!currentClient) return;
 
-      const allClientReservations = findAllClientReservation(bookings, clientValue);
+    const allClientReservations = findAllClientReservation(bookings, clientValue);
 
-      const initialSummary = cloneDeep({
-         ...INITIAL_CLIENT_BOOKING_DETAILS,
-         client: cloneDeep(currentClient)
-      });
+    const initialSummary = cloneDeep({
+      ...INITIAL_CLIENT_BOOKING_DETAILS,
+      client: cloneDeep(currentClient)
+    });
 
-      setClientSummary(
-         generateReservationSummary(
-            initialSummary,
-            allClientReservations,
-            fromTheBeginning,
-            fromMonth,
-            toMonth
-         )
-      );
+    setClientSummary(
+      generateReservationSummary(
+        initialSummary,
+        allClientReservations,
+        fromTheBeginning,
+        fromMonth,
+        toMonth
+      )
+    );
 
-      setCSVReportData(
-         csvClientSummary(
-            currentClient,
-            allClientReservations,
-            fromTheBeginning,
-            fromMonth,
-            toMonth
-         )
-      );
+    setCSVReportData(
+      csvClientSummary(
+        currentClient,
+        allClientReservations,
+        fromTheBeginning,
+        fromMonth,
+        toMonth
+      )
+    );
 
-      setIsSummaryGenerated(true);
+    setIsSummaryGenerated(true);
 
-      setTimeout(() => {
-         setIsGenerating(false);
-      }, 2000);
-   });
+    setTimeout(() => {
+      setIsGenerating(false);
+    }, 2000);
+  });
 
-   /**
+  /**
     * Function to generate all clients booking report for csv file.
     * @param {Date} fromSelectedMont
     * @param {Date} toSelectedMonth
     * @return {VoidFunction}
     */
-   const generateReportForAllClients = (
-      fromSelectedMont = new Date(),
-      toSelectedMonth = new Date()
-   ): void => {
-      const cvsGeneratedReport = csvAllClientSummary(
-         clients,
-         bookings,
-         fromTheBeginning,
-         fromSelectedMont,
-         toSelectedMonth
-      );
-      if (!isEqual(csvAllReportData, cvsGeneratedReport)) setCsvAllReportData(cvsGeneratedReport);
-   };
-   /**
+  const generateReportForAllClients = (
+    fromSelectedMont = new Date(),
+    toSelectedMonth = new Date()
+  ): void => {
+    const cvsGeneratedReport = csvAllClientSummary(
+      clients,
+      bookings,
+      fromTheBeginning,
+      fromSelectedMont,
+      toSelectedMonth
+    );
+    if (!isEqual(csvAllReportData, cvsGeneratedReport)) setCsvAllReportData(cvsGeneratedReport);
+  };
+  /**
     * Function to restore initial status.
     * @return {VoidFunction}
     */
-   const clearSummary = (): void => {
-      setClientSummary(cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS));
-      setIsSummaryGenerated(false);
-      setIsGenerating(false);
-      setCSVReportData([]);
-      reset({
-         client: { label: '', value: '' },
-         fromMonth: new Date(),
-         toMonth: new Date()
-      });
-   };
+  const clearSummary = (): void => {
+    setClientSummary(cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS));
+    setIsSummaryGenerated(false);
+    setIsGenerating(false);
+    setCSVReportData([]);
+    reset({
+      client: { label: '', value: '' },
+      fromMonth: new Date(),
+      toMonth: new Date()
+    });
+  };
 
-   /**
+  /**
     * Function to update field in toMonth in form if fromMonth change.
     * @return {VoidFunction}
     */
-   const updateToMonthDataInForm = (): void => {
-      reset({ client: clientValue, fromMonth, toMonth: fromMonth, fromTheBeginning });
-   };
+  const updateToMonthDataInForm = (): void => {
+    reset({ client: clientValue, fromMonth, toMonth: fromMonth, fromTheBeginning });
+  };
 
-   /**
+  /**
     * Function to open current client pdf report in new window.
     * @return {VoidFunction}
     */
-   const generatePdfReport = () => {
-      printPDFReport(clientSummary);
-   };
+  const generatePdfReport = () => {
+    printPDFReport(clientSummary);
+  };
 
-   /**
+  /**
     * Function to generate csv file name base on current client name and selected month.
     * @param {Boolean} forAll
     * @param {Date} fromSelectedMont
     * @param {Date} toSelectedMonth
     * @return {String}
     */
-   const generateFileName = (
-      forAll: boolean = false,
-      fromSelectedMont = new Date(),
-      toSelectedMonth = new Date()
-   ): string => {
-      if (!clientSummary.client) {
-         return 'Raport clienta.csv';
-      }
+  const generateFileName = (
+    forAll: boolean = false,
+    fromSelectedMont = new Date(),
+    toSelectedMonth = new Date()
+  ): string => {
+    if (!clientSummary.client) {
+      return 'Raport clienta.csv';
+    }
 
-      let partFileName = 'od początku';
+    let partFileName = 'od początku';
 
-      if (!fromTheBeginning) {
-         partFileName = `${fromSelectedMont.getMonth() + 1}-${
-            toSelectedMonth.getMonth() + 1
-         }.${toSelectedMonth.getFullYear()}`;
-      }
+    if (!fromTheBeginning) {
+      partFileName = `${fromSelectedMont.getMonth() + 1}-${
+        toSelectedMonth.getMonth() + 1
+      }.${toSelectedMonth.getFullYear()}`;
+    }
 
-      if (forAll) {
-         return `Wszyscy klienci [${partFileName}].csv`.toLowerCase();
-      }
+    if (forAll) {
+      return `Wszyscy klienci [${partFileName}].csv`.toLowerCase();
+    }
 
-      return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
-   };
+    return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
+  };
 
-   React.useEffect(() => {
-      updateToMonthDataInForm();
-   }, [fromMonth, fromTheBeginning]);
+  React.useEffect(() => {
+    updateToMonthDataInForm();
+  }, [fromMonth, fromTheBeginning]);
 
-   React.useEffect(() => {
-      generateReportForAllClients(fromMonth, toMonth);
-   }, [fromMonth, toMonth]);
+  React.useEffect(() => {
+    generateReportForAllClients(fromMonth, toMonth);
+  }, [fromMonth, toMonth]);
 
-   return (
+  return (
       <SummaryWrapper>
          <SummaryHeader>Podsumowanie Najmów</SummaryHeader>
          {(errorClient || errorBooking) && (
@@ -494,7 +494,6 @@ const Summary = () => {
                         placeholder="Wybierz"
                         onChange={onChange}
                         onBlur={onBlur}
-                        selected={value}
                         value={value}
                         blurInputOnSelect
                      />
@@ -591,8 +590,8 @@ const Summary = () => {
                   <ClientDetailTable>
                      <tbody>
                         {RECORDS_CLIENTS_ROW_DETAILS.map((prop) => {
-                           if (!isEmpty(clientSummary.client[prop])) {
-                              return (
+                          if (!isEmpty(clientSummary.client[prop])) {
+                            return (
                                  <ClientDetailWrapper key={prop}>
                                     <DetailContent>
                                        <strong>
@@ -601,9 +600,9 @@ const Summary = () => {
                                        {modelDisplayValue(prop, clientSummary.client[prop])}
                                     </DetailContent>
                                  </ClientDetailWrapper>
-                              );
-                           }
-                           return null;
+                            );
+                          }
+                          return null;
                         })}
                      </tbody>
                   </ClientDetailTable>
@@ -655,7 +654,7 @@ const Summary = () => {
             )}
          </SummaryDetailContent>
       </SummaryWrapper>
-   );
+  );
 };
 
 export default Summary;

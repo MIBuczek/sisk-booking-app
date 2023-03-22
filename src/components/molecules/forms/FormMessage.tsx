@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux';
 import { closeModal } from 'store';
 import styled from 'styled-components';
 import {
-   sendEmailNotification,
-   USER_MIB_ID,
-   USER_MIB_SERVICE_ID,
-   USER_MIB_TEMPLATE_MESSAGE_ID
+  sendEmailNotification,
+  USER_MIB_ID,
+  USER_MIB_SERVICE_ID,
+  USER_MIB_TEMPLATE_MESSAGE_ID
 } from 'utils';
 import Anchor from '../../atoms/Anchor';
 import Button from '../../atoms/Button';
@@ -99,66 +99,66 @@ const ErrorServer = styled.span`
 `;
 
 const FormMessage = () => {
-   const [message, setMessage] = React.useState<IMessageForm | undefined>();
-   const [police, setPolice] = React.useState<boolean>(false);
-   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
-   const [error, setError] = React.useState(false);
+  const [message, setMessage] = React.useState<IMessageForm | undefined>();
+  const [police, setPolice] = React.useState<boolean>(false);
+  const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
-   const dispatch = useDispatch();
-   const {
-      control,
-      handleSubmit,
-      formState: { errors }
-   } = useForm<IMessageForm>();
+  const dispatch = useDispatch();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IMessageForm>();
 
-   /**
+  /**
     * Function to submit actual form values into form message state.
     * It will be dispatched to database it user confirm action.
     * @param cred
     */
-   const onSubmit: SubmitHandler<IMessageForm> = (cred) => {
-      setMessage({ ...cred });
-      setDisplayConfirmation(true);
-   };
+  const onSubmit: SubmitHandler<IMessageForm> = (cred) => {
+    setMessage({ ...cred });
+    setDisplayConfirmation(true);
+  };
 
-   /**
+  /**
     * Function to dispatch errors on action to log user into platform
     * @param err
     * @param e
     */
-   const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-      console.log(err, e);
-   };
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
-   /**
+  /**
     * Function to confirm dispatch action. If so then sent notification to pointed email address.
     */
-   const confirmSubmit = async (): Promise<void> => {
-      const status = await sendEmailNotification(
-         USER_MIB_SERVICE_ID,
-         USER_MIB_TEMPLATE_MESSAGE_ID,
-         message,
-         USER_MIB_ID
-      );
-      if (status > 200) {
-         setError(true);
-      } else {
-         initialState();
-         setError(false);
-      }
-   };
+  const confirmSubmit = async (): Promise<void> => {
+    const status = await sendEmailNotification(
+      USER_MIB_SERVICE_ID,
+      USER_MIB_TEMPLATE_MESSAGE_ID,
+      message,
+      USER_MIB_ID
+    );
+    if (status > 200) {
+      setError(true);
+    } else {
+      initialState();
+      setError(false);
+    }
+  };
 
-   /**
+  /**
     * Function to restore initial status.
     */
-   const initialState = (): void => {
-      setMessage(undefined);
-      setPolice(false);
-      setDisplayConfirmation(false);
-      dispatch(closeModal());
-   };
+  const initialState = (): void => {
+    setMessage(undefined);
+    setPolice(false);
+    setDisplayConfirmation(false);
+    dispatch(closeModal());
+  };
 
-   return (
+  return (
       <MessageWrapper>
          <MessageHeader>Skontaktuj się z nami</MessageHeader>
          {error && (
@@ -278,7 +278,7 @@ const FormMessage = () => {
             </ButtonPanel>
          )}
       </MessageWrapper>
-   );
+  );
 };
 
 export default FormMessage;

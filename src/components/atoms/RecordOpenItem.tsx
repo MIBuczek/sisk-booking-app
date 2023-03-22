@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { IBooking, IEditHandler, ISingleBookingDate } from 'models';
 import { checkSingleDayConflict, MODAL_TYPES, modelDisplayValue } from 'utils';
-import Button from './Button';
 import { openModal, updateBookingConflicts } from 'store';
+import Button from './Button';
 
 const SingleBookingTime = styled.div`
    display: flex;
@@ -84,60 +84,60 @@ const ParticipantSpan = styled(CommentsSpan)`
 `;
 
 interface IProps {
-   mainIndex: number;
-   property: string;
-   currentPage: number;
-   postPerPage: number;
-   singleBooking: ISingleBookingDate;
-   singleBookingIndex: number;
-   hasRight: boolean;
-   currentRecord: IBooking;
-   allRecords: IBooking[];
-   lastRecord: boolean;
-   editHandler: (editDetails: IEditHandler) => void;
+  mainIndex: number;
+  property: string;
+  currentPage: number;
+  postPerPage: number;
+  singleBooking: ISingleBookingDate;
+  singleBookingIndex: number;
+  hasRight: boolean;
+  currentRecord: IBooking;
+  allRecords: IBooking[];
+  lastRecord: boolean;
+  editHandler: (editDetails: IEditHandler) => void;
 }
 
 const RecordOpenItem: React.FunctionComponent<IProps> = ({
-   mainIndex,
-   property,
-   currentPage,
-   postPerPage,
-   singleBooking,
-   singleBookingIndex,
-   hasRight,
-   currentRecord,
-   allRecords,
-   lastRecord,
-   editHandler
+  mainIndex,
+  property,
+  currentPage,
+  postPerPage,
+  singleBooking,
+  singleBookingIndex,
+  hasRight,
+  currentRecord,
+  allRecords,
+  lastRecord,
+  editHandler
 }): JSX.Element => {
-   const [conflictedItems, setConflictedItems] = React.useState<IBooking[]>([]);
+  const [conflictedItems, setConflictedItems] = React.useState<IBooking[]>([]);
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-   /* Method to check single reservation conflict and set component state */
-   const checkSingleConflict = (
-      sbd: ISingleBookingDate,
-      sbId: string = '',
-      sbMonth: number = -1
-   ): void => {
-      if (currentRecord.accepted) {
-         setConflictedItems([]);
-      } else {
-         setConflictedItems(checkSingleDayConflict(sbd, sbId, sbMonth, allRecords));
-      }
-   };
+  /* Method to check single reservation conflict and set component state */
+  const checkSingleConflict = (
+    sbd: ISingleBookingDate,
+    sbId: string = '',
+    sbMonth: number = -1
+  ): void => {
+    if (currentRecord.accepted) {
+      setConflictedItems([]);
+    } else {
+      setConflictedItems(checkSingleDayConflict(sbd, sbId, sbMonth, allRecords));
+    }
+  };
 
-   /* Method to open conflict modal and set conflicted reservation in general store */
-   const openConflictModal = (): void => {
-      dispatch(updateBookingConflicts(conflictedItems));
-      dispatch(openModal(MODAL_TYPES.BOOKING_CONFLICTS));
-   };
+  /* Method to open conflict modal and set conflicted reservation in general store */
+  const openConflictModal = (): void => {
+    dispatch(updateBookingConflicts(conflictedItems));
+    dispatch(openModal(MODAL_TYPES.BOOKING_CONFLICTS));
+  };
 
-   React.useEffect(() => {
-      checkSingleConflict(singleBooking, currentRecord.id as string, currentRecord.month as number);
-   }, []);
+  React.useEffect(() => {
+    checkSingleConflict(singleBooking, currentRecord.id as string, currentRecord.month as number);
+  }, []);
 
-   return (
+  return (
       <SingleBookingTime className={`${conflictedItems.length ? 'conflict' : ''}`}>
          <RecordDetailSpan>
             <strong>Dzień: </strong>
@@ -166,13 +166,13 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
                   type="button"
                   disabled={!currentRecord.accepted}
                   onClick={() =>
-                     editHandler({
-                        itemIndex: mainIndex,
-                        isMainItem: false,
-                        subItemIndex: singleBookingIndex,
-                        currentPage,
-                        postPerPage
-                     })
+                    editHandler({
+                      itemIndex: mainIndex,
+                      isMainItem: false,
+                      subItemIndex: singleBookingIndex,
+                      currentPage,
+                      postPerPage
+                    })
                   }
                >
                   <BsFillCheckSquareFill />
@@ -188,7 +188,7 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
             {modelDisplayValue(property, singleBooking.comments)}
          </CommentsSpan>
       </SingleBookingTime>
-   );
+  );
 };
 
 export default RecordOpenItem;

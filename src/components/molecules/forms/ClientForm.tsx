@@ -69,105 +69,105 @@ const ButtonPanel = styled.div`
 `;
 
 interface ClientFormProps {
-   isEditing: boolean;
-   editedItemIndex?: number;
-   initialEditingState: () => void;
-   clientList: IClient[];
+  isEditing: boolean;
+  editedItemIndex?: number;
+  initialEditingState: () => void;
+  clientList: IClient[];
 }
 
 const ClientForm: React.FunctionComponent<ClientFormProps> = ({
-   isEditing,
-   editedItemIndex,
-   initialEditingState,
-   clientList
+  isEditing,
+  editedItemIndex,
+  initialEditingState,
+  clientList
 }) => {
-   const [clientData, setClientData] = React.useState<IClient | undefined>(undefined);
-   const [clientId, setClientId] = React.useState<string | undefined>(undefined);
-   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
+  const [clientData, setClientData] = React.useState<IClient | undefined>(undefined);
+  const [clientId, setClientId] = React.useState<string | undefined>(undefined);
+  const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
 
-   const dispatch = useDispatch();
-   const {
-      handleSubmit,
-      formState: { errors },
-      control,
-      reset,
-      watch
-   } = useForm<IClientForm>();
+  const dispatch = useDispatch();
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+    watch
+  } = useForm<IClientForm>();
 
-   const { type: clientType } = watch();
+  const { type: clientType } = watch();
 
-   React.useEffect(() => {
-      if (isEditing && typeof editedItemIndex === 'number') {
-         editClientHandler(editedItemIndex);
-      } else {
-         createInitialState();
-      }
-   }, [isEditing]);
+  React.useEffect(() => {
+    if (isEditing && typeof editedItemIndex === 'number') {
+      editClientHandler(editedItemIndex);
+    } else {
+      createInitialState();
+    }
+  }, [isEditing]);
 
-   /**
+  /**
     * Function to submit actual form values into form state.
     * It will be dispatched to database it user confirm action.
     * @param cred
     */
-   const onSubmit: SubmitHandler<IClientForm> = (cred) => {
-      setClientData({
-         ...cred,
-         type: cred.type.value
-      } as IClient);
-      setDisplayConfirmation(true);
-   };
-   /**
+  const onSubmit: SubmitHandler<IClientForm> = (cred) => {
+    setClientData({
+      ...cred,
+      type: cred.type.value
+    } as IClient);
+    setDisplayConfirmation(true);
+  };
+  /**
     * Function to dispatch errors on action to log user into platform
     * @param err
     * @param e
     */
-   const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-      console.log(err, e);
-   };
+  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
+    console.log(err, e);
+  };
 
-   /**
+  /**
     * Function to confirm dispatch action. If so then add or update firebase clients collection.
     */
-   const confirmSubmit = () => {
-      if (!clientData) return;
-      if (clientId) {
-         dispatch(updateClient({ ...clientData, id: clientId }));
-      } else dispatch(addClient(clientData));
+  const confirmSubmit = () => {
+    if (!clientData) return;
+    if (clientId) {
+      dispatch(updateClient({ ...clientData, id: clientId }));
+    } else dispatch(addClient(clientData));
 
-      createInitialState();
-      dispatch(closeModal());
-   };
+    createInitialState();
+    dispatch(closeModal());
+  };
 
-   /**
+  /**
     * Function handle edit selected client object. It set form fields with current client data.
     * @param index
     */
-   const editClientHandler = (index: number) => {
-      const currentClient = clientList[index];
-      reset({ ...currentClient, type: findSelectedOption(currentClient.type, CLIENT_OPTIONS) });
-      setClientId(currentClient.id);
-   };
+  const editClientHandler = (index: number) => {
+    const currentClient = clientList[index];
+    reset({ ...currentClient, type: findSelectedOption(currentClient.type, CLIENT_OPTIONS) });
+    setClientId(currentClient.id);
+  };
 
-   /**
+  /**
     * Function to restore initial status.
     */
-   const createInitialState = () => {
-      reset(CLIENT_INITIAL_VALUE);
-      setClientId(undefined);
-      setClientData(undefined);
-      initialEditingState();
-      setDisplayConfirmation(false);
-   };
+  const createInitialState = () => {
+    reset(CLIENT_INITIAL_VALUE);
+    setClientId(undefined);
+    setClientData(undefined);
+    initialEditingState();
+    setDisplayConfirmation(false);
+  };
 
-   /**
+  /**
     * Function handle cancel action.
     */
-   const cancelHandler = () => {
-      createInitialState();
-      dispatch(closeModal());
-   };
+  const cancelHandler = () => {
+    createInitialState();
+    dispatch(closeModal());
+  };
 
-   return (
+  return (
       <ClientWrapper>
          <ClientSubHeader>
             {isEditing ? 'Edytuj istniejeacego najemcę' : 'Dodaj nowego najemcę'}
@@ -187,7 +187,6 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                         placeholder="Wybierz"
                         onChange={onChange}
                         onBlur={onBlur}
-                        selected={value}
                         value={value}
                         defaultValue={CLIENT_OPTIONS[0]}
                         isDisabled={displayConfirmation}
@@ -380,7 +379,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
             </ButtonPanel>
          )}
       </ClientWrapper>
-   );
+  );
 };
 
 export default ClientForm;

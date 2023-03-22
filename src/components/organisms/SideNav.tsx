@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {
-   BsBuilding,
-   BsFileEarmarkBarGraph,
-   BsFileEarmarkBarGraphFill,
-   BsFileEarmarkPersonFill,
-   BsFillCalendar2DateFill,
-   BsFillPinFill
+  BsBuilding,
+  BsFileEarmarkBarGraph,
+  BsFileEarmarkBarGraphFill,
+  BsFileEarmarkPersonFill,
+  BsFillCalendar2DateFill,
+  BsFillPinFill
 } from 'react-icons/bs';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -80,46 +80,46 @@ const SideSelectWrapper = styled(SelectWrapper)`
 `;
 
 interface IProps {
-   isAdmin: boolean;
-   isAdminPanel?: boolean;
-   state: IMainState | IAdminState;
-   stateHandler: (value: TSelect, field: string) => void;
-   activeTab: ADMIN_TABS;
-   tabHandler: (currentTab: ADMIN_TABS) => void;
+  isAdmin: boolean;
+  isAdminPanel?: boolean;
+  state: IMainState | IAdminState;
+  stateHandler: (value: TSelect, field: string) => void;
+  activeTab: ADMIN_TABS;
+  tabHandler: (currentTab: ADMIN_TABS) => void;
 }
 
 const SideNav: React.FunctionComponent<IProps> = ({
-   isAdmin,
-   isAdminPanel,
-   state,
-   stateHandler,
-   activeTab,
-   tabHandler
+  isAdmin,
+  isAdminPanel,
+  state,
+  stateHandler,
+  activeTab,
+  tabHandler
 }): JSX.Element => {
-   const dispatch = useDispatch();
-   const { buildings } = useSelector((appState: IReduxState) => appState.buildingStore);
+  const dispatch = useDispatch();
+  const { buildings } = useSelector((appState: IReduxState) => appState.buildingStore);
 
-   const { city, building } = state;
+  const { city, building } = state;
 
-   /**
+  /**
     * Function to select active and add class 'active'
     */
-   const setActiveTab = (buttonTab: ADMIN_TABS): string =>
-      activeTab === buttonTab ? 'active' : '';
+  const setActiveTab = (buttonTab: ADMIN_TABS): string =>
+    activeTab === buttonTab ? 'active' : '';
 
-   /**
+  /**
     * Function to get building options assigned to selected city.
     */
-   const selectBuilding = (): TSelect[] => {
-      if (!city) return [];
-      return generateBuildingOptions(buildings)[city.value];
-   };
+  const selectBuilding = (): TSelect[] => {
+    if (!city) return [];
+    return generateBuildingOptions(buildings)[city.value];
+  };
 
-   React.useEffect(() => {}, [city.value]);
+  React.useEffect(() => {}, [city.value]);
 
-   const blockSelectOptions = isAdminPanel ? !isAdmin : false;
+  const blockSelectOptions = isAdminPanel ? !isAdmin : false;
 
-   return (
+  return (
       <SideWrapper>
          <InnerNavigationPanel style={{ paddingBottom: '0px' }}>
             <SideSelectWrapper>
@@ -129,8 +129,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
                   options={CITY_OPTIONS}
                   styles={customStyles(false)}
                   placeholder="Wybierz"
-                  onChange={(val: TSelect) => stateHandler(val, 'city')}
-                  selected={city}
+                  onChange={(val) => stateHandler(val as TSelect, 'city')}
                   value={city}
                   isDisabled={blockSelectOptions}
                   blurInputOnSelect
@@ -145,8 +144,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
                   options={selectBuilding()}
                   styles={customStyles(false)}
                   placeholder="Wybierz"
-                  onChange={(val: TSelect) => stateHandler(val, 'building')}
-                  selected={building}
+                  onChange={(val: unknown) => stateHandler(val as TSelect, 'building')}
                   isDisabled={!city}
                   blurInputOnSelect
                   isSearchable={false}
@@ -210,7 +208,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
             </>
          )}
       </SideWrapper>
-   );
+  );
 };
 
 export default SideNav;

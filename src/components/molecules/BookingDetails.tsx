@@ -2,12 +2,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { isNil } from 'lodash';
-import Paragraph from '../atoms/Paragraph';
-import Header from '../atoms/Header';
-import Button from '../atoms/Button';
 import { clearCurrentBooking, closeModal } from 'store';
 import { fadeIn } from 'style/animation';
 import { IBookingsPayload, IReduxState } from 'models';
+import Paragraph from '../atoms/Paragraph';
+import Header from '../atoms/Header';
+import Button from '../atoms/Button';
 import BookingInfo from '../atoms/BookingInfo';
 
 const BookingDetailsWrapper = styled.article`
@@ -59,20 +59,20 @@ const ClearButton = styled(Button)`
 `;
 
 const BookingDetails = (): JSX.Element => {
-   const dispatch = useDispatch();
-   const { booking, bookingTimeIndex } = useSelector(
-      (state: IReduxState): IBookingsPayload => state.bookingStore
-   );
+  const dispatch = useDispatch();
+  const { booking, bookingTimeIndex } = useSelector(
+    (state: IReduxState): IBookingsPayload => state.bookingStore
+  );
 
-   /**
+  /**
     * Function to clear selected booking
     */
-   const clear = (): void => {
-      dispatch(clearCurrentBooking());
-      dispatch(closeModal());
-   };
+  const clear = (): void => {
+    dispatch(clearCurrentBooking());
+    dispatch(closeModal());
+  };
 
-   return (
+  return (
       <BookingDetailsWrapper>
          <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
          {!isNil(booking) ? (
@@ -90,7 +90,7 @@ const BookingDetails = (): JSX.Element => {
             </DetailsParagraph>
          )}
       </BookingDetailsWrapper>
-   );
+  );
 };
 
 export default BookingDetails;

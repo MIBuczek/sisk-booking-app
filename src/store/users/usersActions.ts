@@ -7,33 +7,33 @@ import { doc, getDoc } from 'firebase/firestore';
 const USER_COLLECTION_KEY: Readonly<'users'> = 'users';
 
 const fetchingUserStart = (): IUserAction => ({
-   type: USER_STATE.GET_USER,
-   payload: {
-      isFetching: true,
-      savingStage: SAVING_STAGE.INITIAL,
-      errorMessage: '',
-      user: undefined
-   }
+  type: USER_STATE.GET_USER,
+  payload: {
+    isFetching: true,
+    savingStage: SAVING_STAGE.INITIAL,
+    errorMessage: '',
+    user: undefined
+  }
 });
 
 const fetchingUserDone = (user: IUser): IUserAction => ({
-   type: USER_STATE.GET_USER,
-   payload: {
-      isFetching: false,
-      savingStage: SAVING_STAGE.SUCCESS,
-      errorMessage: '',
-      user
-   }
+  type: USER_STATE.GET_USER,
+  payload: {
+    isFetching: false,
+    savingStage: SAVING_STAGE.SUCCESS,
+    errorMessage: '',
+    user
+  }
 });
 
 const fetchingUserError = (errorMessage: string): IUserAction => ({
-   type: USER_STATE.ERROR_USER,
-   payload: {
-      isFetching: false,
-      savingStage: SAVING_STAGE.ERROR,
-      errorMessage,
-      user: undefined
-   }
+  type: USER_STATE.ERROR_USER,
+  payload: {
+    isFetching: false,
+    savingStage: SAVING_STAGE.ERROR,
+    errorMessage,
+    user: undefined
+  }
 });
 
 /**
@@ -41,9 +41,9 @@ const fetchingUserError = (errorMessage: string): IUserAction => ({
  */
 const getUserData =
    () =>
-   async (dispatch: Dispatch<IUserAction>, getState: () => IReduxState): Promise<void> => {
-      dispatch(fetchingUserStart());
-      try {
+     async (dispatch: Dispatch<IUserAction>, getState: () => IReduxState): Promise<void> => {
+       dispatch(fetchingUserStart());
+       try {
          const { auth } = getState().authStore;
 
          if (!auth?.uid) return;
@@ -52,10 +52,10 @@ const getUserData =
          const currentUser = await getDoc(userRef);
 
          dispatch(fetchingUserDone({ ...(currentUser.data() as IUser) }));
-      } catch (err) {
+       } catch (err) {
          dispatch(fetchingUserError('Problem z serverem. Nie można pobrac danych użytkownika.'));
          throw new Error(JSON.stringify(err));
-      }
-   };
+       }
+     };
 
 export { fetchingUserStart, getUserData };

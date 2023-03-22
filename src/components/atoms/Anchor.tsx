@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type AnchorProps = {
-   small?: boolean;
+  small?: boolean;
 };
 
 const Anchor = styled.a<AnchorProps>`
@@ -24,9 +24,9 @@ const Anchor = styled.a<AnchorProps>`
 `;
 
 export const iconNormal = {
-   fontSize: '2rem',
-   marginRight: '1rem',
-   color: 'AFBF36'
+  fontSize: '2rem',
+  marginRight: '1rem',
+  color: 'AFBF36'
 };
 
 export default Anchor;

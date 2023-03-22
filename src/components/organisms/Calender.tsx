@@ -9,12 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Paragraph from 'components/atoms/Paragraph';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
-import { IAdminState, IBooking, IMainState } from 'models';
+import { IAdminState, IBooking, IMainState, IReduxState } from 'models';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import { BOOKING_STATUS, MODAL_TYPES, prepareCalenderItem } from 'utils';
-import RenderEventContent from '../atoms/CalenderEvent';
-import { IReduxState } from 'models';
 import { getCurrentBooking, openModal } from 'store';
+import RenderEventContent from '../atoms/CalenderEvent';
+
 import ModalResolveBooking from '../molecules/modals/ModalResolveBooking';
 import Modal from './Modal';
 import ModalInfo from '../molecules/modals/ModalInfo';
@@ -135,71 +135,71 @@ const UserInfo = styled(Paragraph)`
 `;
 
 interface IProps {
-   mainState?: IMainState | IAdminState;
-   hasRights?: boolean;
+  mainState?: IMainState | IAdminState;
+  hasRights?: boolean;
 }
 
 const BookingCalender: React.FunctionComponent<IProps> = ({
-   mainState,
-   hasRights
+  mainState,
+  hasRights
 }): JSX.Element => {
-   const [events, setEvents] = React.useState<EventInput[]>([]);
+  const [events, setEvents] = React.useState<EventInput[]>([]);
 
-   const dispatch = useDispatch();
-   const {
-      modal: { isOpen, type },
-      bookingStore: { bookings, errorMessage }
-   } = useSelector((state: IReduxState) => state);
+  const dispatch = useDispatch();
+  const {
+    modal: { isOpen, type },
+    bookingStore: { bookings, errorMessage }
+  } = useSelector((state: IReduxState) => state);
 
-   /**
+  /**
     * Function create event into full calendar component.
     * Event is related to the user or admin view.
     */
-   const createEvents = (): void =>
-      setEvents(
-         bookings.reduce((acc: EventInput[], booking: IBooking) => {
-            if (
-               mainState &&
+  const createEvents = (): void =>
+    setEvents(
+      bookings.reduce((acc: EventInput[], booking: IBooking) => {
+        if (
+          mainState &&
                mainState.city.value === booking.city &&
                mainState.building.value === booking.building
-            ) {
-               booking.bookingTime.forEach((bt, index) => {
-                  const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
-                  if (bt.status !== BOOKING_STATUS.QUIT) {
-                     acc.push(prepareCalenderItem(itemTitle, booking, index));
-                  }
-               });
+        ) {
+          booking.bookingTime.forEach((bt, index) => {
+            const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
+            if (bt.status !== BOOKING_STATUS.QUIT) {
+              acc.push(prepareCalenderItem(itemTitle, booking, index));
             }
-            return acc;
-         }, [])
-      );
+          });
+        }
+        return acc;
+      }, [])
+    );
 
-   /**
+  /**
     * Full calendar event to get data and get current booking data from the store.
     * @param arg
     */
-   const handleEventClick = (arg: EventClickArg): void => {
-      arg.jsEvent.preventDefault();
+  const handleEventClick = (arg: EventClickArg): void => {
+    arg.jsEvent.preventDefault();
 
-      dispatch(getCurrentBooking(arg.event._def.publicId, arg.event.extendedProps.itemIndex));
+    dispatch(getCurrentBooking(arg.event._def.publicId, arg.event.extendedProps.itemIndex));
 
-      if (hasRights) {
-         dispatch(openModal(MODAL_TYPES.BOOKINGS_CALENDER_STATUS));
-      }
-   };
+    if (hasRights) {
+      dispatch(openModal(MODAL_TYPES.BOOKINGS_CALENDER_STATUS));
+    }
+  };
 
-   React.useEffect(() => {
-      createEvents();
-   }, [mainState, bookings]);
+  React.useEffect(() => {
+    createEvents();
+  }, [mainState, bookings]);
 
-   return (
+  return (
       <CalenderWrapper>
          {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
          <FullCalendar
             plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
-               left: 'prev,next today',
-               right: 'timeGridWeek,listWeek'
+              left: 'prev,next today',
+              right: 'timeGridWeek,listWeek'
             }}
             locale="pl"
             initialView="timeGridWeek"
@@ -229,6 +229,6 @@ const BookingCalender: React.FunctionComponent<IProps> = ({
             </Modal>
          )}
       </CalenderWrapper>
-   );
+  );
 };
 export default BookingCalender;

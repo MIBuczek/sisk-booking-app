@@ -15,7 +15,7 @@ const formatTimeZoneToCheck = (d: Date, month: number): number =>
  */
 const checkIfWinterTimeZone = (date: Date): boolean =>
   Math.max(formatTimeZoneToCheck(date, 0), formatTimeZoneToCheck(date, 6)) !==
-   date.getTimezoneOffset();
+  date.getTimezoneOffset();
 
 /**
  * Function to transform date object into local date string
@@ -35,14 +35,16 @@ const formatDate = (date: Date | null): string => {
 const formatTime = (date: Date | null): string => {
   if (!date) return '';
   const dateHour: number = date.getHours();
-  let dateMinutes: number | string = date.getMinutes();
+  const dateMinutes: number = date.getMinutes();
+
+  let minutes = '';
   if (dateMinutes === 0) {
-    dateMinutes = '00';
+    minutes = '00';
   }
   if (dateMinutes > 0 && dateMinutes < 10) {
-    dateMinutes = `0${dateMinutes}`;
+    minutes = `0${dateMinutes}`;
   }
-  return `${dateHour}:${dateMinutes}`;
+  return `${dateHour}:${minutes}`;
 };
 
 /**

@@ -1,26 +1,26 @@
-import { IPayload } from 'models';
+import {IPayload} from 'models';
 
 interface IClient {
-  type: string;
-  name: string;
-  contactPerson: string;
-  phone: string;
-  email: string;
-  street: string;
-  city: string;
-  zipCode: string;
-  nip?: string;
-  id?: string;
-  [x: string]: string | undefined;
+   type: string;
+   name: string;
+   contactPerson: string;
+   phone: string;
+   email: string;
+   street: string;
+   city: string;
+   zipCode: string;
+   nip?: string;
+   id?: string;
+   [x: string]: string | undefined;
 }
 
 interface IClientsPayload extends IPayload {
-  clients: IClient[];
+   clients: IClient[];
 }
 
 interface IClientsActions {
-  type: string;
-  payload: IClientsPayload;
+   type: string;
+   payload: IClientsPayload;
 }
 
-export type { IClient, IClientsPayload, IClientsActions };
+export type {IClient, IClientsPayload, IClientsActions};

@@ -8,6 +8,8 @@ package.json
 package-lock.json
 setupTests.js
 .prettierrc
+reportWebVitals.js
+setupTests.js
 
 *.png
 *.svg

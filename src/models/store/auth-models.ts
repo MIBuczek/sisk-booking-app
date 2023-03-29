@@ -1,17 +1,17 @@
-import { IPayload } from 'models';
+import {IPayload} from 'models';
 
 interface IAuth {
-  email: string;
-  uid: string;
+   email: string;
+   uid: string;
 }
 
 interface IAuthPayload extends IPayload {
-  auth?: IAuth;
+   auth?: IAuth;
 }
 
 interface IAuthAction {
-  type: string;
-  payload: IAuthPayload;
+   type: string;
+   payload: IAuthPayload;
 }
 
-export type { IAuth, IAuthPayload, IAuthAction };
+export type {IAuth, IAuthPayload, IAuthAction};

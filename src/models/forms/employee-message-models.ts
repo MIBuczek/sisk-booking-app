@@ -1,15 +1,15 @@
-import { TSelect } from 'models/components/select-model';
+import {TSelect} from 'models/components/select-model';
 
 interface IEmployeeMessageForm {
-  email: string;
-  person: TSelect;
-  message: string;
+   email: string;
+   person: TSelect;
+   message: string;
 }
 
 interface IEmployeeMessage {
-  email: string;
-  person: string;
-  message: string;
+   email: string;
+   person: string;
+   message: string;
 }
 
-export type { IEmployeeMessage, IEmployeeMessageForm };
+export type {IEmployeeMessage, IEmployeeMessageForm};

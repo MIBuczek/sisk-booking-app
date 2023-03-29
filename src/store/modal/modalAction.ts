@@ -1,5 +1,5 @@
-import { IModalAction } from 'models';
-import { MODAL_STATE, MODAL_TYPES } from 'utils';
+import {IModalAction} from 'models';
+import {MODAL_STATE, MODAL_TYPES} from 'utils';
 
 /**
  * Modal store action to open modal.
@@ -8,12 +8,12 @@ import { MODAL_STATE, MODAL_TYPES } from 'utils';
  * @returns {IModalAction}
  */
 const openModal = (type: MODAL_TYPES, message: string = ''): IModalAction => ({
-  type: MODAL_STATE.DISPLAY,
-  payload: {
-    isOpen: true,
-    message,
-    type
-  }
+   type: MODAL_STATE.DISPLAY,
+   payload: {
+      isOpen: true,
+      message,
+      type
+   }
 });
 
 /**
@@ -21,12 +21,12 @@ const openModal = (type: MODAL_TYPES, message: string = ''): IModalAction => ({
  * @returns {IModalAction}
  */
 const closeModal = (): IModalAction => ({
-  type: MODAL_STATE.INITIAL,
-  payload: {
-    isOpen: false,
-    type: MODAL_TYPES.EMPTY,
-    message: ''
-  }
+   type: MODAL_STATE.INITIAL,
+   payload: {
+      isOpen: false,
+      type: MODAL_TYPES.EMPTY,
+      message: ''
+   }
 });
 
-export { closeModal, openModal };
+export {closeModal, openModal};

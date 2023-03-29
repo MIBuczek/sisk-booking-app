@@ -1,15 +1,15 @@
-import { IBooking, IClient } from 'models';
+import {IBooking, IClient} from 'models';
 
 function instanceOfBookings(array: (IClient | IBooking)[]): array is IBooking[] {
-  return !!array.length && array[0]?.person !== undefined;
+   return !!array.length && array[0]?.person !== undefined;
 }
 
 function singleInstanceOfBookings(obj: IClient | IBooking): obj is IBooking {
-  return obj.person !== undefined;
+   return obj.person !== undefined;
 }
 
 function bookingIndexTypeChecker(index: number | null | undefined): index is number {
-  return typeof index === 'number';
+   return typeof index === 'number';
 }
 
-export { instanceOfBookings, singleInstanceOfBookings, bookingIndexTypeChecker };
+export {instanceOfBookings, singleInstanceOfBookings, bookingIndexTypeChecker};

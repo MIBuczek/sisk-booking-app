@@ -3,12 +3,12 @@ import 'react-app-polyfill/stable';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import {Provider} from 'react-redux';
+import {createGlobalStyle, ThemeProvider} from 'styled-components';
 import PrepareStore from 'components/molecules/PrepareStore';
-import { store } from 'store/rootReducer';
+import {store} from 'store/rootReducer';
 import Root from 'views/Root';
-import { theme } from 'theme/mainTheme';
+import {theme} from 'theme/mainTheme';
 import reportWebVitals from 'reportWebVitals';
 
 const GlobalStyle = createGlobalStyle`  
@@ -35,17 +35,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PrepareStore>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <Root />
-        </ThemeProvider>
-      </PrepareStore>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+   <React.StrictMode>
+      <Provider store={store}>
+         <PrepareStore>
+            <ThemeProvider theme={theme}>
+               <GlobalStyle />
+               <Root />
+            </ThemeProvider>
+         </PrepareStore>
+      </Provider>
+   </React.StrictMode>,
+   document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

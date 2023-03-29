@@ -99,7 +99,7 @@ jspm_packages/
 
 # dotenv environment variables file
 
-.env
+NODE_ENV.cmd
 
 # next.js build output
 

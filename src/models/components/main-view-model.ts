@@ -1,11 +1,11 @@
-import { TSelect } from 'models';
+import {TSelect} from 'models';
 
 interface IMainState {
-  city: TSelect;
-  building: TSelect;
-  [x: string]: TSelect;
+   city: TSelect;
+   building: TSelect;
+   [x: string]: TSelect;
 }
 
 interface IAdminState extends IMainState {}
 
-export type { IMainState, IAdminState };
+export type {IMainState, IAdminState};

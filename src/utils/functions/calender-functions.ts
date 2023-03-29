@@ -1,5 +1,5 @@
-import { IBooking } from '../../models';
-import { BOOKING_STATUS } from '../variables/booking-status-const';
+import {IBooking} from 'models';
+import {BOOKING_STATUS} from '../variables/booking-status-const';
 
 /**
  * Function to format time zone off set
@@ -7,15 +7,15 @@ import { BOOKING_STATUS } from '../variables/booking-status-const';
  * @param month
  */
 const formatTimeZoneToCheck = (d: Date, month: number): number =>
-  new Date(d.getFullYear(), month, 1).getTimezoneOffset();
+   new Date(d.getFullYear(), month, 1).getTimezoneOffset();
 
 /**
  * Function to check if current date is Daylight Saving Time period
  * @param date
  */
 const checkIfWinterTimeZone = (date: Date): boolean =>
-  Math.max(formatTimeZoneToCheck(date, 0), formatTimeZoneToCheck(date, 6)) !==
-  date.getTimezoneOffset();
+   Math.max(formatTimeZoneToCheck(date, 0), formatTimeZoneToCheck(date, 6)) !==
+   date.getTimezoneOffset();
 
 /**
  * Function to transform date object into local date string
@@ -23,8 +23,8 @@ const checkIfWinterTimeZone = (date: Date): boolean =>
  * @returns {String}
  */
 const formatDate = (date: Date | null): string => {
-  if (!date) return '';
-  return date.toLocaleDateString();
+   if (!date) return '';
+   return date.toLocaleDateString();
 };
 
 /**
@@ -33,16 +33,18 @@ const formatDate = (date: Date | null): string => {
  * @returns {string}
  */
 const formatTime = (date: Date | null): string => {
-  if (!date) return '';
-  const dateHour: number = date.getHours();
-  let dateMinutes: number | string = date.getMinutes();
-  if (dateMinutes === 0) {
-    dateMinutes = '00';
-  }
-  if (dateMinutes > 0 && dateMinutes < 10) {
-    dateMinutes = `0${dateMinutes}`;
-  }
-  return `${dateHour}:${dateMinutes}`;
+   if (!date) return '';
+   const dateHour: number = date.getHours();
+   const dateMinutes: number = date.getMinutes();
+
+   let minutes = '';
+   if (dateMinutes === 0) {
+      minutes = '00';
+   }
+   if (dateMinutes > 0 && dateMinutes < 10) {
+      minutes = `0${dateMinutes}`;
+   }
+   return `${dateHour}:${minutes}`;
 };
 
 /**
@@ -51,9 +53,9 @@ const formatTime = (date: Date | null): string => {
  * @returns {string}
  */
 const formatCalenderDate = (date: Date | string): string => {
-  const stringDate = new Date(date).toISOString();
-  const index = stringDate.indexOf('T');
-  return stringDate.substring(0, index);
+   const stringDate = new Date(date).toISOString();
+   const index = stringDate.indexOf('T');
+   return stringDate.substring(0, index);
 };
 
 /**
@@ -62,13 +64,13 @@ const formatCalenderDate = (date: Date | string): string => {
  * @returns {String}
  */
 const formatDisplayTime = (date: Date | string) => {
-  const formDate = new Date(date);
-  const addHours = checkIfWinterTimeZone(formDate) ? 2 : 1;
-  formDate.setHours(formDate.getHours() + addHours);
-  const stringDate = formDate.toISOString();
-  const index = stringDate.indexOf('T');
-  const lastIndex = stringDate.lastIndexOf('.');
-  return stringDate.substring(index, lastIndex);
+   const formDate = new Date(date);
+   const addHours = checkIfWinterTimeZone(formDate) ? 2 : 1;
+   formDate.setHours(formDate.getHours() + addHours);
+   const stringDate = formDate.toISOString();
+   const index = stringDate.indexOf('T');
+   const lastIndex = stringDate.lastIndexOf('.');
+   return stringDate.substring(index, lastIndex);
 };
 
 /**
@@ -77,10 +79,10 @@ const formatDisplayTime = (date: Date | string) => {
  * @returns {String}
  */
 const formatCalenderHours = (date: Date): string => {
-  const checkedDate = new Date(date).toISOString();
-  const index = checkedDate.indexOf('T');
-  const lastIndex = checkedDate.lastIndexOf('.');
-  return checkedDate.substring(index, lastIndex);
+   const checkedDate = new Date(date).toISOString();
+   const index = checkedDate.indexOf('T');
+   const lastIndex = checkedDate.lastIndexOf('.');
+   return checkedDate.substring(index, lastIndex);
 };
 
 /**
@@ -90,13 +92,13 @@ const formatCalenderHours = (date: Date): string => {
  * @returns {String}
  */
 const generateStatusBackground = (accepted: boolean, status: string): string => {
-  if (status === BOOKING_STATUS.DONE) {
-    return '#454545';
-  }
-  if (accepted) {
-    return '#AFBF36';
-  }
-  return '#3788d8';
+   if (status === BOOKING_STATUS.DONE) {
+      return '#454545';
+   }
+   if (accepted) {
+      return '#AFBF36';
+   }
+   return '#3788d8';
 };
 
 /**
@@ -107,20 +109,20 @@ const generateStatusBackground = (accepted: boolean, status: string): string => 
  * @returns {Object}
  */
 const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number) => {
-  const { id, size, accepted, bookingTime } = booking;
-  const { day, startHour, endHour, status } = bookingTime[index];
-  return {
-    id,
-    allDay: false,
-    title: `${itemTitle}`,
-    url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
-    textColor: `${size}`,
-    start: `${formatCalenderDate(day)}${formatDisplayTime(startHour)}`,
-    end: `${formatCalenderDate(day)}${formatDisplayTime(endHour)}`,
-    backgroundColor: `${generateStatusBackground(accepted, status)}`,
-    itemIndex: index,
-    accepted
-  };
+   const {id, size, accepted, bookingTime} = booking;
+   const {day, startHour, endHour, status} = bookingTime[index];
+   return {
+      id,
+      allDay: false,
+      title: `${itemTitle}`,
+      url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
+      textColor: `${size}`,
+      start: `${formatCalenderDate(day)}${formatDisplayTime(startHour)}`,
+      end: `${formatCalenderDate(day)}${formatDisplayTime(endHour)}`,
+      backgroundColor: `${generateStatusBackground(accepted, status)}`,
+      itemIndex: index,
+      accepted
+   };
 };
 
 /**
@@ -130,15 +132,15 @@ const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number
  * @returns {String}
  */
 const changeDayInDate = (date: Date, newDay: number): Date => {
-  date.setDate(newDay);
-  return date;
+   date.setDate(newDay);
+   return date;
 };
 
 export {
-  formatDate,
-  prepareCalenderItem,
-  formatTime,
-  formatCalenderDate,
-  formatCalenderHours,
-  changeDayInDate
+   formatDate,
+   prepareCalenderItem,
+   formatTime,
+   formatCalenderDate,
+   formatCalenderHours,
+   changeDayInDate
 };

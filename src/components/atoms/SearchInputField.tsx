@@ -1,9 +1,9 @@
-import { debounce } from 'lodash';
-import { IBooking, IClient } from 'models';
+import {debounce} from 'lodash';
+import {IBooking, IClient} from 'models';
 import * as React from 'react';
-import { BsSearch, BsXLg } from 'react-icons/bs';
+import {BsSearch, BsXLg} from 'react-icons/bs';
 import styled from 'styled-components';
-import { searchSelectedContent } from 'utils';
+import {searchSelectedContent} from 'utils';
 import TextInputField from './TextInputField';
 import Button from './Button';
 
@@ -33,39 +33,39 @@ const ClearBtn = styled(Button)`
 `;
 
 interface IProps {
-  type: string;
-  placeholder: string;
-  searchContent: (IClient | IBooking)[];
-  searchProperty: string;
-  searchContentHandler: (searchResults: (IClient | IBooking)[], searchPhase: string) => void;
+   type: string;
+   placeholder: string;
+   searchContent: (IClient | IBooking)[];
+   searchProperty: string;
+   searchContentHandler: (searchResults: (IClient | IBooking)[], searchPhase: string) => void;
 }
 
 const SearchInputField: React.FunctionComponent<IProps> = ({
-  type,
-  placeholder,
-  searchContent,
-  searchProperty,
-  searchContentHandler
+   type,
+   placeholder,
+   searchContent,
+   searchProperty,
+   searchContentHandler
 }) => {
-  const [searchPhase, setSearchPhase] = React.useState('');
+   const [searchPhase, setSearchPhase] = React.useState('');
 
-  const searchHandler = (): void => {
-    if (!searchPhase) searchContentHandler(searchContent, '');
-    else
-      searchContentHandler(
-        searchSelectedContent(searchContent, searchProperty, searchPhase),
-        searchPhase
-      );
-  };
+   const searchHandler = (): void => {
+      if (!searchPhase) searchContentHandler(searchContent, '');
+      else
+         searchContentHandler(
+            searchSelectedContent(searchContent, searchProperty, searchPhase),
+            searchPhase
+         );
+   };
 
-  const delayedQuery = React.useCallback(debounce(searchHandler, 300), [searchPhase]);
+   const delayedQuery = React.useCallback(debounce(searchHandler, 300), [searchPhase]);
 
-  React.useEffect(() => {
-    delayedQuery();
-    return delayedQuery.cancel;
-  }, [delayedQuery, searchPhase]);
+   React.useEffect(() => {
+      delayedQuery();
+      return delayedQuery.cancel;
+   }, [delayedQuery, searchPhase]);
 
-  return (
+   return (
       <SearchInputWrapper>
          <TextInputField
             name="search-input"
@@ -83,7 +83,7 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
             <BsSearch />
          )}
       </SearchInputWrapper>
-  );
+   );
 };
 
 export default SearchInputField;

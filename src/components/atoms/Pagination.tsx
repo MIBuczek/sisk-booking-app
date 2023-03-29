@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { paginationItems } from 'utils';
+import {paginationItems} from 'utils';
 
 const PaginationWrapper = styled.div`
    width: 70%;
@@ -21,31 +21,31 @@ const PaginationBtn = styled.button`
    border: 1px solid white;
 
    &:hover {
-      border-left: ${({ theme }) => `1px solid ${theme.middleGray}`};
-      border-right: ${({ theme }) => `1px solid ${theme.middleGray}`};
+      border-left: ${({theme}) => `1px solid ${theme.middleGray}`};
+      border-right: ${({theme}) => `1px solid ${theme.middleGray}`};
    }
 
    &.active,
    &:focus {
-      border-left: ${({ theme }) => `1px solid ${theme.green}`};
-      border-right: ${({ theme }) => `1px solid ${theme.green}`};
+      border-left: ${({theme}) => `1px solid ${theme.green}`};
+      border-right: ${({theme}) => `1px solid ${theme.green}`};
       outline: none;
       font-weight: 800;
    }
 `;
 
 interface PaginationProps {
-  currentPage: number;
-  postPerPage: number;
-  totalPost: number;
-  nextPage: (num: number) => void;
+   currentPage: number;
+   postPerPage: number;
+   totalPost: number;
+   nextPage: (num: number) => void;
 }
 
 const Pagination: React.FunctionComponent<PaginationProps> = ({
-  currentPage,
-  postPerPage,
-  totalPost,
-  nextPage
+   currentPage,
+   postPerPage,
+   totalPost,
+   nextPage
 }) => (
    <PaginationWrapper>
       {paginationItems(totalPost, postPerPage).map((number) => (

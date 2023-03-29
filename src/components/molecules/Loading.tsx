@@ -19,7 +19,7 @@ const LoadingWrapper = styled.div`
 
 export const LoaderDots = styled(Loader)`
    .ball-pulse > div {
-      background-color: ${({ theme }) => theme.green};
+      background-color: ${({theme}) => theme.green};
    }
 `;
 

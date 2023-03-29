@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const ButtonIcon = styled.button`
-   color: ${({ theme }) => theme.darkGrey};
-   font-size: ${({ theme }) => theme.fontSize.m};
-   font-weight: ${({ theme }) => theme.bold};
+   color: ${({theme}) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.m};
+   font-weight: ${({theme}) => theme.bold};
    background: transparent;
    font-family: inherit;
    padding: 8px 20px;
@@ -12,7 +12,7 @@ const ButtonIcon = styled.button`
    align-items: center;
    cursor: pointer;
    transition: 0.5s;
-   border: ${({ theme }) => `1px solid ${theme.green}`};
+   border: ${({theme}) => `1px solid ${theme.green}`};
    width: 290px;
    border-radius: 5px;
 
@@ -41,9 +41,9 @@ const ButtonIcon = styled.button`
 `;
 
 export const iconStyle = {
-  fontSize: '2rem',
-  marginRight: '1rem',
-  color: 'AFBF36'
+   fontSize: '2rem',
+   marginRight: '1rem',
+   color: 'AFBF36'
 };
 
 export default ButtonIcon;

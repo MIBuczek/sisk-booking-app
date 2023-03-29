@@ -1,8 +1,8 @@
 import React from 'react';
-import { BsEnvelope, BsExclamationSquare } from 'react-icons/bs';
+import {BsEnvelope, BsExclamationSquare} from 'react-icons/bs';
 import styled from 'styled-components';
 
-import Anchor, { iconNormal } from 'components/atoms/Anchor';
+import Anchor, {iconNormal} from 'components/atoms/Anchor';
 import Header from 'components/atoms/Header';
 import Paragraph from 'components/atoms/Paragraph';
 

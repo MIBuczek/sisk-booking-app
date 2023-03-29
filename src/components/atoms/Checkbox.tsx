@@ -1,15 +1,15 @@
 /* eslint-disable no-nested-ternary */
 import * as React from 'react';
 // import { css } from 'react-select/src/components/Control';
-import styled, { css } from 'styled-components';
+import styled, {css} from 'styled-components';
 
 type CheckboxInput = {
-  checked: boolean;
-  disabled: boolean;
-  isAccepted: boolean;
+   checked: boolean;
+   disabled: boolean;
+   isAccepted: boolean;
 };
 
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+const HiddenCheckbox = styled.input.attrs({type: 'checkbox'})`
    border: 0;
    clip: rect(0 0 0 0);
    height: 1px;
@@ -67,22 +67,22 @@ const StyledCheckbox = styled.div<CheckboxInput>`
    }
 
    ${Icon} {
-      visibility: ${({ checked, disabled }) =>
-    (checked && disabled) || checked ? 'visible' : 'hidden'};
+      visibility: ${({checked, disabled}) =>
+         (checked && disabled) || checked ? 'visible' : 'hidden'};
    }
 
-   ${({ checked, disabled, isAccepted }) => {
-    if (disabled) {
-      return disabledStyles;
-    }
-    if (isAccepted) {
-      return acceptedStyles;
-    }
-    if (checked) {
-      return checkedStyles;
-    }
-    return uncheckedStyles;
-  }}
+   ${({checked, disabled, isAccepted}) => {
+      if (disabled) {
+         return disabledStyles;
+      }
+      if (isAccepted) {
+         return acceptedStyles;
+      }
+      if (checked) {
+         return checkedStyles;
+      }
+      return uncheckedStyles;
+   }}
 `;
 
 const CheckboxContainer = styled.div`
@@ -90,14 +90,14 @@ const CheckboxContainer = styled.div`
 `;
 
 interface ICheckbox {
-  className: string;
-  checked: boolean;
-  name: string;
-  disabled: boolean;
-  changeHandler: (value: string | boolean, name: string) => void;
+   className: string;
+   checked: boolean;
+   name: string;
+   disabled: boolean;
+   changeHandler: (value: string | boolean, name: string) => void;
 }
 
-const Checkbox: React.FC<ICheckbox> = ({ className, checked, name, disabled, changeHandler }) => (
+const Checkbox: React.FC<ICheckbox> = ({className, checked, name, disabled, changeHandler}) => (
    <CheckboxContainer
       className={className}
       onClick={() => changeHandler(disabled ? checked : !checked, name)}

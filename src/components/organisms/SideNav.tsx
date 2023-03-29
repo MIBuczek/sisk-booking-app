@@ -1,20 +1,20 @@
 import * as React from 'react';
 import {
-  BsBuilding,
-  BsFileEarmarkBarGraph,
-  BsFileEarmarkBarGraphFill,
-  BsFileEarmarkPersonFill,
-  BsFillCalendar2DateFill,
-  BsFillPinFill
+   BsBuilding,
+   BsFileEarmarkBarGraph,
+   BsFileEarmarkBarGraphFill,
+   BsFileEarmarkPersonFill,
+   BsFillCalendar2DateFill,
+   BsFillPinFill
 } from 'react-icons/bs';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { ADMIN_TABS, CITY_OPTIONS, generateBuildingOptions, MODAL_TYPES } from 'utils';
-import { openModal } from 'store';
-import { IAdminState, IMainState, IReduxState, TSelect } from 'models';
+import {useDispatch, useSelector} from 'react-redux';
+import {ADMIN_TABS, CITY_OPTIONS, generateBuildingOptions, MODAL_TYPES} from 'utils';
+import {openModal} from 'store';
+import {IAdminState, IMainState, IReduxState, TSelect} from 'models';
 import Label from 'components/atoms/Label';
-import ButtonIcon, { iconStyle } from 'components/atoms/ButtonIcon';
-import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
+import ButtonIcon, {iconStyle} from 'components/atoms/ButtonIcon';
+import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/SelectInputField';
 import BookingDetails from '../molecules/BookingDetails';
 
 const SideWrapper = styled.aside`
@@ -80,48 +80,48 @@ const SideSelectWrapper = styled(SelectWrapper)`
 `;
 
 interface IProps {
-  isAdmin: boolean;
-  isAdminPanel?: boolean;
-  state: IMainState | IAdminState;
-  stateHandler: (value: TSelect, field: string) => void;
-  activeTab: ADMIN_TABS;
-  tabHandler: (currentTab: ADMIN_TABS) => void;
+   isAdmin: boolean;
+   isAdminPanel?: boolean;
+   state: IMainState | IAdminState;
+   stateHandler: (value: TSelect, field: string) => void;
+   activeTab: ADMIN_TABS;
+   tabHandler: (currentTab: ADMIN_TABS) => void;
 }
 
 const SideNav: React.FunctionComponent<IProps> = ({
-  isAdmin,
-  isAdminPanel,
-  state,
-  stateHandler,
-  activeTab,
-  tabHandler
+   isAdmin,
+   isAdminPanel,
+   state,
+   stateHandler,
+   activeTab,
+   tabHandler
 }): JSX.Element => {
-  const dispatch = useDispatch();
-  const { buildings } = useSelector((appState: IReduxState) => appState.buildingStore);
+   const dispatch = useDispatch();
+   const {buildings} = useSelector((appState: IReduxState) => appState.buildingStore);
 
-  const { city, building } = state;
+   const {city, building} = state;
 
-  /**
+   /**
     * Function to select active and add class 'active'
     */
-  const setActiveTab = (buttonTab: ADMIN_TABS): string =>
-    activeTab === buttonTab ? 'active' : '';
+   const setActiveTab = (buttonTab: ADMIN_TABS): string =>
+      activeTab === buttonTab ? 'active' : '';
 
-  /**
+   /**
     * Function to get building options assigned to selected city.
     */
-  const selectBuilding = (): TSelect[] => {
-    if (!city) return [];
-    return generateBuildingOptions(buildings)[city.value];
-  };
+   const selectBuilding = (): TSelect[] => {
+      if (!city) return [];
+      return generateBuildingOptions(buildings)[city.value];
+   };
 
-  React.useEffect(() => {}, [city.value]);
+   React.useEffect(() => {}, [city.value]);
 
-  const blockSelectOptions = isAdminPanel ? !isAdmin : false;
+   const blockSelectOptions = isAdminPanel ? !isAdmin : false;
 
-  return (
+   return (
       <SideWrapper>
-         <InnerNavigationPanel style={{ paddingBottom: '0px' }}>
+         <InnerNavigationPanel style={{paddingBottom: '0px'}}>
             <SideSelectWrapper>
                <Label>Miejscowość</Label>
                <SelectInputField
@@ -208,7 +208,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
             </>
          )}
       </SideWrapper>
-  );
+   );
 };
 
 export default SideNav;

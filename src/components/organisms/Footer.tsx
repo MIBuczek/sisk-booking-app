@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { IReduxState } from 'models';
+import {NavLink} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {IReduxState} from 'models';
 import ModalMessage from 'components/molecules/modals/ModalMessage';
-import { fadeIn } from 'style/animation';
-import { MODAL_TYPES } from 'utils';
-import { openModal } from 'store';
+import {fadeIn} from 'style/animation';
+import {MODAL_TYPES} from 'utils';
+import {openModal} from 'store';
 import logoFooter from '../../assets/images/logo_footer.png';
 import BIPFooter from '../../assets/images/bip-footer.png';
 import Paragraph from '../atoms/Paragraph';
@@ -170,10 +170,10 @@ const FooterAnchor = styled(Anchor)`
 `;
 
 const Footer = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const { isOpen, type } = useSelector((state: IReduxState) => state.modal);
+   const dispatch = useDispatch();
+   const {isOpen, type} = useSelector((state: IReduxState) => state.modal);
 
-  return (
+   return (
       <FooterWrapper>
          <FooterContent>
             <ContentItem>
@@ -212,9 +212,9 @@ const Footer = (): JSX.Element => {
                © Copyright 2018 SISK / Created by
                <FooterAnchor
                   style={{
-                    display: 'inline-block',
-                    paddingLeft: '8px',
-                    textDecoration: 'underline'
+                     display: 'inline-block',
+                     paddingLeft: '8px',
+                     textDecoration: 'underline'
                   }}
                   href="https://gecko-web-services.web.app"
                >
@@ -228,7 +228,7 @@ const Footer = (): JSX.Element => {
             </Modal>
          ) : null}
       </FooterWrapper>
-  );
+   );
 };
 
 export default Footer;

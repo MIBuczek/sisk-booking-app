@@ -1,9 +1,9 @@
 import React from 'react';
-import { BsEnvelope, BsPhone, BsHouseDoor } from 'react-icons/bs';
-import { fadeIn } from 'style/animation';
+import {BsEnvelope, BsPhone, BsHouseDoor} from 'react-icons/bs';
+import {fadeIn} from 'style/animation';
 import styled from 'styled-components';
 
-import Anchor, { iconNormal } from 'components/atoms/Anchor';
+import Anchor, {iconNormal} from 'components/atoms/Anchor';
 import Header from 'components/atoms/Header';
 import Paragraph from 'components/atoms/Paragraph';
 

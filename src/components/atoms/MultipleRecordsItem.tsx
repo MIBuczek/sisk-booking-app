@@ -1,34 +1,34 @@
-import { isEmpty } from 'lodash';
+import {isEmpty} from 'lodash';
 import {
-  IBooking,
-  IClient,
-  IDeleteHandler,
-  IEditHandler,
-  instanceOfBookings,
-  ISelectedExtraOptions,
-  ISingleBookingDate,
-  singleInstanceOfBookings
+   IBooking,
+   IClient,
+   IDeleteHandler,
+   IEditHandler,
+   instanceOfBookings,
+   ISelectedExtraOptions,
+   ISingleBookingDate,
+   singleInstanceOfBookings
 } from 'models';
 import * as React from 'react';
 import {
-  BsChevronDown,
-  BsFillCheckCircleFill,
-  BsFillFileEarmarkTextFill,
-  BsTrashFill,
-  BsXCircleFill
+   BsChevronDown,
+   BsFillCheckCircleFill,
+   BsFillFileEarmarkTextFill,
+   BsTrashFill,
+   BsXCircleFill
 } from 'react-icons/bs';
-import { fadeIn, fadeInLeft } from 'style/animation';
+import {fadeIn, fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
-import { checkIsLastIndex, checkSelectedOption, modelDisplayValue } from 'utils';
-import Collapse, { IRenderProps } from '../../providers/Collapse';
+import {checkIsLastIndex, checkSelectedOption, modelDisplayValue} from 'utils';
+import Collapse, {IRenderProps} from '../../providers/Collapse';
 import Button from './Button';
 import RecordOpenItem from './RecordOpenItem';
 
 const RecordTableData = styled.td`
    display: inline-block;
    padding: 0.5rem 0.8rem;
-   font-size: ${({ theme }) => theme.fontSize.m};
-   color: ${({ theme }) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.m};
+   color: ${({theme}) => theme.darkGrey};
    animation: ${fadeInLeft} 0.5s linear;
    width: 15%;
    word-break: break-word;
@@ -64,8 +64,8 @@ const BookingDetailWrapper = styled.tr`
 
 const ListItemBtn = styled(Button)`
    background: white;
-   color: ${({ theme }) => theme.green};
-   font-size: ${({ theme }) => theme.fontSize.m};
+   color: ${({theme}) => theme.green};
+   font-size: ${({theme}) => theme.fontSize.m};
    border: none;
    border-bottom: 1px solid white;
    padding: 5px;
@@ -74,13 +74,13 @@ const ListItemBtn = styled(Button)`
 
    &:hover {
       box-shadow: none;
-      border-color: ${({ theme }) => theme.darkGrey};
-      color: ${({ theme }) => theme.darkGrey};
+      border-color: ${({theme}) => theme.darkGrey};
+      color: ${({theme}) => theme.darkGrey};
    }
 
    &:disabled {
       background: transparent;
-      color: ${({ theme }) => theme.darkGrey};
+      color: ${({theme}) => theme.darkGrey};
    }
 `;
 
@@ -89,8 +89,8 @@ const RecordDetail = styled.td`
    align-items: flex-start;
    flex-wrap: wrap;
    height: auto;
-   border: ${({ theme }) => `1px solid ${theme.green}`};
-   background: ${({ theme }) => theme.lightGray};
+   border: ${({theme}) => `1px solid ${theme.green}`};
+   background: ${({theme}) => theme.lightGray};
    animation: ${fadeIn} 0.5s linear;
    word-break: break-word;
    width: 100%;
@@ -98,8 +98,8 @@ const RecordDetail = styled.td`
 
 const BookingTimeWrapper = styled.div`
    width: 100%;
-   border-top: ${({ theme }) => `1px solid ${theme.middleGray}`};
-   border-bottom: ${({ theme }) => `1px solid ${theme.middleGray}`};
+   border-top: ${({theme}) => `1px solid ${theme.middleGray}`};
+   border-bottom: ${({theme}) => `1px solid ${theme.middleGray}`};
    padding: 3px 2px;
    margin-bottom: 10px;
 
@@ -130,7 +130,7 @@ const SingleBookingTime = styled.div`
 `;
 
 const RecordDetailSpan = styled.span`
-   font-size: ${({ theme }) => theme.fontSize.m};
+   font-size: ${({theme}) => theme.fontSize.m};
    padding: 10px 15px 10px 5px;
    width: auto;
 `;
@@ -144,49 +144,49 @@ const ChevronIcon = styled(BsChevronDown)`
 `;
 
 interface MultipleRecordItemProps {
-  index: number;
-  currentPage: number;
-  postPerPage: number;
-  isAdmin: boolean;
-  isEmployee: boolean;
-  recordProperty: string[];
-  recordPropertyDetails: string[];
-  recordPropertyDisplayMap: { [x: string]: string };
-  currentRecord: IClient | IBooking;
-  hasConflicts: boolean;
-  records: (IClient | IBooking)[];
-  allRecords: (IClient | IBooking)[];
-  editHandler: (editDetails: IEditHandler) => void;
-  deleteHandler: (deleteDetails: IDeleteHandler) => void;
+   index: number;
+   currentPage: number;
+   postPerPage: number;
+   isAdmin: boolean;
+   isEmployee: boolean;
+   recordProperty: string[];
+   recordPropertyDetails: string[];
+   recordPropertyDisplayMap: {[x: string]: string};
+   currentRecord: IClient | IBooking;
+   hasConflicts: boolean;
+   records: (IClient | IBooking)[];
+   allRecords: (IClient | IBooking)[];
+   editHandler: (editDetails: IEditHandler) => void;
+   deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
 const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
-  index,
-  currentPage,
-  postPerPage,
-  isAdmin,
-  isEmployee,
-  recordProperty,
-  recordPropertyDetails,
-  recordPropertyDisplayMap,
-  currentRecord,
-  hasConflicts,
-  records,
-  allRecords,
-  editHandler,
-  deleteHandler
+   index,
+   currentPage,
+   postPerPage,
+   isAdmin,
+   isEmployee,
+   recordProperty,
+   recordPropertyDetails,
+   recordPropertyDisplayMap,
+   currentRecord,
+   hasConflicts,
+   records,
+   allRecords,
+   editHandler,
+   deleteHandler
 }) => {
-  /* Method to return single reservation for  current record */
-  const singleBookingTimeHandler = (singleRecord: IClient | IBooking): ISingleBookingDate[] => {
-    if (singleInstanceOfBookings(singleRecord)) {
-      return singleRecord.bookingTime;
-    }
-    return [];
-  };
+   /* Method to return single reservation for  current record */
+   const singleBookingTimeHandler = (singleRecord: IClient | IBooking): ISingleBookingDate[] => {
+      if (singleInstanceOfBookings(singleRecord)) {
+         return singleRecord.bookingTime;
+      }
+      return [];
+   };
 
-  return (
+   return (
       <Collapse
-         render={({ isCollapsed, toggle }: IRenderProps) => (
+         render={({isCollapsed, toggle}: IRenderProps) => (
             <>
                <tr>
                   <RecordTableData>
@@ -200,11 +200,9 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                   {instanceOfBookings(records) && singleInstanceOfBookings(currentRecord) && (
                      <RecordTableData>
                         {isAdmin && hasConflicts ? (
-                           <BsXCircleFill style={{ color: '#cc0000', marginLeft: '1rem' }} />
+                           <BsXCircleFill style={{color: '#cc0000', marginLeft: '1rem'}} />
                         ) : (
-                           <BsFillCheckCircleFill
-                              style={{ color: '#AFBF36', marginLeft: '1rem' }}
-                           />
+                           <BsFillCheckCircleFill style={{color: '#AFBF36', marginLeft: '1rem'}} />
                         )}
                      </RecordTableData>
                   )}
@@ -216,20 +214,20 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                         <>
                            <ListItemBtn
                               onClick={() =>
-                                editHandler({
-                                  itemIndex: index,
-                                  isMainItem: true,
-                                  subItemIndex: null,
-                                  currentPage,
-                                  postPerPage
-                                })
+                                 editHandler({
+                                    itemIndex: index,
+                                    isMainItem: true,
+                                    subItemIndex: null,
+                                    currentPage,
+                                    postPerPage
+                                 })
                               }
                            >
                               <BsFillFileEarmarkTextFill />
                            </ListItemBtn>
                            <ListItemBtn
                               onClick={() =>
-                                deleteHandler({ itemIndex: index, currentPage, postPerPage })
+                                 deleteHandler({itemIndex: index, currentPage, postPerPage})
                               }
                            >
                               <BsTrashFill />
@@ -242,8 +240,8 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                   <BookingDetailWrapper>
                      <RecordDetail>
                         {recordPropertyDetails.map((property) => {
-                          if (property === 'bookingTime') {
-                            return (
+                           if (property === 'bookingTime') {
+                              return (
                                  <BookingTimeWrapper key={property}>
                                     <RecordDetailSpan>
                                        <strong>{recordPropertyDisplayMap[property]} : </strong>
@@ -262,25 +260,25 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                                           allRecords={allRecords as IBooking[]}
                                           editHandler={editHandler}
                                           lastRecord={checkIsLastIndex(
-                                            sbi + 1,
-                                            (currentRecord[property] as []).length
+                                             sbi + 1,
+                                             (currentRecord[property] as []).length
                                           )}
                                        />
                                     ))}
                                  </BookingTimeWrapper>
-                            );
-                          }
-                          if (
-                            property === 'selectedOptions' &&
+                              );
+                           }
+                           if (
+                              property === 'selectedOptions' &&
                               !isEmpty(currentRecord[property])
-                          ) {
-                            return (
+                           ) {
+                              return (
                                  <BookingTimeWrapper key={property}>
                                     <RecordDetailSpan>
                                        <strong>{recordPropertyDisplayMap[property]} : </strong>
                                     </RecordDetailSpan>
                                     {(currentRecord[property] as ISelectedExtraOptions[]).map(
-                                      ({ options, fromHour, toHour }) => (
+                                       ({options, fromHour, toHour}) => (
                                           <SingleBookingTime key={fromHour.getMilliseconds()}>
                                              <RecordDetailSpan>
                                                 <strong>Opcje : </strong>
@@ -295,20 +293,20 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                                                 {modelDisplayValue(property, toHour, true)}
                                              </RecordDetailSpan>
                                           </SingleBookingTime>
-                                      )
+                                       )
                                     )}
                                  </BookingTimeWrapper>
-                            );
-                          }
-                          if (!isEmpty(currentRecord[property])) {
-                            return (
+                              );
+                           }
+                           if (!isEmpty(currentRecord[property])) {
+                              return (
                                  <RecordDetailSpan key={property}>
                                     <strong>{recordPropertyDisplayMap[property]} : </strong>
                                     {modelDisplayValue(property, currentRecord[property])}
                                  </RecordDetailSpan>
-                            );
-                          }
-                          return null;
+                              );
+                           }
+                           return null;
                         })}
                      </RecordDetail>
                   </BookingDetailWrapper>
@@ -316,7 +314,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
             </>
          )}
       />
-  );
+   );
 };
 
 export default MultipleRecordItem;

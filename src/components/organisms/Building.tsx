@@ -4,35 +4,34 @@ import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
 import Paragraph from 'components/atoms/Paragraph';
-import SelectInputField, { customStyles } from 'components/atoms/SelectInputField';
+import SelectInputField, {customStyles} from 'components/atoms/SelectInputField';
 import TextAreaField from 'components/atoms/TextAreaField';
 import TextInputField from 'components/atoms/TextInputField';
 import ConfirmAction from 'components/molecules/ConfirmAction';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
 import {
-  IAdminState,
-  IBuilding,
-  ICredential,
-  IEmployeeMessage,
-  IEmployeeMessageForm,
-  IReduxState,
-  TSelect
+   IAdminState,
+   IBuilding,
+   IEmployeeMessage,
+   IEmployeeMessageForm,
+   IReduxState,
+   TSelect
 } from 'models';
 import * as React from 'react';
-import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from 'store';
-import { fadeIn } from 'style/animation';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import {useDispatch, useSelector} from 'react-redux';
+import {openModal} from 'store';
+import {fadeIn} from 'style/animation';
 import styled from 'styled-components';
 import {
-  generateAllBuilding,
-  INITIAL_ALL_BUILDINGS,
-  INITIAL_EMPLOYEE_MESSAGE,
-  MODAL_TYPES,
-  sendEmailNotification,
-  USER_MIB_ID,
-  USER_MIB_SERVICE_ID,
-  USER_MIB_TEMPLATE_EMPLOYEE_ID
+   generateAllBuilding,
+   INITIAL_ALL_BUILDINGS,
+   INITIAL_EMPLOYEE_MESSAGE,
+   MODAL_TYPES,
+   sendEmailNotification,
+   USER_MIB_ID,
+   USER_MIB_SERVICE_ID,
+   USER_MIB_TEMPLATE_EMPLOYEE_ID
 } from 'utils';
 import Modal from './Modal';
 
@@ -78,7 +77,7 @@ const InnerContent = styled.div`
 
    &:first-of-type {
       width: 35%;
-      border-right: ${({ theme }) => `1px solid ${theme.green}`};
+      border-right: ${({theme}) => `1px solid ${theme.green}`};
       @media (max-width: 890px) {
          width: 90%;
          border-right-color: transparent;
@@ -96,7 +95,7 @@ const InnerContent = styled.div`
 const DetailsParagraph = styled(Paragraph)`
    font-size: 16px;
    animation: ${fadeIn} 0.5s linear;
-   color: ${({ theme }) => theme.green};
+   color: ${({theme}) => theme.green};
    padding: 10px 0;
 `;
 
@@ -123,110 +122,101 @@ const ButtonPanel = styled.div`
 `;
 
 interface BuildingProps {
-  mainState: IAdminState;
+   mainState: IAdminState;
 }
 
-const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
-  const [currentCity, setCurrentCity] = React.useState<IBuilding | undefined>(undefined);
-  const [message, setMessage] = React.useState<IEmployeeMessage | undefined>();
-  const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
+const Building: React.FunctionComponent<BuildingProps> = ({mainState}) => {
+   const [currentCity, setCurrentCity] = React.useState<IBuilding | undefined>(undefined);
+   const [message, setMessage] = React.useState<IEmployeeMessage | undefined>();
+   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
 
-  const { city, building } = mainState;
+   const {city, building} = mainState;
 
-  const dispatch = useDispatch();
-  const {
-    modal: { isOpen, type },
-    buildingStore: { buildings, errorMessage }
-  } = useSelector((state: IReduxState) => state);
+   const dispatch = useDispatch();
+   const {
+      modal: {isOpen, type},
+      buildingStore: {buildings, errorMessage}
+   } = useSelector((state: IReduxState) => state);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm<IEmployeeMessageForm>();
+   const {
+      control,
+      handleSubmit,
+      formState: {errors},
+      reset
+   } = useForm<IEmployeeMessageForm>();
 
-  /**
+   /**
     * Function to get all building employees.
     * @param selectedBuilding
     * @returns {Array<TSelect>}
     */
-  const getEmployeesOptions = (selectedBuilding: IBuilding | undefined): TSelect[] => {
-    if (!selectedBuilding) return [];
-    return selectedBuilding.employees.map((e): TSelect => ({ value: e, label: e }));
-  };
+   const getEmployeesOptions = (selectedBuilding: IBuilding | undefined): TSelect[] => {
+      if (!selectedBuilding) return [];
+      return selectedBuilding.employees.map((e): TSelect => ({value: e, label: e}));
+   };
 
-  /**
+   /**
     * Function to find and return building into building database.
     * @param pickedCity
     * @returns {Object<IBuilding> | undefined}
     */
-  const findBuilding = (pickedCity: string): IBuilding | undefined => {
-    const allBuildings = generateAllBuilding(buildings) || INITIAL_ALL_BUILDINGS;
-    const currentBuilding = allBuildings[pickedCity].find(
-      (b: IBuilding): boolean => b.property === building.value
-    );
-    reset({ ...INITIAL_EMPLOYEE_MESSAGE, email: currentBuilding?.email || '' });
-    return currentBuilding;
-  };
+   const findBuilding = (pickedCity: string): IBuilding | undefined => {
+      const allBuildings = generateAllBuilding(buildings) || INITIAL_ALL_BUILDINGS;
+      const currentBuilding = allBuildings[pickedCity].find(
+         (b: IBuilding): boolean => b.property === building.value
+      );
+      reset({...INITIAL_EMPLOYEE_MESSAGE, email: currentBuilding?.email || ''});
+      return currentBuilding;
+   };
 
-  /**
+   /**
     * Function to submit actual form values into form employee message state.
     * It will be dispatched to database it user confirm action.
     * @param cred
     */
-  const onSubmit: SubmitHandler<IEmployeeMessageForm> = (cred): void => {
-    setMessage({ ...cred, person: cred.person.value });
-    setDisplayConfirmation(true);
-  };
+   const onSubmit: SubmitHandler<IEmployeeMessageForm> = (cred): void => {
+      setMessage({...cred, person: cred.person.value});
+      setDisplayConfirmation(true);
+   };
 
-  /**
-    * Function to dispatch errors on action to log user into platform
-    * @param err
-    * @param e
-    */
-  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-    console.log(err, e);
-  };
-
-  /**
+   /**
     * Function to confirm dispatch action. If so then sent notification to pointed email address.
     */
-  const confirmSubmit = async (): Promise<void> => {
-    const resp = await sendEmailNotification(
-      USER_MIB_SERVICE_ID,
-      USER_MIB_TEMPLATE_EMPLOYEE_ID,
-      message,
-      USER_MIB_ID
-    );
-    if (resp === 200) {
-      dispatch(openModal(MODAL_TYPES.SUCCESS, 'Wiadomość została wysłana pomyślnie'));
-    } else {
-      // dispatch(
-      //   openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie udało sie wysłać Twojej wiadomości')
-      // );
-    }
-    initialState();
-  };
+   const confirmSubmit = async (): Promise<void> => {
+      const resp = await sendEmailNotification(
+         USER_MIB_SERVICE_ID,
+         USER_MIB_TEMPLATE_EMPLOYEE_ID,
+         message,
+         USER_MIB_ID
+      );
+      if (resp === 200) {
+         dispatch(openModal(MODAL_TYPES.SUCCESS, 'Wiadomość została wysłana pomyślnie'));
+      } else {
+         // dispatch(
+         //   openModal(MODAL_TYPES.ERROR, 'Problem z serverem. Nie udało sie wysłać Twojej wiadomości')
+         // );
+      }
+      initialState();
+   };
 
-  /**
+   /**
     * Function to restore initial status.
     */
-  const initialState = (): void => {
-    setMessage(undefined);
-    setDisplayConfirmation(false);
-    reset({ ...INITIAL_EMPLOYEE_MESSAGE });
-  };
+   const initialState = (): void => {
+      setMessage(undefined);
+      setDisplayConfirmation(false);
+      reset({...INITIAL_EMPLOYEE_MESSAGE});
+   };
 
-  React.useEffect(() => {
-    setCurrentCity(findBuilding(city.value));
-  }, [mainState]);
+   React.useEffect(() => {
+      setCurrentCity(findBuilding(city.value));
+   }, [mainState]);
 
-  if (!currentCity) {
-    return null;
-  }
+   if (!currentCity) {
+      return null;
+   }
 
-  return (
+   return (
       <BuildingWrapper>
          <BuildingHeader>Obiekty sportowe</BuildingHeader>
          {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
@@ -250,10 +240,10 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             <Label>Imię i nazwisko</Label>
             <Controller
                name="person"
-               defaultValue={{ label: '', value: '' }}
+               defaultValue={{label: '', value: ''}}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <SelectInputField
                      options={getEmployeesOptions(currentCity)}
                      styles={customStyles(!!errors.person)}
@@ -273,8 +263,8 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
                name="email"
                defaultValue={currentCity.email || ''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
                      value={value}
@@ -292,8 +282,8 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
                name="message"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <EmployeeTextArea
                      onBlur={onBlur}
                      value={value}
@@ -302,7 +292,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
                      className="input"
                      placeholder="Wiadomość"
                      readOnly={displayConfirmation}
-                     style={{ marginBottom: displayConfirmation ? '20px' : '0px' }}
+                     style={{marginBottom: displayConfirmation ? '20px' : '0px'}}
                   />
                )}
             />
@@ -318,7 +308,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
                   <Button secondary onClick={initialState}>
                      Wyczyść
                   </Button>
-                  <Button onClick={handleSubmit(onSubmit, onError)}>Wyślij</Button>
+                  <Button onClick={handleSubmit(onSubmit)}>Wyślij</Button>
                </ButtonPanel>
             )}
          </InnerContent>
@@ -329,7 +319,7 @@ const Building: React.FunctionComponent<BuildingProps> = ({ mainState }) => {
             </Modal>
          )}
       </BuildingWrapper>
-  );
+   );
 };
 
 export default Building;

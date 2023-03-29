@@ -1,14 +1,14 @@
 import Button from 'components/atoms/Button';
 import Paragraph from 'components/atoms/Paragraph';
 import * as React from 'react';
-import { BsFillQuestionCircleFill } from 'react-icons/bs';
-import { fadeIn } from 'style/animation';
+import {BsFillQuestionCircleFill} from 'react-icons/bs';
+import {fadeIn} from 'style/animation';
 import styled from 'styled-components';
 
 const ConfirmationWrapper = styled.div`
    width: 100%;
    padding: 10px 20px;
-   background-color: ${({ theme }) => theme.green};
+   background-color: ${({theme}) => theme.green};
    display: flex;
    justify-content: center;
    animation: ${fadeIn} 0.5s linear;
@@ -50,7 +50,7 @@ const ConfirmationContent = styled.div`
 
 const ConfirmationParagraph = styled(Paragraph)`
    padding-bottom: 1rem;
-   color: ${({ theme }) => theme.white};
+   color: ${({theme}) => theme.white};
    position: relative;
    font-size: 16px;
 
@@ -65,7 +65,7 @@ const ConfirmationParagraph = styled(Paragraph)`
 `;
 
 const QuestionIcon = styled(BsFillQuestionCircleFill)`
-   color: ${({ theme }) => theme.white};
+   color: ${({theme}) => theme.white};
    margin: 5px 0 0 5px;
 `;
 
@@ -81,17 +81,17 @@ const ConfirmationBtn = styled(Button)`
 `;
 
 interface IProps {
-  message: string;
-  callback: () => void;
-  cancelCallback: () => void;
-  additionalClass?: string;
+   message: string;
+   callback: () => void;
+   cancelCallback: () => void;
+   additionalClass?: string;
 }
 
 const ConfirmAction: React.FunctionComponent<IProps> = ({
-  message,
-  callback,
-  cancelCallback,
-  additionalClass = ''
+   message,
+   callback,
+   cancelCallback,
+   additionalClass = ''
 }) => (
    <ConfirmationWrapper className={`${additionalClass}`}>
       <ConfirmationContent>

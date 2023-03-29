@@ -15,7 +15,7 @@
    },
    "plugins": ["react", "@typescript-eslint", "prettier"],
    "rules": {
-      "object-curly-spacing": ["error", "always"],
+      "object-curly-spacing": ["error", "never"],
       "quotes": ["error"],
       "import/no-cycle": 0,
       "no-unused-vars": 0,
@@ -66,7 +66,7 @@
       "@typescript-eslint/default-param-last": 0,
       "@typescript-eslint/naming-convention": 0,
       "indent": 0,
-      "@typescript-eslint/indent": "warn",
+      "@typescript-eslint/indent": "off",
       "@typescript-eslint/no-explicit-any": [
          "error",
          {

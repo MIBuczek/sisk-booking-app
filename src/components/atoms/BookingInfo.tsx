@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  BUILDINGS_OPTIONS,
-  checkIndex,
-  findSelectedOption,
-  firstLetterUpperCase,
-  formatDate,
-  formatTime
+   BUILDINGS_OPTIONS,
+   checkIndex,
+   findSelectedOption,
+   firstLetterUpperCase,
+   formatDate,
+   formatTime
 } from 'utils';
-import { fadeIn } from 'style/animation';
-import { IBooking } from 'models';
+import {fadeIn} from 'style/animation';
+import {IBooking} from 'models';
 import Paragraph from './Paragraph';
 
 const DetailsParagraph = styled(Paragraph)`
@@ -29,18 +29,18 @@ const DetailsSpan = styled.span`
 `;
 
 interface IProps {
-  isAdmin: boolean;
-  currentBooking: IBooking;
-  bookingTimeIndex: number | null;
+   isAdmin: boolean;
+   currentBooking: IBooking;
+   bookingTimeIndex: number | null;
 }
 
 const BookingInfo: React.FunctionComponent<IProps> = ({
-  isAdmin,
-  currentBooking,
-  bookingTimeIndex
+   isAdmin,
+   currentBooking,
+   bookingTimeIndex
 }): JSX.Element => {
-  const { person, city, building, bookingTime, size, message } = currentBooking;
-  return (
+   const {person, city, building, bookingTime, size, message} = currentBooking;
+   return (
       <>
          <DetailsParagraph bold>
             Najemca :<DetailsSpan>{isAdmin ? person : 'Rezerwacja'}</DetailsSpan>
@@ -79,7 +79,7 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
             </DetailsParagraph>
          )}
       </>
-  );
+   );
 };
 
 export default BookingInfo;

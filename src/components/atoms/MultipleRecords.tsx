@@ -1,15 +1,15 @@
-import { isEmpty } from 'lodash';
-import { IBooking, IClient, IDeleteHandler, IEditHandler, singleInstanceOfBookings } from 'models';
+import {isEmpty} from 'lodash';
+import {IBooking, IClient, IDeleteHandler, IEditHandler, singleInstanceOfBookings} from 'models';
 import * as React from 'react';
-import { fadeInLeft } from 'style/animation';
+import {fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
-import { pagination, SIZE_OPTIONS } from 'utils';
+import {pagination, SIZE_OPTIONS} from 'utils';
 import ButtonGroup from './ButtonGroup';
 import MultipleRecordItem from './MultipleRecordsItem';
 import Pagination from './Pagination';
 
 type RecordDataType = {
-  empty?: boolean;
+   empty?: boolean;
 };
 
 const RecordWrapper = styled.div`
@@ -36,8 +36,8 @@ const RecordTable = styled.table`
          width: 100%;
 
          &:first-of-type {
-            border-top: ${({ theme }) => `1px solid ${theme.green}`};
-            border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+            border-top: ${({theme}) => `1px solid ${theme.green}`};
+            border-bottom: ${({theme}) => `1px solid ${theme.green}`};
          }
       }
    }
@@ -64,8 +64,8 @@ const RecordTable = styled.table`
    tfoot {
       width: 100%;
       display: flex;
-      border-top: ${({ theme }) => `1px solid ${theme.green}`};
-      border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+      border-top: ${({theme}) => `1px solid ${theme.green}`};
+      border-bottom: ${({theme}) => `1px solid ${theme.green}`};
 
       tr {
          width: 100%;
@@ -81,8 +81,8 @@ const RecordTable = styled.table`
 const RecordTableHeader = styled.th`
    padding: 0.5rem 0.8rem;
    font-weight: 600;
-   font-size: ${({ theme }) => theme.fontSize.m};
-   color: ${({ theme }) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.m};
+   color: ${({theme}) => theme.darkGrey};
    text-align: start;
    width: 15%;
 
@@ -104,7 +104,7 @@ const RecordTableHeader = styled.th`
    }
 
    @media (max-width: 890px) {
-      font-size: ${({ theme }) => theme.fontSize.s};
+      font-size: ${({theme}) => theme.fontSize.s};
       padding: 0.2rem 0.8rem;
       word-break: break-all;
    }
@@ -113,71 +113,71 @@ const RecordTableHeader = styled.th`
 const RecordTableData = styled.td<RecordDataType>`
    display: inline-block;
    padding: 0.5rem 0.8rem;
-   font-size: ${({ theme }) => theme.fontSize.m};
-   color: ${({ theme }) => theme.darkGrey};
-   text-align: ${({ empty }) => (empty ? 'center' : 'start')};
+   font-size: ${({theme}) => theme.fontSize.m};
+   color: ${({theme}) => theme.darkGrey};
+   text-align: ${({empty}) => (empty ? 'center' : 'start')};
    animation: ${fadeInLeft} 0.5s linear;
    word-break: break-word;
    @media (max-width: 890px) {
-      font-size: ${({ theme }) => theme.fontSize.s};
+      font-size: ${({theme}) => theme.fontSize.s};
       word-break: break-all;
    }
 `;
 
 interface IProps {
-  headers: string[];
-  recordProperty: string[];
-  recordPropertyDetails: string[];
-  recordPropertyDisplayMap: { [x: string]: string };
-  isAdmin: boolean;
-  isEmployee: boolean;
-  conflicts: string[];
-  records?: (IClient | IBooking)[];
-  allRecords?: (IClient | IBooking)[];
-  emptyText: string;
-  editHandler: (editDetails: IEditHandler) => void;
-  deleteHandler: (deleteDetails: IDeleteHandler) => void;
+   headers: string[];
+   recordProperty: string[];
+   recordPropertyDetails: string[];
+   recordPropertyDisplayMap: {[x: string]: string};
+   isAdmin: boolean;
+   isEmployee: boolean;
+   conflicts: string[];
+   records?: (IClient | IBooking)[];
+   allRecords?: (IClient | IBooking)[];
+   emptyText: string;
+   editHandler: (editDetails: IEditHandler) => void;
+   deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
 const MultipleRecords: React.FunctionComponent<IProps> = ({
-  headers,
-  recordProperty,
-  recordPropertyDetails,
-  recordPropertyDisplayMap,
-  isAdmin,
-  isEmployee,
-  conflicts = [],
-  records = [],
-  allRecords = [],
-  emptyText,
-  editHandler,
-  deleteHandler
+   headers,
+   recordProperty,
+   recordPropertyDetails,
+   recordPropertyDisplayMap,
+   isAdmin,
+   isEmployee,
+   conflicts = [],
+   records = [],
+   allRecords = [],
+   emptyText,
+   editHandler,
+   deleteHandler
 }) => {
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [postPerPage, setPostPerPage] = React.useState<number>(20);
+   const [currentPage, setCurrentPage] = React.useState<number>(1);
+   const [postPerPage, setPostPerPage] = React.useState<number>(20);
 
-  const nextPage = (num: number): void => setCurrentPage(num);
+   const nextPage = (num: number): void => setCurrentPage(num);
 
-  const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (typeof value === 'number') setPostPerPage(value);
-  };
+   const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof value === 'number') setPostPerPage(value);
+   };
 
-  /* Method to check has single item has conflicts */
-  const singleItemConflictHandler = (record: IBooking | IClient): boolean => {
-    if (singleInstanceOfBookings(record)) {
-      if (record.accepted) {
-        return false;
+   /* Method to check has single item has conflicts */
+   const singleItemConflictHandler = (record: IBooking | IClient): boolean => {
+      if (singleInstanceOfBookings(record)) {
+         if (record.accepted) {
+            return false;
+         }
+         return conflicts.includes(record.id || '');
       }
-      return conflicts.includes(record.id || '');
-    }
-    return false;
-  };
+      return false;
+   };
 
-  React.useEffect(() => undefined, [records]);
+   React.useEffect(() => undefined, [records]);
 
-  return (
+   return (
       <RecordWrapper>
          <RecordTable>
             <thead>
@@ -193,7 +193,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                      <RecordTableData empty>{emptyText}</RecordTableData>
                   </tr>
                ) : (
-                 pagination(records, currentPage, postPerPage).map((record, index) => (
+                  pagination(records, currentPage, postPerPage).map((record, index) => (
                      <MultipleRecordItem
                         key={record.id}
                         index={index}
@@ -211,7 +211,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                         editHandler={editHandler}
                         deleteHandler={deleteHandler}
                      />
-                 ))
+                  ))
                )}
             </tbody>
             <tfoot>
@@ -235,7 +235,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
             </tfoot>
          </RecordTable>
       </RecordWrapper>
-  );
+   );
 };
 
 export default MultipleRecords;

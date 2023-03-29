@@ -1,21 +1,20 @@
 import * as React from 'react';
-import { BsEnvelopeFill, BsFillHouseFill, BsPersonFill, BsPower } from 'react-icons/bs';
-import { NavLink } from 'react-router-dom';
+import {BsEnvelopeFill, BsFillHouseFill, BsPersonFill, BsPower} from 'react-icons/bs';
+import {NavLink} from 'react-router-dom';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { IReduxState } from 'models';
-import { logOutUser, openModal } from 'store';
-import { fadeIn } from 'style/animation';
-import { MODAL_TYPES } from 'utils';
+import {useDispatch, useSelector} from 'react-redux';
+import {IReduxState} from 'models';
+import {logOutUser, openModal} from 'store';
+import {fadeIn} from 'style/animation';
+import {MODAL_TYPES} from 'utils';
 import Logo from '../atoms/Logo';
 import useScrollPosition from '../../hooks/useScrollPosition ';
 import Anchor from '../atoms/Anchor';
 import Button from '../atoms/Button';
 
-
 type Navigation = {
-  isTop: boolean;
-  isOpen: boolean;
+   isTop: boolean;
+   isOpen: boolean;
 };
 
 const NavWrapper = styled.nav<Navigation>`
@@ -72,7 +71,7 @@ const StyledLinksList = styled.ul`
       }
 
       @media (max-width: 889px) {
-         font-size: ${({ theme }) => theme.fontSize.m};
+         font-size: ${({theme}) => theme.fontSize.m};
          text-align: center;
          margin-top: 10px;
       }
@@ -80,9 +79,9 @@ const StyledLinksList = styled.ul`
 `;
 
 const NavigationLink = styled(NavLink)`
-   color: ${({ theme }) => theme.darkGrey};
-   font-size: ${({ theme }) => theme.fontSize.ml};
-   font-weight: ${({ theme }) => theme.bold};
+   color: ${({theme}) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.ml};
+   font-weight: ${({theme}) => theme.bold};
    line-height: 1.5;
    text-decoration: none;
    text-transform: uppercase;
@@ -90,20 +89,20 @@ const NavigationLink = styled(NavLink)`
    transition: 0.4s;
 
    &:hover {
-      border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+      border-bottom: ${({theme}) => `1px solid ${theme.green}`};
    }
 
    &.active {
-      color: ${({ theme }) => theme.green};
+      color: ${({theme}) => theme.green};
    }
 
    @media (max-width: 889px) {
-      font-size: ${({ theme }) => theme.fontSize.m};
+      font-size: ${({theme}) => theme.fontSize.m};
    }
 `;
 
 const NavButton = styled(Button)`
-   color: ${({ theme }) => theme.darkGrey};
+   color: ${({theme}) => theme.darkGrey};
    background: transparent;
    font-size: 1.9rem;
    border: none;
@@ -113,9 +112,9 @@ const NavButton = styled(Button)`
    align-self: center;
 
    &.btn {
-      color: ${({ theme }) => theme.green};
+      color: ${({theme}) => theme.green};
       font-weight: 600;
-      font-size: ${({ theme }) => theme.fontSize.ml};
+      font-size: ${({theme}) => theme.fontSize.ml};
       text-transform: uppercase;
       padding: 5px 10px;
       border: 1px solid;
@@ -127,7 +126,7 @@ const NavButton = styled(Button)`
 
    &:hover {
       box-shadow: none;
-      color: ${({ theme }) => theme.green};
+      color: ${({theme}) => theme.green};
    }
 
    svg {
@@ -155,25 +154,25 @@ const NaviAnchor = styled(Anchor)`
 `;
 
 const TopNav = (): JSX.Element => {
-  const [isTop, setIsTop] = React.useState<boolean>(true);
+   const [isTop, setIsTop] = React.useState<boolean>(true);
 
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
-  const {
-    authStore,
-    currentUserStore: { user },
-    modal: { isOpen }
-  } = useSelector((store: IReduxState): IReduxState => store);
+   const {
+      authStore,
+      currentUserStore: {user},
+      modal: {isOpen}
+   } = useSelector((store: IReduxState): IReduxState => store);
 
-  const scrollPosition = useScrollPosition();
+   const scrollPosition = useScrollPosition();
 
-  /**
+   /**
     * Condition to check if we on top of the page.
     */
-  if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
-  else if (scrollPosition < 30 && !isTop) setIsTop(true);
+   if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
+   else if (scrollPosition < 30 && !isTop) setIsTop(true);
 
-  return (
+   return (
       <NavWrapper isTop={isTop} isOpen={isOpen}>
          <NavContent>
             <Logo />
@@ -181,7 +180,7 @@ const TopNav = (): JSX.Element => {
                <li>
                   <NavigationLink
                      to={authStore.auth?.uid ? 'admin' : '/'}
-                     className={({ isActive }) => `nav-link ${isActive ? ' active' : ''}`}
+                     className={({isActive}) => `nav-link ${isActive ? ' active' : ''}`}
                   >
                      Kalendarz Rezerwacji
                   </NavigationLink>
@@ -189,7 +188,7 @@ const TopNav = (): JSX.Element => {
                <li>
                   <NavigationLink
                      to="contact"
-                     className={({ isActive }) => `nav-link ${isActive ? ' active' : ''}`}
+                     className={({isActive}) => `nav-link ${isActive ? ' active' : ''}`}
                   >
                      Kontakt
                   </NavigationLink>
@@ -204,7 +203,7 @@ const TopNav = (): JSX.Element => {
                   {!authStore.auth && (
                      <NavigationLink
                         to="login"
-                        className={({ isActive }) => `nav-link ${isActive ? ' active' : ''}`}
+                        className={({isActive}) => `nav-link ${isActive ? ' active' : ''}`}
                      >
                         <BsPersonFill />
                      </NavigationLink>
@@ -225,7 +224,7 @@ const TopNav = (): JSX.Element => {
             </StyledLinksList>
          </NavContent>
       </NavWrapper>
-  );
+   );
 };
 
 export default TopNav;

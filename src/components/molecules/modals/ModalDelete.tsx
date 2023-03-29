@@ -12,15 +12,15 @@ const DeleteWrapper = styled.div`
 `;
 
 interface ModalDeleteProps {
-  message: string;
-  callback: () => void;
-  cancelCallback: () => void;
+   message: string;
+   callback: () => void;
+   cancelCallback: () => void;
 }
 
 const ModalDelete: React.FunctionComponent<ModalDeleteProps> = ({
-  message,
-  callback,
-  cancelCallback
+   message,
+   callback,
+   cancelCallback
 }) => (
    <DeleteWrapper>
       <ConfirmAction message={message} callback={callback} cancelCallback={cancelCallback} />

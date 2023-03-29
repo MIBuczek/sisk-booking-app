@@ -1,9 +1,9 @@
-import { TSelect } from 'models/components/select-model';
+import {TSelect} from 'models/components/select-model';
 
 interface IBookingStatusForm {
-  bookingStatus: TSelect;
-  bookingParticipants: string;
-  bookingComments: string;
+   bookingStatus: TSelect;
+   bookingParticipants: string;
+   bookingComments: string;
 }
 
-export type { IBookingStatusForm };
+export type {IBookingStatusForm};

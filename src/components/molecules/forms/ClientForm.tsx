@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import styled from 'styled-components';
 import Button from 'components/atoms/Button';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Header from 'components/atoms/Header';
 import Label from 'components/atoms/Label';
-import SelectInputField, { customStyles, SelectWrapper } from 'components/atoms/SelectInputField';
+import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/SelectInputField';
 import TextInputField from 'components/atoms/TextInputField';
-import { CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, findSelectedOption } from 'utils';
-import { useDispatch } from 'react-redux';
-import { IClient, ICredential } from 'models';
-import { IClientForm } from 'models/forms/client-form-model';
-import { addClient, closeModal, updateClient } from 'store';
+import {CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, findSelectedOption} from 'utils';
+import {useDispatch} from 'react-redux';
+import {IClient} from 'models';
+import {IClientForm} from 'models/forms/client-form-model';
+import {addClient, closeModal, updateClient} from 'store';
 import ConfirmAction from '../ConfirmAction';
 
 const ClientWrapper = styled.section`
@@ -26,7 +26,7 @@ const ClientWrapper = styled.section`
 `;
 
 const ClientSubHeader = styled(Header)`
-   font-size: ${({ theme }) => theme.fontSize.l};
+   font-size: ${({theme}) => theme.fontSize.l};
    width: 85%;
    margin: 15px 0 25px;
 `;
@@ -40,7 +40,7 @@ const ClientInnerContent = styled.article`
    padding: 0 40px 20px 20px;
 
    &:first-of-type {
-      border-right: ${({ theme }) => `1px solid ${theme.green}`};
+      border-right: ${({theme}) => `1px solid ${theme.green}`};
       @media (max-width: 890px) {
          border-right-color: transparent;
       }
@@ -69,105 +69,97 @@ const ButtonPanel = styled.div`
 `;
 
 interface ClientFormProps {
-  isEditing: boolean;
-  editedItemIndex?: number;
-  initialEditingState: () => void;
-  clientList: IClient[];
+   isEditing: boolean;
+   editedItemIndex?: number;
+   initialEditingState: () => void;
+   clientList: IClient[];
 }
 
 const ClientForm: React.FunctionComponent<ClientFormProps> = ({
-  isEditing,
-  editedItemIndex,
-  initialEditingState,
-  clientList
+   isEditing,
+   editedItemIndex,
+   initialEditingState,
+   clientList
 }) => {
-  const [clientData, setClientData] = React.useState<IClient | undefined>(undefined);
-  const [clientId, setClientId] = React.useState<string | undefined>(undefined);
-  const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
+   const [clientData, setClientData] = React.useState<IClient | undefined>(undefined);
+   const [clientId, setClientId] = React.useState<string | undefined>(undefined);
+   const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
 
-  const dispatch = useDispatch();
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-    reset,
-    watch
-  } = useForm<IClientForm>();
+   const dispatch = useDispatch();
+   const {
+      handleSubmit,
+      formState: {errors},
+      control,
+      reset,
+      watch
+   } = useForm<IClientForm>();
 
-  const { type: clientType } = watch();
+   const {type: clientType} = watch();
 
-  React.useEffect(() => {
-    if (isEditing && typeof editedItemIndex === 'number') {
-      editClientHandler(editedItemIndex);
-    } else {
-      createInitialState();
-    }
-  }, [isEditing]);
+   React.useEffect(() => {
+      if (isEditing && typeof editedItemIndex === 'number') {
+         editClientHandler(editedItemIndex);
+      } else {
+         createInitialState();
+      }
+   }, [isEditing]);
 
-  /**
+   /**
     * Function to submit actual form values into form state.
     * It will be dispatched to database it user confirm action.
     * @param cred
     */
-  const onSubmit: SubmitHandler<IClientForm> = (cred) => {
-    setClientData({
-      ...cred,
-      type: cred.type.value
-    } as IClient);
-    setDisplayConfirmation(true);
-  };
-  /**
-    * Function to dispatch errors on action to log user into platform
-    * @param err
-    * @param e
-    */
-  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-    console.log(err, e);
-  };
+   const onSubmit: SubmitHandler<IClientForm> = (cred) => {
+      setClientData({
+         ...cred,
+         type: cred.type.value
+      } as IClient);
+      setDisplayConfirmation(true);
+   };
 
-  /**
+   /**
     * Function to confirm dispatch action. If so then add or update firebase clients collection.
     */
-  const confirmSubmit = () => {
-    if (!clientData) return;
-    if (clientId) {
-      dispatch(updateClient({ ...clientData, id: clientId }));
-    } else dispatch(addClient(clientData));
+   const confirmSubmit = () => {
+      if (!clientData) return;
+      if (clientId) {
+         dispatch(updateClient({...clientData, id: clientId}));
+      } else dispatch(addClient(clientData));
 
-    createInitialState();
-    dispatch(closeModal());
-  };
+      createInitialState();
+      dispatch(closeModal());
+   };
 
-  /**
+   /**
     * Function handle edit selected client object. It set form fields with current client data.
     * @param index
     */
-  const editClientHandler = (index: number) => {
-    const currentClient = clientList[index];
-    reset({ ...currentClient, type: findSelectedOption(currentClient.type, CLIENT_OPTIONS) });
-    setClientId(currentClient.id);
-  };
+   const editClientHandler = (index: number) => {
+      const currentClient = clientList[index];
+      reset({...currentClient, type: findSelectedOption(currentClient.type, CLIENT_OPTIONS)});
+      setClientId(currentClient.id);
+   };
 
-  /**
+   /**
     * Function to restore initial status.
     */
-  const createInitialState = () => {
-    reset(CLIENT_INITIAL_VALUE);
-    setClientId(undefined);
-    setClientData(undefined);
-    initialEditingState();
-    setDisplayConfirmation(false);
-  };
+   const createInitialState = () => {
+      reset(CLIENT_INITIAL_VALUE);
+      setClientId(undefined);
+      setClientData(undefined);
+      initialEditingState();
+      setDisplayConfirmation(false);
+   };
 
-  /**
+   /**
     * Function handle cancel action.
     */
-  const cancelHandler = () => {
-    createInitialState();
-    dispatch(closeModal());
-  };
+   const cancelHandler = () => {
+      createInitialState();
+      dispatch(closeModal());
+   };
 
-  return (
+   return (
       <ClientWrapper>
          <ClientSubHeader>
             {isEditing ? 'Edytuj istniejeacego najemcę' : 'Dodaj nowego najemcę'}
@@ -179,8 +171,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                   name="type"
                   defaultValue={CLIENT_OPTIONS[0]}
                   control={control}
-                  rules={{ required: true }}
-                  render={({ field: { onChange, onBlur, value } }) => (
+                  rules={{required: true}}
+                  render={({field: {onChange, onBlur, value}}) => (
                      <SelectInputField
                         options={CLIENT_OPTIONS}
                         styles={customStyles(!!errors.type)}
@@ -204,8 +196,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="name"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
                      value={value}
@@ -225,8 +217,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                      name="nip"
                      defaultValue={''}
                      control={control}
-                     rules={{ required: true }}
-                     render={({ field: { onChange, onBlur, value } }) => (
+                     rules={{required: true}}
+                     render={({field: {onChange, onBlur, value}}) => (
                         <TextInputField
                            onBlur={onBlur}
                            value={value}
@@ -246,8 +238,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="phone"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
                      value={value}
@@ -265,8 +257,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="email"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
                      value={value}
@@ -288,8 +280,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                      name="contactPerson"
                      defaultValue={''}
                      control={control}
-                     rules={{ required: true }}
-                     render={({ field: { onChange, onBlur, value } }) => (
+                     rules={{required: true}}
+                     render={({field: {onChange, onBlur, value}}) => (
                         <TextInputField
                            onBlur={onBlur}
                            value={value}
@@ -309,8 +301,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="street"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
                      value={value}
@@ -328,8 +320,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="city"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
                      value={value}
@@ -347,8 +339,8 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="zipCode"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
                      value={value}
@@ -373,13 +365,11 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                <Button secondary onClick={cancelHandler}>
                   Anuluj
                </Button>
-               <Button onClick={handleSubmit(onSubmit, onError)}>
-                  {isEditing ? 'Zapisz' : 'Dodaj'}
-               </Button>
+               <Button onClick={handleSubmit(onSubmit)}>{isEditing ? 'Zapisz' : 'Dodaj'}</Button>
             </ButtonPanel>
          )}
       </ClientWrapper>
-  );
+   );
 };
 
 export default ClientForm;

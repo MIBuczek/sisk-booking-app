@@ -1,9 +1,9 @@
-import { IEmployeeMessageForm } from 'models';
+import {IEmployeeMessageForm} from 'models';
 
 const INITIAL_EMPLOYEE_MESSAGE: IEmployeeMessageForm = {
-  person: { label: '', value: '' },
-  email: '',
-  message: ''
+   person: {label: '', value: ''},
+   email: '',
+   message: ''
 };
 
-export { INITIAL_EMPLOYEE_MESSAGE };
+export {INITIAL_EMPLOYEE_MESSAGE};

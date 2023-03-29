@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { BsExclamationCircle } from 'react-icons/bs';
+import {BsExclamationCircle} from 'react-icons/bs';
 import styled from 'styled-components';
 
 const ErrorTextContent = styled.span`
    font-size: 10px;
-   color: ${({ theme }) => theme.error};
+   color: ${({theme}) => theme.error};
    font-weight: 600;
    display: flex;
    align-items: center;
@@ -19,10 +19,10 @@ const ErrorTextContent = styled.span`
 `;
 
 interface IProps {
-  innerText: string;
+   innerText: string;
 }
 
-const ErrorMsg: React.FC<IProps> = ({ innerText }) => (
+const ErrorMsg: React.FC<IProps> = ({innerText}) => (
    <ErrorTextContent>
       {innerText} <BsExclamationCircle />
    </ErrorTextContent>

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const Header = styled.h1`
-   color: ${({ theme }) => theme.darkGrey};
-   font-size: ${({ theme }) => theme.fontSize.l};
-   font-weight: ${({ theme }) => theme.middle};
+   color: ${({theme}) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.l};
+   font-weight: ${({theme}) => theme.middle};
    text-transform: uppercase;
    position: relative;
    line-height: 1.5;
@@ -15,7 +15,7 @@ const Header = styled.h1`
       bottom: -14px;
       left: 0;
       content: '';
-      border-bottom: ${({ theme }) => `5px solid ${theme.green}`};
+      border-bottom: ${({theme}) => `5px solid ${theme.green}`};
       width: 110px;
    }
    svg {

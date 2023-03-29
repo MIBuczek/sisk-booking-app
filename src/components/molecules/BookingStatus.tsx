@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Header from 'components/atoms/Header';
-import { isNil } from 'lodash';
-import { IBooking } from 'models';
-import { useDispatch } from 'react-redux';
-import { updateBooking } from 'store';
+import {isNil} from 'lodash';
+import {IBooking} from 'models';
+import {useDispatch} from 'react-redux';
+import {updateBooking} from 'store';
 import styled from 'styled-components';
-import { formatDate, formatTime } from 'utils';
+import {formatDate, formatTime} from 'utils';
 import BookingTimeStatusForm from './forms/BookingTimeStatusForm';
 
 const BookingStatusWrapper = styled.section`
@@ -33,53 +33,53 @@ const ClientStatusDetails = styled.div`
    display: grid;
    grid-template-columns: 1fr 1fr;
    width: 80%;
-   border-top: ${({ theme }) => `1px solid ${theme.green}`};
-   border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+   border-top: ${({theme}) => `1px solid ${theme.green}`};
+   border-bottom: ${({theme}) => `1px solid ${theme.green}`};
 `;
 
 const DetailsSpan = styled.span`
    font-weight: 400;
    margin: 8px 0;
-   font-size: ${({ theme }) => theme.fontSize.m};
-   color: ${({ theme }) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.m};
+   color: ${({theme}) => theme.darkGrey};
 `;
 
 interface BookingStatusFormProps {
-  bookingsList: IBooking[];
-  editedItemIndex?: number;
-  editedSubItemIndex?: number;
+   bookingsList: IBooking[];
+   editedItemIndex?: number;
+   editedSubItemIndex?: number;
 }
 
 const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
-  bookingsList,
-  editedItemIndex,
-  editedSubItemIndex
+   bookingsList,
+   editedItemIndex,
+   editedSubItemIndex
 }) => {
-  const [currentBooking, setCurrentBooking] = React.useState<IBooking | undefined>(undefined);
+   const [currentBooking, setCurrentBooking] = React.useState<IBooking | undefined>(undefined);
 
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
-  const editBookingStatusHandler = () => {
-    if (isNil(editedItemIndex) || isNil(editedSubItemIndex)) return;
-    setCurrentBooking(bookingsList[editedItemIndex]);
-  };
+   const editBookingStatusHandler = () => {
+      if (isNil(editedItemIndex) || isNil(editedSubItemIndex)) return;
+      setCurrentBooking(bookingsList[editedItemIndex]);
+   };
 
-  /**
+   /**
     * Function to dispatch update booking action with additional new booking time status
     * @param updatedBooking
     */
-  const submitHandler = (updatedBooking: IBooking): void => {
-    dispatch(updateBooking(updatedBooking, true, false));
-  };
+   const submitHandler = (updatedBooking: IBooking): void => {
+      dispatch(updateBooking(updatedBooking, true, false));
+   };
 
-  React.useEffect(() => {
-    editBookingStatusHandler();
-    return () => {
-      setCurrentBooking(undefined);
-    };
-  }, []);
+   React.useEffect(() => {
+      editBookingStatusHandler();
+      return () => {
+         setCurrentBooking(undefined);
+      };
+   }, []);
 
-  return (
+   return (
       <BookingStatusWrapper>
          <BookingStatusHeader>ROZLICZ REZERWACJĘ</BookingStatusHeader>
          {!isNil(currentBooking) && !isNil(editedSubItemIndex) ? (
@@ -112,7 +112,7 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
             </>
          ) : null}
       </BookingStatusWrapper>
-  );
+   );
 };
 
 export default BookingStatus;

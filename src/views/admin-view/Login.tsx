@@ -1,17 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import TextInputField from 'components/atoms/TextInputField';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import Button from 'components/atoms/Button';
-import { ICredential } from 'models/auth/credentials-models';
+import {ICredential} from 'models/auth/credentials-models';
 import Label from 'components/atoms/Label';
-import { useDispatch, useSelector } from 'react-redux';
-import { IReduxState } from 'models';
-import { logInUser } from 'store';
-import { fadeIn } from 'style/animation';
+import {useDispatch, useSelector} from 'react-redux';
+import {IReduxState} from 'models';
+import {logInUser} from 'store';
+import {fadeIn} from 'style/animation';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import { Navigate } from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 
 const LoginWrapper = styled.section`
    width: 100%;
@@ -35,9 +35,9 @@ const LoginPanel = styled.form`
 `;
 
 const LoginHeader = styled.h3`
-   color: ${({ theme }) => theme.darkGrey};
-   font-size: ${({ theme }) => theme.fontSize.m};
-   font-weight: ${({ theme }) => theme.bold};
+   color: ${({theme}) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.m};
+   font-weight: ${({theme}) => theme.bold};
    text-transform: uppercase;
    @media (max-width: 890px) {
       padding: 30px 40px;
@@ -50,37 +50,28 @@ const LoginTextInputs = styled(TextInputField)`
 `;
 
 const Login: React.FC = () => {
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-    getValues
-  } = useForm<ICredential>();
-  const dispatch = useDispatch();
-  const { auth, errorMessage } = useSelector((store: IReduxState) => store.authStore);
+   const {
+      handleSubmit,
+      formState: {errors},
+      control,
+      getValues
+   } = useForm<ICredential>();
+   const dispatch = useDispatch();
+   const {auth, errorMessage} = useSelector((store: IReduxState) => store.authStore);
 
-  /**
+   /**
     * Function to dispatch action to log user into platform
     * @param cred
     */
-  const onSubmit: SubmitHandler<ICredential> = (cred) => {
-    dispatch(logInUser(cred.email, cred.password));
-  };
+   const onSubmit: SubmitHandler<ICredential> = (cred) => {
+      dispatch(logInUser(cred.email, cred.password));
+   };
 
-  /**
-    * Function to dispatch errors on action to log user into platform
-    * @param err
-    * @param e
-    */
-  const onError: SubmitErrorHandler<ICredential> = (err, e) => {
-    console.log(err, e);
-  };
+   if (auth) {
+      return <Navigate to={'/admin'} />;
+   }
 
-  if (auth) {
-    return <Navigate to={'/admin'} />;
-  }
-
-  return (
+   return (
       <LoginWrapper>
          <LoginPanel>
             <LoginHeader>
@@ -92,10 +83,10 @@ const Login: React.FC = () => {
                defaultValue={''}
                control={control}
                rules={{
-                 required: true,
-                 validate: () => getValues('email').includes('@')
+                  required: true,
+                  validate: () => getValues('email').includes('@')
                }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               render={({field: {onChange, onBlur, value}}) => (
                   <LoginTextInputs
                      onBlur={onBlur}
                      value={value}
@@ -112,8 +103,8 @@ const Login: React.FC = () => {
                name="password"
                defaultValue={''}
                control={control}
-               rules={{ required: true }}
-               render={({ field: { onChange, onBlur, value } }) => (
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
                   <LoginTextInputs
                      onBlur={onBlur}
                      value={value}
@@ -128,12 +119,12 @@ const Login: React.FC = () => {
             />
             {errors.password && <ErrorMsg innerText="Pole nie może być puste" />}
             {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
-            <Button role="button" onClick={handleSubmit(onSubmit, onError)} disabled={false}>
+            <Button role="button" onClick={handleSubmit(onSubmit)} disabled={false}>
                Zaloguj się
             </Button>
          </LoginPanel>
       </LoginWrapper>
-  );
+   );
 };
 
 export default Login;

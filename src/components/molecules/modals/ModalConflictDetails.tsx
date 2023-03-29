@@ -1,10 +1,10 @@
 /* eslint  react/no-array-index-key: 0 */
 import * as React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearBookingConflicts, closeModal } from 'store';
-import { IReduxState } from 'models';
-import { modelDisplayValue } from 'utils';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearBookingConflicts, closeModal} from 'store';
+import {IReduxState} from 'models';
+import {modelDisplayValue} from 'utils';
 import Button from '../../atoms/Button';
 import Header from '../../atoms/Header';
 
@@ -17,7 +17,7 @@ const ModalConflictWrapper = styled.div`
    button {
       align-self: flex-end;
       margin-top: auto;
-      border: ${({ theme }) => `1px solid ${theme.green}`};
+      border: ${({theme}) => `1px solid ${theme.green}`};
    }
 `;
 
@@ -25,7 +25,7 @@ const ConflictHeader = styled(Header)`
    width: 100%;
    font-size: 18px;
    margin: 40px 0 20px;
-   color: ${({ theme }) => `${theme.error}`};
+   color: ${({theme}) => `${theme.error}`};
 
    @media (max-width: 1400px) {
       margin: 20px 0;
@@ -35,8 +35,8 @@ const ConflictHeader = styled(Header)`
 const ClientStatusDetails = styled.div`
    display: block;
    width: 100%;
-   border-top: ${({ theme }) => `1px solid ${theme.green}`};
-   border-bottom: ${({ theme }) => `1px solid ${theme.green}`};
+   border-top: ${({theme}) => `1px solid ${theme.green}`};
+   border-bottom: ${({theme}) => `1px solid ${theme.green}`};
    margin-top: 20px;
 
    span {
@@ -47,8 +47,8 @@ const ClientStatusDetails = styled.div`
 
 const ClientInfoSpan = styled.span`
    width: 100%;
-   font-size: ${({ theme }) => theme.fontSize.m};
-   color: ${({ theme }) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.m};
+   color: ${({theme}) => theme.darkGrey};
 
    strong {
       display: block;
@@ -63,7 +63,7 @@ const BookingTimeDetailWrapper = styled.div`
 
    span {
       width: 100%;
-      font-size: ${({ theme }) => theme.fontSize.m};
+      font-size: ${({theme}) => theme.fontSize.m};
 
       strong {
          display: block;
@@ -78,18 +78,18 @@ const BookingTimeDetailWrapper = styled.div`
 `;
 
 const ModalConflictDetails = (): JSX.Element => {
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
-  const { conflictedBookings } = useSelector((state: IReduxState) => state.bookingStore);
-  const closeConflictModal = (): void => {
-    dispatch(clearBookingConflicts());
-    dispatch(closeModal());
-  };
+   const {conflictedBookings} = useSelector((state: IReduxState) => state.bookingStore);
+   const closeConflictModal = (): void => {
+      dispatch(clearBookingConflicts());
+      dispatch(closeModal());
+   };
 
-  return (
+   return (
       <ModalConflictWrapper>
          <ConflictHeader>Lista konfliktów z bierzącą rezerwacja</ConflictHeader>
-         {conflictedBookings.map(({ person, size, bookingTime }, mainIndex) => (
+         {conflictedBookings.map(({person, size, bookingTime}, mainIndex) => (
             <React.Fragment key={`${new Date().getTime() + mainIndex}`}>
                <ClientStatusDetails>
                   <ClientInfoSpan>
@@ -123,7 +123,7 @@ const ModalConflictDetails = (): JSX.Element => {
             Zamknij
          </Button>
       </ModalConflictWrapper>
-  );
+   );
 };
 
 export default ModalConflictDetails;

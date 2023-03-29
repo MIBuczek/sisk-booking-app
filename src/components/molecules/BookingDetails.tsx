@@ -1,10 +1,10 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { isNil } from 'lodash';
-import { clearCurrentBooking, closeModal } from 'store';
-import { fadeIn } from 'style/animation';
-import { IBookingsPayload, IReduxState } from 'models';
+import {isNil} from 'lodash';
+import {clearCurrentBooking, closeModal} from 'store';
+import {fadeIn} from 'style/animation';
+import {IBookingsPayload, IReduxState} from 'models';
 import Paragraph from '../atoms/Paragraph';
 import Header from '../atoms/Header';
 import Button from '../atoms/Button';
@@ -47,11 +47,11 @@ const DetailsParagraph = styled(Paragraph)`
 
 const ClearButton = styled(Button)`
    background-color: #eaeaea;
-   border-color: ${({ theme }) => theme.green};
-   color: ${({ theme }) => theme.darkGrey};
+   border-color: ${({theme}) => theme.green};
+   color: ${({theme}) => theme.darkGrey};
 
    &:hover {
-      background-color: ${({ theme }) => theme.green};
+      background-color: ${({theme}) => theme.green};
       border-color: #b9b8b8;
       box-shadow: none;
       opacity: 1;
@@ -59,20 +59,20 @@ const ClearButton = styled(Button)`
 `;
 
 const BookingDetails = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const { booking, bookingTimeIndex } = useSelector(
-    (state: IReduxState): IBookingsPayload => state.bookingStore
-  );
+   const dispatch = useDispatch();
+   const {booking, bookingTimeIndex} = useSelector(
+      (state: IReduxState): IBookingsPayload => state.bookingStore
+   );
 
-  /**
+   /**
     * Function to clear selected booking
     */
-  const clear = (): void => {
-    dispatch(clearCurrentBooking());
-    dispatch(closeModal());
-  };
+   const clear = (): void => {
+      dispatch(clearCurrentBooking());
+      dispatch(closeModal());
+   };
 
-  return (
+   return (
       <BookingDetailsWrapper>
          <DetailsHeader>Szczegóły rezerwacji</DetailsHeader>
          {!isNil(booking) ? (
@@ -90,7 +90,7 @@ const BookingDetails = (): JSX.Element => {
             </DetailsParagraph>
          )}
       </BookingDetailsWrapper>
-  );
+   );
 };
 
 export default BookingDetails;

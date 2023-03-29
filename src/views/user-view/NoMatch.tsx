@@ -1,5 +1,5 @@
 import React from 'react';
-import { BsExclamationSquare } from 'react-icons/bs';
+import {BsExclamationSquare} from 'react-icons/bs';
 import styled from 'styled-components';
 
 import Header from 'components/atoms/Header';

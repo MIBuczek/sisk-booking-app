@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
 
 type DataPickerType = {
-  invalid?: boolean;
-  disabled?: boolean;
+   invalid?: boolean;
+   disabled?: boolean;
 };
 
 export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
@@ -13,15 +13,15 @@ export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
    height: 35px;
    border-radius: 10px;
    background: #eaeaea;
-   border: ${({ theme }) => `1px solid ${theme.green}`};
-   color: ${({ theme }) => theme.darkGrey};
-   font-size: ${({ theme }) => theme.fontSize.s};
-   font-weight: ${({ theme }) => theme.bold};
+   border: ${({theme}) => `1px solid ${theme.green}`};
+   color: ${({theme}) => theme.darkGrey};
+   font-size: ${({theme}) => theme.fontSize.s};
+   font-weight: ${({theme}) => theme.bold};
    padding: 10px;
    text-align: center;
    letter-spacing: -0.5px;
-   border-color: ${({ invalid, disabled }) =>
-    invalid ? '#cc0000' : disabled ? '#b9b8b8' : '#afbf36'};
+   border-color: ${({invalid, disabled}) =>
+      invalid ? '#cc0000' : disabled ? '#b9b8b8' : '#afbf36'};
    transition: 0.4s;
 
    &:active,

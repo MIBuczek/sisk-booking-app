@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 import {updateBooking} from 'store';
 import styled from 'styled-components';
 import {formatDate, formatTime} from 'utils';
-import BookingTimeStatusForm from './forms/BookingTimeStatusForm';
+import BookingTimeStatusForm from './forms/booking/BookingTimeStatusForm';
 
 const BookingStatusWrapper = styled.section`
    max-width: 670px;

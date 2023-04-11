@@ -6,7 +6,7 @@ import {IBooking, IReduxState} from 'models';
 import {updateBooking} from 'store';
 import Header from '../../atoms/Header';
 import BookingInfo from '../../atoms/BookingInfo';
-import BookingTimeStatusForm from '../forms/BookingTimeStatusForm';
+import BookingTimeStatusForm from '../forms/booking/BookingTimeStatusForm';
 
 const ResolveBookingWrapper = styled.div`
    max-width: 870px;

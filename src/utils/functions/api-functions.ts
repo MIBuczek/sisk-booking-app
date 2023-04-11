@@ -43,7 +43,6 @@ const parseFirebaseBookingData = (doc: any) =>
       club: doc.data().club,
       email: doc.data().email,
       phone: doc.data().phone,
-      regular: doc.data().regular,
       month: doc.data().month,
       bookingTime: doc.data().bookingTime.map(transformFirebaseBookingTimeData),
       extraOptions: doc.data().extraOptions,

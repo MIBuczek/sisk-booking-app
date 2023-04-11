@@ -1,6 +1,10 @@
 import {IAdminState, IBooking, IClient} from 'models';
 
-/* Function to formalize string data to lower case */
+/**
+ * Function to set string value as lower case.
+ *
+ * @param s
+ */
 const formatData = (s: string): string => s.toLocaleLowerCase().trim();
 
 /**
@@ -21,7 +25,13 @@ const filterBookingsPerPlace = (
    );
 };
 
-/* Method to search in content according passed phase and property */
+/**
+ * Function to search selected content tapped search phase.
+ *
+ * @param searchContent
+ * @param searchProperty
+ * @param searchPhase
+ */
 const searchSelectedContent = (
    searchContent: (IClient | IBooking)[],
    searchProperty: string,

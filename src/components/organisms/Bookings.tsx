@@ -28,7 +28,7 @@ import {
    siskEmployeeCredentials
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
-import BookingForm from 'components/molecules/forms/BookingForm';
+import BookingForm from 'components/molecules/forms/booking/BookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
 import BookingStatus from 'components/molecules/BookingStatus';
@@ -201,6 +201,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
       const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
       setAllBookingsPerPlace(bookingByPlace);
       const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
+      if (!searchResults.length) setBookingsList([]);
       if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
       if (user?.isAdmin) {
          const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
@@ -243,7 +244,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
          {user?.isAdmin && (
             <ConflictParagraph small bold conflict={!!conflicts.length}>
                <BsFillExclamationCircleFill />
-               {`Aktualna liczba konfliktów: ${conflicts.length}`}
+               {`Aktualna liczba konfliktów między rezerwacjami: ${conflicts.length}`}
             </ConflictParagraph>
          )}
          {isOpen && (

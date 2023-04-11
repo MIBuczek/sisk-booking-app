@@ -10,11 +10,6 @@ interface IBookingForm {
    clientId?: TSelect;
    email: string;
    phone: string;
-   regular: boolean;
-   startDate: Date;
-   endDate: Date;
-   startHour: Date;
-   endHour: Date;
    accepted: boolean;
    message: string;
    payment: TSelect;

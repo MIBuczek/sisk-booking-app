@@ -33,7 +33,6 @@ interface IBooking {
    club?: string;
    email: string;
    phone: string;
-   regular: boolean;
    month: number;
    bookingTime: ISingleBookingDate[];
    accepted: boolean;

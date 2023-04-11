@@ -1,5 +1,12 @@
 /* eslint-disable import/no-duplicates */
-import {IBooking, IMainState, IReduxState, ISelectedExtraOptions, TSelect} from 'models';
+import {
+   IBooking,
+   IMainState,
+   IReduxState,
+   ISelectedExtraOptions,
+   ISingleBookingDate,
+   TSelect
+} from 'models';
 import {IBookingForm} from 'models/forms/booking-form-models';
 import * as React from 'react';
 import {registerLocale} from 'react-datepicker';
@@ -11,7 +18,6 @@ import {
    BOOKING_INITIAL_VALUE,
    checkConflicts,
    CITY_OPTIONS,
-   concatBookingTime,
    DISCOUNT_OPTIONS,
    generateBookingDetails,
    generateBookingFormDetails,
@@ -31,19 +37,16 @@ import ErrorMsg from 'components/atoms/ErrorMsg';
 import ButtonGroup from 'components/atoms/ButtonGroup';
 import Checkbox from 'components/atoms/Checkbox';
 import TextInputField from 'components/atoms/TextInputField';
-import {DataPickerField} from 'components/atoms/DatapickerField';
 import Anchor from 'components/atoms/Anchor';
 import Button from 'components/atoms/Button';
 import pl from 'date-fns/locale/pl';
-import addMonths from 'date-fns/addMonths';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
 import {cloneDeep} from 'lodash';
 import {BsFillExclamationCircleFill, BsQuestionCircleFill} from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
-import ConfirmAction from '../ConfirmAction';
-import BookingExtraOptions from '../BookingExtraOptions';
-import Autocomplete from '../../atoms/Autocomplete';
+import ConfirmAction from '../../ConfirmAction';
+import BookingExtraOptions from './BookingExtraOptions';
+import Autocomplete from '../../../atoms/Autocomplete';
+import BookingTimeForm from './BookingTimeForm';
 
 registerLocale('pl', pl);
 
@@ -81,10 +84,11 @@ const BookingHeader = styled(Header)`
 `;
 
 const InputContainer = styled.div`
-   width: 50%;
+   width: 100%;
    padding: 10px;
    display: flex;
-   flex-direction: column;
+   flex-wrap: wrap;
+   justify-content: center;
    align-items: center;
 
    .react-datepicker__input-container {
@@ -95,6 +99,14 @@ const InputContainer = styled.div`
    @media (max-width: 890px) {
       width: 50%;
    }
+`;
+
+const InputWrapper = styled.div`
+   width: 50%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 0 0.425rem;
 `;
 
 const RodoWrapper = styled.div`
@@ -233,6 +245,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
 }) => {
    const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
    const [extraOptions, setExtraOptions] = React.useState<ISelectedExtraOptions[]>([]);
+   const [bookingTime, setBookingTime] = React.useState<ISingleBookingDate[]>([]);
    const [bookingId, setBookingId] = React.useState<string | undefined>(undefined);
    const [selectedSize, setSelectedSize] = React.useState(SIZE_OPTIONS['1/1']);
    const [sizeOptions, setSizeOptions] = React.useState<SIZE_OPTIONS[]>(SIZE_OPTIONS_BTN);
@@ -265,23 +278,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    const {
       city: cityValue,
       building: buildingValue,
-      startDate,
-      regular: regularValue,
       clientId: selectedClientId,
       person: personName
    } = watch();
-
-   /**
-    * Function to generate max rang in data type input.
-    * If we have august then extend it for next year.
-    */
-   const generateMaxRangDate = () => {
-      let currentYear = new Date().getFullYear();
-      if (new Date().getMonth() >= 7) {
-         currentYear += 1;
-      }
-      return new Date(`${currentYear}-01-01T00:01:00.676Z`);
-   };
 
    /**
     * Function to handle selected reservation size.
@@ -311,17 +310,8 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     */
    const onSubmit: SubmitHandler<IBookingForm> = (cred) => {
       const bookingToApprove = cloneDeep(
-         generateBookingDetails(cred, selectedSize, extraOptions, bookingId)
+         generateBookingDetails(cred, selectedSize, bookingTime, extraOptions, bookingId)
       );
-
-      /* Case to update edited item times just if booking is not resolved */
-      if (typeof editedItemIndex === 'number') {
-         const previousBooking = cloneDeep(bookingsList[editedItemIndex]);
-         bookingToApprove.bookingTime = concatBookingTime(
-            previousBooking.bookingTime,
-            bookingToApprove.bookingTime
-         );
-      }
 
       setBookingData(bookingToApprove);
       setDisplayConfirmation(true);
@@ -356,6 +346,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       reset(generateBookingFormDetails(currentBooking, clientId, city));
       setBookingId(currentBooking.id);
       setSelectedSize(currentBooking.size);
+      setBookingTime(currentBooking.bookingTime);
       if (currentBooking.extraOptions) {
          setExtraOptions(currentBooking.selectedOptions);
       }
@@ -374,6 +365,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       setDisplayConfirmation(false);
       setBookingData(undefined);
       setExtraOptions([]);
+      setBookingTime([]);
       setConflict(false);
    };
 
@@ -405,10 +397,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       const currentFormValues = getValues();
 
       if (typeof editedItemIndex === 'number') {
-         reset({
-            ...cloneDeep({...currentFormValues}),
-            ...formClientData
-         });
+         reset({...cloneDeep({...currentFormValues}), ...formClientData});
          // eslint-disable-next-line no-param-reassign
          bookingsList[editedItemIndex].clientId = selectedClientId.value;
       } else {
@@ -418,17 +407,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             ...formClientData
          });
       }
-   };
-
-   /**
-    * Function to update field endDate in form if cyclic reservation is selected.
-    */
-   const updateEndDataInForm = (): void => {
-      if (!regularValue || isEditing) {
-         return;
-      }
-      const currentFormValues = getValues();
-      reset({...currentFormValues, endDate: startDate});
    };
 
    /**
@@ -478,8 +456,6 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    React.useEffect(() => {
       setSizeOptions(selectSizeFieldOptions(city.value, building.value));
    }, []);
-
-   React.useEffect(updateEndDataInForm, [startDate]);
 
    return (
       <BookingWrapper>
@@ -594,214 +570,93 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
             </ButtonWrapper>
          </SelectWrapper>
          <SelectWrapper>
-            <RodoWrapper>
-               <Label>Rezerwacja cykliczna</Label>
+            <Label>Płatność</Label>
+            <Controller
+               name="payment"
+               defaultValue={PAYMENTS_OPTIONS[0]}
+               control={control}
+               rules={{required: true}}
+               render={({field: {onChange, onBlur, value}}) => (
+                  <SelectInputField
+                     options={PAYMENTS_OPTIONS}
+                     styles={customStyles(!!errors.payment)}
+                     placeholder="Wybierz"
+                     onChange={onChange}
+                     onBlur={onBlur}
+                     value={value}
+                     defaultValue={PAYMENTS_OPTIONS[0]}
+                     isDisabled={displayConfirmation}
+                     blurInputOnSelect
+                     isSearchable={false}
+                  />
+               )}
+            />
+            {errors.payment && <ErrorMsg innerText="Pole nie może być puste" />}
+         </SelectWrapper>
+         <InputContainer>
+            <InputWrapper>
+               <Label>Imię i nazwisko</Label>
                <Controller
-                  name="regular"
-                  defaultValue={false}
+                  name="person"
+                  defaultValue={''}
                   control={control}
-                  render={({field: {onChange, value}}) => (
-                     <Checkbox
-                        checked={value}
-                        className="checkbox"
-                        name="regular"
-                        changeHandler={onChange}
+                  rules={{required: true}}
+                  render={({field: {onChange, onBlur, value}}) => (
+                     <TextInputField
+                        onBlur={onBlur}
+                        value={value}
+                        onChange={onChange}
+                        invalid={!!errors.person}
+                        className="input"
+                        placeholder="Wpisz"
                         disabled={displayConfirmation}
                      />
                   )}
                />
-            </RodoWrapper>
-         </SelectWrapper>
-         <InputContainer>
-            <Label>Imię i nazwisko</Label>
-            <Controller
-               name="person"
-               defaultValue={''}
-               control={control}
-               rules={{required: true}}
-               render={({field: {onChange, onBlur, value}}) => (
-                  <TextInputField
-                     onBlur={onBlur}
-                     value={value}
-                     onChange={onChange}
-                     invalid={!!errors.person}
-                     className="input"
-                     placeholder="Wpisz"
-                     disabled={displayConfirmation}
-                  />
-               )}
-            />
-            {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
-            <Label>E-mail</Label>
-            <Controller
-               name="email"
-               defaultValue={''}
-               control={control}
-               rules={{required: true}}
-               render={({field: {onChange, onBlur, value}}) => (
-                  <TextInputField
-                     onBlur={onBlur}
-                     value={value}
-                     onChange={onChange}
-                     invalid={!!errors.email}
-                     className="input"
-                     placeholder="Wpisz"
-                     disabled={displayConfirmation}
-                  />
-               )}
-            />
-            {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
-            <Label>Telefonu</Label>
-            <Controller
-               name="phone"
-               defaultValue={''}
-               control={control}
-               rules={{required: true}}
-               render={({field: {onChange, onBlur, value}}) => (
-                  <TextInputField
-                     onBlur={onBlur}
-                     value={value}
-                     onChange={onChange}
-                     invalid={!!errors.phone}
-                     className="input"
-                     placeholder="000-000-000"
-                     disabled={displayConfirmation}
-                  />
-               )}
-            />
-            {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
-            <SelectWrapper>
-               <Label>Płatność</Label>
+               {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
+            </InputWrapper>
+            <InputWrapper>
+               <Label>E-mail</Label>
                <Controller
-                  name="payment"
-                  defaultValue={PAYMENTS_OPTIONS[0]}
+                  name="email"
+                  defaultValue={''}
                   control={control}
                   rules={{required: true}}
                   render={({field: {onChange, onBlur, value}}) => (
-                     <SelectInputField
-                        options={PAYMENTS_OPTIONS}
-                        styles={customStyles(!!errors.payment)}
-                        placeholder="Wybierz"
-                        onChange={onChange}
+                     <TextInputField
                         onBlur={onBlur}
                         value={value}
-                        defaultValue={PAYMENTS_OPTIONS[0]}
-                        isDisabled={displayConfirmation}
-                        blurInputOnSelect
-                        isSearchable={false}
+                        onChange={onChange}
+                        invalid={!!errors.email}
+                        className="input"
+                        placeholder="Wpisz"
+                        disabled={displayConfirmation}
                      />
                   )}
                />
-               {errors.payment && <ErrorMsg innerText="Pole nie może być puste" />}
-            </SelectWrapper>
-         </InputContainer>
-         <InputContainer>
-            <Label>{regularValue ? 'Od kiedy' : 'Kiedy'}</Label>
-            <Controller
-               name="startDate"
-               defaultValue={new Date()}
-               control={control}
-               rules={{required: true}}
-               render={({field: {onChange, onBlur, value}}) => (
-                  <DataPickerField
-                     showTimeSelect={false}
-                     shouldCloseOnSelect
-                     placeholderText="Wybierz"
-                     locale="pl"
-                     minDate={!isAdmin ? new Date() : null}
-                     maxDate={addMonths(generateMaxRangDate(), 8)}
-                     dateFormat="dd-MM-yyyy"
-                     invalid={!!errors.startDate}
-                     onChange={onChange}
-                     onBlur={onBlur}
-                     selected={value}
-                     disabled={displayConfirmation}
-                  />
-               )}
-            />
-            {errors.startDate && <ErrorMsg innerText="Pole nie może być puste" />}
-            {regularValue && (
-               <>
-                  <Label>Do kiedy</Label>
-                  <Controller
-                     name="endDate"
-                     defaultValue={new Date()}
-                     control={control}
-                     rules={{required: true}}
-                     render={({field: {onChange, onBlur, value}}) => (
-                        <DataPickerField
-                           showTimeSelect={false}
-                           shouldCloseOnSelect
-                           placeholderText="Wybierz"
-                           locale="pl"
-                           minDate={!isAdmin ? new Date() : null}
-                           maxDate={addMonths(generateMaxRangDate(), 8)}
-                           dateFormat="dd-MM-yyyy"
-                           invalid={!!errors.endDate}
-                           onChange={onChange}
-                           onBlur={onBlur}
-                           selected={value}
-                           disabled={displayConfirmation}
-                        />
-                     )}
-                  />
-                  {errors.endDate && <ErrorMsg innerText="Pole nie może być puste" />}
-               </>
-            )}
-            <Label>Od godziny</Label>
-            <Controller
-               name="startHour"
-               defaultValue={undefined}
-               control={control}
-               rules={{required: true}}
-               render={({field: {onChange, onBlur, value}}) => (
-                  <DataPickerField
-                     placeholderText="Wybierz"
-                     showTimeSelect
-                     showTimeSelectOnly
-                     shouldCloseOnSelect
-                     minTime={setHours(setMinutes(new Date(), 0), 9)}
-                     maxTime={setHours(setMinutes(new Date(), 30), 22)}
-                     invalid={!!errors.startHour}
-                     timeIntervals={15}
-                     timeCaption="Godzina"
-                     dateFormat="HH:mm"
-                     locale="pl"
-                     onChange={onChange}
-                     onBlur={onBlur}
-                     selected={value}
-                     disabled={displayConfirmation}
-                  />
-               )}
-            />
-            {errors.startHour && <ErrorMsg innerText="Pole nie może być puste" />}
-            <Label>Do godziny</Label>
-            <Controller
-               name="endHour"
-               defaultValue={undefined}
-               control={control}
-               rules={{required: true}}
-               render={({field: {onChange, onBlur, value}}) => (
-                  <DataPickerField
-                     placeholderText="Wybierz"
-                     showTimeSelect
-                     showTimeSelectOnly
-                     shouldCloseOnSelect
-                     minTime={setHours(setMinutes(new Date(), 0), 9)}
-                     maxTime={setHours(setMinutes(new Date(), 30), 22)}
-                     invalid={!!errors.endHour}
-                     timeIntervals={15}
-                     timeCaption="Godzina"
-                     dateFormat="HH:mm"
-                     locale="pl"
-                     onChange={onChange}
-                     onBlur={onBlur}
-                     selected={value}
-                     disabled={displayConfirmation}
-                  />
-               )}
-            />
-            {errors.endHour && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
+            </InputWrapper>
+            <InputWrapper>
+               <Label>Telefon</Label>
+               <Controller
+                  name="phone"
+                  defaultValue={''}
+                  control={control}
+                  rules={{required: true}}
+                  render={({field: {onChange, onBlur, value}}) => (
+                     <TextInputField
+                        onBlur={onBlur}
+                        value={value}
+                        onChange={onChange}
+                        invalid={!!errors.phone}
+                        className="input"
+                        placeholder="000-000-000"
+                        disabled={displayConfirmation}
+                     />
+                  )}
+               />
+               {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
+            </InputWrapper>
             <AutocompleteWrapper>
                <Label>Udzielony rabat</Label>
                <Controller
@@ -827,8 +682,18 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                {errors.discount && <ErrorMsg innerText="Pole nie może być puste" />}
             </AutocompleteWrapper>
          </InputContainer>
+         <BookingTimeForm
+            isAdmin={isAdmin}
+            disabled={displayConfirmation}
+            bookingTime={bookingTime}
+            setBookingTime={setBookingTime}
+         />
          {buildingValue.value === 'boisko-sztuczna-nawierzchnia' && (
-            <BookingExtraOptions extraOptions={extraOptions} setExtraOptions={setExtraOptions} />
+            <BookingExtraOptions
+               disabled={displayConfirmation}
+               extraOptions={extraOptions}
+               setExtraOptions={setExtraOptions}
+            />
          )}
          <TextAreaLabel>Dodatkowe informacje</TextAreaLabel>
          <Controller

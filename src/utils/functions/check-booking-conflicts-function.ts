@@ -1,4 +1,4 @@
-import {uniq} from 'lodash';
+import {cloneDeep, uniq} from 'lodash';
 import {IBooking, ISingleBookingDate} from 'models';
 import {BOOKING_STATUS} from '../variables/booking-status-const';
 
@@ -56,6 +56,27 @@ const checkSingleBookingTime = (bt: ISingleBookingDate, cbt: ISingleBookingDate)
    const isOverlap = checkOverlapCase(bt.startHour, bt.endHour, cbt.startHour, cbt.endHour);
 
    return sameDay && (checkStartHour || checkEndHour || isOverlap);
+};
+
+/**
+ * Function to check if one booking time has conflict with others.
+ *
+ * @param bookingTime
+ * @param bookingTimeIndex
+ * @param allBookingTimes
+ * @returns {Boolean}
+ */
+const checkNewAddedBookingTimeConflicts = (
+   bookingTime: ISingleBookingDate,
+   bookingTimeIndex: number,
+   allBookingTimes: ISingleBookingDate[]
+): boolean => {
+   let isConflict = false;
+   const bookingTimeToCheck = cloneDeep(allBookingTimes);
+   bookingTimeToCheck.splice(bookingTimeIndex, 1);
+   const conflictDate = bookingTimeToCheck.some((bt) => checkSingleBookingTime(bookingTime, bt));
+   if (conflictDate) isConflict = true;
+   return isConflict;
 };
 
 /**
@@ -146,4 +167,9 @@ const checkSingleDayConflict = (
    return conflictListIds;
 };
 
-export {checkConflicts, checkAllBookingsConflicts, checkSingleDayConflict};
+export {
+   checkConflicts,
+   checkAllBookingsConflicts,
+   checkSingleDayConflict,
+   checkNewAddedBookingTimeConflicts
+};

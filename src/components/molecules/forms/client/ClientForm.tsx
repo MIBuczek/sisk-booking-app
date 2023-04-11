@@ -12,7 +12,7 @@ import {useDispatch} from 'react-redux';
 import {IClient} from 'models';
 import {IClientForm} from 'models/forms/client-form-model';
 import {addClient, closeModal, updateClient} from 'store';
-import ConfirmAction from '../ConfirmAction';
+import ConfirmAction from '../../ConfirmAction';
 
 const ClientWrapper = styled.section`
    display: flex;

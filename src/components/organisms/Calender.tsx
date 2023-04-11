@@ -173,10 +173,12 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
 
    /**
     * Full calendar event to get data and get current booking data from the store.
+    *
     * @param arg
     */
    const handleEventClick = (arg: EventClickArg): void => {
       arg.jsEvent.preventDefault();
+      arg.jsEvent.stopPropagation();
 
       dispatch(getCurrentBooking(arg.event._def.publicId, arg.event.extendedProps.itemIndex));
 
@@ -185,9 +187,15 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
       }
    };
 
-   React.useEffect(() => {
-      createEvents();
-   }, [mainState, bookings]);
+   /**
+    * Refresh view component after any mainState or bookings changes.
+    */
+   React.useEffect(() => createEvents(), [mainState, bookings]);
+
+   /**
+    * Refresh view component after any events changes.
+    */
+   React.useEffect(() => undefined, [events]);
 
    return (
       <CalenderWrapper>

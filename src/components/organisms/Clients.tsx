@@ -1,7 +1,7 @@
 import Button from 'components/atoms/Button';
 import Header from 'components/atoms/Header';
 import MultipleRecords from 'components/atoms/MultipleRecords';
-import ClientForm from 'components/molecules/forms/ClientForm';
+import ClientForm from 'components/molecules/forms/client/ClientForm';
 import {
    IBooking,
    IClient,

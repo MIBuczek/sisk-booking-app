@@ -4,6 +4,7 @@ export const theme = {
    darkGrey: '#454545',
    middleGray: '#ccc',
    lightGray: '#EEEEEE',
+   warning: '#ffc107',
    error: '#cc0000',
    light: 200,
    regular: 400,

@@ -19,6 +19,7 @@ import {
 } from 'utils';
 import {IBooking, IBookingsAction, IModalAction, IReduxState} from 'models';
 import {openModal} from 'store';
+import {cloneDeep} from 'lodash';
 
 const BOOKING_COLLECTION_KEY: Readonly<'bookings'> = 'bookings';
 
@@ -213,10 +214,11 @@ export const updateBooking =
             buildingStore: {buildings}
          } = getStore();
 
-         const bookingIndex = bookings.findIndex((b) => b.id === bookingData.id);
-         bookings.splice(bookingIndex, 1, bookingData);
+         const clonedBookings = cloneDeep(bookings);
+         const bookingIndex = clonedBookings.findIndex((b) => b.id === bookingData.id);
+         clonedBookings.splice(bookingIndex, 1, bookingData);
 
-         dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, bookings));
+         dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, clonedBookings));
          dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została zaktualizowana pomyślnie'));
 
          const building = buildings.find((b) => b.property === bookingData.building);

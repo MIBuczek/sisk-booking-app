@@ -10,13 +10,13 @@ import {
 } from 'utils';
 import {IBooking, IBookingStatusForm} from 'models';
 import {closeModal} from 'store';
-import Label from '../../atoms/Label';
-import SelectInputField, {customStyles} from '../../atoms/SelectInputField';
-import ErrorMsg from '../../atoms/ErrorMsg';
-import TextAreaField from '../../atoms/TextAreaField';
-import ConfirmAction from '../ConfirmAction';
-import Button from '../../atoms/Button';
-import TextInputField from '../../atoms/TextInputField';
+import Label from '../../../atoms/Label';
+import SelectInputField, {customStyles} from '../../../atoms/SelectInputField';
+import ErrorMsg from '../../../atoms/ErrorMsg';
+import TextAreaField from '../../../atoms/TextAreaField';
+import ConfirmAction from '../../ConfirmAction';
+import Button from '../../../atoms/Button';
+import TextInputField from '../../../atoms/TextInputField';
 
 const BookingTimeStatusWrapper = styled.form`
    width: 290px;
@@ -154,13 +154,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
       dispatch(closeModal());
    };
 
-   React.useEffect(() => {
-      editBookingStatusHandler();
-
-      return () => {
-         cancelHandler();
-      };
-   }, []);
+   React.useEffect(() => editBookingStatusHandler(), []);
 
    return (
       <BookingTimeStatusWrapper className={confirmationClass}>

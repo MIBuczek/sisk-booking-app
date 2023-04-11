@@ -37,13 +37,14 @@ const formatTime = (date: Date | null): string => {
    const dateHour: number = date.getHours();
    const dateMinutes: number = date.getMinutes();
 
-   let minutes = '';
+   let minutes = `${dateMinutes}`;
    if (dateMinutes === 0) {
       minutes = '00';
    }
    if (dateMinutes > 0 && dateMinutes < 10) {
       minutes = `0${dateMinutes}`;
    }
+
    return `${dateHour}:${minutes}`;
 };
 
@@ -102,7 +103,8 @@ const generateStatusBackground = (accepted: boolean, status: string): string => 
 };
 
 /**
- * Function generate reservation calendar object display into view
+ * Function generate reservation calendar object display into view.
+ *
  * @param itemTitle
  * @param booking
  * @param index
@@ -126,7 +128,8 @@ const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number
 };
 
 /**
- * Function to change day in Date object
+ * Function to change day in Date object.
+ *
  * @param date
  * @param newDay
  * @returns {String}

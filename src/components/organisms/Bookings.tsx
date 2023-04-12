@@ -38,6 +38,7 @@ import {cloneDeep} from 'lodash';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Modal from './Modal';
 import ModalConflictDetails from '../molecules/modals/ModalConflictDetails';
+import Checkbox from '../atoms/Checkbox';
 
 const BookingsWrapper = styled.section`
    width: 60%;
@@ -88,6 +89,15 @@ const ConflictParagraph = styled(Paragraph)`
    }
 `;
 
+const AcceptedFilterWrapper = styled.div`
+   height: auto;
+   display: flex;
+   align-items: center;
+   padding: 6px 20px;
+   border: ${({theme}) => `1px solid ${theme.green}`};
+   border-radius: 5px;
+`;
+
 interface BookingsProps {
    mainState: IAdminState;
 }
@@ -103,6 +113,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
    const [conflicts, setConflicts] = React.useState<string[]>([]);
    const [searchPhase, setSearchPhase] = React.useState<string>('');
+   const [filterAccepted, setFilterAccepted] = React.useState<boolean>(false);
 
    const dispatch = useDispatch();
 
@@ -119,7 +130,11 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
     */
    const bookingListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
       if (searchResults.length && instanceOfBookings(searchResults)) {
-         setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
+         let filteredResult = filterBookingsPerPlace(searchResults, mainState, user?.isAdmin);
+         if (filterAccepted) {
+            filteredResult = filteredResult.filter((r) => !r.accepted);
+         }
+         setBookingsList(filteredResult);
          setSearchPhase(phase);
       } else {
          setBookingsList([]);
@@ -200,16 +215,19 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    const handlerEffectCallBack = () => {
       const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
       setAllBookingsPerPlace(bookingByPlace);
-      const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
-      if (!searchResults.length) setBookingsList([]);
-      if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
+      let searchedResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
+      if (filterAccepted) {
+         searchedResults = searchedResults.filter((r) => !r.accepted);
+      }
+      if (!searchedResults.length) setBookingsList([]);
+      if (instanceOfBookings(searchedResults)) setBookingsList(searchedResults);
       if (user?.isAdmin) {
          const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
          setConflicts(bookingWithConflicts);
       }
    };
 
-   React.useEffect(handlerEffectCallBack, [bookings, mainState]);
+   React.useEffect(handlerEffectCallBack, [bookings, mainState, filterAccepted]);
 
    return (
       <BookingsWrapper>
@@ -223,6 +241,16 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
                searchProperty="person"
                searchContentHandler={bookingListHandler}
             />
+            <AcceptedFilterWrapper>
+               <Checkbox
+                  checked={filterAccepted}
+                  className="checkbox"
+                  name="toAcceptReservation"
+                  changeHandler={() => setFilterAccepted(!filterAccepted)}
+                  disabled={false}
+               />
+               <Paragraph small>Pokaż rezerwcje do zakceptowania</Paragraph>
+            </AcceptedFilterWrapper>
             <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
                {adminCredentials(user) ? 'Dodaj nową rezerwację' : 'Wyślij prośbę o rezerwacje'}
             </OpenBookingsModalButton>

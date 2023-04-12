@@ -277,7 +277,7 @@ const BookingTimeForm: React.FunctionComponent<BookingTimeFormProps> = ({
          checkNewAddedBookingTimeConflicts(bt, index, bookingTime)
       );
       if (hasConflict) {
-         setWarningMsg('Niektóre godziny rezerwacji konfliktują z ze sobą');
+         setWarningMsg('Niektóre godziny rezerwacji konfliktują ze sobą');
          return;
       }
       setWarningMsg(undefined);

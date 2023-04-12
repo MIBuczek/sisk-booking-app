@@ -14,6 +14,12 @@ const WarningTextContent = styled.span`
    text-transform: none;
    text-decoration: ${({theme}) => `underline ${theme.warning}`};
 
+   &.full {
+      font-size: 14px;
+      width: 100%;
+      margin: 5px 40px;
+   }
+
    svg {
       height: 15px;
       width: 12px;
@@ -24,10 +30,11 @@ const WarningTextContent = styled.span`
 
 interface IProps {
    innerText: string;
+   className: string;
 }
 
-const WarningMsg: React.FC<IProps> = ({innerText}) => (
-   <WarningTextContent>
+const WarningMsg: React.FC<IProps> = ({innerText, className}) => (
+   <WarningTextContent className={className}>
       {innerText} <BsExclamationTriangle />
    </WarningTextContent>
 );

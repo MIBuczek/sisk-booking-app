@@ -5,8 +5,8 @@ import {IBooking} from 'models';
 import {useDispatch} from 'react-redux';
 import {updateBooking} from 'store';
 import styled from 'styled-components';
-import {formatDate, formatTime} from 'utils';
-import BookingTimeStatusForm from './forms/booking/BookingTimeStatusForm';
+import BookingTimeStatusForm from '../forms/booking/BookingTimeStatusForm';
+import ClientDetails from '../ClientDetails';
 
 const BookingStatusWrapper = styled.section`
    max-width: 670px;
@@ -29,28 +29,13 @@ const BookingStatusHeader = styled(Header)`
    }
 `;
 
-const ClientStatusDetails = styled.div`
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   width: 80%;
-   border-top: ${({theme}) => `1px solid ${theme.green}`};
-   border-bottom: ${({theme}) => `1px solid ${theme.green}`};
-`;
-
-const DetailsSpan = styled.span`
-   font-weight: 400;
-   margin: 8px 0;
-   font-size: ${({theme}) => theme.fontSize.m};
-   color: ${({theme}) => theme.darkGrey};
-`;
-
 interface BookingStatusFormProps {
    bookingsList: IBooking[];
    editedItemIndex?: number;
    editedSubItemIndex?: number;
 }
 
-const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
+const ModalBookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
    bookingsList,
    editedItemIndex,
    editedSubItemIndex
@@ -84,24 +69,10 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
          <BookingStatusHeader>ROZLICZ REZERWACJĘ</BookingStatusHeader>
          {!isNil(currentBooking) && !isNil(editedSubItemIndex) ? (
             <>
-               <ClientStatusDetails>
-                  <DetailsSpan>
-                     <strong>Klient: </strong>
-                     {currentBooking.person}
-                  </DetailsSpan>
-                  <DetailsSpan>
-                     <strong>Dzień: </strong>
-                     {formatDate(currentBooking.bookingTime[editedSubItemIndex].day)}
-                  </DetailsSpan>
-                  <DetailsSpan>
-                     <strong>Godzina rozpoczęcia: </strong>
-                     {formatTime(currentBooking.bookingTime[editedSubItemIndex].startHour)}
-                  </DetailsSpan>
-                  <DetailsSpan>
-                     <strong>Godzina zakończenia: </strong>
-                     {formatTime(currentBooking.bookingTime[editedSubItemIndex].endHour)}
-                  </DetailsSpan>
-               </ClientStatusDetails>
+               <ClientDetails
+                  currentBooking={currentBooking}
+                  editedSubItemIndex={editedSubItemIndex}
+               />
                <BookingTimeStatusForm
                   confirmationClass="bookingStatus"
                   currentBooking={currentBooking}
@@ -115,4 +86,4 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
    );
 };
 
-export default BookingStatus;
+export default ModalBookingStatus;

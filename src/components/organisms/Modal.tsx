@@ -29,13 +29,18 @@ const BGImage = styled.img`
 const ModalContent = styled.div`
    min-width: 400px;
    min-height: 200px;
-   overflow-y: auto;
-   overflow-x: hidden;
+   overflow: visible;
    max-height: 95vh;
    border: 2px solid #afbf36;
    border-radius: 5px;
    background: white;
    position: absolute;
+
+   &.overflow {
+      overflow-y: auto;
+      overflow-x: auto;
+   }
+
    @media (max-width: 890px) {
       max-width: 95%;
    }
@@ -43,15 +48,16 @@ const ModalContent = styled.div`
 
 export interface IProps {
    children: JSX.Element | boolean | (JSX.Element | boolean)[];
+   className?: string;
 }
 
-const Modal: React.FC<IProps> = ({children}): JSX.Element | null => {
+const Modal: React.FC<IProps> = ({children, className = ''}): JSX.Element | null => {
    const {isOpen} = useSelector((state: IReduxState) => state.modal);
    if (isOpen) {
       return (
          <ModalWrapper>
             <BGImage src={bgModal} alt="bg" />
-            <ModalContent>{children}</ModalContent>
+            <ModalContent className={className}>{children}</ModalContent>
          </ModalWrapper>
       );
    }

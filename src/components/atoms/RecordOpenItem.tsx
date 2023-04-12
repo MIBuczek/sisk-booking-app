@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {BsCalendarXFill, BsFillCheckSquareFill} from 'react-icons/bs';
+import {BsCalendarXFill, BsFillCheckSquareFill, BsFillFileEarmarkTextFill} from 'react-icons/bs';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 import {IBooking, IEditHandler, ISingleBookingDate} from 'models';
@@ -164,12 +164,29 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
                ) : null}
                <ListItemBtn
                   type="button"
+                  disabled={!currentRecord.accepted || !hasRight}
+                  onClick={() =>
+                     editHandler({
+                        itemIndex: mainIndex,
+                        isMainItem: false,
+                        subItemIndex: singleBookingIndex,
+                        modalType: MODAL_TYPES.BOOKING_SINGLE_TIME,
+                        currentPage,
+                        postPerPage
+                     })
+                  }
+               >
+                  <BsFillFileEarmarkTextFill />
+               </ListItemBtn>
+               <ListItemBtn
+                  type="button"
                   disabled={!currentRecord.accepted}
                   onClick={() =>
                      editHandler({
                         itemIndex: mainIndex,
                         isMainItem: false,
                         subItemIndex: singleBookingIndex,
+                        modalType: MODAL_TYPES.BOOKINGS_STATUS,
                         currentPage,
                         postPerPage
                      })

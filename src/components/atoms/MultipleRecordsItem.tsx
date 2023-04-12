@@ -19,7 +19,7 @@ import {
 } from 'react-icons/bs';
 import {fadeIn, fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
-import {checkIsLastIndex, checkSelectedOption, modelDisplayValue} from 'utils';
+import {checkIsLastIndex, checkSelectedOption, MODAL_TYPES, modelDisplayValue} from 'utils';
 import Collapse, {IRenderProps} from '../../providers/Collapse';
 import Button from './Button';
 import RecordOpenItem from './RecordOpenItem';
@@ -218,6 +218,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                                     itemIndex: index,
                                     isMainItem: true,
                                     subItemIndex: null,
+                                    modalType: MODAL_TYPES.BOOKINGS,
                                     currentPage,
                                     postPerPage
                                  })

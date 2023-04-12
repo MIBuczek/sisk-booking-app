@@ -1,7 +1,7 @@
 import {IBookingForm} from 'models/forms/booking-form-models';
 import {IClientForm} from 'models/forms/client-form-model';
 import {IBookingTimeForm, ISingleBookingDate} from '../../models';
-import {BOOKING_STATUS} from './booking-status-const';
+import {BOOKING_STATUS, BOOKING_STATUS_OPTIONS} from './booking-status-const';
 
 const today = new Date();
 
@@ -63,6 +63,12 @@ const BOOKING_SINGLE_TIME_INITIAL_VALUE: ISingleBookingDate = {
    participants: ''
 };
 
+const BOOKING_TIME_STATUS_INITIAL_VALUE = {
+   bookingStatus: BOOKING_STATUS_OPTIONS[0],
+   bookingParticipants: '',
+   bookingComments: ''
+};
+
 const SIZE_OPTIONS_BTN = Object.values(SIZE_OPTIONS);
 
 export {
@@ -70,5 +76,6 @@ export {
    BOOKING_INITIAL_VALUE,
    BOOKING_TIME_INITIAL_VALUE,
    BOOKING_SINGLE_TIME_INITIAL_VALUE,
+   BOOKING_TIME_STATUS_INITIAL_VALUE,
    SIZE_OPTIONS_BTN
 };

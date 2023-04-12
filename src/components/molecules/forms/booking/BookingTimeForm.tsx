@@ -299,9 +299,12 @@ const BookingTimeForm: React.FunctionComponent<BookingTimeFormProps> = ({
             <TimeOptionHeader>
                Wybierz godzince rezerwacji
                {isAdmin && isNumber(editedIndex) && (
-                  <WarningMsg innerText="Edytować lub usuwać można tylko rezerwacje które nie zostały jeszcze rozliczone" />
+                  <WarningMsg
+                     innerText="Edytować lub usuwać można tylko rezerwacje które nie zostały jeszcze rozliczone"
+                     className=""
+                  />
                )}
-               {warningMsg && <WarningMsg innerText={warningMsg} />}
+               {warningMsg && <WarningMsg innerText={warningMsg} className="" />}
                {errorMsg && <ErrorMsg innerText={errorMsg} />}
             </TimeOptionHeader>
             <TimeOptionsForm>

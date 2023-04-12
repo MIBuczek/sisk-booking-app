@@ -19,6 +19,7 @@ import {
    checkAllBookingsConflicts,
    filterBookingsPerPlace,
    findCurrentItemIndex,
+   isNumber,
    MODAL_TYPES,
    RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
    RECORDS_BOOKING_ROW_DETAILS,
@@ -31,7 +32,7 @@ import ModalDelete from 'components/molecules/modals/ModalDelete';
 import BookingForm from 'components/molecules/forms/booking/BookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
-import BookingStatus from 'components/molecules/BookingStatus';
+import ModalBookingStatus from 'components/molecules/modals/ModalBookingStatus';
 import {BsFillExclamationCircleFill} from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import {cloneDeep} from 'lodash';
@@ -39,6 +40,7 @@ import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import Modal from './Modal';
 import ModalConflictDetails from '../molecules/modals/ModalConflictDetails';
 import Checkbox from '../atoms/Checkbox';
+import ModalSingleBookingTime from '../molecules/modals/ModalSingleBookingTime';
 
 const BookingsWrapper = styled.section`
    width: 60%;
@@ -144,26 +146,27 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
 
    /**
     * Function to handle edited item and set related property edit item and fill up booking form.
+    *
     * @param itemIndex
     * @param isMainItem
     * @param subItemIndex
     * @param currentPage
     * @param postPerPage
+    * @param modalType
     */
    const editBookingHandler = ({
       itemIndex,
       isMainItem,
       subItemIndex,
       currentPage,
-      postPerPage
+      postPerPage,
+      modalType
    }: IEditHandler) => {
       const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
       setIsEditing(isMainItem);
       setEditedItemIndex(currentIndex);
-      dispatch(openModal(isMainItem ? MODAL_TYPES.BOOKINGS : MODAL_TYPES.BOOKINGS_STATUS));
-      if (typeof subItemIndex === 'number') {
-         setEditedSubItemIndex(subItemIndex);
-      }
+      dispatch(openModal(modalType));
+      if (isNumber(subItemIndex)) setEditedSubItemIndex(subItemIndex);
    };
    /**
     * Function to handle delete booking item and display related confirmation modal.
@@ -276,7 +279,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
             </ConflictParagraph>
          )}
          {isOpen && (
-            <Modal>
+            <Modal className={type === MODAL_TYPES.BOOKINGS ? 'overflow' : undefined}>
                {type === MODAL_TYPES.BOOKINGS && (
                   <BookingForm
                      mainState={mainState}
@@ -289,7 +292,14 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
                   />
                )}
                {type === MODAL_TYPES.BOOKINGS_STATUS && (
-                  <BookingStatus
+                  <ModalBookingStatus
+                     bookingsList={bookingsList}
+                     editedItemIndex={editedItemIndex}
+                     editedSubItemIndex={editedSubItemIndex}
+                  />
+               )}
+               {type === MODAL_TYPES.BOOKING_SINGLE_TIME && (
+                  <ModalSingleBookingTime
                      bookingsList={bookingsList}
                      editedItemIndex={editedItemIndex}
                      editedSubItemIndex={editedSubItemIndex}

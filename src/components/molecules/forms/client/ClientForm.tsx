@@ -19,7 +19,7 @@ const ClientWrapper = styled.section`
    flex-wrap: wrap;
    justify-content: center;
    padding-top: 20px;
-   max-width: 1200px;
+   max-width: 800px;
    @media (max-width: 890px) {
       width: 90%;
    }

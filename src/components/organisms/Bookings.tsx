@@ -116,6 +116,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    const [conflicts, setConflicts] = React.useState<string[]>([]);
    const [searchPhase, setSearchPhase] = React.useState<string>('');
    const [filterAccepted, setFilterAccepted] = React.useState<boolean>(false);
+   const [openRecords, setOpenRecords] = React.useState<boolean>(false);
 
    const dispatch = useDispatch();
 
@@ -248,11 +249,23 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
                <Checkbox
                   checked={filterAccepted}
                   className="checkbox"
-                  name="toAcceptReservation"
+                  name="filterAccepted"
                   changeHandler={() => setFilterAccepted(!filterAccepted)}
                   disabled={false}
                />
                <Paragraph small>Pokaż rezerwcje do zakceptowania</Paragraph>
+            </AcceptedFilterWrapper>
+            <AcceptedFilterWrapper>
+               <Checkbox
+                  checked={openRecords}
+                  className="checkbox"
+                  name="openRecords"
+                  changeHandler={() => setOpenRecords(!openRecords)}
+                  disabled={false}
+               />
+               <Paragraph small>
+                  {`${openRecords ? 'Zwiń' : 'Pokaż'} szczegóły rezerwacji`}
+               </Paragraph>
             </AcceptedFilterWrapper>
             <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
                {adminCredentials(user) ? 'Dodaj nową rezerwację' : 'Wyślij prośbę o rezerwacje'}
@@ -267,6 +280,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
             isEmployee={user?.isEmployee || false}
             conflicts={conflicts}
             records={bookingsList}
+            openRecords={openRecords}
             allRecords={allBookingsPerPlace}
             editHandler={editBookingHandler}
             deleteHandler={deleteBookingHandler}

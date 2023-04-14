@@ -188,6 +188,7 @@ const Clients = (): JSX.Element => {
             recordPropertyDetails={RECORDS_CLIENTS_ROW_DETAILS}
             recordPropertyDisplayMap={RECORDS_CLIENTS_DETAILS_PROPERTY_MAP}
             conflicts={[]}
+            openRecords={false}
             records={clientList}
             editHandler={editClientHandler}
             deleteHandler={deleteClientHandler}

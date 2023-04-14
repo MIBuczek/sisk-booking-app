@@ -155,6 +155,7 @@ interface MultipleRecordItemProps {
    currentRecord: IClient | IBooking;
    hasConflicts: boolean;
    records: (IClient | IBooking)[];
+   openRecords: boolean;
    allRecords: (IClient | IBooking)[];
    editHandler: (editDetails: IEditHandler) => void;
    deleteHandler: (deleteDetails: IDeleteHandler) => void;
@@ -171,6 +172,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
    recordPropertyDisplayMap,
    currentRecord,
    hasConflicts,
+   openRecords,
    records,
    allRecords,
    editHandler,
@@ -208,7 +210,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                   )}
                   <RecordTableData>
                      <ListItemBtn onClick={toggle}>
-                        <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
+                        <ChevronIcon className={openRecords || isCollapsed ? 'open' : 'close'} />
                      </ListItemBtn>
                      {isAdmin && (
                         <>
@@ -237,7 +239,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                      )}
                   </RecordTableData>
                </tr>
-               {isCollapsed ? (
+               {openRecords || isCollapsed ? (
                   <BookingDetailWrapper>
                      <RecordDetail>
                         {recordPropertyDetails.map((property) => {

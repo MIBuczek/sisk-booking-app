@@ -1,4 +1,4 @@
-import {MODAL_TYPES} from '../../utils';
+import {MODAL_TYPES} from 'utils';
 
 interface IEditHandler {
    itemIndex: number;

@@ -28,10 +28,10 @@ import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import {BsFileEarmarkRuledFill, BsFilePdf} from 'react-icons/bs';
 import {CSVLink} from 'react-csv';
 import {csvFileHeaders} from 'utils/variables/csv-file-headers';
-import Checkbox from '../atoms/Checkbox';
-import {printPDFReport} from '../molecules/modals/PreviewPDF';
-import {LoaderDots} from '../molecules/Loading';
-import ErrorMsg from '../atoms/ErrorMsg';
+import Checkbox from 'components/atoms/Checkbox';
+import {printPDFReport} from 'components/molecules/modals/PreviewPDF';
+import {LoaderDots} from 'components/molecules/Loading';
+import ErrorMsg from 'components/atoms/ErrorMsg';
 
 registerLocale('pl', pl);
 

@@ -1,5 +1,5 @@
 import {IBuilding, IBuildingOptions, TSelect} from 'models';
-import {BUILDINGS_OPTIONS} from 'utils/variables/options-const';
+import {BUILDINGS_OPTIONS} from 'utils';
 
 /**
  * Function to generate building option for dropdown

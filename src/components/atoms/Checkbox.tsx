@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import * as React from 'react';
-// import { css } from 'react-select/src/components/Control';
 import styled, {css} from 'styled-components';
 
 type CheckboxInput = {

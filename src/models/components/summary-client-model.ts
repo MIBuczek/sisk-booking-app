@@ -1,6 +1,4 @@
-import {IBooking, ISingleBookingDate} from 'models/store/booking-models';
-import {IClient} from 'models/store/client-models';
-import {IClientForm} from '../forms/client-form-model';
+import {IBooking, ISingleBookingDate, IClient, IClientForm} from 'models';
 
 type IGeneralBookingDetails = Pick<
    IBooking,

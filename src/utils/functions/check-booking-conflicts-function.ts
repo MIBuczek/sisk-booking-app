@@ -1,6 +1,6 @@
 import {cloneDeep, uniq} from 'lodash';
 import {IBooking, ISingleBookingDate} from 'models';
-import {BOOKING_STATUS} from '../variables/booking-status-const';
+import {BOOKING_STATUS} from 'utils';
 
 /**
  * Function to check day into two date object.

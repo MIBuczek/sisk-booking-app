@@ -43,10 +43,10 @@ import pl from 'date-fns/locale/pl';
 import {cloneDeep} from 'lodash';
 import {BsFillExclamationCircleFill, BsQuestionCircleFill} from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
-import ConfirmAction from '../../ConfirmAction';
-import BookingExtraOptions from './BookingExtraOptions';
-import Autocomplete from '../../../atoms/Autocomplete';
-import BookingTimeForm from './BookingTimeForm';
+import ConfirmAction from 'components/molecules/ConfirmAction';
+import BookingExtraOptions from 'components/molecules/forms/booking/BookingExtraOptions';
+import Autocomplete from 'components/atoms/Autocomplete';
+import BookingTimeForm from 'components/molecules/forms/booking/BookingTimeForm';
 
 registerLocale('pl', pl);
 

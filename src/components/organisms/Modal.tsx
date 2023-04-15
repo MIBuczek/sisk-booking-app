@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import {IReduxState} from 'models';
 import {fadeIn} from 'style/animation';
-import bgModal from '../../assets/images/background-modal.jpg';
+import bgModal from 'assets/images/background-modal.jpg';
 
 const ModalWrapper = styled.div`
    width: 100%;

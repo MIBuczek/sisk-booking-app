@@ -1,12 +1,10 @@
-import {IBookingForm} from 'models/forms/booking-form-models';
-import {IClientForm} from 'models/forms/client-form-model';
-import {IBookingTimeForm, ISingleBookingDate} from '../../models';
+import {IBookingTimeForm, ISingleBookingDate, IBookingForm, IClientForm} from 'models';
 import {BOOKING_STATUS, BOOKING_STATUS_OPTIONS} from './booking-status-const';
 
 const today = new Date();
 
 // Form Buildings
-export enum SIZE_OPTIONS {
+enum SIZE_OPTIONS {
    '1/1' = '1/1',
    '1/2' = '1/2',
    '1/3' = '1/3',
@@ -15,7 +13,7 @@ export enum SIZE_OPTIONS {
    '3/4' = '3/4'
 }
 
-export enum CLIENT_TYPE {
+enum CLIENT_TYPE {
    CLIENT = 'Indywidualny',
    COMPANY = 'Firma'
 }
@@ -77,5 +75,7 @@ export {
    BOOKING_TIME_INITIAL_VALUE,
    BOOKING_SINGLE_TIME_INITIAL_VALUE,
    BOOKING_TIME_STATUS_INITIAL_VALUE,
-   SIZE_OPTIONS_BTN
+   SIZE_OPTIONS_BTN,
+   CLIENT_TYPE,
+   SIZE_OPTIONS
 };

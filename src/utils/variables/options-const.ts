@@ -1,5 +1,4 @@
-import {IBuilding} from 'models';
-import {IBuildingOptions, ISizeFieldOptions, TSelect} from 'models/components/select-model';
+import {IBuilding, IBuildingOptions, ISizeFieldOptions, TSelect} from 'models';
 import {
    RADWANICE_BUILDINGS,
    SIECHNICE_BUILDINGS,

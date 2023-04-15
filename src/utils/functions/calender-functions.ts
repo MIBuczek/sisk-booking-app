@@ -1,5 +1,5 @@
 import {IBooking} from 'models';
-import {BOOKING_STATUS} from '../variables/booking-status-const';
+import {BOOKING_STATUS} from 'utils';
 
 /**
  * Function to format time zone off set

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {formatDate, formatTime} from '../../utils';
-import {IBooking} from '../../models';
+import {formatDate, formatTime} from 'utils';
+import {IBooking} from 'models';
 
 const ClientStatusDetails = styled.div`
    display: grid;

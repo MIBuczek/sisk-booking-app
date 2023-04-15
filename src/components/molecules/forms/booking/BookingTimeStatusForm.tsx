@@ -10,13 +10,13 @@ import {
 } from 'utils';
 import {IBooking, IBookingStatusForm} from 'models';
 import {closeModal} from 'store';
-import Label from '../../../atoms/Label';
-import SelectInputField, {customStyles} from '../../../atoms/SelectInputField';
-import ErrorMsg from '../../../atoms/ErrorMsg';
-import TextAreaField from '../../../atoms/TextAreaField';
-import ConfirmAction from '../../ConfirmAction';
-import Button from '../../../atoms/Button';
-import TextInputField from '../../../atoms/TextInputField';
+import Label from 'components/atoms/Label';
+import SelectInputField, {customStyles} from 'components/atoms/SelectInputField';
+import ErrorMsg from 'components/atoms/ErrorMsg';
+import TextAreaField from 'components/atoms/TextAreaField';
+import ConfirmAction from 'components/molecules/ConfirmAction';
+import Button from 'components/atoms/Button';
+import TextInputField from 'components/atoms/TextInputField';
 
 const BookingTimeStatusWrapper = styled.form`
    width: 290px;

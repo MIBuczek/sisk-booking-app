@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as StoreActions from 'store';
 import {IReduxState} from 'models';
 import {SAVING_STAGE} from 'utils';
-import Loading from './Loading';
+import Loading from 'components/molecules/Loading';
 
 export interface IProps {
    children: React.ReactNode;

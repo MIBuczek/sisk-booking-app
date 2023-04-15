@@ -1,5 +1,5 @@
 import {IAuthAction} from 'models';
-import {LOGIN_STATE, SAVING_STAGE} from 'utils/variables/store-const';
+import {LOGIN_STATE, SAVING_STAGE} from 'utils';
 
 const INITIAL_STATE = {
    isFetching: false,

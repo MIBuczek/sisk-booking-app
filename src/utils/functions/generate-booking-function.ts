@@ -12,9 +12,9 @@ import {
    CLIENT_TYPE,
    DISCOUNT_OPTIONS,
    PAYMENTS_OPTIONS,
-   SIZE_OPTIONS
+   SIZE_OPTIONS,
+   findSelectedOption
 } from 'utils';
-import {findSelectedOption} from './utils-functions';
 
 /**
  * Function to overwrite booking day object and add one hour to be as in CET time zone

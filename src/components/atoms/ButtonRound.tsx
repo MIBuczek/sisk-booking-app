@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from './Button';
+import Button from 'components/atoms/Button';
 
 const RoundButton = styled(Button)`
    margin: 0;

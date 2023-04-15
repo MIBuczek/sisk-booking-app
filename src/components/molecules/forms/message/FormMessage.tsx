@@ -11,15 +11,15 @@ import {
    USER_MIB_SERVICE_ID,
    USER_MIB_TEMPLATE_MESSAGE_ID
 } from 'utils';
-import Anchor from '../../../atoms/Anchor';
-import Button from '../../../atoms/Button';
-import Checkbox from '../../../atoms/Checkbox';
-import ErrorMsg from '../../../atoms/ErrorMsg';
-import Header from '../../../atoms/Header';
-import Label from '../../../atoms/Label';
-import TextAreaField from '../../../atoms/TextAreaField';
-import TextInputField from '../../../atoms/TextInputField';
-import ConfirmAction from '../../ConfirmAction';
+import Anchor from 'components/atoms/Anchor';
+import Button from 'components/atoms/Button';
+import Checkbox from 'components/atoms/Checkbox';
+import ErrorMsg from 'components/atoms/ErrorMsg';
+import Header from 'components/atoms/Header';
+import Label from 'components/atoms/Label';
+import TextAreaField from 'components/atoms/TextAreaField';
+import TextInputField from 'components/atoms/TextInputField';
+import ConfirmAction from 'components/molecules/ConfirmAction';
 
 const MessageWrapper = styled.form`
    display: flex;

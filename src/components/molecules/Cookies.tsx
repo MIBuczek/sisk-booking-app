@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Anchor from '../atoms/Anchor';
-import Button from '../atoms/Button';
-import Header from '../atoms/Header';
-import Paragraph from '../atoms/Paragraph';
+import Anchor from 'components/atoms/Anchor';
+import Button from 'components/atoms/Button';
+import Header from 'components/atoms/Header';
+import Paragraph from 'components/atoms/Paragraph';
 
 const CookiesWrapper = styled.div`
    position: fixed;

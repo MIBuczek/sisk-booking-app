@@ -1,5 +1,5 @@
-import {SIZE_OPTIONS} from 'utils/variables/form-const';
-import {IPayload} from './store-models';
+import {SIZE_OPTIONS} from 'utils';
+import {IPayload} from 'models';
 
 interface IExtraBuilding {
    lighting: boolean;

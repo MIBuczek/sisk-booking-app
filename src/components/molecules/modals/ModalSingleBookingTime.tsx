@@ -2,11 +2,11 @@ import * as React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {isNil} from 'lodash';
 import styled from 'styled-components';
-import {IBooking, IReduxState} from '../../../models';
-import {updateBooking} from '../../../store';
-import Header from '../../atoms/Header';
-import BookingSingleTimeForm from '../forms/booking/BookingSingleTimeForm';
-import ClientDetails from '../ClientDetails';
+import {IBooking, IReduxState} from 'models';
+import {updateBooking} from 'store';
+import Header from 'components/atoms/Header';
+import BookingSingleTimeForm from 'components/molecules/forms/booking/BookingSingleTimeForm';
+import ClientDetails from 'components/molecules/ClientDetails';
 
 const SingleBookingTimeWrapper = styled.div`
    max-width: 670px;

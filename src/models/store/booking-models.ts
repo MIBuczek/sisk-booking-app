@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import {IPayload, ISelectedExtraOptions} from 'models';
-import {CLIENT_TYPE, SIZE_OPTIONS} from 'utils/variables/form-const';
+import {CLIENT_TYPE, SIZE_OPTIONS} from 'utils';
 
 interface ISingleBookingDate {
    day: Date;

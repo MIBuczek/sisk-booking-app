@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import {bookingIndexTypeChecker, ExtraOptions, IBooking, IClient, TSelect} from 'models';
-import {SIZE_OPTIONS, SIZE_OPTIONS_BTN} from 'utils/variables/form-const';
-import {SIZE_FIELD_OPTIONS} from 'utils/variables/options-const';
+import {SIZE_OPTIONS, SIZE_OPTIONS_BTN, SIZE_FIELD_OPTIONS} from 'utils';
 
 /**
  * Function to transform first string letter to upper case.

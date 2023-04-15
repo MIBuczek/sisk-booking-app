@@ -1,8 +1,8 @@
 import {isEmpty} from 'lodash';
 import * as React from 'react';
 import styled from 'styled-components';
-import {SIZE_OPTIONS} from 'utils/variables/form-const';
-import Button from './Button';
+import {SIZE_OPTIONS} from 'utils';
+import Button from 'components/atoms/Button';
 
 type GroupBtnProps = {
    active?: boolean;

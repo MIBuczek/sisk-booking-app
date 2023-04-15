@@ -11,11 +11,17 @@ import {
    ISummaryClientBookings,
    TSelect
 } from 'models';
-import {changeDayInDate} from './calender-functions';
-import {BOOKING_STATUS} from '../variables/booking-status-const';
-import {modelDisplayValue, transformToPercentage, transformValue} from './modeling-value-function';
-import {checkSelectedOption, makeLastDayOfMonth} from './utils-functions';
-import {csvBookingKeys, csvClientKeys} from '../variables/csv-file-headers';
+import {
+   changeDayInDate,
+   BOOKING_STATUS,
+   modelDisplayValue,
+   transformToPercentage,
+   transformValue,
+   checkSelectedOption,
+   makeLastDayOfMonth,
+   csvBookingKeys,
+   csvClientKeys
+} from 'utils';
 
 /**
  * Function to find all reservation assigned to client id

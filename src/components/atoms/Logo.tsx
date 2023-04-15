@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import logo from '../../assets/images/logo-white.png';
+import logo from 'assets/images/logo-white.png';
 
 const LogoWrapper = styled.div`
    width: 228px;

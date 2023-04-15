@@ -33,7 +33,7 @@ import {
    USER_MIB_SERVICE_ID,
    USER_MIB_TEMPLATE_EMPLOYEE_ID
 } from 'utils';
-import Modal from './Modal';
+import Modal from 'components/organisms/Modal';
 
 const BuildingWrapper = styled.article`
    width: 60%;

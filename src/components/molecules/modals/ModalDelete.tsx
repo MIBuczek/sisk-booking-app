@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import ConfirmAction from '../ConfirmAction';
+import ConfirmAction from 'components/molecules/ConfirmAction';
 
 const DeleteWrapper = styled.div`
    display: flex;

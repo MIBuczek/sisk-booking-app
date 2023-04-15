@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {IMainState} from 'models/components/main-view-model';
-import BookingForm from '../forms/booking/BookingForm';
+import {IMainState} from 'models';
+import BookingForm from 'components/molecules/forms/booking/BookingForm';
 
 interface IProps {
    mainState: IMainState;

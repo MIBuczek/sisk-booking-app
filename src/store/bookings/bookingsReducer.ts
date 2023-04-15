@@ -1,5 +1,5 @@
 import {IBookingsAction, IBookingsPayload} from 'models';
-import {BOOKING_STATE, SAVING_STAGE} from 'utils/variables/store-const';
+import {BOOKING_STATE, SAVING_STAGE} from 'utils';
 
 const INITIAL_STATE: IBookingsPayload = {
    isFetching: false,

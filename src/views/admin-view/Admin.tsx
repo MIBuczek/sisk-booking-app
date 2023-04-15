@@ -20,10 +20,10 @@ import Clients from 'components/organisms/Clients';
 import Bookings from 'components/organisms/Bookings';
 import Building from 'components/organisms/Building';
 import Summary from 'components/organisms/Summary';
-import userMoseClock from '../../hooks/userMoseClock';
-import {openModal} from '../../store';
-import Modal from '../../components/organisms/Modal';
-import ModalOutLogOut from '../../components/molecules/modals/ModalOutLogOut';
+import userMoseClock from 'hooks/userMoseClock';
+import {openModal} from 'store';
+import Modal from 'components/organisms/Modal';
+import ModalOutLogOut from 'components/molecules/modals/ModalOutLogOut';
 
 const AdminWrapper = styled.section`
    width: 100%;

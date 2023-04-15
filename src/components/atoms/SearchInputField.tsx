@@ -4,8 +4,8 @@ import * as React from 'react';
 import {BsSearch, BsXLg} from 'react-icons/bs';
 import styled from 'styled-components';
 import {searchSelectedContent} from 'utils';
-import TextInputField from './TextInputField';
-import Button from './Button';
+import TextInputField from 'components/atoms/TextInputField';
+import Button from 'components/atoms/Button';
 
 const SearchInputWrapper = styled.div`
    display: inline-block;

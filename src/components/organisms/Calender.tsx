@@ -6,18 +6,16 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {EventClickArg, EventInput} from '@fullcalendar/core';
 import {useDispatch, useSelector} from 'react-redux';
-
 import Paragraph from 'components/atoms/Paragraph';
 import {BsFillExclamationCircleFill} from 'react-icons/bs';
 import {IAdminState, IBooking, IMainState, IReduxState} from 'models';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
 import {BOOKING_STATUS, MODAL_TYPES, prepareCalenderItem} from 'utils';
 import {getCurrentBooking, openModal} from 'store';
-import RenderEventContent from '../atoms/CalenderEvent';
-
-import ModalResolveBooking from '../molecules/modals/ModalResolveBooking';
-import Modal from './Modal';
-import ModalInfo from '../molecules/modals/ModalInfo';
+import RenderEventContent from 'components/atoms/CalenderEvent';
+import ModalResolveBooking from 'components/molecules/modals/ModalResolveBooking';
+import Modal from 'components/organisms/Modal';
+import ModalInfo from 'components/molecules/modals/ModalInfo';
 
 const CalenderWrapper = styled.section`
    width: 60%;

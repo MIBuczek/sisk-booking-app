@@ -7,10 +7,10 @@ import {IReduxState} from 'models';
 import {logOutUser, openModal} from 'store';
 import {fadeIn} from 'style/animation';
 import {MODAL_TYPES} from 'utils';
-import Logo from '../atoms/Logo';
-import useScrollPosition from '../../hooks/useScrollPosition ';
-import Anchor from '../atoms/Anchor';
-import Button from '../atoms/Button';
+import Logo from 'components/atoms/Logo';
+import useScrollPosition from 'hooks/useScrollPosition ';
+import Anchor from 'components/atoms/Anchor';
+import Button from 'components/atoms/Button';
 
 type Navigation = {
    isTop: boolean;

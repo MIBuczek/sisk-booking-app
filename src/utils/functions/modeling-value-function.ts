@@ -1,6 +1,6 @@
 import {TBooking} from 'models';
 import {isNil} from 'lodash';
-import {formatDate, formatTime} from './calender-functions';
+import {formatDate, formatTime} from 'utils';
 
 /**
  * Object used to transform property value into display value

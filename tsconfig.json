@@ -22,7 +22,19 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "@assets/*": ["assets/*"],
+      "@components" : ["components/*"],
+      "@hooks": ["hooks/*"],
+      "@models" : ["models/*"],
+      "@providers" : ["providers/*"],
+      "@store" : ["store/*"],
+      "@style": ["style/*"],
+      "@theme": ["theme/*"],
+      "@utils": ["utils/*"],
+      "@views": ["views/*"]
+    }
   },
   "include": [
     "src"

@@ -7,12 +7,12 @@ import ModalMessage from 'components/molecules/modals/ModalMessage';
 import {fadeIn} from 'style/animation';
 import {MODAL_TYPES} from 'utils';
 import {openModal} from 'store';
-import logoFooter from '../../assets/images/logo_footer.png';
-import BIPFooter from '../../assets/images/bip-footer.png';
-import Paragraph from '../atoms/Paragraph';
-import Anchor from '../atoms/Anchor';
-import Button from '../atoms/Button';
-import Modal from './Modal';
+import logoFooter from 'assets/images/logo_footer.png';
+import BIPFooter from 'assets/images/bip-footer.png';
+import Paragraph from 'components/atoms/Paragraph';
+import Anchor from 'components/atoms/Anchor';
+import Button from 'components/atoms/Button';
+import Modal from 'components/organisms/Modal';
 
 const FooterWrapper = styled.footer`
    width: 100%;

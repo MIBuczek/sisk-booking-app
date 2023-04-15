@@ -5,8 +5,8 @@ import {IBooking} from 'models';
 import {useDispatch} from 'react-redux';
 import {updateBooking} from 'store';
 import styled from 'styled-components';
-import BookingTimeStatusForm from '../forms/booking/BookingTimeStatusForm';
-import ClientDetails from '../ClientDetails';
+import BookingTimeStatusForm from 'components/molecules/forms/booking/BookingTimeStatusForm';
+import ClientDetails from 'components/molecules/ClientDetails';
 
 const BookingStatusWrapper = styled.section`
    max-width: 670px;

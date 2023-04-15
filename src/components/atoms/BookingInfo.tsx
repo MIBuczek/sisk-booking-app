@@ -11,7 +11,7 @@ import {
 } from 'utils';
 import {fadeIn} from 'style/animation';
 import {IBooking} from 'models';
-import Paragraph from './Paragraph';
+import Paragraph from 'components/atoms/Paragraph';
 
 const DetailsParagraph = styled(Paragraph)`
    font-size: 14px;

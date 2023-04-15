@@ -1,5 +1,11 @@
-import {IModal, IAuthPayload, IBookingsPayload, IClientsPayload, IUserPayload} from 'models';
-import {IBuildingPayload} from './building-models';
+import {
+   IModal,
+   IAuthPayload,
+   IBookingsPayload,
+   IClientsPayload,
+   IUserPayload,
+   IBuildingPayload
+} from 'models';
 
 interface IPayload {
    isFetching: boolean;

@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import {IBooking, IEditHandler, ISingleBookingDate} from 'models';
 import {checkSingleDayConflict, MODAL_TYPES, modelDisplayValue} from 'utils';
 import {openModal, updateBookingConflicts} from 'store';
-import Button from './Button';
+import Button from 'components/atoms/Button';
 
 const SingleBookingTime = styled.div`
    display: flex;

@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {clearBookingConflicts, closeModal} from 'store';
 import {IReduxState} from 'models';
 import {modelDisplayValue} from 'utils';
-import Button from '../../atoms/Button';
-import Header from '../../atoms/Header';
+import Button from 'components/atoms/Button';
+import Header from 'components/atoms/Header';
 
 const ModalConflictWrapper = styled.div`
    display: flex;

@@ -6,11 +6,11 @@ import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import {BsFillFileTextFill, BsRepeat, BsTrashFill, BsXLg} from 'react-icons/bs';
 import {cloneDeep, isEmpty} from 'lodash';
-import {fadeIn} from '../../../../style/animation';
-import {IBookingTimeForm, ISingleBookingDate} from '../../../../models';
-import Label from '../../../atoms/Label';
-import {DataPickerField} from '../../../atoms/DatapickerField';
-import ErrorMsg from '../../../atoms/ErrorMsg';
+import {fadeIn} from 'style/animation';
+import {IBookingTimeForm, ISingleBookingDate, isNumber} from 'models';
+import Label from 'components/atoms/Label';
+import {DataPickerField} from 'components/atoms/DatapickerField';
+import ErrorMsg from 'components/atoms/ErrorMsg';
 import {
    BOOKING_SINGLE_TIME_INITIAL_VALUE,
    BOOKING_STATUS,
@@ -18,11 +18,10 @@ import {
    checkNewAddedBookingTimeConflicts,
    formatCalenderDate,
    generateMaxRangDate,
-   isNumber,
    modelDisplayValue
-} from '../../../../utils';
-import RoundButton from '../../../atoms/ButtonRound';
-import WarningMsg from '../../../atoms/WarningMsg';
+} from 'utils';
+import RoundButton from 'components/atoms/ButtonRound';
+import WarningMsg from 'components/atoms/WarningMsg';
 
 const TimeWrapper = styled.section`
    width: 100%;

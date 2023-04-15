@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Dispatch} from 'redux';
 import {IClient, IClientsActions, IModalAction, IReduxState} from 'models';
 import {CLIENTS_STATE, db, MODAL_TYPES, parseFirebaseClientData, SAVING_STAGE} from 'utils';

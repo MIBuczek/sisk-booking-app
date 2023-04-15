@@ -1,4 +1,4 @@
-import {TSelect} from 'models/components/select-model';
+import {TSelect} from 'models';
 
 interface IEmployeeMessageForm {
    email: string;

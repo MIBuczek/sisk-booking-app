@@ -9,10 +9,9 @@ import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/Se
 import TextInputField from 'components/atoms/TextInputField';
 import {CLIENT_INITIAL_VALUE, CLIENT_OPTIONS, CLIENT_TYPE, findSelectedOption} from 'utils';
 import {useDispatch} from 'react-redux';
-import {IClient} from 'models';
-import {IClientForm} from 'models/forms/client-form-model';
+import {IClient, IClientForm} from 'models';
 import {addClient, closeModal, updateClient} from 'store';
-import ConfirmAction from '../../ConfirmAction';
+import ConfirmAction from 'components/molecules/ConfirmAction';
 
 const ClientWrapper = styled.section`
    display: flex;

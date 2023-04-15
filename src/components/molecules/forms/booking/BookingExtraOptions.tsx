@@ -10,9 +10,9 @@ import setMinutes from 'date-fns/setMinutes';
 import Checkbox from 'components/atoms/Checkbox';
 import {BsFillFileTextFill, BsTrashFill, BsXLg} from 'react-icons/bs';
 import {cloneDeep, isEmpty} from 'lodash';
-import {checkSelectedOption, INITIAL_EXTRA_OPTIONS, isNumber, modelDisplayValue} from 'utils';
-import {IExtraOptionForm, ISelectedExtraOptions} from 'models';
-import RoundButton from '../../../atoms/ButtonRound';
+import {checkSelectedOption, INITIAL_EXTRA_OPTIONS, modelDisplayValue} from 'utils';
+import {IExtraOptionForm, ISelectedExtraOptions, isNumber} from 'models';
+import RoundButton from 'components/atoms/ButtonRound';
 
 const ExtraOptionsWrapper = styled.section`
    width: 100%;

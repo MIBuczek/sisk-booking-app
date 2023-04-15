@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FormMessage from '../forms/message/FormMessage';
+import FormMessage from 'components/molecules/forms/message/FormMessage';
 
 const ModalMessage = () => <FormMessage />;
 

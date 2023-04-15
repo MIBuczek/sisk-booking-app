@@ -19,3 +19,4 @@ export * from 'models/components/select-model';
 export * from 'models/forms/booking-extra-options-models';
 export * from 'models/components/summary-client-model';
 export * from 'models/forms/booking-time-form-models';
+export * from 'models/types-guards/general-guards';

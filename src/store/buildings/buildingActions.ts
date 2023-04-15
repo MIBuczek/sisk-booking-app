@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Dispatch} from 'redux';
 import {IBuilding, IBuildingAction} from 'models';
 import {BUILDING_STATE, db, parseFirebaseBuildingData, SAVING_STAGE} from 'utils';

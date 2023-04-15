@@ -15,7 +15,7 @@ import {IAdminState, IMainState, IReduxState, TSelect} from 'models';
 import Label from 'components/atoms/Label';
 import ButtonIcon, {iconStyle} from 'components/atoms/ButtonIcon';
 import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/SelectInputField';
-import BookingDetails from '../molecules/BookingDetails';
+import BookingDetails from 'components/molecules/BookingDetails';
 
 const SideWrapper = styled.aside`
    width: 30%;

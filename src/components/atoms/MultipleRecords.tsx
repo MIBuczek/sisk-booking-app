@@ -4,9 +4,9 @@ import * as React from 'react';
 import {fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
 import {pagination, SIZE_OPTIONS} from 'utils';
-import ButtonGroup from './ButtonGroup';
-import MultipleRecordItem from './MultipleRecordsItem';
-import Pagination from './Pagination';
+import ButtonGroup from 'components/atoms/ButtonGroup';
+import MultipleRecordItem from 'components/atoms/MultipleRecordsItem';
+import Pagination from 'components/atoms/Pagination';
 
 type RecordDataType = {
    empty?: boolean;

@@ -9,7 +9,8 @@ import {
    IDeleteHandler,
    IEditHandler,
    instanceOfBookings,
-   IReduxState
+   IReduxState,
+   isNumber
 } from 'models';
 import {useDispatch, useSelector} from 'react-redux';
 import {closeModal, deleteBooking, openModal} from 'store';
@@ -19,7 +20,6 @@ import {
    checkAllBookingsConflicts,
    filterBookingsPerPlace,
    findCurrentItemIndex,
-   isNumber,
    MODAL_TYPES,
    RECORDS_BOOKING_DETAILS_PROPERTY_MAP,
    RECORDS_BOOKING_ROW_DETAILS,
@@ -37,10 +37,10 @@ import {BsFillExclamationCircleFill} from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import {cloneDeep} from 'lodash';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import Modal from './Modal';
-import ModalConflictDetails from '../molecules/modals/ModalConflictDetails';
-import Checkbox from '../atoms/Checkbox';
-import ModalSingleBookingTime from '../molecules/modals/ModalSingleBookingTime';
+import Modal from 'components/organisms/Modal';
+import ModalConflictDetails from 'components/molecules/modals/ModalConflictDetails';
+import Checkbox from 'components/atoms/Checkbox';
+import ModalSingleBookingTime from 'components/molecules/modals/ModalSingleBookingTime';
 
 const BookingsWrapper = styled.section`
    width: 60%;

@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
-import Header from '../../atoms/Header';
-import Paragraph from '../../atoms/Paragraph';
-import {closeModal, logOutUser} from '../../../store';
-import Button from '../../atoms/Button';
+import Header from 'components/atoms/Header';
+import Paragraph from 'components/atoms/Paragraph';
+import {closeModal, logOutUser} from 'store';
+import Button from 'components/atoms/Button';
 
 const LogOutWrapper = styled.div`
    padding: 0 20px 20px;

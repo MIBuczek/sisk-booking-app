@@ -20,9 +20,9 @@ import {
 import {fadeIn, fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
 import {checkIsLastIndex, checkSelectedOption, MODAL_TYPES, modelDisplayValue} from 'utils';
-import Collapse, {IRenderProps} from '../../providers/Collapse';
-import Button from './Button';
-import RecordOpenItem from './RecordOpenItem';
+import Collapse, {IRenderProps} from 'providers/Collapse';
+import Button from 'components/atoms/Button';
+import RecordOpenItem from 'components/atoms/RecordOpenItem';
 
 const RecordTableData = styled.td`
    display: inline-block;

@@ -6,7 +6,8 @@ import {
    findSelectedOption,
    firstLetterUpperCase,
    formatDate,
-   formatTime
+   formatTime,
+   transformValue
 } from 'utils';
 import {fadeIn} from 'style/animation';
 import {IBooking} from 'models';
@@ -39,7 +40,8 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
    currentBooking,
    bookingTimeIndex
 }): JSX.Element => {
-   const {person, city, building, bookingTime, size, message} = currentBooking;
+   const {person, city, building, bookingTime, size, message, payment} = currentBooking;
+
    return (
       <>
          <DetailsParagraph bold>
@@ -60,6 +62,9 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
          </DetailsParagraph>
          <DetailsParagraph bold>
             Wynajęta powierzchnia : <DetailsSpan>{size}</DetailsSpan>
+         </DetailsParagraph>
+         <DetailsParagraph bold>
+            Płatność : <DetailsSpan>{transformValue[payment]}</DetailsSpan>
          </DetailsParagraph>
          <DetailsParagraph bold>
             Od godziny :

@@ -48,16 +48,16 @@ const ModalContent = styled.div`
 
 export interface IProps {
    children: JSX.Element | boolean | (JSX.Element | boolean)[];
-   className?: string;
+   customClassName?: string;
 }
 
-const Modal: React.FC<IProps> = ({children, className = ''}): JSX.Element | null => {
+const Modal: React.FC<IProps> = ({children, customClassName = ''}): JSX.Element | null => {
    const {isOpen} = useSelector((state: IReduxState) => state.modal);
    if (isOpen) {
       return (
          <ModalWrapper>
             <BGImage src={bgModal} alt="bg" />
-            <ModalContent className={className}>{children}</ModalContent>
+            <ModalContent className={customClassName}>{children}</ModalContent>
          </ModalWrapper>
       );
    }

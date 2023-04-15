@@ -293,7 +293,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
             </ConflictParagraph>
          )}
          {isOpen && (
-            <Modal className={type === MODAL_TYPES.BOOKINGS ? 'overflow' : undefined}>
+            <Modal customClassName={type === MODAL_TYPES.BOOKINGS ? 'overflow' : undefined}>
                {type === MODAL_TYPES.BOOKINGS && (
                   <BookingForm
                      mainState={mainState}

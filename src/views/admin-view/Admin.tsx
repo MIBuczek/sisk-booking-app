@@ -130,7 +130,11 @@ const Admin = (): JSX.Element => {
                {tab === ADMIN_TABS.SUMMARY && <Summary />}
             </>
          )}
-         {isOpen && <Modal>{type === MODAL_TYPES.AUTO_LOGOUT && <ModalOutLogOut />}</Modal>}
+         {isOpen && type === MODAL_TYPES.AUTO_LOGOUT && (
+            <Modal>
+               <ModalOutLogOut />
+            </Modal>
+         )}
       </AdminWrapper>
    );
 };

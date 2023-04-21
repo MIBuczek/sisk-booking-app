@@ -180,7 +180,12 @@ const BookingSingleTimeForm: React.FunctionComponent<IProp> = ({
                   name="day"
                   defaultValue={new Date()}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     }
+                  }}
                   render={({field: {onChange, onBlur, value}}) => (
                      <DataPickerField
                         showTimeSelect={false}
@@ -198,7 +203,7 @@ const BookingSingleTimeForm: React.FunctionComponent<IProp> = ({
                      />
                   )}
                />
-               {errors.day && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.day && <ErrorMsg innerText={errors.day.message} />}
             </SingleOption>
             <SingleOption>
                <Label>Od godziny</Label>
@@ -206,7 +211,12 @@ const BookingSingleTimeForm: React.FunctionComponent<IProp> = ({
                   name="startHour"
                   defaultValue={undefined}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     }
+                  }}
                   render={({field: {onChange, onBlur, value}}) => (
                      <DataPickerField
                         placeholderText="Wybierz"
@@ -227,7 +237,7 @@ const BookingSingleTimeForm: React.FunctionComponent<IProp> = ({
                      />
                   )}
                />
-               {errors.startHour && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.startHour && <ErrorMsg innerText={errors.startHour.message} />}
             </SingleOption>
             <SingleOption>
                <Label>Do godziny</Label>
@@ -235,7 +245,12 @@ const BookingSingleTimeForm: React.FunctionComponent<IProp> = ({
                   name="endHour"
                   defaultValue={undefined}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     }
+                  }}
                   render={({field: {onChange, onBlur, value}}) => (
                      <DataPickerField
                         placeholderText="Wybierz"
@@ -256,7 +271,7 @@ const BookingSingleTimeForm: React.FunctionComponent<IProp> = ({
                      />
                   )}
                />
-               {errors.endHour && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.endHour && <ErrorMsg innerText={errors.endHour.message} />}
             </SingleOption>
             {displayConfirmation ? (
                <ConfirmAction

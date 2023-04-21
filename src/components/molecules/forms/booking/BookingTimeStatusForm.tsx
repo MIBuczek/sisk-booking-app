@@ -161,7 +161,12 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             name="bookingStatus"
             defaultValue={BOOKING_STATUS_OPTIONS[0]}
             control={control}
-            rules={{required: true}}
+            rules={{
+               required: {
+                  value: true,
+                  message: 'Pole nie może być puste'
+               }
+            }}
             render={({field: {onChange, onBlur, value}}) => (
                <SelectInputField
                   options={BOOKING_STATUS_OPTIONS}
@@ -176,13 +181,22 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
                />
             )}
          />
-         {errors.bookingStatus && <ErrorMsg innerText="Pole nie może być puste" />}
+         {errors.bookingStatus && <ErrorMsg innerText={errors.bookingStatus.message} />}
          <Label>Liczba uczestników</Label>
          <Controller
             name="bookingParticipants"
             defaultValue={''}
             control={control}
-            rules={{required: true}}
+            rules={{
+               required: {
+                  value: true,
+                  message: 'Pole nie może być puste'
+               },
+               pattern: {
+                  value: /^[0-9]/,
+                  message: 'Pole może zawierać tylko liczby'
+               }
+            }}
             render={({field: {onChange, onBlur, value}}) => (
                <ParticipantInput
                   placeholder="Wpisz liczbe"
@@ -193,7 +207,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
                />
             )}
          />
-         {errors.bookingParticipants && <ErrorMsg innerText="Pole nie może być puste" />}
+         {errors.bookingParticipants && <ErrorMsg innerText={errors.bookingParticipants.message} />}
          <Label>Uwagi</Label>
          <Controller
             name="bookingComments"

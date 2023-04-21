@@ -21,10 +21,10 @@ const ErrorTextContent = styled.span`
 `;
 
 interface IProps {
-   innerText: string;
+   innerText?: string;
 }
 
-const ErrorMsg: React.FC<IProps> = ({innerText}) => (
+const ErrorMsg: React.FC<IProps> = ({innerText = ''}) => (
    <ErrorTextContent>
       {innerText} <BsExclamationCircle />
    </ErrorTextContent>

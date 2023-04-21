@@ -309,6 +309,10 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     * @param cred
     */
    const onSubmit: SubmitHandler<IBookingForm> = (cred) => {
+      if (!bookingTime.length) {
+         return;
+      }
+
       const bookingToApprove = cloneDeep(
          generateBookingDetails(cred, selectedSize, bookingTime, extraOptions, bookingId)
       );
@@ -516,7 +520,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                name="city"
                defaultValue={city}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <SelectInputField
                      options={CITY_OPTIONS}
@@ -532,7 +541,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   />
                )}
             />
-            {errors.city && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.city && <ErrorMsg innerText={errors.city.message} />}
          </SelectWrapper>
          <SelectWrapper>
             <Label>Obiekt</Label>
@@ -540,7 +549,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                name="building"
                defaultValue={building}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <SelectInputField
                      options={selectBuildingOptions(cityValue.value, building)}
@@ -556,7 +570,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   />
                )}
             />
-            {errors.building && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.building && <ErrorMsg innerText={errors.building.message} />}
          </SelectWrapper>
          <SelectWrapper>
             <Label>Rezerwowana powierzchnia</Label>
@@ -575,7 +589,12 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                name="payment"
                defaultValue={PAYMENTS_OPTIONS[0]}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <SelectInputField
                      options={PAYMENTS_OPTIONS}
@@ -591,7 +610,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   />
                )}
             />
-            {errors.payment && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.payment && <ErrorMsg innerText={errors.payment.message} />}
          </SelectWrapper>
          <InputContainer>
             <InputWrapper>
@@ -600,7 +619,20 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   name="person"
                   defaultValue={''}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     },
+                     minLength: {
+                        value: 3,
+                        message: 'Minimalna ilość znaków to 3'
+                     },
+                     maxLength: {
+                        value: 100,
+                        message: 'Maksymalna ilość znaków to 100'
+                     }
+                  }}
                   render={({field: {onChange, onBlur, value}}) => (
                      <TextInputField
                         onBlur={onBlur}
@@ -613,7 +645,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                      />
                   )}
                />
-               {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.person && <ErrorMsg innerText={errors.person.message} />}
             </InputWrapper>
             <InputWrapper>
                <Label>E-mail</Label>
@@ -621,7 +653,22 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   name="email"
                   defaultValue={''}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     },
+                     minLength: {
+                        value: 8,
+                        message: 'Minimalna ilość znaków to 8'
+                     },
+                     maxLength: {
+                        value: 100,
+                        message: 'Maksymalna ilość znaków to 100'
+                     },
+                     validate: () =>
+                        getValues('email').includes('@') || 'Adres email musi zawierać @'
+                  }}
                   render={({field: {onChange, onBlur, value}}) => (
                      <TextInputField
                         onBlur={onBlur}
@@ -634,7 +681,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                      />
                   )}
                />
-               {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.email && <ErrorMsg innerText={errors.email.message} />}
             </InputWrapper>
             <InputWrapper>
                <Label>Telefon</Label>
@@ -642,7 +689,24 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   name="phone"
                   defaultValue={''}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     },
+                     minLength: {
+                        value: 9,
+                        message: 'Minimalna ilość znaków to 9'
+                     },
+                     maxLength: {
+                        value: 15,
+                        message: 'Maksymalna ilość znaków to 15'
+                     },
+                     pattern: {
+                        value: /^[\d./-]+$/,
+                        message: 'Pole może zawierać tylko liczby oraz myślnik'
+                     }
+                  }}
                   render={({field: {onChange, onBlur, value}}) => (
                      <TextInputField
                         onBlur={onBlur}
@@ -655,7 +719,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                      />
                   )}
                />
-               {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.phone && <ErrorMsg innerText={errors.phone.message} />}
             </InputWrapper>
             <AutocompleteWrapper>
                <Label>Udzielony rabat</Label>
@@ -663,7 +727,14 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                   name="discount"
                   defaultValue={DISCOUNT_OPTIONS[0]}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     },
+                     validate: () =>
+                        getValues('discount').includes('%') || 'Pole musi zawierać znak %'
+                  }}
                   render={({field: {onChange, value}}) => (
                      <Autocomplete
                         trigger=""
@@ -675,11 +746,11 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                         onSelect={(val: string) => {
                            setValue('discount', val.split(' ')[0]);
                         }}
-                        disabled={displayConfirmation}
+                        disabled={!isAdmin || displayConfirmation}
                      />
                   )}
                />
-               {errors.discount && <ErrorMsg innerText="Pole nie może być puste" />}
+               {errors.discount && <ErrorMsg innerText={errors.discount.message} />}
             </AutocompleteWrapper>
          </InputContainer>
          <BookingTimeForm
@@ -757,8 +828,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                <Anchor
                   small
                   href="https://www.sisk-siechnice.pl/wp-content/uploads/2019/09/Klauzula-informacyjna-do-formularza-kontaktowego-SISK.pdf"
-                  target="_blank"
-               >
+                  target="_blank">
                   Klauzula informacyjna do formularza kontaktowego o przetwarzaniu danych osobowych.
                </Anchor>
             </RodoWrapper>
@@ -786,8 +856,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
                <Button
                   role="button"
                   onClick={handleSubmit(onSubmit)}
-                  disabled={isAdmin ? false : !police}
-               >
+                  disabled={isAdmin ? false : !police}>
                   {isAdmin
                      ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwację`
                      : 'Wyślij prośbę o rezerwację'}

@@ -88,6 +88,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
    const {
       handleSubmit,
       formState: {errors},
+      getValues,
       control,
       reset,
       watch
@@ -170,7 +171,12 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                   name="type"
                   defaultValue={CLIENT_OPTIONS[0]}
                   control={control}
-                  rules={{required: true}}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     }
+                  }}
                   render={({field: {onChange, onBlur, value}}) => (
                      <SelectInputField
                         options={CLIENT_OPTIONS}
@@ -186,7 +192,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                      />
                   )}
                />
-               {errors.type && <ErrorMsg innerText="Pole nie może byc puste" />}
+               {errors.type && <ErrorMsg innerText={errors.type.message} />}
             </ClientSelectWrapper>
             <Label>
                {clientType?.value === CLIENT_TYPE.COMPANY ? 'Nazwa firmy' : 'Imię i nazwisko'}
@@ -195,7 +201,20 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="name"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 3,
+                     message: 'Minimalna ilość znaków to 3'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 100'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -208,7 +227,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                   />
                )}
             />
-            {errors.name && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.name && <ErrorMsg innerText={errors.name.message} />}
             {clientType?.value === CLIENT_TYPE.COMPANY && (
                <>
                   <Label>NIP</Label>
@@ -216,7 +235,24 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                      name="nip"
                      defaultValue={''}
                      control={control}
-                     rules={{required: true}}
+                     rules={{
+                        required: {
+                           value: true,
+                           message: 'Pole nie może być puste'
+                        },
+                        minLength: {
+                           value: 10,
+                           message: 'Minimalna ilość znaków to 10'
+                        },
+                        maxLength: {
+                           value: 15,
+                           message: 'Maksymalna ilość znaków to 15'
+                        },
+                        pattern: {
+                           value: /^[\d./-]+$/,
+                           message: 'Pole może zawierać tylko liczby oraz myślnik'
+                        }
+                     }}
                      render={({field: {onChange, onBlur, value}}) => (
                         <TextInputField
                            onBlur={onBlur}
@@ -229,7 +265,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                         />
                      )}
                   />
-                  {errors.nip && <ErrorMsg innerText="Pole nie może być puste" />}
+                  {errors.nip && <ErrorMsg innerText={errors.nip.message} />}
                </>
             )}
             <Label>Telefon</Label>
@@ -256,7 +292,21 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="email"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 8,
+                     message: 'Minimalna ilość znaków to 8'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 100'
+                  },
+                  validate: () => getValues('email').includes('@') || 'Adres email musi zawierać @'
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -269,7 +319,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                   />
                )}
             />
-            {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.email && <ErrorMsg innerText={errors.email.message} />}
          </ClientInnerContent>
          <ClientInnerContent>
             {clientType?.value === CLIENT_TYPE.COMPANY && (
@@ -279,7 +329,20 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                      name="contactPerson"
                      defaultValue={''}
                      control={control}
-                     rules={{required: true}}
+                     rules={{
+                        required: {
+                           value: true,
+                           message: 'Pole nie może być puste'
+                        },
+                        minLength: {
+                           value: 3,
+                           message: 'Minimalna ilość znaków to 3'
+                        },
+                        maxLength: {
+                           value: 100,
+                           message: 'Maksymalna ilość znaków to 100'
+                        }
+                     }}
                      render={({field: {onChange, onBlur, value}}) => (
                         <TextInputField
                            onBlur={onBlur}
@@ -292,7 +355,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                         />
                      )}
                   />
-                  {errors.contactPerson && <ErrorMsg innerText="Pole nie może być puste" />}
+                  {errors.contactPerson && <ErrorMsg innerText={errors.contactPerson.message} />}
                </>
             )}
             <Label>Ulica</Label>
@@ -300,7 +363,20 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                name="street"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 3,
+                     message: 'Minimalna ilość znaków to 3'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 100'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -313,13 +389,26 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                   />
                )}
             />
-            {errors.street && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.street && <ErrorMsg innerText={errors.street.message} />}
             <Label>Miasto</Label>
             <Controller
                name="city"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 3,
+                     message: 'Minimalna ilość znaków to 3'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 100'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -332,13 +421,30 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                   />
                )}
             />
-            {errors.city && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.city && <ErrorMsg innerText={errors.city.message} />}
             <Label>Kod pocztowy</Label>
             <Controller
                name="zipCode"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 3,
+                     message: 'Minimalna ilość znaków to 5'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 8'
+                  },
+                  pattern: {
+                     value: /^[\d./-]+$/,
+                     message: 'Pole może zawierać tylko liczby oraz myślnik'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -351,7 +457,7 @@ const ClientForm: React.FunctionComponent<ClientFormProps> = ({
                   />
                )}
             />
-            {errors.zipCode && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.zipCode && <ErrorMsg innerText={errors.zipCode.message} />}
          </ClientInnerContent>
          {displayConfirmation ? (
             <ConfirmAction

@@ -54,10 +54,15 @@ const TimeOptionsForm = styled.div`
    display: flex;
    align-items: flex-start;
    justify-content: space-between;
+
+   @media (max-width: 720px) {
+      flex-wrap: wrap;
+   }
 `;
 
 const SingleOption = styled.div`
    width: 30%;
+   min-width: 190px;
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -69,13 +74,14 @@ const DatePicker = styled(DataPickerField)`
 `;
 
 const ButtonWrapper = styled(SingleOption)`
+   display: inline-block;
    width: 10%;
-   height: 100%;
+   min-width: 60px;
+   height: 68px;
    justify-content: end;
 
    button {
-      margin-bottom: 0.5rem;
-      align-self: center !important;
+      margin: 3rem auto 1rem;
    }
 `;
 

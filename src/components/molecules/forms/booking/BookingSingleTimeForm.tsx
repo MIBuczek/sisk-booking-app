@@ -30,10 +30,16 @@ const SingleBookingTimeWrapper = styled.form`
    button {
       align-self: flex-end;
    }
+
+   @media (max-width: 720px) {
+      flex-direction: column;
+      align-items: center;
+   }
 `;
 
 const SingleOption = styled.div`
    width: 30%;
+   min-width: 210px;
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -49,6 +55,10 @@ const ButtonPanel = styled.div`
 
    button {
       margin: 0 0 0 0.8rem;
+   }
+
+   @media (max-width: 720px) {
+      width: 85%;
    }
 `;
 

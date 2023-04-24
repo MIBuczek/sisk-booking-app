@@ -95,14 +95,11 @@ const InputContainer = styled.div`
       display: flex;
       justify-content: center;
    }
-
-   @media (max-width: 890px) {
-      width: 50%;
-   }
 `;
 
 const InputWrapper = styled.div`
    width: 50%;
+   min-width: 290px;
    display: flex;
    flex-direction: column;
    align-items: center;

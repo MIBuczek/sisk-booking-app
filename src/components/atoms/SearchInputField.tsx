@@ -10,6 +10,7 @@ import Button from 'components/atoms/Button';
 const SearchInputWrapper = styled.div`
    display: inline-block;
    position: relative;
+   margin: 1rem 0;
 
    svg {
       position: absolute;

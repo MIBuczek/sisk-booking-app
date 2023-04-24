@@ -66,6 +66,11 @@ const RecordsActionContent = styled.div`
    align-items: center;
    justify-content: space-between;
    flex-wrap: wrap;
+
+   @media (max-width: 1060px) {
+      flex-direction: column;
+      align-items: flex-start;
+   }
 `;
 
 const OpenBookingsModalButton = styled(Button)`
@@ -98,6 +103,7 @@ const AcceptedFilterWrapper = styled.div`
    padding: 6px 20px;
    border: ${({theme}) => `1px solid ${theme.green}`};
    border-radius: 5px;
+   margin: 1rem 0;
 `;
 
 interface BookingsProps {

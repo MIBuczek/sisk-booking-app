@@ -115,7 +115,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
       return generateBuildingOptions(buildings)[city.value];
    };
 
-   React.useEffect(() => {}, [city.value]);
+   React.useEffect(() => undefined, [city.value]);
 
    const blockSelectOptions = isAdminPanel ? !isAdmin : false;
 

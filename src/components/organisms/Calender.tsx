@@ -16,9 +16,12 @@ import RenderEventContent from 'components/atoms/CalenderEvent';
 import ModalResolveBooking from 'components/molecules/modals/ModalResolveBooking';
 import Modal from 'components/organisms/Modal';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
+import {isEqual} from 'lodash';
+import {LoaderDots} from '../molecules/Loading';
 
 const CalenderWrapper = styled.section`
    width: 60%;
+   min-height: 400px;
    height: auto;
    display: flex;
    flex-direction: column;
@@ -132,6 +135,15 @@ const UserInfo = styled(Paragraph)`
    }
 `;
 
+const LoadingWrapper = styled.div`
+   width: 100%;
+   height: auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 100;
+`;
+
 interface IProps {
    mainState?: IMainState | IAdminState;
    hasRights?: boolean;
@@ -139,6 +151,7 @@ interface IProps {
 
 const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}): JSX.Element => {
    const [events, setEvents] = React.useState<EventInput[]>([]);
+   const [loading, setLoading] = React.useState(true);
 
    const dispatch = useDispatch();
    const {
@@ -150,24 +163,24 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
     * Function create event into full calendar component.
     * Event is related to the user or admin view.
     */
-   const createEvents = (): void =>
-      setEvents(
-         bookings.reduce((acc: EventInput[], booking: IBooking) => {
-            if (
-               mainState &&
-               mainState.city.value === booking.city &&
-               mainState.building.value === booking.building
-            ) {
-               booking.bookingTime.forEach((bt, index) => {
-                  const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
-                  if (bt.status !== BOOKING_STATUS.QUIT) {
-                     acc.push(prepareCalenderItem(itemTitle, booking, index));
-                  }
-               });
-            }
-            return acc;
-         }, [])
-      );
+   const createEvents = (): void => {
+      const calenderEvents = bookings.reduce((acc: EventInput[], booking: IBooking) => {
+         if (
+            mainState &&
+            mainState.city.value === booking.city &&
+            mainState.building.value === booking.building
+         ) {
+            booking.bookingTime.forEach((bt, index) => {
+               const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
+               if (bt.status !== BOOKING_STATUS.QUIT) {
+                  acc.push(prepareCalenderItem(itemTitle, booking, index));
+               }
+            });
+         }
+         return acc;
+      }, []);
+      if (!isEqual(calenderEvents, events)) setEvents(calenderEvents);
+   };
 
    /**
     * Full calendar event to get data and get current booking data from the store.
@@ -188,41 +201,51 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
    /**
     * Refresh view component after any mainState or bookings changes.
     */
-   React.useEffect(() => createEvents(), [mainState, bookings]);
+   React.useEffect(() => createEvents(), [mainState]);
 
    /**
-    * Refresh view component after any events changes.
+    * Block initial view go get final events objects.
     */
-   React.useEffect(() => undefined, [events]);
+   React.useEffect(() => {
+      setTimeout(() => setLoading(false), 1500);
+   }, []);
 
    return (
       <CalenderWrapper>
          {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
-         <FullCalendar
-            plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
-            headerToolbar={{
-               left: 'prev,next today',
-               right: 'timeGridWeek,listWeek'
-            }}
-            locale="pl"
-            initialView="timeGridWeek"
-            selectMirror
-            dayMaxEvents
-            slotMinTime="06:00:00"
-            slotMaxTime="24:00:00"
-            allDaySlot={false}
-            firstDay={1}
-            weekends
-            events={events}
-            eventContent={RenderEventContent}
-            eventClick={handleEventClick}
-            timeZone="local"
-         />
-         {!hasRights && (
-            <UserInfo>
-               <BsFillExclamationCircleFill />W kalendarzu są widoczne tylko zatwierdzone przez
-               administratora rezerwacje.
-            </UserInfo>
+         {loading ? (
+            <LoadingWrapper>
+               <LoaderDots type="ball-pulse" active />
+            </LoadingWrapper>
+         ) : (
+            <>
+               <FullCalendar
+                  plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
+                  headerToolbar={{
+                     left: 'prev,next today',
+                     right: 'timeGridWeek,listWeek'
+                  }}
+                  locale="pl"
+                  initialView="timeGridWeek"
+                  selectMirror
+                  dayMaxEvents
+                  slotMinTime="06:00:00"
+                  slotMaxTime="24:00:00"
+                  allDaySlot={false}
+                  firstDay={1}
+                  weekends
+                  events={events}
+                  eventContent={RenderEventContent}
+                  eventClick={handleEventClick}
+                  timeZone="local"
+               />
+               {!hasRights && (
+                  <UserInfo>
+                     <BsFillExclamationCircleFill />W kalendarzu są widoczne tylko zatwierdzone
+                     przez administratora rezerwacje.
+                  </UserInfo>
+               )}
+            </>
          )}
          {isOpen && (
             <Modal>

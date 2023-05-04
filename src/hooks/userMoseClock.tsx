@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 /**
  * Hook function to track last user click action.
  */
-const userMoseClock = () => {
+const userMouseClick = () => {
    const [mouseClick, setMouseClick] = useState(new Date().getTime());
 
    /**
@@ -14,7 +14,7 @@ const userMoseClock = () => {
    };
 
    /**
-    * Effect to track mose click event listener.
+    * Effect to track mouse click event listener.
     */
    useEffect(() => {
       window.addEventListener('click', registerUserClick);
@@ -24,4 +24,4 @@ const userMoseClock = () => {
    return mouseClick;
 };
 
-export default userMoseClock;
+export default userMouseClick;

@@ -88,6 +88,12 @@ interface IProps {
    tabHandler: (currentTab: ADMIN_TABS) => void;
 }
 
+/**
+ * Side navigation panel - admin view.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const SideNav: React.FunctionComponent<IProps> = ({
    isAdmin,
    isAdminPanel,

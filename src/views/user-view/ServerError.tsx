@@ -23,7 +23,12 @@ const ServerErrorContent = styled.section`
    }
 `;
 
-const ServerError = () => (
+/**
+ * Server Error component page
+ *
+ * @returns {JSX.Element} Server error info page
+ */
+const ServerError = (): JSX.Element => (
    <ServerErrorWrapper>
       <ServerErrorContent>
          <Header>

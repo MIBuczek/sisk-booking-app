@@ -169,6 +169,11 @@ const FooterAnchor = styled(Anchor)`
    padding-top: 0;
 `;
 
+/**
+ * General footer component.
+ *
+ * @returns {JSX.Element}
+ */
 const Footer = (): JSX.Element => {
    const dispatch = useDispatch();
    const {isOpen, type} = useSelector((state: IReduxState) => state.modal);

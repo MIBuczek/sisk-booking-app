@@ -143,7 +143,7 @@ const ChevronIcon = styled(BsChevronDown)`
    }
 `;
 
-interface MultipleRecordItemProps {
+interface IProps {
    index: number;
    currentPage: number;
    postPerPage: number;
@@ -161,7 +161,13 @@ interface MultipleRecordItemProps {
    deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
-const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
+/**
+ * Single item of  Multiple record table.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const MultipleRecordItem: React.FunctionComponent<IProps> = ({
    index,
    currentPage,
    postPerPage,
@@ -177,8 +183,13 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
    allRecords,
    editHandler,
    deleteHandler
-}) => {
-   /* Method to return single reservation for  current record */
+}): JSX.Element => {
+   /**
+    * Method to return single reservation for  current record.
+    *
+    * @param {IClient | IBooking} singleRecord
+    * @returns {Array<ISingleBookingDate>}
+    */
    const singleBookingTimeHandler = (singleRecord: IClient | IBooking): ISingleBookingDate[] => {
       if (singleInstanceOfBookings(singleRecord)) {
          return singleRecord.bookingTime;

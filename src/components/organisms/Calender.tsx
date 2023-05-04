@@ -149,6 +149,13 @@ interface IProps {
    hasRights?: boolean;
 }
 
+/**
+ * Booking calender component.
+ * Contains full calender to display events and dispatch click actions.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}): JSX.Element => {
    const [events, setEvents] = React.useState<EventInput[]>([]);
    const [loading, setLoading] = React.useState(true);
@@ -164,21 +171,22 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
     * Event is related to the user or admin view.
     */
    const createEvents = (): void => {
-      const calenderEvents = bookings.reduce((acc: EventInput[], booking: IBooking) => {
-         if (
-            mainState &&
-            mainState.city.value === booking.city &&
-            mainState.building.value === booking.building
-         ) {
-            booking.bookingTime.forEach((bt, index) => {
-               const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
-               if (bt.status !== BOOKING_STATUS.QUIT) {
-                  acc.push(prepareCalenderItem(itemTitle, booking, index));
-               }
-            });
-         }
-         return acc;
-      }, []);
+      if (!mainState) return;
+      const calenderEvents = bookings.reduce(
+         (acc: EventInput[], booking: IBooking): EventInput[] => {
+            const {city, building} = mainState;
+            if (city.value === booking.city && building.value === booking.building) {
+               booking.bookingTime.forEach((bt, index) => {
+                  const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
+                  if (bt.status !== BOOKING_STATUS.QUIT) {
+                     acc.push(prepareCalenderItem(itemTitle, booking, index));
+                  }
+               });
+            }
+            return acc;
+         },
+         []
+      );
       if (!isEqual(calenderEvents, events)) setEvents(calenderEvents);
    };
 

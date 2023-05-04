@@ -153,6 +153,11 @@ const NaviAnchor = styled(Anchor)`
    }
 `;
 
+/**
+ * Top navigation component.
+ *
+ * @returns {JSX.Element}
+ */
 const TopNav = (): JSX.Element => {
    const [isTop, setIsTop] = React.useState<boolean>(true);
 
@@ -167,7 +172,7 @@ const TopNav = (): JSX.Element => {
    const scrollPosition = useScrollPosition();
 
    /**
-    * Condition to check if we on top of the page.
+    * Condition to check if we user reach top of the page.
     */
    if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
    else if (scrollPosition < 30 && !isTop) setIsTop(true);

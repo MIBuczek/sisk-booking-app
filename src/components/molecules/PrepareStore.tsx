@@ -10,6 +10,12 @@ export interface IProps {
    children: React.ReactNode;
 }
 
+/**
+ * Prepare redux store during app initialization.
+ *
+ * @param {IProps} props
+ * @returns
+ */
 const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
    const [isUserPage] = React.useState<boolean>(window.location.hash.length === 2);
    const [storeReady, setStoreReady] = React.useState<boolean>(true);
@@ -27,6 +33,9 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
 
    const userStoreReady = bookingStore.savingStage === SAVING_STAGE.SUCCESS;
 
+   /**
+    * Effect to start loading data from firebase
+    */
    React.useEffect(() => {
       if (!isEmpty(authStore.auth)) {
          dispatch(StoreActions.getUserData());
@@ -40,6 +49,9 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
       }
    }, [authStore.savingStage, isUserPage]);
 
+   /**
+    * Effect to set store ready flag and close loaded component.
+    */
    React.useEffect(() => {
       if (adminStoreReady && !isUserPage) {
          setStoreReady(true);
@@ -57,6 +69,7 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
    if (storeReady) {
       return <>{children}</>;
    }
+
    return (
       <>
          <Loading />
@@ -64,4 +77,5 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
       </>
    );
 };
+
 export default PrepareStore;

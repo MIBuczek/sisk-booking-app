@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+/**
+ * Header HTML Element
+ */
 const Header = styled.h1`
    color: ${({theme}) => theme.darkGrey};
    font-size: ${({theme}) => theme.fontSize.l};

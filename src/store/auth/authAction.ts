@@ -3,6 +3,11 @@ import {IAuth, IAuthAction} from 'models';
 import {auth, LOGIN_STATE, SAVING_STAGE} from 'utils';
 import {signInWithEmailAndPassword, signOut} from 'firebase/auth';
 
+/**
+ * Generate redux payload fetching authentication user action.
+ *
+ * @returns {IAuthAction}
+ */
 export const fetchingAuth = (): IAuthAction => ({
    type: LOGIN_STATE.LOG_IN,
    payload: {
@@ -13,6 +18,13 @@ export const fetchingAuth = (): IAuthAction => ({
    }
 });
 
+/**
+ * Generate redux payload fetching success authentication user action.
+ *
+ * @param {String} type
+ * @param {IAuth} authData
+ * @returns {IAuthAction}
+ */
 export const fetchingAuthDone = (type: string, authData?: IAuth): IAuthAction => ({
    type,
    payload: {
@@ -23,6 +35,12 @@ export const fetchingAuthDone = (type: string, authData?: IAuth): IAuthAction =>
    }
 });
 
+/**
+ * Generate redux payload fetching failed authentication user action.
+ *
+ * @param {String} errorMessage
+ * @returns {IAuthAction}
+ */
 export const fetchingAuthError = (errorMessage: string): IAuthAction => ({
    type: LOGIN_STATE.LOG_IN,
    payload: {
@@ -34,7 +52,7 @@ export const fetchingAuthError = (errorMessage: string): IAuthAction => ({
 });
 
 /**
- * Store login user action.
+ * Dispatch store login user action.
  * @param  email
  * @param  password
  */
@@ -61,7 +79,7 @@ export const logInUser =
       }
    };
 
-/* Store logout user action. */
+/* Dispatch store logout user action. */
 export const logOutUser =
    () =>
    async (dispatch: Dispatch<IAuthAction>): Promise<void> => {

@@ -11,6 +11,13 @@ const INITIAL_STATE: IBookingsPayload = {
    conflictedBookings: []
 };
 
+/**
+ * Bookings general state.
+ *
+ * @param {IBookingsPayload} state
+ * @param {IBookingsAction} action
+ * @returns {IBookingsPayload}
+ */
 export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => {
    const {type, payload} = action;
    switch (type) {

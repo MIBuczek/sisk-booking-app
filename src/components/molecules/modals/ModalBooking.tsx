@@ -6,7 +6,13 @@ interface IProps {
    mainState: IMainState;
 }
 
-const ModalBooking: React.FunctionComponent<IProps> = ({mainState}) => (
+/**
+ * Booking modal component - display booking form.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ModalBooking: React.FunctionComponent<IProps> = ({mainState}): JSX.Element => (
    <BookingForm
       mainState={mainState}
       bookingsList={[]}

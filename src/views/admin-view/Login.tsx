@@ -49,21 +49,28 @@ const LoginTextInputs = styled(TextInputField)`
    margin-bottom: 10px;
 `;
 
-const Login: React.FC = () => {
+/**
+ * Login panel component
+ *
+ * @returns {JSX.Element} Login panel
+ */
+const Login: React.FC = (): JSX.Element => {
+   const dispatch = useDispatch();
+   const {auth, errorMessage} = useSelector((store: IReduxState) => store.authStore);
+
    const {
       handleSubmit,
       formState: {errors},
       control,
       getValues
    } = useForm<ICredential>();
-   const dispatch = useDispatch();
-   const {auth, errorMessage} = useSelector((store: IReduxState) => store.authStore);
 
    /**
     * Function to dispatch action to log user into platform
+    *
     * @param cred
     */
-   const onSubmit: SubmitHandler<ICredential> = (cred) => {
+   const onSubmit: SubmitHandler<ICredential> = (cred): void => {
       dispatch(logInUser(cred.email, cred.password));
    };
 

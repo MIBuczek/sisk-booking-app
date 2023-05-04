@@ -20,7 +20,7 @@ import Clients from 'components/organisms/Clients';
 import Bookings from 'components/organisms/Bookings';
 import Building from 'components/organisms/Building';
 import Summary from 'components/organisms/Summary';
-import userMoseClock from 'hooks/userMoseClock';
+import userMouseClick from 'hooks/userMoseClock';
 import {openModal} from 'store';
 import Modal from 'components/organisms/Modal';
 import ModalOutLogOut from 'components/molecules/modals/ModalOutLogOut';
@@ -36,6 +36,11 @@ const AdminWrapper = styled.section`
    padding-bottom: 60px;
 `;
 
+/**
+ * Admin Panel Component.
+ *
+ * @returns {JSX.Element}
+ */
 const Admin = (): JSX.Element => {
    const [adminState, setAdminState] = React.useState<IAdminState>({...initialAdminState});
    const [tab, setTab] = React.useState<ADMIN_TABS>(ADMIN_TABS.CALENDER);
@@ -48,9 +53,6 @@ const Admin = (): JSX.Element => {
       currentUserStore: {user}
    } = useSelector((state: IReduxState) => state);
 
-   /* Register last user click action */
-   const lastMouseClick = userMoseClock();
-
    /**
     * Function select in dropdown user work place. City and building.
     */
@@ -62,10 +64,11 @@ const Admin = (): JSX.Element => {
 
    /**
     * Function to handler main state on admin view.
+    *
     * @param value
     * @param field
     */
-   const stateHandler = (value: TSelect, field: string) => {
+   const stateHandler = (value: TSelect, field: string): void => {
       if (field === 'city') {
          setAdminState(() => ({city: value, building: BUILDINGS_OPTIONS[value.value][0]}));
       } else {
@@ -75,6 +78,7 @@ const Admin = (): JSX.Element => {
 
    /**
     * Function switch view after admin selection.
+    *
     * @param currentTab
     */
    const tabHandler = (currentTab: ADMIN_TABS): void => {
@@ -86,6 +90,9 @@ const Admin = (): JSX.Element => {
     */
    React.useEffect(() => {
       const intervalId = setInterval((): void => {
+         /* Register last user click action */
+         const lastMouseClick = userMouseClick();
+
          if (new Date().getTime() - lastMouseClick > 900000) {
             dispatch(openModal(MODAL_TYPES.AUTO_LOGOUT));
          }

@@ -30,6 +30,11 @@ const NoMatchContent = styled.section`
    }
 `;
 
+/**
+ * Not fount page component
+ *
+ * @returns {JSX.Element} Not fount page
+ */
 const NoMatch = (): JSX.Element => (
    <NoMatchWrapper>
       <NoMatchContent>

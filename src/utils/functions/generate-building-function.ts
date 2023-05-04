@@ -3,7 +3,8 @@ import {BUILDINGS_OPTIONS} from 'utils';
 
 /**
  * Function to generate building option for dropdown
- * @param buildings
+ *
+ * @param {Array<IBuilding>} buildings
  * @returns {IBuildingOptions}
  */
 const generateBuildingOptions = (buildings: IBuilding[]): IBuildingOptions => {
@@ -18,7 +19,7 @@ const generateBuildingOptions = (buildings: IBuilding[]): IBuildingOptions => {
 
 /**
  * Function to generate building per city
- * @param buildings
+ * @param {Array<IBuilding>} buildings
  * @returns {Array<IBuilding>}
  */
 const generateAllBuilding = (buildings: IBuilding[]): {[x: string]: IBuilding[]} | null => {

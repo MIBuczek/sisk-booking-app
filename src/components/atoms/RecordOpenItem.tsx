@@ -97,6 +97,12 @@ interface IProps {
    editHandler: (editDetails: IEditHandler) => void;
 }
 
+/**
+ * Record Item - Open (Collapsed).
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const RecordOpenItem: React.FunctionComponent<IProps> = ({
    mainIndex,
    property,
@@ -114,7 +120,13 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
 
    const dispatch = useDispatch();
 
-   /* Method to check single reservation conflict and set component state */
+   /**
+    * Method to check single reservation conflict and set component state.
+    *
+    * @param {ISingleBookingDate} sbd
+    * @param {String} sbId
+    * @param {Number} sbMonth
+    */
    const checkSingleConflict = (
       sbd: ISingleBookingDate,
       sbId: string = '',
@@ -127,12 +139,17 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
       }
    };
 
-   /* Method to open conflict modal and set conflicted reservation in general store */
+   /**
+    * Method to open conflict modal and set conflicted reservation in general store.
+    */
    const openConflictModal = (): void => {
       dispatch(updateBookingConflicts(conflictedItems));
       dispatch(openModal(MODAL_TYPES.BOOKING_CONFLICTS));
    };
 
+   /**
+    * Effect to check on initialization has record conflict with other one.
+    */
    React.useEffect(() => {
       checkSingleConflict(singleBooking, currentRecord.id as string, currentRecord.month as number);
    }, []);

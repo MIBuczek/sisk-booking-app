@@ -2,7 +2,8 @@
 import {IBuilding, IClient, ISelectedExtraOptions, IBooking, ISingleBookingDate} from 'models';
 
 /**
- * Map function to transform bookingTime data from firebase
+ * Map function to transform bookingTime data from firebase.
+ *
  * @param item
  * @returns {Object<ISingleBookingDate>}
  */
@@ -17,7 +18,8 @@ const transformFirebaseBookingTimeData = (item: any): ISingleBookingDate => ({
 });
 
 /**
- * Map function to transform extra options data from firebase
+ * Map function to transform extra options data from firebase.
+ *
  * @param item
  * @returns {Object<ISelectedExtraOptions>}
  */
@@ -28,7 +30,8 @@ const transformFirebaseSelectedOptionsData = (item: any): ISelectedExtraOptions 
 });
 
 /**
- * Map function to transform single booking data form firebase
+ * Map function to transform single booking data form firebase.
+ *
  * @param doc
  * @returns {Object<IBooking>}
  */
@@ -56,7 +59,8 @@ const parseFirebaseBookingData = (doc: any) =>
    } as IBooking);
 
 /**
- * Map function to transform single client data form firebase
+ * Map function to transform single client data form firebase.
+ *
  * @param doc
  * @returns {Object<IClient>}
  */
@@ -75,7 +79,8 @@ const parseFirebaseClientData = (doc: any) =>
    } as IClient);
 
 /**
- * Map function to transform single building data form firebase
+ * Map function to transform single building data form firebase.
+ *
  * @param doc
  * @returns {Object<IBuilding>}
  */

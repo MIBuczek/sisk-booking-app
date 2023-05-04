@@ -3,7 +3,9 @@ import {isNil} from 'lodash';
 import {formatDate, formatTime} from 'utils';
 
 /**
- * Object used to transform property value into display value
+ * Object used to transform property value into display value.
+ *
+ * @returns {Object}
  */
 const transformValue: {[x: string]: string} = {
    INITIAL: 'Nie rozpoczęta',
@@ -30,9 +32,10 @@ const propertyToModel: string[] = ['city', 'building'];
 
 /**
  * Function to model display value in booking details
- * @param  property
- * @param  currentValue
- * @param  isHours
+ *
+ * @param  {String} property
+ * @param  {TBooking} currentValue
+ * @param  {Boolean} isHours
  * @returns {Null | String}
  */
 const modelDisplayValue = (
@@ -63,7 +66,8 @@ const modelDisplayValue = (
 
 /**
  * Function to model value and display it as a percentage value.
- * @param  size
+ *
+ * @param {String} size
  * @returns {String}
  */
 const transformToPercentage = (size: string): string => {

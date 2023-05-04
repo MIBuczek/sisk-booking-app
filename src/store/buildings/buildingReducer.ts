@@ -1,14 +1,21 @@
-import {IBuildingAction} from 'models';
+import {IBuildingAction, IBuildingPayload} from 'models';
 import {SAVING_STAGE, BUILDING_STATE} from 'utils';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IBuildingPayload = {
    isFetching: false,
    savingStage: SAVING_STAGE.INITIAL,
    errorMessage: '',
-   buildings: undefined
+   buildings: []
 };
 
-export const buildingStore = (state = INITIAL_STATE, action: IBuildingAction) => {
+/**
+ * Building general state.
+ *
+ * @param {IBuildingPayload} state
+ * @param {IBuildingAction} action
+ * @returns {IBuildingPayload}
+ */
+export const buildingStore = (state = INITIAL_STATE, action: IBuildingAction): IBuildingPayload => {
    const {type, payload} = action;
    switch (type) {
       case BUILDING_STATE.GET_BUILDING:

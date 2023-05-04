@@ -5,31 +5,31 @@ import {BOOKING_STATUS} from 'utils';
 /**
  * Function to check day into two date object.
  * If it is the same return true
- * @param  dOne
- * @param  dTwo
+ * @param {Date} dOne
+ * @param {Date} dTwo
  * @returns {Boolean}
  */
-const checkDay = (dOne: Date, dTwo: Date) =>
+const checkDay = (dOne: Date, dTwo: Date): boolean =>
    Date.parse(new Date(dOne).toISOString()) - Date.parse(new Date(dTwo).toISOString()) === 0;
 
 /**
  * Function to check time into date.
  * If  one of date is between start amd end time other booking return true (possible time conflict)
- * @param  checkDate
- * @param  startHour
- * @param  endHour
+ * @param {Date} checkDate
+ * @param {Date} startHour
+ * @param {Date} endHour
  * @returns {Boolean}
  */
-const checkHoursRange = (checkDate: Date, startHour: Date, endHour: Date) =>
+const checkHoursRange = (checkDate: Date, startHour: Date, endHour: Date): boolean =>
    checkDate.getTime() > startHour.getTime() && checkDate.getTime() < endHour.getTime();
 
 /**
  * Function to check time between date.
  * If date start or date end are closed between other two dates then return true (possible time conflict)
- * @param  checkStartDate
- * @param  checkEndDate
- * @param  startHour
- * @param  endHour
+ * @param  {Date} checkStartDate
+ * @param  {Date} checkEndDate
+ * @param  {Date} startHour
+ * @param  {Date} endHour
  * @returns {Boolean}
  */
 const checkOverlapCase = (
@@ -37,7 +37,7 @@ const checkOverlapCase = (
    checkEndDate: Date,
    startHour: Date,
    endHour: Date
-) =>
+): boolean =>
    checkStartDate.getTime() <= startHour.getTime() &&
    checkStartDate.getTime() <= endHour.getTime() &&
    checkEndDate.getTime() >= startHour.getTime() &&
@@ -45,9 +45,9 @@ const checkOverlapCase = (
 
 /**
  * Function to check if single booking time has conflict with other single booking time.
- * @param bt
- * @param cbt
- * @returns Boolean
+ * @param {ISingleBookingDate} bt
+ * @param {ISingleBookingDate} cbt
+ * @returns {Boolean}
  */
 const checkSingleBookingTime = (bt: ISingleBookingDate, cbt: ISingleBookingDate): boolean => {
    const sameDay = checkDay(bt.day, cbt.day);
@@ -61,9 +61,9 @@ const checkSingleBookingTime = (bt: ISingleBookingDate, cbt: ISingleBookingDate)
 /**
  * Function to check if one booking time has conflict with others.
  *
- * @param bookingTime
- * @param bookingTimeIndex
- * @param allBookingTimes
+ * @param {ISingleBookingDate} bookingTime
+ * @param {Number} bookingTimeIndex
+ * @param {Array<ISingleBookingDate>} allBookingTimes
  * @returns {Boolean}
  */
 const checkNewAddedBookingTimeConflicts = (
@@ -81,8 +81,8 @@ const checkNewAddedBookingTimeConflicts = (
 
 /**
  * Function to check if one booking has conflict with others.
- * @param  currentBooking
- * @param  currentPlaceBookings
+ * @param  {IBooking} currentBooking
+ * @param  {Array<IBooking>} currentPlaceBookings
  * @returns {Boolean}
  */
 const checkConflicts = (currentBooking: IBooking, currentPlaceBookings: IBooking[]): boolean => {
@@ -110,7 +110,7 @@ const checkConflicts = (currentBooking: IBooking, currentPlaceBookings: IBooking
 /**
  * Function to check if inside booking array it already any conflict.
  * If yes, return item id
- * @param  currentPlaceBookings
+ * @param {Array<IBooking>} currentPlaceBookings
  * @returns {Array<string>}
  */
 const checkAllBookingsConflicts = (currentPlaceBookings: IBooking[]): string[] => {
@@ -130,11 +130,11 @@ const checkAllBookingsConflicts = (currentPlaceBookings: IBooking[]): string[] =
 };
 
 /**
- * Function to check if single booking day has conflict with any of reservation on selected sprot object.
- * @param singleBookingDay
- * @param singleBookingId
- * @param singleBookingMonth
- * @param currentPlaceBookings
+ * Function to check if single booking day has conflict with any of reservation on selected sport object.
+ * @param {ISingleBookingDate} singleBookingDay
+ * @param {String} singleBookingId
+ * @param {Number} singleBookingMonth
+ * @param {Array<IBooking>} currentPlaceBookings
  * @returns Boolean
  */
 const checkSingleDayConflict = (

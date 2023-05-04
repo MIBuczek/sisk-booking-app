@@ -126,7 +126,7 @@ const RecordDetailsBtnPanel = styled.div`
    }
 `;
 
-interface BookingExtraOptionsProps {
+interface IProps {
    extraOptions: ISelectedExtraOptions[];
    setExtraOptions: React.Dispatch<React.SetStateAction<ISelectedExtraOptions[]>>;
    disabled: boolean;
@@ -135,16 +135,14 @@ interface BookingExtraOptionsProps {
 /**
  * React functional component to handle edition extra option added to reservation.
  *
- * @param extraOptions
- * @param setExtraOptions
- * @param disabled
- * @constructor
+ * @param {IProps} props
+ * @return {JSX.Element}
  */
-const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = ({
+const BookingExtraOptions: React.FunctionComponent<IProps> = ({
    extraOptions,
    setExtraOptions,
    disabled
-}) => {
+}): JSX.Element => {
    const [editedIndex, setEditedIndex] = React.useState<number | undefined>(undefined);
    const {handleSubmit, control, watch, reset} = useForm<IExtraOptionForm>();
    const {lights: lightValue, toilets: toiletsValue} = watch();
@@ -156,7 +154,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     * It also set what option was selected into array.
     * @param cred
     */
-   const onSubmit: SubmitHandler<IExtraOptionForm> = (cred) => {
+   const onSubmit: SubmitHandler<IExtraOptionForm> = (cred): void => {
       const clonedExtraOptions = cloneDeep(extraOptions);
       const {fromHour, toHour, lights, toilets} = cred;
       const singleRecord = {options: [{lights}, {toilets}], fromHour, toHour};
@@ -178,7 +176,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     * @param e
     * @param index
     */
-   const editExtraOption = (e: React.MouseEvent, index: number) => {
+   const editExtraOption = (e: React.MouseEvent, index: number): void => {
       e.preventDefault();
       e.stopPropagation();
       setEditedIndex(index);
@@ -192,7 +190,7 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     * @param e
     * @param index
     */
-   const deleteExtraOption = (e: React.MouseEvent, index: number) => {
+   const deleteExtraOption = (e: React.MouseEvent, index: number): void => {
       e.preventDefault();
       e.stopPropagation();
       if (isNumber(editedIndex)) return;

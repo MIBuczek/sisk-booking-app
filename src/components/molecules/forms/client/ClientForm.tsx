@@ -67,19 +67,26 @@ const ButtonPanel = styled.div`
    }
 `;
 
-interface ClientFormProps {
+interface IProps {
    isEditing: boolean;
    editedItemIndex?: number;
    initialEditingState: () => void;
    clientList: IClient[];
 }
 
-const ClientForm: React.FunctionComponent<ClientFormProps> = ({
+/**
+ * Client Form Component.
+ * Add / Edit client data.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ClientForm: React.FunctionComponent<IProps> = ({
    isEditing,
    editedItemIndex,
    initialEditingState,
    clientList
-}) => {
+}): JSX.Element => {
    const [clientData, setClientData] = React.useState<IClient | undefined>(undefined);
    const [clientId, setClientId] = React.useState<string | undefined>(undefined);
    const [displayConfirmation, setDisplayConfirmation] = React.useState(false);

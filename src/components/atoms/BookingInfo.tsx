@@ -35,6 +35,12 @@ interface IProps {
    bookingTimeIndex: number | null;
 }
 
+/**
+ * Booking information component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const BookingInfo: React.FunctionComponent<IProps> = ({
    isAdmin,
    currentBooking,

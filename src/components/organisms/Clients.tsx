@@ -70,6 +70,12 @@ const OpenClientModalButton = styled(Button)`
    }
 `;
 
+/**
+ * Client tab component.
+ * Contains information and logic about app clients
+ *
+ * @returns {JSX.Element}
+ */
 const Clients = (): JSX.Element => {
    const [clientList, setClientList] = React.useState<IClient[]>([]);
    const [isEditing, setIsEditing] = React.useState(false);
@@ -106,7 +112,7 @@ const Clients = (): JSX.Element => {
     * @param currentPage
     * @param postPerPage
     */
-   const editClientHandler = ({itemIndex, currentPage, postPerPage}: IEditHandler) => {
+   const editClientHandler = ({itemIndex, currentPage, postPerPage}: IEditHandler): void => {
       const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
       setIsEditing(true);
       setEditedItemIndex(currentIndex);
@@ -117,7 +123,7 @@ const Clients = (): JSX.Element => {
     * Function to handle delete client item and display related confirmation modal.
     * @param index
     */
-   const deleteClientHandler = ({itemIndex, currentPage, postPerPage}: IDeleteHandler) => {
+   const deleteClientHandler = ({itemIndex, currentPage, postPerPage}: IDeleteHandler): void => {
       const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
       setDeleteItemIndex(currentIndex);
       dispatch(openModal(MODAL_TYPES.DELETE));
@@ -126,7 +132,7 @@ const Clients = (): JSX.Element => {
    /**
     * Function to dispatch deleting action into firebase client data collection.
     */
-   const deleteClientAction = () => {
+   const deleteClientAction = (): void => {
       if (typeof deleteItemIndex === 'undefined') return;
       const currentClient = clientList[deleteItemIndex];
       if (currentClient.id) dispatch(deleteClient(currentClient.id));
@@ -141,7 +147,7 @@ const Clients = (): JSX.Element => {
    /**
     * Function to cancel deleting action.
     */
-   const cancelDeleteClientAction = () => {
+   const cancelDeleteClientAction = (): void => {
       initialClientState();
       dispatch(closeModal());
    };
@@ -149,17 +155,20 @@ const Clients = (): JSX.Element => {
    /**
     * Function to restore initial status.
     */
-   const initialClientState = () => {
+   const initialClientState = (): void => {
       setIsEditing(false);
       setEditedItemIndex(undefined);
       setDeleteItemIndex(undefined);
    };
 
-   const handlerEffectCallBack = () => {
+   const handlerEffectCallBack = (): void => {
       const currentClientList = searchSelectedContent(clients, 'name', searchPhase);
       clientListHandler(currentClientList, searchPhase);
    };
 
+   /**
+    * Effect to refresh view after search on table.
+    */
    React.useEffect(handlerEffectCallBack, [clients]);
 
    return (

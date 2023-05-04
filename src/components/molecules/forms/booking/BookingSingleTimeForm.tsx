@@ -62,13 +62,20 @@ const ButtonPanel = styled.div`
    }
 `;
 
-interface IProp {
+interface IProps {
    currentBooking: IBooking;
    bookingTimeIndex: number;
    hasRights: boolean;
    submitHandler: (updatedBooking: IBooking) => void;
 }
-const BookingSingleTimeForm: React.FunctionComponent<IProp> = ({
+
+/**
+ * Booking single time form component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const BookingSingleTimeForm: React.FunctionComponent<IProps> = ({
    currentBooking,
    bookingTimeIndex,
    hasRights,

@@ -77,10 +77,15 @@ const BookingTimeDetailWrapper = styled.div`
    }
 `;
 
+/**
+ * Modal conflict details component.
+ *
+ * @returns {JSX.Element}
+ */
 const ModalConflictDetails = (): JSX.Element => {
    const dispatch = useDispatch();
-
    const {conflictedBookings} = useSelector((state: IReduxState) => state.bookingStore);
+
    const closeConflictModal = (): void => {
       dispatch(clearBookingConflicts());
       dispatch(closeModal());

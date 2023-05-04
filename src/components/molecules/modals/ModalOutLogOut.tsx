@@ -27,11 +27,14 @@ const LogOutMessage = styled(Paragraph)`
 
 /**
  * Modal to display user information about auto logout if no action register.
+ *
+ * @returns {JSX.Element}
  */
-const ModalOutLogOut = () => {
+const ModalOutLogOut = (): JSX.Element => {
    const [countDown, setCountDown] = React.useState(20);
 
    const dispatch = useDispatch();
+
    /**
     * Effect to count down - to give user option to not be auto logout.
     */

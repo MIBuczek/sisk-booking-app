@@ -2,7 +2,7 @@ import {IUser} from 'models';
 
 /**
  * Function to check user credentials to see booked usernames
- * @param  loggedUsed
+ * @param {IUser | undefined} loggedUsed
  * @returns {Boolean}
  */
 const hasRightsToSeeContent = (loggedUsed: IUser | undefined): boolean => {
@@ -13,7 +13,7 @@ const hasRightsToSeeContent = (loggedUsed: IUser | undefined): boolean => {
 
 /**
  * Function to check user credentials
- * @param  loggedUsed
+ * @param {IUser | undefined} loggedUsed
  * @returns {Boolean}
  */
 const adminCredentials = (loggedUsed: IUser | undefined): boolean => {
@@ -26,7 +26,7 @@ const adminCredentials = (loggedUsed: IUser | undefined): boolean => {
 
 /**
  * Function to check user credentials to from SISK.
- * @param  loggedUsed
+ * @param {IUser | undefined} loggedUsed
  * @returns {Boolean}
  */
 const siskEmployeeCredentials = (loggedUsed: IUser | undefined) => {
@@ -37,7 +37,7 @@ const siskEmployeeCredentials = (loggedUsed: IUser | undefined) => {
 
 /**
  * Function to check user credentials to go true building a city navigation options.
- * @param  loggedUsed
+ * @param {IUser | undefined} loggedUsed
  * @returns {Boolean}
  */
 const adminSeeContentCredentials = (loggedUsed: IUser | undefined): boolean => {

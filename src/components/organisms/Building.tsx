@@ -121,11 +121,18 @@ const ButtonPanel = styled.div`
    }
 `;
 
-interface BuildingProps {
+interface IProps {
    mainState: IAdminState;
 }
 
-const Building: React.FunctionComponent<BuildingProps> = ({mainState}) => {
+/**
+ * Building tab component.
+ * Contains information about added buildings and assigned employee.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const Building: React.FunctionComponent<IProps> = ({mainState}) => {
    const [currentCity, setCurrentCity] = React.useState<IBuilding | undefined>(undefined);
    const [message, setMessage] = React.useState<IEmployeeMessage | undefined>();
    const [displayConfirmation, setDisplayConfirmation] = React.useState(false);

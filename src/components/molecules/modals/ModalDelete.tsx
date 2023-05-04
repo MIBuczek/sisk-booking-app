@@ -11,17 +11,23 @@ const DeleteWrapper = styled.div`
    }
 `;
 
-interface ModalDeleteProps {
+interface IProps {
    message: string;
    callback: () => void;
    cancelCallback: () => void;
 }
 
-const ModalDelete: React.FunctionComponent<ModalDeleteProps> = ({
+/**
+ * Modal delete record confirmation content on database.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ModalDelete: React.FunctionComponent<IProps> = ({
    message,
    callback,
    cancelCallback
-}) => (
+}): JSX.Element => (
    <DeleteWrapper>
       <ConfirmAction message={message} callback={callback} cancelCallback={cancelCallback} />
    </DeleteWrapper>

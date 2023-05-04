@@ -33,7 +33,13 @@ interface IProps {
    className: string;
 }
 
-const WarningMsg: React.FC<IProps> = ({innerText, className}) => (
+/**
+ * Warning Message Component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const WarningMsg: React.FC<IProps> = ({innerText, className}): JSX.Element => (
    <WarningTextContent className={className}>
       {innerText} <BsExclamationTriangle />
    </WarningTextContent>

@@ -106,11 +106,18 @@ const AcceptedFilterWrapper = styled.div`
    margin: 1rem 0;
 `;
 
-interface BookingsProps {
+interface IProps {
    mainState: IAdminState;
 }
 
-const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
+/**
+ * Booking tab component.
+ * Contains information about app bookings and available actions.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const Bookings: React.FunctionComponent<IProps> = ({mainState}) => {
    const [allBookingsPerPlace, setAllBookingsPerPlace] = React.useState<IBooking[]>([]);
    const [bookingsList, setBookingsList] = React.useState<IBooking[]>([]);
    const [isEditing, setIsEditing] = React.useState(false);
@@ -168,7 +175,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
       currentPage,
       postPerPage,
       modalType
-   }: IEditHandler) => {
+   }: IEditHandler): void => {
       const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
       setIsEditing(isMainItem);
       setEditedItemIndex(currentIndex);
@@ -181,7 +188,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
     * @param currentPage
     * @param postPerPage
     */
-   const deleteBookingHandler = ({itemIndex, currentPage, postPerPage}: IDeleteHandler) => {
+   const deleteBookingHandler = ({itemIndex, currentPage, postPerPage}: IDeleteHandler): void => {
       const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
       setDeleteItemIndex(currentIndex);
       dispatch(openModal(MODAL_TYPES.DELETE));
@@ -190,7 +197,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function to dispatch deleting action into firebase booking data collection.
     */
-   const deleteBookingAction = () => {
+   const deleteBookingAction = (): void => {
       if (typeof deleteItemIndex === 'undefined') return;
       const currentBooking = cloneDeep(bookingsList[deleteItemIndex]);
       if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
@@ -205,7 +212,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function to cancel deleting action.
     */
-   const cancelDeleteBookingAction = () => {
+   const cancelDeleteBookingAction = (): void => {
       initialBookingState();
       dispatch(closeModal());
    };
@@ -213,7 +220,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function to restore initial status.
     */
-   const initialBookingState = () => {
+   const initialBookingState = (): void => {
       setIsEditing(false);
       setEditedItemIndex(undefined);
       setDeleteItemIndex(undefined);
@@ -222,7 +229,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function for handle UseEffect call back.
     */
-   const handlerEffectCallBack = () => {
+   const handlerEffectCallBack = (): void => {
       const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
       setAllBookingsPerPlace(bookingByPlace);
       let searchedResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
@@ -237,6 +244,9 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
       }
    };
 
+   /**
+    * Effect to refresh view after user search phase
+    */
    React.useEffect(handlerEffectCallBack, [bookings, mainState, filterAccepted]);
 
    return (

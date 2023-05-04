@@ -46,13 +46,18 @@ const CookieParagraph = styled(Paragraph)`
    }
 `;
 
-const Cookies = () => {
+/**
+ * User cookies content.
+ *
+ * @returns {JSX.Element | null}
+ */
+const Cookies = (): JSX.Element | null => {
    const [showInfo, setShowInfo] = React.useState(true);
 
    /**
     * Function to set local storage if user accept cookies politic.
     */
-   const setLocalStorage = () => {
+   const setLocalStorage = (): void => {
       localStorage.setItem('cookies', 'false');
       setShowInfo(false);
    };
@@ -60,19 +65,24 @@ const Cookies = () => {
    /**
     * Function to get local storage and check if current user accept cookies politic.
     */
-   const getLocalStorage = () => {
+   const getLocalStorage = (): void => {
       const userCookies: string | null = localStorage.getItem('cookies');
       if (!userCookies) setShowInfo(true);
       else setShowInfo(false);
    };
 
+   /**
+    * Effect to check local storage has current user already accept it.
+    */
    React.useEffect(() => {
       getLocalStorage();
       return () => {
          setShowInfo(true);
       };
    }, []);
+
    if (!showInfo) return null;
+
    return (
       <CookiesWrapper>
          <CookieHeader>Pliki Cookies</CookieHeader>

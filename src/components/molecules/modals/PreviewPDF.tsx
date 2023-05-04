@@ -11,7 +11,12 @@ import {
    transformValue
 } from 'utils';
 
-export const printPDFReport = (clientSummary: ISummaryClientBookings) => {
+/**
+ * Open new tab on browser and print report content.
+ *
+ * @param {ISummaryClientBookings} clientSummary
+ */
+export const printPDFReport = (clientSummary: ISummaryClientBookings): void => {
    const {client} = clientSummary;
    const new_tab = window.open('https://sisk-booking-app.web.app/#/raport-najmów', '_blank');
 

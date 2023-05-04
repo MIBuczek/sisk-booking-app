@@ -23,6 +23,11 @@ import {cloneDeep} from 'lodash';
 
 const BOOKING_COLLECTION_KEY: Readonly<'bookings'> = 'bookings';
 
+/**
+ * Generate redux payload fetching bookings data action.
+ *
+ * @returns {IBookingsAction}
+ */
 export const fetchingBookings = (): IBookingsAction => ({
    type: BOOKING_STATE.INITIAL_BOOKING,
    payload: {
@@ -36,6 +41,13 @@ export const fetchingBookings = (): IBookingsAction => ({
    }
 });
 
+/**
+ * Generate redux payload fetching success bookings data action.
+ *
+ * @param {String} type
+ * @param {Array<IBooking>} bookings
+ * @returns {IBookingsAction}
+ */
 export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBookingsAction => ({
    type,
    payload: {
@@ -49,6 +61,12 @@ export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBooki
    }
 });
 
+/**
+ * Generate redux payload fetching failed bookings data action.
+ *
+ * @param {String} errorMessage
+ * @returns {IBookingsAction}
+ */
 export const fetchingBookingsError = (errorMessage: string): IBookingsAction => ({
    type: BOOKING_STATE.ERROR_BOOKING,
    payload: {
@@ -79,6 +97,13 @@ export const getSingleBooking = (
    }
 });
 
+/**
+ * Dispatch store action to set booking conflicts.
+ *
+ * @param {Array<IBooking>} bookings
+ * @param {Array<IBooking>} conflictedBookings
+ * @returns {IBookingsAction}
+ */
 export const getBookingConflicts = (
    bookings: IBooking[],
    conflictedBookings: IBooking[]
@@ -95,6 +120,12 @@ export const getBookingConflicts = (
    }
 });
 
+/**
+ * Dispatch store action to clear booking conflicts.
+ *
+ * @param {Array<IBooking>} bookings
+ * @returns {IBookingsAction}
+ */
 export const clearBookingConflictsState = (bookings: IBooking[]): IBookingsAction => ({
    type: BOOKING_STATE.CLEAR_BOOKING_CONFLICTS,
    payload: {

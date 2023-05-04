@@ -58,6 +58,11 @@ const ClearButton = styled(Button)`
    }
 `;
 
+/**
+ * Selected booking details component.
+ *
+ * @returns {JSX.Element}
+ */
 const BookingDetails = (): JSX.Element => {
    const dispatch = useDispatch();
    const {booking, bookingTimeIndex} = useSelector(

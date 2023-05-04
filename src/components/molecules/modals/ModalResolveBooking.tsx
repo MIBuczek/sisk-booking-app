@@ -46,7 +46,12 @@ const BookingDetailsWrapper = styled.article`
    }
 `;
 
-const ModalResolveBooking: React.FunctionComponent = (): JSX.Element => {
+/**
+ * Modal resolve selected booking status.
+ *
+ * @returns {JSX.Element}
+ */
+const ModalResolveBooking = (): JSX.Element => {
    const dispatch = useDispatch();
 
    const {

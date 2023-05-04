@@ -12,7 +12,7 @@ import {modelDisplayValue} from './modeling-value-function';
 
 /**
  * Function to flat bookingTime array into string data with all booking information.
- * @param b
+ * @param {ISingleBookingDate} b
  * @returns {String}
  */
 const flatBookingTime = (b: ISingleBookingDate): string => `
@@ -23,8 +23,8 @@ const flatBookingTime = (b: ISingleBookingDate): string => `
 
 /**
  * Function to generate email to employee if admin add reservation.
- * @param booking
- * @param buildingEmail
+ * @param {IBooking} booking
+ * @param {String} buildingEmail
  * @returns {Object}
  */
 const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
@@ -46,7 +46,7 @@ const emailAdminBodyBooking = (booking: IBooking, buildingEmail: string) => {
 
 /**
  * Function to generate email to admin if outside user request for reservation.
- * @param booking
+ * @param {IBooking} booking
  * @returns {Object}
  */
 const emailUserBodyBooking = (booking: IBooking) => {
@@ -67,11 +67,12 @@ const emailUserBodyBooking = (booking: IBooking) => {
 };
 
 /**
- * Function to send email via EmailJS npm package
- * @param userServiceId
- * @param userTemplateId
+ * Function to send email via EmailJS npm package.
+ *
+ * @param {String} userServiceId
+ * @param {String} userTemplateId
  * @param message
- * @param userId
+ * @param {String} userId
  * @returns {Promise<number>}
  */
 const sendEmailNotification = async (
@@ -90,9 +91,10 @@ const sendEmailNotification = async (
 
 /**
  * Function to send email in right direction directly on booking store part.
- * @param bookingData
- * @param isAdmin
- * @param buildingEmail
+ *
+ * @param {IBooking} bookingData
+ * @param {Boolean} isAdmin
+ * @param {String} buildingEmail
  * @returns {Promise<number>}
  */
 const storeEmailNotification = (

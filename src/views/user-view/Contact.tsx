@@ -35,7 +35,12 @@ const ContactInfo = styled.section`
    }
 `;
 
-const Contact = () => (
+/**
+ * Contact page component
+ *
+ * @returns {JSX.Element} Contact page
+ */
+const Contact = (): JSX.Element => (
    <ContactWrapper>
       <ContactInfo>
          <Header>DANE TELEADRESOWE</Header>

@@ -51,6 +51,12 @@ export interface IProps {
    customClassName?: string;
 }
 
+/**
+ * Modal wrapper component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element | null}
+ */
 const Modal: React.FC<IProps> = ({children, customClassName = ''}): JSX.Element | null => {
    const {isOpen} = useSelector((state: IReduxState) => state.modal);
    if (isOpen) {

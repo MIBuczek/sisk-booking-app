@@ -3,6 +3,9 @@ import TextInput from 'react-autocomplete-input';
 import 'react-autocomplete-input/dist/bundle.css';
 import styled from 'styled-components';
 
+/**
+ * Autocomplete HTML Element.
+ */
 const Autocomplete = styled(TextInput)`
    width: 190px;
    height: 35px;

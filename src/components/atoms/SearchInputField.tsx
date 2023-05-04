@@ -41,15 +41,24 @@ interface IProps {
    searchContentHandler: (searchResults: (IClient | IBooking)[], searchPhase: string) => void;
 }
 
+/**
+ * Search Input Component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const SearchInputField: React.FunctionComponent<IProps> = ({
    type,
    placeholder,
    searchContent,
    searchProperty,
    searchContentHandler
-}) => {
+}): JSX.Element => {
    const [searchPhase, setSearchPhase] = React.useState('');
 
+   /**
+    * Search handler method.
+    */
    const searchHandler = (): void => {
       if (!searchPhase) searchContentHandler(searchContent, '');
       else
@@ -59,8 +68,14 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
          );
    };
 
+   /**
+    * Delayed Query for typo in search filed.
+    */
    const delayedQuery = React.useCallback(debounce(searchHandler, 300), [searchPhase]);
 
+   /**
+    * Effect to refresh view after delayedQuery results.
+    */
    React.useEffect(() => {
       delayedQuery();
       return delayedQuery.cancel;

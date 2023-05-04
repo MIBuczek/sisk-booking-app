@@ -4,7 +4,8 @@ import {SIZE_OPTIONS, SIZE_OPTIONS_BTN, SIZE_FIELD_OPTIONS} from 'utils';
 
 /**
  * Function to transform first string letter to upper case.
- * @param  s
+ *
+ * @param {String} s
  * @returns {String}
  */
 const firstLetterUpperCase = (s: string): string =>
@@ -12,8 +13,9 @@ const firstLetterUpperCase = (s: string): string =>
 
 /**
  * Function to find which option was already selected.
- * @param  value
- * @param  options
+ *
+ * @param {String} value
+ * @param {Array<TSelect>} options
  * @returns {TSelect}
  */
 const findSelectedOption = (value: string, options: TSelect[]): TSelect => {
@@ -24,9 +26,10 @@ const findSelectedOption = (value: string, options: TSelect[]): TSelect => {
 
 /**
  * Table pagination method. Calculate number of items per post per page and current page.
- * @param  items
- * @param  currentPage
- * @param  postPerPage
+ *
+ * @param {Array<IClient | IBooking>} items
+ * @param {Number} currentPage
+ * @param {Number} postPerPage
  * @returns {Array<IClient | IBooking>}
  */
 const pagination = (
@@ -41,8 +44,9 @@ const pagination = (
 
 /**
  * Function to generate numbers of page related to the number of table items.
- * @param  totalPost
- * @param  postPerPage
+ *
+ * @param {Number}  totalPost
+ * @param {Number}  postPerPage
  * @returns {Array<Number>}
  */
 const paginationItems = (totalPost: number, postPerPage: number): number[] => {
@@ -55,8 +59,9 @@ const paginationItems = (totalPost: number, postPerPage: number): number[] => {
 
 /**
  * Function to find size option according selected building.
- * @param  buildingValue
- * @param  cityValue
+ *
+ * @param {String}  buildingValue
+ * @param {String}  cityValue
  * @returns {Array<SIZE_OPTIONS>}
  */
 const selectSizeFieldOptions = (cityValue: string, buildingValue: string): SIZE_OPTIONS[] => {
@@ -66,7 +71,8 @@ const selectSizeFieldOptions = (cityValue: string, buildingValue: string): SIZE_
 
 /**
  * Function to generate clients option for dropdown.
- * @param  clients
+ *
+ * @param  {Array<IClient>} clients
  * @returns {Array<TSelect>}
  */
 const selectClientOptions = (clients: IClient[]): TSelect[] => {
@@ -76,8 +82,9 @@ const selectClientOptions = (clients: IClient[]): TSelect[] => {
 
 /**
  * Function to generate clients option for dropdown.
- * @param  clients
- * @param clientId
+ *
+ * @param {Array<IClient>} clients
+ * @param {String} clientId
  * @returns {Array<TSelect>}
  */
 const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect | undefined =>
@@ -85,7 +92,8 @@ const selectedClientIdOption = (clients: IClient[], clientId: string): TSelect |
 
 /**
  * Function to check selected options and return value to display in list.
- * @param  options
+ *
+ * @param {Array<ExtraOptions>} options
  * @returns {String}
  */
 const checkSelectedOption = (options: ExtraOptions[]): string =>
@@ -99,9 +107,11 @@ const checkSelectedOption = (options: ExtraOptions[]): string =>
 
 /**
  * Function to find current item index related to current page and post per page.
- * @param itemIndex
- * @param currentPage
- * @param postPerPage
+ *
+ * @param {Number} itemIndex
+ * @param {Number} currentPage
+ * @param {Number} postPerPage
+ * @returns {Number}
  */
 const findCurrentItemIndex = (
    itemIndex: number,
@@ -115,9 +125,10 @@ const findCurrentItemIndex = (
 };
 
 /**
- * Function to check if index is number to return proper bookingTimeIndex
- * @param index
- * @return Number
+ * Function to check if index is number to return proper bookingTimeIndex.
+ *
+ * @param {Number | null} index
+ * @return {Number}
  */
 const checkIndex = (index: number | null): number => {
    if (bookingIndexTypeChecker(index)) {
@@ -127,18 +138,19 @@ const checkIndex = (index: number | null): number => {
 };
 
 /**
- * Function to check is current item last on array
- * @param currentIndex
- * @param arrayLength
- * @return Boolean
+ * Function to check is current item last on array.
+ *
+ * @param {Number} currentIndex
+ * @param {Number} arrayLength
+ * @return {Boolean}
  */
 const checkIsLastIndex = (currentIndex: number, arrayLength: number): boolean =>
    currentIndex === arrayLength;
 
 /**
  * Function to generate Date of last day of selected month.
- * @param {Date}date
- * @return Date
+ * @param {Date} date
+ * @return {Date}
  */
 const makeLastDayOfMonth = (date: Date): Date => {
    let fullYear = date.getFullYear();

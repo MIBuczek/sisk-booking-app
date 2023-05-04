@@ -34,19 +34,25 @@ const PaginationBtn = styled.button`
    }
 `;
 
-interface PaginationProps {
+interface IProps {
    currentPage: number;
    postPerPage: number;
    totalPost: number;
    nextPage: (num: number) => void;
 }
 
-const Pagination: React.FunctionComponent<PaginationProps> = ({
+/**
+ * Table Pagination Component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const Pagination: React.FunctionComponent<IProps> = ({
    currentPage,
    postPerPage,
    totalPost,
    nextPage
-}) => (
+}): JSX.Element => (
    <PaginationWrapper>
       {paginationItems(totalPost, postPerPage).map((number) => (
          <PaginationBtn

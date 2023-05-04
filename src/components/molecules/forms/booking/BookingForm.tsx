@@ -221,7 +221,7 @@ const questionMarkIconStyle = {
    color: 'AFBF36'
 };
 
-interface BookingFormProps {
+interface IProps {
    mainState: IMainState;
    bookingsList: IBooking[];
    isSISKEmployee: boolean;
@@ -231,7 +231,14 @@ interface BookingFormProps {
    initialEditingState: () => void;
 }
 
-const BookingForm: React.FunctionComponent<BookingFormProps> = ({
+/**
+ * Booking form component.
+ * It's handle general booking information with booking time list.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const BookingForm: React.FunctionComponent<IProps> = ({
    bookingsList,
    mainState,
    isSISKEmployee,
@@ -239,7 +246,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    isEditing,
    editedItemIndex,
    initialEditingState
-}) => {
+}): JSX.Element => {
    const [bookingData, setBookingData] = React.useState<IBooking | undefined>(undefined);
    const [extraOptions, setExtraOptions] = React.useState<ISelectedExtraOptions[]>([]);
    const [bookingTime, setBookingTime] = React.useState<ISingleBookingDate[]>([]);
@@ -305,7 +312,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     * It will be dispatched to database it user confirm action.
     * @param cred
     */
-   const onSubmit: SubmitHandler<IBookingForm> = (cred) => {
+   const onSubmit: SubmitHandler<IBookingForm> = (cred): void => {
       if (!bookingTime.length) {
          return;
       }
@@ -325,7 +332,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    /**
     * Function to confirm dispatch action. If so then add or update firebase booking collection.
     */
-   const confirmSubmit = () => {
+   const confirmSubmit = (): void => {
       if (!bookingData) return;
       if (bookingId) {
          dispatch(updateBooking({...bookingData, id: bookingId}, isAdmin, sendEmailNotification));
@@ -341,7 +348,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
     * Function handle edit selected booking object. It set form fields with current booking data.
     * @param index
     */
-   const editBookingHandler = (index: number) => {
+   const editBookingHandler = (index: number): void => {
       const currentBooking = cloneDeep(bookingsList[index]);
       const clientId = selectedClientIdOption(clients, currentBooking.clientId);
       reset(generateBookingFormDetails(currentBooking, clientId, city));
@@ -359,7 +366,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    /**
     * Function to restore initial status.
     */
-   const createInitialState = () => {
+   const createInitialState = (): void => {
       reset({...cloneDeep(BOOKING_INITIAL_VALUE), ...mainState});
       setBookingId(undefined);
       initialEditingState();
@@ -373,7 +380,7 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
    /**
     * Function handle cancel action.
     */
-   const cancelHandler = () => {
+   const cancelHandler = (): void => {
       createInitialState();
       dispatch(closeModal());
    };
@@ -427,6 +434,9 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       return 'Czy napewno chcesz wysłać prośbę o rezerwację';
    };
 
+   /**
+    * Effect to refresh the view after watched form value change
+    */
    React.useEffect(() => {
       const sub = watch((value, {name}) => {
          const currentCity = value.city?.value ?? '';
@@ -446,17 +456,18 @@ const BookingForm: React.FunctionComponent<BookingFormProps> = ({
       return () => sub.unsubscribe();
    }, [watch]);
 
+   /**
+    * Effect to set component state if user edit some booking item.
+    */
    React.useEffect(() => {
-      if (isEditing && typeof editedItemIndex === 'number') {
-         editBookingHandler(editedItemIndex);
-      } else {
-         createInitialState();
-      }
+      if (isEditing && typeof editedItemIndex === 'number') editBookingHandler(editedItemIndex);
+      else createInitialState();
    }, [isEditing]);
 
-   React.useEffect(() => {
-      setSizeOptions(selectSizeFieldOptions(city.value, building.value));
-   }, []);
+   /**
+    * Effect to set available size option for selected building / place
+    */
+   React.useEffect(() => setSizeOptions(selectSizeFieldOptions(city.value, building.value)), []);
 
    return (
       <BookingWrapper>

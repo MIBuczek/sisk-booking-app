@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import Button from 'components/atoms/Button';
 
+/**
+ * Rounded button HTML Element
+ */
 const RoundButton = styled(Button)`
    margin: 0;
    border-radius: 50%;

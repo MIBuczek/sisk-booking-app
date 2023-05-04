@@ -29,13 +29,19 @@ const DetailsHeader = styled(Header)`
    }
 `;
 
-interface BookingStatusFormProps {
+interface IProps {
    bookingsList: IBooking[];
    editedItemIndex?: number;
    editedSubItemIndex?: number;
 }
 
-const ModalSingleBookingTime: React.FunctionComponent<BookingStatusFormProps> = ({
+/**
+ * Modal to change selected booking date in booking list.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ModalSingleBookingTime: React.FunctionComponent<IProps> = ({
    bookingsList,
    editedItemIndex,
    editedSubItemIndex

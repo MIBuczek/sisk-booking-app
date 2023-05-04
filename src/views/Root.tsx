@@ -23,6 +23,11 @@ const AppWrapper = styled.div`
    justify-content: flex-start;
 `;
 
+/**
+ * App component - Root application components
+ *
+ * @returns {JSX.Element} Return entire application
+ */
 const App: React.FC = (): JSX.Element => (
    <HashRouter>
       <AppWrapper>

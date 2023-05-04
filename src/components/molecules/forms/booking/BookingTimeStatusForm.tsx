@@ -76,6 +76,13 @@ interface IProp {
    submitHandler: (updatedBooking: IBooking) => void;
 }
 
+/**
+ * Booking time status component.
+ * It's handle multiple booking time selection.
+ *
+ * @param {IProp} prop
+ * @returns {JSX.Element}
+ */
 const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
    confirmationClass = '',
    currentBooking,

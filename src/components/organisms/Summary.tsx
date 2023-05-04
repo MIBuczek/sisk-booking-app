@@ -300,7 +300,13 @@ const LoadingWrapper = styled.div`
    z-index: 100;
 `;
 
-const Summary = () => {
+/**
+ * Summary tab component.
+ * Contains information about all booking per selected client.
+ *
+ * @returns {JSX.Element}
+ */
+const Summary = (): JSX.Element => {
    const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
    const [clientSummary, setClientSummary] = React.useState<ISummaryClientBookings>(
       cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)

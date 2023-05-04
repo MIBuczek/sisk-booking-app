@@ -3,15 +3,17 @@ import {IAdminState, IBooking, IClient} from 'models';
 /**
  * Function to set string value as lower case.
  *
- * @param s
+ * @param {String} s
+ * @returns {String}
  */
 const formatData = (s: string): string => s.toLocaleLowerCase().trim();
 
 /**
  * Function to filter reservation related to the place
- * @param  bookingList
- * @param  mainState
- * @param  isAdmin
+ *
+ * @param  {Array<IBooking>} bookingList
+ * @param {IAdminState} mainState
+ * @param {Boolean} isAdmin
  * @returns {Array<IBooking>}
  */
 const filterBookingsPerPlace = (
@@ -28,9 +30,10 @@ const filterBookingsPerPlace = (
 /**
  * Function to search selected content tapped search phase.
  *
- * @param searchContent
- * @param searchProperty
- * @param searchPhase
+ * @param {Array<IClient | IBooking>} searchContent
+ * @param {String} searchProperty
+ * @param {String} searchPhase
+ * @returns {Array<IClient | IBooking>}
  */
 const searchSelectedContent = (
    searchContent: (IClient | IBooking)[],

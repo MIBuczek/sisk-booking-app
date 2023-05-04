@@ -19,12 +19,19 @@ const DetailsSpan = styled.span`
    color: ${({theme}) => theme.darkGrey};
 `;
 
-interface ClientDetailsProps {
+interface IProps {
    currentBooking: IBooking;
    editedSubItemIndex: number;
 }
 
-const ClientDetails: React.FunctionComponent<ClientDetailsProps> = ({
+/**
+ *Client details component.
+ * Display assigned client information to selected booking.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ClientDetails: React.FunctionComponent<IProps> = ({
    currentBooking,
    editedSubItemIndex
 }): JSX.Element => (

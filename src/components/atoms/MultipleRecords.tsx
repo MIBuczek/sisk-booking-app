@@ -140,6 +140,12 @@ interface IProps {
    deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
+/**
+ * Multiple Records Component
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const MultipleRecords: React.FunctionComponent<IProps> = ({
    headers,
    recordProperty,
@@ -154,13 +160,13 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
    emptyText,
    editHandler,
    deleteHandler
-}) => {
+}): JSX.Element => {
    const [currentPage, setCurrentPage] = React.useState<number>(1);
    const [postPerPage, setPostPerPage] = React.useState<number>(20);
 
    const nextPage = (num: number): void => setCurrentPage(num);
 
-   const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
+   const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number): void => {
       e.preventDefault();
       e.stopPropagation();
       if (typeof value === 'number') setPostPerPage(value);
@@ -177,6 +183,9 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
       return false;
    };
 
+   /**
+    * Effect to refresh view when records come
+    */
    React.useEffect(() => undefined, [records]);
 
    return (

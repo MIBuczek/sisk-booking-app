@@ -23,7 +23,13 @@ interface IProps {
    innerText: string;
 }
 
-const ErrorMsgServer: React.FC<IProps> = ({innerText}) => (
+/**
+ * Error Message If Server Failed.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ErrorMsgServer: React.FC<IProps> = ({innerText}): JSX.Element => (
    <ErrorServerTextContent>
       {innerText}
       <BsExclamationCircle />

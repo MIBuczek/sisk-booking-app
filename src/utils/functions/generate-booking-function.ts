@@ -84,11 +84,12 @@ import {
 
 /**
  * Function to generate final booking object saved in database
- * @param  cred
- * @param  selectedSize
- * @param bookingTime
- * @param  extraOptions
- * @param  id
+ *
+ * @param {IBookingForm} cred
+ * @param {SIZE_OPTIONS} selectedSize
+ * @param {Array<ISingleBookingDate>} bookingTime
+ * @param {Array<ISelectedExtraOptions>} extraOptions
+ * @param {String} id
  * @returns {Object<IBooking>}
  */
 const generateBookingDetails = (
@@ -119,10 +120,11 @@ const generateBookingDetails = (
    id
 });
 /**
- * Function to generate single booking status data
- * @param  cred
- * @param  currentBooking
- * @param  subItemIndex
+ * Function to generate single booking status data.
+ *
+ * @param  {IBookingStatusForm} cred
+ * @param  {IBooking} currentBooking
+ * @param  {Number} subItemIndex
  * @returns {Object<IBooking>}
  */
 const generateBookingStatusDate = (
@@ -145,10 +147,11 @@ const generateBookingStatusDate = (
 };
 
 /**
- * Function to generate form object user in React Hook Forms
- * @param  currentBooking
- * @param  clientId
- * @param  city
+ * Function to generate form object user in React Hook Forms.
+ *
+ * @param  {IBooking} currentBooking
+ * @param  {TSelect} clientId
+ * @param  {TSelect} city
  * @returns {Object<IBookingForm>}
  */
 const generateBookingFormDetails = (
@@ -189,8 +192,10 @@ const generateBookingFormDetails = (
 /**
  * Function to generate max rang in data type input.
  * If we have august then extend it for next year.
+ *
+ * @returns {Date}
  */
-const generateMaxRangDate = () => {
+const generateMaxRangDate = (): Date => {
    let currentYear = new Date().getFullYear();
    if (new Date().getMonth() >= 7) {
       currentYear += 1;

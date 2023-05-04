@@ -14,6 +14,11 @@ const LogoImg = styled.img`
    height: auto;
 `;
 
+/**
+ * App Logo Component
+ *
+ * @returns {JSX.Element}
+ */
 const Logo: React.FC = (): JSX.Element => (
    <LogoWrapper>
       <LogoImg src={logo} />

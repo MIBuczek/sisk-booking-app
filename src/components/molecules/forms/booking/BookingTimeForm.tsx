@@ -142,7 +142,7 @@ const RecordDetailsBtnPanel = styled.div`
    }
 `;
 
-interface BookingTimeFormProps {
+interface IProps {
    isAdmin: boolean;
    disabled: boolean;
    bookingTime: ISingleBookingDate[];
@@ -152,18 +152,15 @@ interface BookingTimeFormProps {
 /**
  * React functional component to handler edition booking time reservation.
  *
- * @param isAdmin
- * @param disabled
- * @param bookingTime
- * @param setBookingTime
- * @constructor
+ * @param {IProps} props
+ * @return {JSX.Element}
  */
-const BookingTimeForm: React.FunctionComponent<BookingTimeFormProps> = ({
+const BookingTimeForm: React.FunctionComponent<IProps> = ({
    isAdmin,
    disabled,
    bookingTime,
    setBookingTime
-}) => {
+}): JSX.Element => {
    const [editedIndex, setEditedIndex] = React.useState<number | undefined>(undefined);
    const [errorMsg, setErrorMsg] = React.useState<string | undefined>(undefined);
    const [warningMsg, setWarningMsg] = React.useState<string | undefined>(undefined);

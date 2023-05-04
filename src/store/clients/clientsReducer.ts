@@ -8,7 +8,14 @@ const INITIAL_STATE: IClientsPayload = {
    clients: []
 };
 
-export const clientStore = (state = INITIAL_STATE, action: IClientsActions) => {
+/**
+ * Clients general state.
+ *
+ * @param {IClientsPayload} state
+ * @param {IClientsActions} action
+ * @returns {IClientsPayload}
+ */
+export const clientStore = (state = INITIAL_STATE, action: IClientsActions): IClientsPayload => {
    const {type, payload} = action;
    switch (type) {
       case CLIENTS_STATE.ADD_CLIENT:

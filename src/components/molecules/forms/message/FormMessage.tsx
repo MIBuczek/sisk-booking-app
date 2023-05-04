@@ -98,7 +98,13 @@ const ErrorServer = styled.span`
    }
 `;
 
-const FormMessage = () => {
+/**
+ * Form message component.
+ * It's handle user messages for app administrators.
+ *
+ * @returns {JSX.Element}
+ */
+const FormMessage = (): JSX.Element => {
    const [message, setMessage] = React.useState<IMessageForm | undefined>();
    const [police, setPolice] = React.useState<boolean>(false);
    const [displayConfirmation, setDisplayConfirmation] = React.useState(false);

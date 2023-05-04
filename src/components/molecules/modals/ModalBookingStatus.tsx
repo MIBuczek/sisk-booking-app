@@ -29,22 +29,31 @@ const BookingStatusHeader = styled(Header)`
    }
 `;
 
-interface BookingStatusFormProps {
+interface IProps {
    bookingsList: IBooking[];
    editedItemIndex?: number;
    editedSubItemIndex?: number;
 }
 
-const ModalBookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
+/**
+ * Booking modal status for selected reservation.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ModalBookingStatus: React.FunctionComponent<IProps> = ({
    bookingsList,
    editedItemIndex,
    editedSubItemIndex
-}) => {
+}): JSX.Element => {
    const [currentBooking, setCurrentBooking] = React.useState<IBooking | undefined>(undefined);
 
    const dispatch = useDispatch();
 
-   const editBookingStatusHandler = () => {
+   /**
+    * Function to handle edition selected time into available booking list
+    */
+   const editBookingStatusHandler = (): void => {
       if (isNil(editedItemIndex) || isNil(editedSubItemIndex)) return;
       setCurrentBooking(bookingsList[editedItemIndex]);
    };
@@ -57,6 +66,9 @@ const ModalBookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
       dispatch(updateBooking(updatedBooking, true, false));
    };
 
+   /**
+    * Effect to refresh component state during component initialization
+    */
    React.useEffect(() => {
       editBookingStatusHandler();
       return () => {

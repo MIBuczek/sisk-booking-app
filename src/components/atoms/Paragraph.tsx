@@ -6,6 +6,9 @@ type ParagraphProps = {
    conflict?: boolean;
 };
 
+/**
+ * Paragraph HTML Element.
+ */
 const Paragraph = styled.p<ParagraphProps>`
    color: ${({theme}) => theme.darkGrey};
    font-size: ${({small}) => (small ? '14px' : '18px')};

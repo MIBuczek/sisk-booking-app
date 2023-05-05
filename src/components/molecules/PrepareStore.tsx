@@ -46,8 +46,9 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
       } else {
          dispatch(StoreActions.getBookingDataForUser());
          dispatch(StoreActions.getBuildingsData());
+         setStoreReady(false);
       }
-   }, [authStore.savingStage, isUserPage]);
+   }, [authStore.savingStage]);
 
    /**
     * Effect to set store ready flag and close loaded component.

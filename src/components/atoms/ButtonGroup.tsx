@@ -1,8 +1,8 @@
 import {isEmpty} from 'lodash';
 import * as React from 'react';
 import styled from 'styled-components';
-import {SIZE_OPTIONS} from 'utils/variables/form-const';
-import Button from './Button';
+import {SIZE_OPTIONS} from 'utils';
+import Button from 'components/atoms/Button';
 
 type GroupBtnProps = {
    active?: boolean;
@@ -50,13 +50,19 @@ export type TProps<T> = {
    optionsHandler: (e: React.MouseEvent, value: T) => void;
 };
 
+/**
+ * Button group component.
+ *
+ * @param {TProps} props
+ * @returns {JSX.Element}
+ */
 const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
    itemPerPage = false,
    value,
    options,
    disabled,
    optionsHandler
-}) => (
+}): JSX.Element => (
    <ButtonGroupWrapper className={`${itemPerPage ? 'itemPerPageContainer' : ''}`}>
       {!isEmpty(options)
          ? options.map(
@@ -75,4 +81,5 @@ const ButtonGroup: React.FunctionComponent<TProps<SIZE_OPTIONS | number>> = ({
          : null}
    </ButtonGroupWrapper>
 );
+
 export default ButtonGroup;

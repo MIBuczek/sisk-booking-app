@@ -1,5 +1,5 @@
 import {IBookingsAction, IBookingsPayload} from 'models';
-import {BOOKING_STATE, SAVING_STAGE} from 'utils/variables/store-const';
+import {BOOKING_STATE, SAVING_STAGE} from 'utils';
 
 const INITIAL_STATE: IBookingsPayload = {
    isFetching: false,
@@ -11,6 +11,13 @@ const INITIAL_STATE: IBookingsPayload = {
    conflictedBookings: []
 };
 
+/**
+ * Bookings general state.
+ *
+ * @param {IBookingsPayload} state
+ * @param {IBookingsAction} action
+ * @returns {IBookingsPayload}
+ */
 export const bookingStore = (state = INITIAL_STATE, action: IBookingsAction) => {
    const {type, payload} = action;
    switch (type) {

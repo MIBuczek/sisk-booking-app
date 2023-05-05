@@ -7,10 +7,10 @@ import {IReduxState} from 'models';
 import {logOutUser, openModal} from 'store';
 import {fadeIn} from 'style/animation';
 import {MODAL_TYPES} from 'utils';
-import Logo from '../atoms/Logo';
-import useScrollPosition from '../../hooks/useScrollPosition ';
-import Anchor from '../atoms/Anchor';
-import Button from '../atoms/Button';
+import Logo from 'components/atoms/Logo';
+import useScrollPosition from 'hooks/useScrollPosition ';
+import Anchor from 'components/atoms/Anchor';
+import Button from 'components/atoms/Button';
 
 type Navigation = {
    isTop: boolean;
@@ -153,6 +153,11 @@ const NaviAnchor = styled(Anchor)`
    }
 `;
 
+/**
+ * Top navigation component.
+ *
+ * @returns {JSX.Element}
+ */
 const TopNav = (): JSX.Element => {
    const [isTop, setIsTop] = React.useState<boolean>(true);
 
@@ -167,7 +172,7 @@ const TopNav = (): JSX.Element => {
    const scrollPosition = useScrollPosition();
 
    /**
-    * Condition to check if we on top of the page.
+    * Condition to check if we user reach top of the page.
     */
    if (scrollPosition > 30 && isTop && !isOpen) setIsTop(false);
    else if (scrollPosition < 30 && !isTop) setIsTop(true);

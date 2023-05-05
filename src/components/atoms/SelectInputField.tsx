@@ -31,6 +31,9 @@ export const SelectWrapper = styled.div`
    }
 `;
 
+/**
+ * Select Input Element.
+ */
 const SelectInputField = styled(Select)`
    width: 290px;
    height: 33px;

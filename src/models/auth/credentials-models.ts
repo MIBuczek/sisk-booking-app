@@ -1,4 +1,6 @@
-export interface ICredential {
+interface ICredential {
    email: string;
    password: string;
 }
+
+export type {ICredential};

@@ -6,11 +6,12 @@ import {
    findSelectedOption,
    firstLetterUpperCase,
    formatDate,
-   formatTime
+   formatTime,
+   transformValue
 } from 'utils';
 import {fadeIn} from 'style/animation';
 import {IBooking} from 'models';
-import Paragraph from './Paragraph';
+import Paragraph from 'components/atoms/Paragraph';
 
 const DetailsParagraph = styled(Paragraph)`
    font-size: 14px;
@@ -34,12 +35,19 @@ interface IProps {
    bookingTimeIndex: number | null;
 }
 
+/**
+ * Booking information component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const BookingInfo: React.FunctionComponent<IProps> = ({
    isAdmin,
    currentBooking,
    bookingTimeIndex
 }): JSX.Element => {
-   const {person, city, building, bookingTime, size, message} = currentBooking;
+   const {person, city, building, bookingTime, size, message, payment} = currentBooking;
+
    return (
       <>
          <DetailsParagraph bold>
@@ -60,6 +68,9 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
          </DetailsParagraph>
          <DetailsParagraph bold>
             Wynajęta powierzchnia : <DetailsSpan>{size}</DetailsSpan>
+         </DetailsParagraph>
+         <DetailsParagraph bold>
+            Płatność : <DetailsSpan>{transformValue[payment]}</DetailsSpan>
          </DetailsParagraph>
          <DetailsParagraph bold>
             Od godziny :

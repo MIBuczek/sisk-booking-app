@@ -11,6 +11,7 @@ export * from 'utils/variables/booking-extra-options-const';
 export * from 'utils/variables/employee-message-const';
 export * from 'utils/variables/summary-data-const';
 export * from 'utils/variables/email-service-data';
+export * from 'utils/variables/csv-file-headers';
 
 export * from 'utils/functions/api-functions';
 export * from 'utils/functions/calender-functions';

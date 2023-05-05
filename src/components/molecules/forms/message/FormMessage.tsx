@@ -11,15 +11,15 @@ import {
    USER_MIB_SERVICE_ID,
    USER_MIB_TEMPLATE_MESSAGE_ID
 } from 'utils';
-import Anchor from '../../atoms/Anchor';
-import Button from '../../atoms/Button';
-import Checkbox from '../../atoms/Checkbox';
-import ErrorMsg from '../../atoms/ErrorMsg';
-import Header from '../../atoms/Header';
-import Label from '../../atoms/Label';
-import TextAreaField from '../../atoms/TextAreaField';
-import TextInputField from '../../atoms/TextInputField';
-import ConfirmAction from '../ConfirmAction';
+import Anchor from 'components/atoms/Anchor';
+import Button from 'components/atoms/Button';
+import Checkbox from 'components/atoms/Checkbox';
+import ErrorMsg from 'components/atoms/ErrorMsg';
+import Header from 'components/atoms/Header';
+import Label from 'components/atoms/Label';
+import TextAreaField from 'components/atoms/TextAreaField';
+import TextInputField from 'components/atoms/TextInputField';
+import ConfirmAction from 'components/molecules/ConfirmAction';
 
 const MessageWrapper = styled.form`
    display: flex;
@@ -98,7 +98,13 @@ const ErrorServer = styled.span`
    }
 `;
 
-const FormMessage = () => {
+/**
+ * Form message component.
+ * It's handle user messages for app administrators.
+ *
+ * @returns {JSX.Element}
+ */
+const FormMessage = (): JSX.Element => {
    const [message, setMessage] = React.useState<IMessageForm | undefined>();
    const [police, setPolice] = React.useState<boolean>(false);
    const [displayConfirmation, setDisplayConfirmation] = React.useState(false);
@@ -108,7 +114,8 @@ const FormMessage = () => {
    const {
       control,
       handleSubmit,
-      formState: {errors}
+      formState: {errors},
+      getValues
    } = useForm<IMessageForm>();
 
    /**
@@ -164,7 +171,20 @@ const FormMessage = () => {
                name="person"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 3,
+                     message: 'Minimalna ilość znaków to 3'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 100'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -177,13 +197,27 @@ const FormMessage = () => {
                   />
                )}
             />
-            {errors.person && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.person && <ErrorMsg innerText={errors.person.message} />}
             <Label>E-mail</Label>
             <Controller
                name="email"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 8,
+                     message: 'Minimalna ilość znaków to 8'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 100'
+                  },
+                  validate: () => getValues('email').includes('@') || 'Adres email musi zawierać @'
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -196,13 +230,30 @@ const FormMessage = () => {
                   />
                )}
             />
-            {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.email && <ErrorMsg innerText={errors.email.message} />}
             <Label>Telefon</Label>
             <Controller
                name="phone"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 9,
+                     message: 'Minimalna ilość znaków to 9'
+                  },
+                  maxLength: {
+                     value: 15,
+                     message: 'Maksymalna ilość znaków to 15'
+                  },
+                  pattern: {
+                     value: /^[\d./-]+$/,
+                     message: 'Pole może zawierać tylko liczby oraz myślnik'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -215,13 +266,26 @@ const FormMessage = () => {
                   />
                )}
             />
-            {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.phone && <ErrorMsg innerText={errors.phone.message} />}
             <Label>Wiadomość</Label>
             <Controller
                name="message"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 3,
+                     message: 'Minimalna ilość znaków to 3'
+                  },
+                  maxLength: {
+                     value: 600,
+                     message: 'Maksymalna ilość znaków to 600'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextAreaField
                      onBlur={onBlur}
@@ -234,7 +298,7 @@ const FormMessage = () => {
                   />
                )}
             />
-            {errors.message && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.message && <ErrorMsg innerText={errors.message.message} />}
             <RodoWrapper>
                <Checkbox
                   checked={police}

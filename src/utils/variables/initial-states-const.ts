@@ -1,5 +1,5 @@
 import {IAdminState, IMainState} from 'models';
-import {BUILDINGS_OPTIONS, CITY_OPTIONS} from './options-const';
+import {BUILDINGS_OPTIONS, CITY_OPTIONS} from 'utils';
 
 const initialMainState: IMainState = {
    city: CITY_OPTIONS[0],

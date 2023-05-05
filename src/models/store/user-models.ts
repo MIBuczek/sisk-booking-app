@@ -1,4 +1,4 @@
-import {IPayload} from './store-models';
+import {IPayload} from 'models';
 
 interface IUser {
    [x: string]: string | boolean | string[];

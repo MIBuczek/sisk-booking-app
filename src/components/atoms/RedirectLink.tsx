@@ -1,6 +1,9 @@
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
+/**
+ * Redirect React Router Link.
+ */
 const RedirectLink = styled(Link)`
    color: ${({theme}) => theme.darkGrey};
    font-size: ${({theme}) => theme.fontSize.m};

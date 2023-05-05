@@ -1,6 +1,11 @@
 import * as React from 'react';
-import FormMessage from '../forms/FormMessage';
+import FormMessage from 'components/molecules/forms/message/FormMessage';
 
-const ModalMessage = () => <FormMessage />;
+/**
+ * Modal to display form message.
+ *
+ * @returns {JSX.Element}
+ */
+const ModalMessage = (): JSX.Element => <FormMessage />;
 
 export default ModalMessage;

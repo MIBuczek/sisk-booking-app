@@ -5,10 +5,10 @@ import {isNil} from 'lodash';
 import {clearCurrentBooking, closeModal} from 'store';
 import {fadeIn} from 'style/animation';
 import {IBookingsPayload, IReduxState} from 'models';
-import Paragraph from '../atoms/Paragraph';
-import Header from '../atoms/Header';
-import Button from '../atoms/Button';
-import BookingInfo from '../atoms/BookingInfo';
+import Paragraph from 'components/atoms/Paragraph';
+import Header from 'components/atoms/Header';
+import Button from 'components/atoms/Button';
+import BookingInfo from 'components/atoms/BookingInfo';
 
 const BookingDetailsWrapper = styled.article`
    width: 290px;
@@ -58,6 +58,11 @@ const ClearButton = styled(Button)`
    }
 `;
 
+/**
+ * Selected booking details component.
+ *
+ * @returns {JSX.Element}
+ */
 const BookingDetails = (): JSX.Element => {
    const dispatch = useDispatch();
    const {booking, bookingTimeIndex} = useSelector(

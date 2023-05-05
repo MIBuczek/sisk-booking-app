@@ -87,12 +87,19 @@ interface IProps {
    additionalClass?: string;
 }
 
+/**
+ * Confirmation action component.
+ * Dispatch action after user selection.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const ConfirmAction: React.FunctionComponent<IProps> = ({
    message,
    callback,
    cancelCallback,
    additionalClass = ''
-}) => (
+}): JSX.Element => (
    <ConfirmationWrapper className={`${additionalClass}`}>
       <ConfirmationContent>
          <ConfirmationParagraph>

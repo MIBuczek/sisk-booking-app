@@ -11,16 +11,23 @@ import {
    ISummaryClientBookings,
    TSelect
 } from 'models';
-import {changeDayInDate} from './calender-functions';
-import {BOOKING_STATUS} from '../variables/booking-status-const';
-import {modelDisplayValue, transformToPercentage, transformValue} from './modeling-value-function';
-import {checkSelectedOption, makeLastDayOfMonth} from './utils-functions';
-import {csvBookingKeys, csvClientKeys} from '../variables/csv-file-headers';
+import {
+   changeDayInDate,
+   BOOKING_STATUS,
+   modelDisplayValue,
+   transformToPercentage,
+   transformValue,
+   checkSelectedOption,
+   makeLastDayOfMonth,
+   csvBookingKeys,
+   csvClientKeys
+} from 'utils';
 
 /**
- * Function to find all reservation assigned to client id
- * @param  bookings
- * @param  clientValue
+ * Function to find all reservation assigned to client id.
+ *
+ * @param {Array<IBooking>} bookings
+ * @param {TSelect} clientValue
  * @returns {Array<IBooking>}
  */
 const findAllClientReservation = (bookings: IBooking[], clientValue: TSelect): IBooking[] =>
@@ -28,8 +35,8 @@ const findAllClientReservation = (bookings: IBooking[], clientValue: TSelect): I
 
 /**
  * Function to return correct number of day in month
- * @param date
- * @returns Number
+ * @param {Date} date
+ * @returns {Number}
  */
 const numberOfMonthDays = (date: Date): number => {
    const convertedDate = new Date(date);
@@ -45,11 +52,11 @@ const numberOfMonthDays = (date: Date): number => {
 /**
  * Function to model all client reservation and divide it into to cities.
  * Inside reducer looking for reservation time only on current month.
- * @param initialState
- * @param allClientReservations
- * @param fromTheBeginning
- * @param fromMonth
- * @param toMonth
+ * @param {ISummaryClientBookings} initialState
+ * @param {Array<IBooking>} allClientReservations
+ * @param {Boolean} fromTheBeginning
+ * @param {Date} fromMonth
+ * @param {Date} toMonth
  * @returns {ISummaryClientBookings}
  */
 const generateReservationSummary = (
@@ -114,8 +121,9 @@ const generateReservationSummary = (
 
 /**
  * Function to change shape of given object by selected keys.
- * @param  keys
- * @param  obj
+ * @param {Array<String} keys
+ * @param {IBooking | IClient} obj
+ * @returns {Object}
  * */
 const changeObjectShape = (keys: string[], obj: IBooking | IClient) =>
    keys.reduce((acc: {[x: keyof IBooking | keyof IClient]: string}, key) => {
@@ -130,11 +138,12 @@ const changeObjectShape = (keys: string[], obj: IBooking | IClient) =>
 /**
  * Method to generate csv file report data for selected client.
  * Report might be generated from the begging or from selected moth period.
- * @param  currentClient
- * @param  allClientReservations
- * @param fromTheBeginning
- * @param fromMonth
- * @param toMonth
+ *
+ * @param {IClient} currentClient
+ * @param {Array<IBooking>} allClientReservations
+ * @param {Boolean} fromTheBeginning
+ * @param {Date} fromMonth
+ * @param {Date} toMonth
  * @return {Array<CSVReportData>}
  */
 const csvClientSummary = (
@@ -200,11 +209,12 @@ const csvClientSummary = (
 /**
  * Method to generate csv file report data for all database clients.
  * Report might be generated from the begging or from selected moth period.
- * @param  allClients
- * @param  allBookings
- * @param fromTheBeginning
- * @param fromMonth
- * @param toMonth
+ *
+ * @param {Array<IClient>} allClients
+ * @param {Array<IBooking>} allBookings
+ * @param {Boolean} fromTheBeginning
+ * @param {Date} fromMonth
+ * @param {Date} toMonth
  * @return {Array<CSVReportData>}
  */
 const csvAllClientSummary = (
@@ -230,7 +240,8 @@ const csvAllClientSummary = (
 /**
  * Function to summary all reservation selected client per city.
  * In return string with information about all reservation and also count done.
- * @param  bookingByCity
+ *
+ * @param {Array<IBookedTime>} bookingByCity
  * @return {String}
  */
 const summaryTotalBookingsNumber = (bookingByCity: IBookedTime[]): string => {

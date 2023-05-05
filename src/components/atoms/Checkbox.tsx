@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import * as React from 'react';
-// import { css } from 'react-select/src/components/Control';
 import styled, {css} from 'styled-components';
 
 type CheckboxInput = {
@@ -89,7 +88,7 @@ const CheckboxContainer = styled.div`
    display: flex;
 `;
 
-interface ICheckbox {
+interface IProps {
    className: string;
    checked: boolean;
    name: string;
@@ -97,7 +96,19 @@ interface ICheckbox {
    changeHandler: (value: string | boolean, name: string) => void;
 }
 
-const Checkbox: React.FC<ICheckbox> = ({className, checked, name, disabled, changeHandler}) => (
+/**
+ * Checkbox HTML Element.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const Checkbox: React.FC<IProps> = ({
+   className,
+   checked,
+   name,
+   disabled,
+   changeHandler
+}): JSX.Element => (
    <CheckboxContainer
       className={className}
       onClick={() => changeHandler(disabled ? checked : !checked, name)}

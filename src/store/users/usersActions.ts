@@ -6,6 +6,11 @@ import {doc, getDoc} from 'firebase/firestore';
 
 const USER_COLLECTION_KEY: Readonly<'users'> = 'users';
 
+/**
+ * Generate redux payload fetching current user action.
+ *
+ * @returns {IUserAction}
+ */
 const fetchingUserStart = (): IUserAction => ({
    type: USER_STATE.GET_USER,
    payload: {
@@ -16,6 +21,12 @@ const fetchingUserStart = (): IUserAction => ({
    }
 });
 
+/**
+ * Generate redux payload fetching success current user action.
+ *
+ * @param {IUser} user
+ * @returns {IUserAction}
+ */
 const fetchingUserDone = (user: IUser): IUserAction => ({
    type: USER_STATE.GET_USER,
    payload: {
@@ -26,6 +37,12 @@ const fetchingUserDone = (user: IUser): IUserAction => ({
    }
 });
 
+/**
+ * Generate redux payload fetching failed current user action.
+ *
+ * @param {String} errorMessage
+ * @returns {IUserAction}
+ */
 const fetchingUserError = (errorMessage: string): IUserAction => ({
    type: USER_STATE.ERROR_USER,
    payload: {

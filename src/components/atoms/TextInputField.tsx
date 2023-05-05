@@ -4,6 +4,9 @@ type InputType = {
    invalid?: boolean;
 };
 
+/**
+ * Input type text - HTML Element.
+ */
 const TextInputField = styled.input<InputType>`
    width: 290px;
    height: 35px;

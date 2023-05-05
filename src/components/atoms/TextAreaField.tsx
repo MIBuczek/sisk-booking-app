@@ -4,6 +4,9 @@ type TextAreaType = {
    invalid?: boolean;
 };
 
+/**
+ * Textarea Input HTML Element.
+ */
 const TextAreaField = styled.textarea<TextAreaType>`
    width: 390px;
    height: 135px;

@@ -8,11 +8,11 @@ import styled from 'styled-components';
 import setHours from 'date-fns/setHours';
 import setMinutes from 'date-fns/setMinutes';
 import Checkbox from 'components/atoms/Checkbox';
-import Button from 'components/atoms/Button';
 import {BsFillFileTextFill, BsTrashFill, BsXLg} from 'react-icons/bs';
-import {isEmpty} from 'lodash';
+import {cloneDeep, isEmpty} from 'lodash';
 import {checkSelectedOption, INITIAL_EXTRA_OPTIONS, modelDisplayValue} from 'utils';
-import {IExtraOptionForm, ISelectedExtraOptions} from 'models';
+import {IExtraOptionForm, ISelectedExtraOptions, isNumber} from 'models';
+import RoundButton from 'components/atoms/ButtonRound';
 
 const ExtraOptionsWrapper = styled.section`
    width: 100%;
@@ -43,12 +43,12 @@ const ExtraOptionHeader = styled.h3`
 
 const ExtraOptionsForm = styled.div`
    display: flex;
-   align-items: flex-start;
    justify-content: space-between;
+   align-items: center;
 `;
 
 const SingleOption = styled.div`
-   width: 20%;
+   width: fit-content;
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -59,6 +59,10 @@ const InputWrapper = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
+
+   .react-datepicker-wrapper {
+      width: fit-content;
+   }
 `;
 
 const HourPickerField = styled(DataPickerField)`
@@ -71,24 +75,6 @@ const ButtonWrapper = styled.div`
    display: flex;
    justify-content: center;
    align-items: center;
-`;
-
-const RoundBtn = styled(Button)`
-   margin: 0;
-   border-radius: 50%;
-   width: 30px;
-   height: 30px;
-   padding: 0;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-
-   svg {
-      transform: rotate(45deg);
-      width: 14px;
-      height: 14px;
-      margin-top: 1px;
-   }
 `;
 
 const DisplaySelectedOptions = styled.ul`
@@ -105,6 +91,10 @@ const DisplaySelectedOptionElement = styled.li`
    align-items: center;
    justify-content: space-around;
 
+   &.editing {
+      color: ${({theme}) => theme.warning};
+   }
+
    &.empty {
       text-align: center;
    }
@@ -117,7 +107,7 @@ const RecordDetailSpan = styled.span`
    width: auto;
 
    &:first-of-type {
-      min-width: 30%;
+      width: 214px;
    }
 `;
 
@@ -136,15 +126,24 @@ const RecordDetailsBtnPanel = styled.div`
    }
 `;
 
-interface BookingExtraOptionsProps {
+interface IProps {
    extraOptions: ISelectedExtraOptions[];
    setExtraOptions: React.Dispatch<React.SetStateAction<ISelectedExtraOptions[]>>;
+   disabled: boolean;
 }
 
-const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = ({
+/**
+ * React functional component to handle edition extra option added to reservation.
+ *
+ * @param {IProps} props
+ * @return {JSX.Element}
+ */
+const BookingExtraOptions: React.FunctionComponent<IProps> = ({
    extraOptions,
-   setExtraOptions
-}) => {
+   setExtraOptions,
+   disabled
+}): JSX.Element => {
+   const [editedIndex, setEditedIndex] = React.useState<number | undefined>(undefined);
    const {handleSubmit, control, watch, reset} = useForm<IExtraOptionForm>();
    const {lights: lightValue, toilets: toiletsValue} = watch();
 
@@ -155,13 +154,20 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     * It also set what option was selected into array.
     * @param cred
     */
-   const onSubmit: SubmitHandler<IExtraOptionForm> = (cred) => {
+   const onSubmit: SubmitHandler<IExtraOptionForm> = (cred): void => {
+      const clonedExtraOptions = cloneDeep(extraOptions);
       const {fromHour, toHour, lights, toilets} = cred;
-      if (!lights && !toilets) {
-         return;
-      }
       const singleRecord = {options: [{lights}, {toilets}], fromHour, toHour};
-      setExtraOptions([...extraOptions, singleRecord]);
+      if (!lights && !toilets) return;
+      if (isNumber(editedIndex)) {
+         const currentExtraOption = clonedExtraOptions[editedIndex];
+         const updatedExtraOption = {...currentExtraOption, ...singleRecord};
+         clonedExtraOptions.splice(editedIndex, 1, updatedExtraOption);
+      } else {
+         clonedExtraOptions.push(singleRecord);
+      }
+      setExtraOptions(clonedExtraOptions);
+      setEditedIndex(undefined);
       reset({...INITIAL_EXTRA_OPTIONS});
    };
 
@@ -170,12 +176,13 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     * @param e
     * @param index
     */
-   const editExtraOption = (e: React.MouseEvent, index: number) => {
+   const editExtraOption = (e: React.MouseEvent, index: number): void => {
       e.preventDefault();
       e.stopPropagation();
+      setEditedIndex(index);
+      if (isNumber(editedIndex)) return;
       const {options, fromHour, toHour} = extraOptions[index];
       reset({fromHour, toHour, lights: options[0].lights, toilets: options[1].toilets});
-      deleteExtraOption(e, index);
    };
 
    /**
@@ -183,12 +190,23 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
     * @param e
     * @param index
     */
-   const deleteExtraOption = (e: React.MouseEvent, index: number) => {
+   const deleteExtraOption = (e: React.MouseEvent, index: number): void => {
       e.preventDefault();
       e.stopPropagation();
-      setExtraOptions(extraOptions.filter((o, i) => i !== index));
+      if (isNumber(editedIndex)) return;
+      const cloneExtraOptions = cloneDeep(extraOptions);
+      cloneExtraOptions.splice(index, 1);
+      setExtraOptions(cloneExtraOptions);
    };
 
+   /**
+    * Function to handle disabled state of action buttons.
+    */
+   const handlerDisabled = (): boolean => isNumber(editedIndex) || disabled;
+
+   /**
+    * Refresh view after any changes on extraOptions.
+    */
    React.useEffect(() => undefined, [extraOptions]);
 
    return (
@@ -282,19 +300,22 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                   />
                </InputWrapper>
                <ButtonWrapper>
-                  <RoundBtn
+                  <RoundButton
                      role="button"
                      onClick={handleSubmit(onSubmit)}
                      disabled={anyOptionSelected}
                   >
                      <BsXLg />
-                  </RoundBtn>
+                  </RoundButton>
                </ButtonWrapper>
             </ExtraOptionsForm>
             <DisplaySelectedOptions>
                {!isEmpty(extraOptions) ? (
                   extraOptions.map(({fromHour, toHour, options}, index) => (
-                     <DisplaySelectedOptionElement key={fromHour.getMilliseconds()}>
+                     <DisplaySelectedOptionElement
+                        key={fromHour.getMilliseconds()}
+                        className={editedIndex === index ? 'editing' : ''}
+                     >
                         <RecordDetailSpan>
                            <strong>Opcje : </strong>
                            {checkSelectedOption(options)}
@@ -308,18 +329,18 @@ const BookingExtraOptions: React.FunctionComponent<BookingExtraOptionsProps> = (
                            {modelDisplayValue('toHour', toHour, true)}
                         </RecordDetailSpan>
                         <RecordDetailsBtnPanel>
-                           <RoundBtn>
-                              <BsFillFileTextFill
-                                 role="button"
-                                 onClick={(e) => editExtraOption(e, index)}
-                              />
-                           </RoundBtn>
-                           <RoundBtn>
-                              <BsTrashFill
-                                 role="button"
-                                 onClick={(e) => deleteExtraOption(e, index)}
-                              />
-                           </RoundBtn>
+                           <RoundButton
+                              disabled={handlerDisabled()}
+                              onClick={(e) => editExtraOption(e, index)}
+                           >
+                              <BsFillFileTextFill />
+                           </RoundButton>
+                           <RoundButton
+                              disabled={handlerDisabled()}
+                              onClick={(e) => deleteExtraOption(e, index)}
+                           >
+                              <BsTrashFill />
+                           </RoundButton>
                         </RecordDetailsBtnPanel>
                      </DisplaySelectedOptionElement>
                   ))

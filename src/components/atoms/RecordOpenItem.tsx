@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {BsCalendarXFill, BsFillCheckSquareFill} from 'react-icons/bs';
+import {BsCalendarXFill, BsFillCheckSquareFill, BsFillFileEarmarkTextFill} from 'react-icons/bs';
 import styled from 'styled-components';
 import {useDispatch} from 'react-redux';
 import {IBooking, IEditHandler, ISingleBookingDate} from 'models';
 import {checkSingleDayConflict, MODAL_TYPES, modelDisplayValue} from 'utils';
 import {openModal, updateBookingConflicts} from 'store';
-import Button from './Button';
+import Button from 'components/atoms/Button';
 
 const SingleBookingTime = styled.div`
    display: flex;
@@ -97,6 +97,12 @@ interface IProps {
    editHandler: (editDetails: IEditHandler) => void;
 }
 
+/**
+ * Record Item - Open (Collapsed).
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const RecordOpenItem: React.FunctionComponent<IProps> = ({
    mainIndex,
    property,
@@ -114,7 +120,13 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
 
    const dispatch = useDispatch();
 
-   /* Method to check single reservation conflict and set component state */
+   /**
+    * Method to check single reservation conflict and set component state.
+    *
+    * @param {ISingleBookingDate} sbd
+    * @param {String} sbId
+    * @param {Number} sbMonth
+    */
    const checkSingleConflict = (
       sbd: ISingleBookingDate,
       sbId: string = '',
@@ -127,12 +139,17 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
       }
    };
 
-   /* Method to open conflict modal and set conflicted reservation in general store */
+   /**
+    * Method to open conflict modal and set conflicted reservation in general store.
+    */
    const openConflictModal = (): void => {
       dispatch(updateBookingConflicts(conflictedItems));
       dispatch(openModal(MODAL_TYPES.BOOKING_CONFLICTS));
    };
 
+   /**
+    * Effect to check on initialization has record conflict with other one.
+    */
    React.useEffect(() => {
       checkSingleConflict(singleBooking, currentRecord.id as string, currentRecord.month as number);
    }, []);
@@ -164,12 +181,29 @@ const RecordOpenItem: React.FunctionComponent<IProps> = ({
                ) : null}
                <ListItemBtn
                   type="button"
+                  disabled={!currentRecord.accepted || !hasRight}
+                  onClick={() =>
+                     editHandler({
+                        itemIndex: mainIndex,
+                        isMainItem: false,
+                        subItemIndex: singleBookingIndex,
+                        modalType: MODAL_TYPES.BOOKING_SINGLE_TIME,
+                        currentPage,
+                        postPerPage
+                     })
+                  }
+               >
+                  <BsFillFileEarmarkTextFill />
+               </ListItemBtn>
+               <ListItemBtn
+                  type="button"
                   disabled={!currentRecord.accepted}
                   onClick={() =>
                      editHandler({
                         itemIndex: mainIndex,
                         isMainItem: false,
                         subItemIndex: singleBookingIndex,
+                        modalType: MODAL_TYPES.BOOKINGS_STATUS,
                         currentPage,
                         postPerPage
                      })

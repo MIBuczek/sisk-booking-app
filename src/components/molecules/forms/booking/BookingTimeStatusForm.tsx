@@ -5,18 +5,18 @@ import {useDispatch} from 'react-redux';
 import {isNil} from 'lodash';
 import {
    BOOKING_STATUS_OPTIONS,
-   generateBookingStatusDate,
-   INITIAL_BOOKING_STATUS_FORM
+   BOOKING_TIME_STATUS_INITIAL_VALUE,
+   generateBookingStatusDate
 } from 'utils';
 import {IBooking, IBookingStatusForm} from 'models';
 import {closeModal} from 'store';
-import Label from '../../atoms/Label';
-import SelectInputField, {customStyles} from '../../atoms/SelectInputField';
-import ErrorMsg from '../../atoms/ErrorMsg';
-import TextAreaField from '../../atoms/TextAreaField';
-import ConfirmAction from '../ConfirmAction';
-import Button from '../../atoms/Button';
-import TextInputField from '../../atoms/TextInputField';
+import Label from 'components/atoms/Label';
+import SelectInputField, {customStyles} from 'components/atoms/SelectInputField';
+import ErrorMsg from 'components/atoms/ErrorMsg';
+import TextAreaField from 'components/atoms/TextAreaField';
+import ConfirmAction from 'components/molecules/ConfirmAction';
+import Button from 'components/atoms/Button';
+import TextInputField from 'components/atoms/TextInputField';
 
 const BookingTimeStatusWrapper = styled.form`
    width: 290px;
@@ -41,7 +41,8 @@ const BookingTimeStatusWrapper = styled.form`
    }
 
    &.bookingStatus {
-      width: 80%;
+      width: 100%;
+      margin: 0 40px;
    }
 `;
 
@@ -75,6 +76,13 @@ interface IProp {
    submitHandler: (updatedBooking: IBooking) => void;
 }
 
+/**
+ * Booking time status component.
+ * It's handle multiple booking time selection.
+ *
+ * @param {IProp} prop
+ * @returns {JSX.Element}
+ */
 const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
    confirmationClass = '',
    currentBooking,
@@ -93,17 +101,13 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
       control,
       reset
    } = useForm<IBookingStatusForm>({
-      defaultValues: {
-         bookingStatus: BOOKING_STATUS_OPTIONS[0],
-         bookingParticipants: '',
-         bookingComments: ''
-      }
+      defaultValues: {...BOOKING_TIME_STATUS_INITIAL_VALUE}
    });
 
    /**
     * Function to update initial form state of already saved data.
     */
-   const editBookingStatusHandler = () => {
+   const editBookingStatusHandler = (): void => {
       if (isNil(bookingTimeIndex)) {
          return;
       }
@@ -116,9 +120,10 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
    /**
     * Function to submit additional status form fields.
     * This is related to admin and employee. To change the status of selected reservation.
+    *
     * @param cred
     */
-   const onSubmit: SubmitHandler<IBookingStatusForm> = (cred) => {
+   const onSubmit: SubmitHandler<IBookingStatusForm> = (cred): void => {
       if (isNil(bookingTimeIndex)) return;
 
       setBookingData(generateBookingStatusDate(cred, currentBooking, bookingTimeIndex));
@@ -128,7 +133,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
    /**
     * Function to confirm submission action and pass it to parent component.
     */
-   const confirmSubmit = () => {
+   const confirmSubmit = (): void => {
       if (!bookingData) return;
 
       submitHandler(bookingData);
@@ -140,8 +145,8 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
    /**
     * Function to restore initial status.
     */
-   const createInitialState = () => {
-      reset({...INITIAL_BOOKING_STATUS_FORM});
+   const createInitialState = (): void => {
+      reset({...BOOKING_TIME_STATUS_INITIAL_VALUE});
       setDisplayConfirmation(false);
       setBookingData(undefined);
    };
@@ -149,18 +154,12 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
    /**
     * Function handle cancel action.
     */
-   const cancelHandler = () => {
+   const cancelHandler = (): void => {
       createInitialState();
       dispatch(closeModal());
    };
 
-   React.useEffect(() => {
-      editBookingStatusHandler();
-
-      return () => {
-         cancelHandler();
-      };
-   }, []);
+   React.useEffect(() => editBookingStatusHandler(), []);
 
    return (
       <BookingTimeStatusWrapper className={confirmationClass}>
@@ -169,7 +168,12 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
             name="bookingStatus"
             defaultValue={BOOKING_STATUS_OPTIONS[0]}
             control={control}
-            rules={{required: true}}
+            rules={{
+               required: {
+                  value: true,
+                  message: 'Pole nie może być puste'
+               }
+            }}
             render={({field: {onChange, onBlur, value}}) => (
                <SelectInputField
                   options={BOOKING_STATUS_OPTIONS}
@@ -184,13 +188,22 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
                />
             )}
          />
-         {errors.bookingStatus && <ErrorMsg innerText="Pole nie może być puste" />}
+         {errors.bookingStatus && <ErrorMsg innerText={errors.bookingStatus.message} />}
          <Label>Liczba uczestników</Label>
          <Controller
             name="bookingParticipants"
             defaultValue={''}
             control={control}
-            rules={{required: true}}
+            rules={{
+               required: {
+                  value: true,
+                  message: 'Pole nie może być puste'
+               },
+               pattern: {
+                  value: /^[0-9]/,
+                  message: 'Pole może zawierać tylko liczby'
+               }
+            }}
             render={({field: {onChange, onBlur, value}}) => (
                <ParticipantInput
                   placeholder="Wpisz liczbe"
@@ -201,7 +214,7 @@ const BookingTimeStatusForm: React.FunctionComponent<IProp> = ({
                />
             )}
          />
-         {errors.bookingParticipants && <ErrorMsg innerText="Pole nie może być puste" />}
+         {errors.bookingParticipants && <ErrorMsg innerText={errors.bookingParticipants.message} />}
          <Label>Uwagi</Label>
          <Controller
             name="bookingComments"

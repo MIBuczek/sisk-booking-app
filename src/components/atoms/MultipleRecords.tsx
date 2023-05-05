@@ -4,9 +4,9 @@ import * as React from 'react';
 import {fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
 import {pagination, SIZE_OPTIONS} from 'utils';
-import ButtonGroup from './ButtonGroup';
-import MultipleRecordItem from './MultipleRecordsItem';
-import Pagination from './Pagination';
+import ButtonGroup from 'components/atoms/ButtonGroup';
+import MultipleRecordItem from 'components/atoms/MultipleRecordsItem';
+import Pagination from 'components/atoms/Pagination';
 
 type RecordDataType = {
    empty?: boolean;
@@ -132,6 +132,7 @@ interface IProps {
    isAdmin: boolean;
    isEmployee: boolean;
    conflicts: string[];
+   openRecords: boolean;
    records?: (IClient | IBooking)[];
    allRecords?: (IClient | IBooking)[];
    emptyText: string;
@@ -139,6 +140,12 @@ interface IProps {
    deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
+/**
+ * Multiple Records Component
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const MultipleRecords: React.FunctionComponent<IProps> = ({
    headers,
    recordProperty,
@@ -147,18 +154,19 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
    isAdmin,
    isEmployee,
    conflicts = [],
+   openRecords,
    records = [],
    allRecords = [],
    emptyText,
    editHandler,
    deleteHandler
-}) => {
+}): JSX.Element => {
    const [currentPage, setCurrentPage] = React.useState<number>(1);
    const [postPerPage, setPostPerPage] = React.useState<number>(20);
 
    const nextPage = (num: number): void => setCurrentPage(num);
 
-   const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number) => {
+   const postPerPageHandler = (e: React.MouseEvent, value: SIZE_OPTIONS | number): void => {
       e.preventDefault();
       e.stopPropagation();
       if (typeof value === 'number') setPostPerPage(value);
@@ -175,6 +183,9 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
       return false;
    };
 
+   /**
+    * Effect to refresh view when records come
+    */
    React.useEffect(() => undefined, [records]);
 
    return (
@@ -207,6 +218,7 @@ const MultipleRecords: React.FunctionComponent<IProps> = ({
                         hasConflicts={singleItemConflictHandler(record)}
                         currentRecord={record}
                         records={records}
+                        openRecords={openRecords}
                         allRecords={allRecords}
                         editHandler={editHandler}
                         deleteHandler={deleteHandler}

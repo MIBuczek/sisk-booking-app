@@ -4,6 +4,9 @@ type AnchorProps = {
    small?: boolean;
 };
 
+/**
+ * Anchor HTML Element.
+ */
 const Anchor = styled.a<AnchorProps>`
    display: flex;
    align-items: center;

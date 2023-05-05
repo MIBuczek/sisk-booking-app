@@ -5,8 +5,8 @@ import {IBooking} from 'models';
 import {useDispatch} from 'react-redux';
 import {updateBooking} from 'store';
 import styled from 'styled-components';
-import {formatDate, formatTime} from 'utils';
-import BookingTimeStatusForm from './forms/BookingTimeStatusForm';
+import BookingTimeStatusForm from 'components/molecules/forms/booking/BookingTimeStatusForm';
+import ClientDetails from 'components/molecules/ClientDetails';
 
 const BookingStatusWrapper = styled.section`
    max-width: 670px;
@@ -29,37 +29,31 @@ const BookingStatusHeader = styled(Header)`
    }
 `;
 
-const ClientStatusDetails = styled.div`
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   width: 80%;
-   border-top: ${({theme}) => `1px solid ${theme.green}`};
-   border-bottom: ${({theme}) => `1px solid ${theme.green}`};
-`;
-
-const DetailsSpan = styled.span`
-   font-weight: 400;
-   margin: 8px 0;
-   font-size: ${({theme}) => theme.fontSize.m};
-   color: ${({theme}) => theme.darkGrey};
-`;
-
-interface BookingStatusFormProps {
+interface IProps {
    bookingsList: IBooking[];
    editedItemIndex?: number;
    editedSubItemIndex?: number;
 }
 
-const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
+/**
+ * Booking modal status for selected reservation.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ModalBookingStatus: React.FunctionComponent<IProps> = ({
    bookingsList,
    editedItemIndex,
    editedSubItemIndex
-}) => {
+}): JSX.Element => {
    const [currentBooking, setCurrentBooking] = React.useState<IBooking | undefined>(undefined);
 
    const dispatch = useDispatch();
 
-   const editBookingStatusHandler = () => {
+   /**
+    * Function to handle edition selected time into available booking list
+    */
+   const editBookingStatusHandler = (): void => {
       if (isNil(editedItemIndex) || isNil(editedSubItemIndex)) return;
       setCurrentBooking(bookingsList[editedItemIndex]);
    };
@@ -72,6 +66,9 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
       dispatch(updateBooking(updatedBooking, true, false));
    };
 
+   /**
+    * Effect to refresh component state during component initialization
+    */
    React.useEffect(() => {
       editBookingStatusHandler();
       return () => {
@@ -84,24 +81,10 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
          <BookingStatusHeader>ROZLICZ REZERWACJĘ</BookingStatusHeader>
          {!isNil(currentBooking) && !isNil(editedSubItemIndex) ? (
             <>
-               <ClientStatusDetails>
-                  <DetailsSpan>
-                     <strong>Klient: </strong>
-                     {currentBooking.person}
-                  </DetailsSpan>
-                  <DetailsSpan>
-                     <strong>Dzień: </strong>
-                     {formatDate(currentBooking.bookingTime[editedSubItemIndex].day)}
-                  </DetailsSpan>
-                  <DetailsSpan>
-                     <strong>Godzina rozpoczęcia: </strong>
-                     {formatTime(currentBooking.bookingTime[editedSubItemIndex].startHour)}
-                  </DetailsSpan>
-                  <DetailsSpan>
-                     <strong>Godzina zakończenia: </strong>
-                     {formatTime(currentBooking.bookingTime[editedSubItemIndex].endHour)}
-                  </DetailsSpan>
-               </ClientStatusDetails>
+               <ClientDetails
+                  currentBooking={currentBooking}
+                  editedSubItemIndex={editedSubItemIndex}
+               />
                <BookingTimeStatusForm
                   confirmationClass="bookingStatus"
                   currentBooking={currentBooking}
@@ -115,4 +98,4 @@ const BookingStatus: React.FunctionComponent<BookingStatusFormProps> = ({
    );
 };
 
-export default BookingStatus;
+export default ModalBookingStatus;

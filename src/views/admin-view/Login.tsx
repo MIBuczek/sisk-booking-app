@@ -49,21 +49,28 @@ const LoginTextInputs = styled(TextInputField)`
    margin-bottom: 10px;
 `;
 
-const Login: React.FC = () => {
+/**
+ * Login panel component
+ *
+ * @returns {JSX.Element} Login panel
+ */
+const Login: React.FC = (): JSX.Element => {
+   const dispatch = useDispatch();
+   const {auth, errorMessage} = useSelector((store: IReduxState) => store.authStore);
+
    const {
       handleSubmit,
       formState: {errors},
       control,
       getValues
    } = useForm<ICredential>();
-   const dispatch = useDispatch();
-   const {auth, errorMessage} = useSelector((store: IReduxState) => store.authStore);
 
    /**
     * Function to dispatch action to log user into platform
+    *
     * @param cred
     */
-   const onSubmit: SubmitHandler<ICredential> = (cred) => {
+   const onSubmit: SubmitHandler<ICredential> = (cred): void => {
       dispatch(logInUser(cred.email, cred.password));
    };
 
@@ -83,8 +90,19 @@ const Login: React.FC = () => {
                defaultValue={''}
                control={control}
                rules={{
-                  required: true,
-                  validate: () => getValues('email').includes('@')
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 8,
+                     message: 'Minimalna ilość znaków to 8'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 100'
+                  },
+                  validate: () => getValues('email').includes('@') || 'Adres email musi zawierać @'
                }}
                render={({field: {onChange, onBlur, value}}) => (
                   <LoginTextInputs
@@ -97,13 +115,26 @@ const Login: React.FC = () => {
                   />
                )}
             />
-            {errors.email && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.email && <ErrorMsg innerText={errors.email?.message} />}
             <Label>Hasło</Label>
             <Controller
                name="password"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 5,
+                     message: 'Minimalna ilość znaków w haśle to 5'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków w haśle to 30'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <LoginTextInputs
                      onBlur={onBlur}
@@ -117,7 +148,7 @@ const Login: React.FC = () => {
                   />
                )}
             />
-            {errors.password && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.password && <ErrorMsg innerText={errors.password.message} />}
             {errorMessage && <ErrorMsgServer innerText={errorMessage} />}
             <Button role="button" onClick={handleSubmit(onSubmit)} disabled={false}>
                Zaloguj się

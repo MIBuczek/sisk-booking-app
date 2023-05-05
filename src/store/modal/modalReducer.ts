@@ -1,13 +1,20 @@
-import {IModalAction} from 'models';
+import {IModal, IModalAction} from 'models';
 import {MODAL_STATE} from 'utils';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IModal = {
    isOpen: false,
    message: '',
-   type: ''
+   type: undefined
 };
 
-export const modal = (state = INITIAL_STATE, action: IModalAction) => {
+/**
+ * Modal general state.
+ *
+ * @param {IModal} state
+ * @param {IModalAction} action
+ * @returns {IModal}
+ */
+export const modal = (state = INITIAL_STATE, action: IModalAction): IModal => {
    const {type, payload} = action;
    switch (type) {
       case MODAL_STATE.INITIAL:

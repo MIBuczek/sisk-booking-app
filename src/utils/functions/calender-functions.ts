@@ -1,17 +1,20 @@
 import {IBooking} from 'models';
-import {BOOKING_STATUS} from '../variables/booking-status-const';
+import {BOOKING_STATUS} from 'utils';
 
 /**
  * Function to format time zone off set
- * @param d
- * @param month
+ * @param {Date} d
+ * @param {Number} month
+ * @returns {Number}
  */
 const formatTimeZoneToCheck = (d: Date, month: number): number =>
    new Date(d.getFullYear(), month, 1).getTimezoneOffset();
 
 /**
  * Function to check if current date is Daylight Saving Time period
- * @param date
+ *
+ * @param {Date} date
+ * @returns {Boolean}
  */
 const checkIfWinterTimeZone = (date: Date): boolean =>
    Math.max(formatTimeZoneToCheck(date, 0), formatTimeZoneToCheck(date, 6)) !==
@@ -19,7 +22,8 @@ const checkIfWinterTimeZone = (date: Date): boolean =>
 
 /**
  * Function to transform date object into local date string
- * @param date
+ *
+ * @param {Date | null} date
  * @returns {String}
  */
 const formatDate = (date: Date | null): string => {
@@ -29,28 +33,31 @@ const formatDate = (date: Date | null): string => {
 
 /**
  * Function to transform date object into string
+ *
  * @param  {Date|null} date
- * @returns {string}
+ * @returns {String}
  */
 const formatTime = (date: Date | null): string => {
    if (!date) return '';
    const dateHour: number = date.getHours();
    const dateMinutes: number = date.getMinutes();
 
-   let minutes = '';
+   let minutes = `${dateMinutes}`;
    if (dateMinutes === 0) {
       minutes = '00';
    }
    if (dateMinutes > 0 && dateMinutes < 10) {
       minutes = `0${dateMinutes}`;
    }
+
    return `${dateHour}:${minutes}`;
 };
 
 /**
  * Function to cut display date object into short part day/month/year
- * @param  {Date|string} date
- * @returns {string}
+ *
+ * @param  {Date|String} date
+ * @returns {String}
  */
 const formatCalenderDate = (date: Date | string): string => {
    const stringDate = new Date(date).toISOString();
@@ -60,6 +67,7 @@ const formatCalenderDate = (date: Date | string): string => {
 
 /**
  * Function to transform date object into correct Warsaw time zone
+ *
  * @param date
  * @returns {String}
  */
@@ -75,6 +83,7 @@ const formatDisplayTime = (date: Date | string) => {
 
 /**
  * Function to transform date object into accepted calendar hours format
+ *
  * @param date
  * @returns {String}
  */
@@ -87,6 +96,7 @@ const formatCalenderHours = (date: Date): string => {
 
 /**
  * Function to generate background color for calendar item
+ *
  * @param accepted
  * @param status
  * @returns {String}
@@ -102,7 +112,8 @@ const generateStatusBackground = (accepted: boolean, status: string): string => 
 };
 
 /**
- * Function generate reservation calendar object display into view
+ * Function generate reservation calendar object display into view.
+ *
  * @param itemTitle
  * @param booking
  * @param index
@@ -115,8 +126,8 @@ const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number
       id,
       allDay: false,
       title: `${itemTitle}`,
-      url: `${formatTime(startHour)} - ${formatTime(endHour)}`,
-      textColor: `${size}`,
+      bookedTime: `${formatTime(startHour)} - ${formatTime(endHour)}`,
+      bookedSize: `${size}`,
       start: `${formatCalenderDate(day)}${formatDisplayTime(startHour)}`,
       end: `${formatCalenderDate(day)}${formatDisplayTime(endHour)}`,
       backgroundColor: `${generateStatusBackground(accepted, status)}`,
@@ -126,7 +137,8 @@ const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number
 };
 
 /**
- * Function to change day in Date object
+ * Function to change day in Date object.
+ *
  * @param date
  * @param newDay
  * @returns {String}

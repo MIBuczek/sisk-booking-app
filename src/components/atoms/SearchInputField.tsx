@@ -4,12 +4,13 @@ import * as React from 'react';
 import {BsSearch, BsXLg} from 'react-icons/bs';
 import styled from 'styled-components';
 import {searchSelectedContent} from 'utils';
-import TextInputField from './TextInputField';
-import Button from './Button';
+import TextInputField from 'components/atoms/TextInputField';
+import Button from 'components/atoms/Button';
 
 const SearchInputWrapper = styled.div`
    display: inline-block;
    position: relative;
+   margin: 1rem 0;
 
    svg {
       position: absolute;
@@ -40,15 +41,24 @@ interface IProps {
    searchContentHandler: (searchResults: (IClient | IBooking)[], searchPhase: string) => void;
 }
 
+/**
+ * Search Input Component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const SearchInputField: React.FunctionComponent<IProps> = ({
    type,
    placeholder,
    searchContent,
    searchProperty,
    searchContentHandler
-}) => {
+}): JSX.Element => {
    const [searchPhase, setSearchPhase] = React.useState('');
 
+   /**
+    * Search handler method.
+    */
    const searchHandler = (): void => {
       if (!searchPhase) searchContentHandler(searchContent, '');
       else
@@ -58,8 +68,14 @@ const SearchInputField: React.FunctionComponent<IProps> = ({
          );
    };
 
+   /**
+    * Delayed Query for typo in search filed.
+    */
    const delayedQuery = React.useCallback(debounce(searchHandler, 300), [searchPhase]);
 
+   /**
+    * Effect to refresh view after delayedQuery results.
+    */
    React.useEffect(() => {
       delayedQuery();
       return delayedQuery.cancel;

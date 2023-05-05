@@ -19,10 +19,10 @@ import {
 } from 'react-icons/bs';
 import {fadeIn, fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
-import {checkIsLastIndex, checkSelectedOption, modelDisplayValue} from 'utils';
-import Collapse, {IRenderProps} from '../../providers/Collapse';
-import Button from './Button';
-import RecordOpenItem from './RecordOpenItem';
+import {checkIsLastIndex, checkSelectedOption, MODAL_TYPES, modelDisplayValue} from 'utils';
+import Collapse, {IRenderProps} from 'providers/Collapse';
+import Button from 'components/atoms/Button';
+import RecordOpenItem from 'components/atoms/RecordOpenItem';
 
 const RecordTableData = styled.td`
    display: inline-block;
@@ -143,7 +143,7 @@ const ChevronIcon = styled(BsChevronDown)`
    }
 `;
 
-interface MultipleRecordItemProps {
+interface IProps {
    index: number;
    currentPage: number;
    postPerPage: number;
@@ -155,12 +155,19 @@ interface MultipleRecordItemProps {
    currentRecord: IClient | IBooking;
    hasConflicts: boolean;
    records: (IClient | IBooking)[];
+   openRecords: boolean;
    allRecords: (IClient | IBooking)[];
    editHandler: (editDetails: IEditHandler) => void;
    deleteHandler: (deleteDetails: IDeleteHandler) => void;
 }
 
-const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
+/**
+ * Single item of  Multiple record table.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const MultipleRecordItem: React.FunctionComponent<IProps> = ({
    index,
    currentPage,
    postPerPage,
@@ -171,12 +178,18 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
    recordPropertyDisplayMap,
    currentRecord,
    hasConflicts,
+   openRecords,
    records,
    allRecords,
    editHandler,
    deleteHandler
-}) => {
-   /* Method to return single reservation for  current record */
+}): JSX.Element => {
+   /**
+    * Method to return single reservation for  current record.
+    *
+    * @param {IClient | IBooking} singleRecord
+    * @returns {Array<ISingleBookingDate>}
+    */
    const singleBookingTimeHandler = (singleRecord: IClient | IBooking): ISingleBookingDate[] => {
       if (singleInstanceOfBookings(singleRecord)) {
          return singleRecord.bookingTime;
@@ -208,7 +221,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                   )}
                   <RecordTableData>
                      <ListItemBtn onClick={toggle}>
-                        <ChevronIcon className={isCollapsed ? 'open' : 'close'} />
+                        <ChevronIcon className={openRecords || isCollapsed ? 'open' : 'close'} />
                      </ListItemBtn>
                      {isAdmin && (
                         <>
@@ -218,6 +231,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                                     itemIndex: index,
                                     isMainItem: true,
                                     subItemIndex: null,
+                                    modalType: MODAL_TYPES.BOOKINGS,
                                     currentPage,
                                     postPerPage
                                  })
@@ -236,7 +250,7 @@ const MultipleRecordItem: React.FunctionComponent<MultipleRecordItemProps> = ({
                      )}
                   </RecordTableData>
                </tr>
-               {isCollapsed ? (
+               {openRecords || isCollapsed ? (
                   <BookingDetailWrapper>
                      <RecordDetail>
                         {recordPropertyDetails.map((property) => {

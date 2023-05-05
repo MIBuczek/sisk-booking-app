@@ -9,7 +9,8 @@ import {
    IDeleteHandler,
    IEditHandler,
    instanceOfBookings,
-   IReduxState
+   IReduxState,
+   isNumber
 } from 'models';
 import {useDispatch, useSelector} from 'react-redux';
 import {closeModal, deleteBooking, openModal} from 'store';
@@ -28,16 +29,18 @@ import {
    siskEmployeeCredentials
 } from 'utils';
 import ModalDelete from 'components/molecules/modals/ModalDelete';
-import BookingForm from 'components/molecules/forms/BookingForm';
+import BookingForm from 'components/molecules/forms/booking/BookingForm';
 import MultipleRecords from 'components/atoms/MultipleRecords';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
-import BookingStatus from 'components/molecules/BookingStatus';
+import ModalBookingStatus from 'components/molecules/modals/ModalBookingStatus';
 import {BsFillExclamationCircleFill} from 'react-icons/bs';
 import Paragraph from 'components/atoms/Paragraph';
 import {cloneDeep} from 'lodash';
 import ErrorMsgServer from 'components/atoms/ErrorMsgServer';
-import Modal from './Modal';
-import ModalConflictDetails from '../molecules/modals/ModalConflictDetails';
+import Modal from 'components/organisms/Modal';
+import ModalConflictDetails from 'components/molecules/modals/ModalConflictDetails';
+import Checkbox from 'components/atoms/Checkbox';
+import ModalSingleBookingTime from 'components/molecules/modals/ModalSingleBookingTime';
 
 const BookingsWrapper = styled.section`
    width: 60%;
@@ -63,6 +66,11 @@ const RecordsActionContent = styled.div`
    align-items: center;
    justify-content: space-between;
    flex-wrap: wrap;
+
+   @media (max-width: 1060px) {
+      flex-direction: column;
+      align-items: flex-start;
+   }
 `;
 
 const OpenBookingsModalButton = styled(Button)`
@@ -88,11 +96,28 @@ const ConflictParagraph = styled(Paragraph)`
    }
 `;
 
-interface BookingsProps {
+const AcceptedFilterWrapper = styled.div`
+   height: auto;
+   display: flex;
+   align-items: center;
+   padding: 6px 20px;
+   border: ${({theme}) => `1px solid ${theme.green}`};
+   border-radius: 5px;
+   margin: 1rem 0;
+`;
+
+interface IProps {
    mainState: IAdminState;
 }
 
-const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
+/**
+ * Booking tab component.
+ * Contains information about app bookings and available actions.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const Bookings: React.FunctionComponent<IProps> = ({mainState}) => {
    const [allBookingsPerPlace, setAllBookingsPerPlace] = React.useState<IBooking[]>([]);
    const [bookingsList, setBookingsList] = React.useState<IBooking[]>([]);
    const [isEditing, setIsEditing] = React.useState(false);
@@ -103,6 +128,8 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    const [deleteItemIndex, setDeleteItemIndex] = React.useState<number | undefined>(undefined);
    const [conflicts, setConflicts] = React.useState<string[]>([]);
    const [searchPhase, setSearchPhase] = React.useState<string>('');
+   const [filterAccepted, setFilterAccepted] = React.useState<boolean>(false);
+   const [openRecords, setOpenRecords] = React.useState<boolean>(false);
 
    const dispatch = useDispatch();
 
@@ -119,7 +146,11 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
     */
    const bookingListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
       if (searchResults.length && instanceOfBookings(searchResults)) {
-         setBookingsList(filterBookingsPerPlace(searchResults, mainState, user?.isAdmin));
+         let filteredResult = filterBookingsPerPlace(searchResults, mainState, user?.isAdmin);
+         if (filterAccepted) {
+            filteredResult = filteredResult.filter((r) => !r.accepted);
+         }
+         setBookingsList(filteredResult);
          setSearchPhase(phase);
       } else {
          setBookingsList([]);
@@ -129,26 +160,27 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
 
    /**
     * Function to handle edited item and set related property edit item and fill up booking form.
+    *
     * @param itemIndex
     * @param isMainItem
     * @param subItemIndex
     * @param currentPage
     * @param postPerPage
+    * @param modalType
     */
    const editBookingHandler = ({
       itemIndex,
       isMainItem,
       subItemIndex,
       currentPage,
-      postPerPage
-   }: IEditHandler) => {
+      postPerPage,
+      modalType
+   }: IEditHandler): void => {
       const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
       setIsEditing(isMainItem);
       setEditedItemIndex(currentIndex);
-      dispatch(openModal(isMainItem ? MODAL_TYPES.BOOKINGS : MODAL_TYPES.BOOKINGS_STATUS));
-      if (typeof subItemIndex === 'number') {
-         setEditedSubItemIndex(subItemIndex);
-      }
+      dispatch(openModal(modalType));
+      if (isNumber(subItemIndex)) setEditedSubItemIndex(subItemIndex);
    };
    /**
     * Function to handle delete booking item and display related confirmation modal.
@@ -156,7 +188,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
     * @param currentPage
     * @param postPerPage
     */
-   const deleteBookingHandler = ({itemIndex, currentPage, postPerPage}: IDeleteHandler) => {
+   const deleteBookingHandler = ({itemIndex, currentPage, postPerPage}: IDeleteHandler): void => {
       const currentIndex = findCurrentItemIndex(itemIndex, currentPage, postPerPage);
       setDeleteItemIndex(currentIndex);
       dispatch(openModal(MODAL_TYPES.DELETE));
@@ -165,7 +197,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function to dispatch deleting action into firebase booking data collection.
     */
-   const deleteBookingAction = () => {
+   const deleteBookingAction = (): void => {
       if (typeof deleteItemIndex === 'undefined') return;
       const currentBooking = cloneDeep(bookingsList[deleteItemIndex]);
       if (currentBooking.id) dispatch(deleteBooking(currentBooking.id));
@@ -180,7 +212,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function to cancel deleting action.
     */
-   const cancelDeleteBookingAction = () => {
+   const cancelDeleteBookingAction = (): void => {
       initialBookingState();
       dispatch(closeModal());
    };
@@ -188,7 +220,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function to restore initial status.
     */
-   const initialBookingState = () => {
+   const initialBookingState = (): void => {
       setIsEditing(false);
       setEditedItemIndex(undefined);
       setDeleteItemIndex(undefined);
@@ -197,18 +229,25 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
    /**
     * Function for handle UseEffect call back.
     */
-   const handlerEffectCallBack = () => {
+   const handlerEffectCallBack = (): void => {
       const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
       setAllBookingsPerPlace(bookingByPlace);
-      const searchResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
-      if (instanceOfBookings(searchResults)) setBookingsList(searchResults);
+      let searchedResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
+      if (filterAccepted) {
+         searchedResults = searchedResults.filter((r) => !r.accepted);
+      }
+      if (!searchedResults.length) setBookingsList([]);
+      if (instanceOfBookings(searchedResults)) setBookingsList(searchedResults);
       if (user?.isAdmin) {
          const bookingWithConflicts = checkAllBookingsConflicts(bookingByPlace);
          setConflicts(bookingWithConflicts);
       }
    };
 
-   React.useEffect(handlerEffectCallBack, [bookings, mainState]);
+   /**
+    * Effect to refresh view after user search phase
+    */
+   React.useEffect(handlerEffectCallBack, [bookings, mainState, filterAccepted]);
 
    return (
       <BookingsWrapper>
@@ -222,6 +261,28 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
                searchProperty="person"
                searchContentHandler={bookingListHandler}
             />
+            <AcceptedFilterWrapper>
+               <Checkbox
+                  checked={filterAccepted}
+                  className="checkbox"
+                  name="filterAccepted"
+                  changeHandler={() => setFilterAccepted(!filterAccepted)}
+                  disabled={false}
+               />
+               <Paragraph small>Pokaż rezerwcje do zakceptowania</Paragraph>
+            </AcceptedFilterWrapper>
+            <AcceptedFilterWrapper>
+               <Checkbox
+                  checked={openRecords}
+                  className="checkbox"
+                  name="openRecords"
+                  changeHandler={() => setOpenRecords(!openRecords)}
+                  disabled={false}
+               />
+               <Paragraph small>
+                  {`${openRecords ? 'Zwiń' : 'Pokaż'} szczegóły rezerwacji`}
+               </Paragraph>
+            </AcceptedFilterWrapper>
             <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.BOOKINGS))}>
                {adminCredentials(user) ? 'Dodaj nową rezerwację' : 'Wyślij prośbę o rezerwacje'}
             </OpenBookingsModalButton>
@@ -235,6 +296,7 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
             isEmployee={user?.isEmployee || false}
             conflicts={conflicts}
             records={bookingsList}
+            openRecords={openRecords}
             allRecords={allBookingsPerPlace}
             editHandler={editBookingHandler}
             deleteHandler={deleteBookingHandler}
@@ -243,11 +305,11 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
          {user?.isAdmin && (
             <ConflictParagraph small bold conflict={!!conflicts.length}>
                <BsFillExclamationCircleFill />
-               {`Aktualna liczba konfliktów: ${conflicts.length}`}
+               {`Aktualna liczba konfliktów między rezerwacjami: ${conflicts.length}`}
             </ConflictParagraph>
          )}
          {isOpen && (
-            <Modal>
+            <Modal customClassName={type === MODAL_TYPES.BOOKINGS ? 'overflow' : undefined}>
                {type === MODAL_TYPES.BOOKINGS && (
                   <BookingForm
                      mainState={mainState}
@@ -260,7 +322,14 @@ const Bookings: React.FunctionComponent<BookingsProps> = ({mainState}) => {
                   />
                )}
                {type === MODAL_TYPES.BOOKINGS_STATUS && (
-                  <BookingStatus
+                  <ModalBookingStatus
+                     bookingsList={bookingsList}
+                     editedItemIndex={editedItemIndex}
+                     editedSubItemIndex={editedSubItemIndex}
+                  />
+               )}
+               {type === MODAL_TYPES.BOOKING_SINGLE_TIME && (
+                  <ModalSingleBookingTime
                      bookingsList={bookingsList}
                      editedItemIndex={editedItemIndex}
                      editedSubItemIndex={editedSubItemIndex}

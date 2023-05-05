@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+/**
+ * Button with icon HTML Element
+ */
 const ButtonIcon = styled.button`
    color: ${({theme}) => theme.darkGrey};
    font-size: ${({theme}) => theme.fontSize.m};

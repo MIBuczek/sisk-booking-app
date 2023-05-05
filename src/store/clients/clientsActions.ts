@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Dispatch} from 'redux';
 import {IClient, IClientsActions, IModalAction, IReduxState} from 'models';
 import {CLIENTS_STATE, db, MODAL_TYPES, parseFirebaseClientData, SAVING_STAGE} from 'utils';
@@ -7,6 +6,11 @@ import {addDoc, collection, deleteDoc, doc, getDocs, updateDoc} from 'firebase/f
 
 const CLIENT_COLLECTION_KEY: Readonly<'clients'> = 'clients';
 
+/**
+ * Generate redux payload fetching client data action.
+ *
+ * @returns {IClientsActions}
+ */
 export const fetchingClients = (): IClientsActions => ({
    type: CLIENTS_STATE.GET_CLIENT,
    payload: {
@@ -17,6 +21,13 @@ export const fetchingClients = (): IClientsActions => ({
    }
 });
 
+/**
+ * Generate redux payload fetching success client data action.
+ *
+ * @param {String} type
+ * @param {Array<IClient>} clients
+ * @returns {IClientsActions}
+ */
 const fetchingClientsDone = (type: string, clients: IClient[] = []): IClientsActions => ({
    type,
    payload: {
@@ -27,6 +38,12 @@ const fetchingClientsDone = (type: string, clients: IClient[] = []): IClientsAct
    }
 });
 
+/**
+ * Generate redux payload fetching failed client data action.
+ *
+ * @param {String} errorMessage
+ * @returns {IClientsActions}
+ */
 const fetchingClientsError = (errorMessage: string): IClientsActions => ({
    type: CLIENTS_STATE.ERROR_CLIENT,
    payload: {

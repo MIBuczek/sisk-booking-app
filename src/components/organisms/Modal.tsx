@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import {IReduxState} from 'models';
 import {fadeIn} from 'style/animation';
-import bgModal from '../../assets/images/background-modal.jpg';
+import bgModal from 'assets/images/background-modal.jpg';
 
 const ModalWrapper = styled.div`
    width: 100%;
@@ -29,13 +29,18 @@ const BGImage = styled.img`
 const ModalContent = styled.div`
    min-width: 400px;
    min-height: 200px;
-   overflow-y: auto;
-   overflow-x: hidden;
+   overflow: visible;
    max-height: 95vh;
    border: 2px solid #afbf36;
    border-radius: 5px;
    background: white;
    position: absolute;
+
+   &.overflow {
+      overflow-y: auto;
+      overflow-x: auto;
+   }
+
    @media (max-width: 890px) {
       max-width: 95%;
    }
@@ -43,15 +48,22 @@ const ModalContent = styled.div`
 
 export interface IProps {
    children: JSX.Element | boolean | (JSX.Element | boolean)[];
+   customClassName?: string;
 }
 
-const Modal: React.FC<IProps> = ({children}): JSX.Element | null => {
+/**
+ * Modal wrapper component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element | null}
+ */
+const Modal: React.FC<IProps> = ({children, customClassName = ''}): JSX.Element | null => {
    const {isOpen} = useSelector((state: IReduxState) => state.modal);
    if (isOpen) {
       return (
          <ModalWrapper>
             <BGImage src={bgModal} alt="bg" />
-            <ModalContent>{children}</ModalContent>
+            <ModalContent className={customClassName}>{children}</ModalContent>
          </ModalWrapper>
       );
    }

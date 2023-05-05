@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {isNil} from 'lodash';
 import {IBooking, IReduxState} from 'models';
 import {updateBooking} from 'store';
-import Header from '../../atoms/Header';
-import BookingInfo from '../../atoms/BookingInfo';
-import BookingTimeStatusForm from '../forms/BookingTimeStatusForm';
+import Header from 'components/atoms/Header';
+import BookingInfo from 'components/atoms/BookingInfo';
+import BookingTimeStatusForm from 'components/molecules/forms/booking/BookingTimeStatusForm';
 
 const ResolveBookingWrapper = styled.div`
    max-width: 870px;
@@ -46,7 +46,12 @@ const BookingDetailsWrapper = styled.article`
    }
 `;
 
-const ModalResolveBooking: React.FunctionComponent = (): JSX.Element => {
+/**
+ * Modal resolve selected booking status.
+ *
+ * @returns {JSX.Element}
+ */
+const ModalResolveBooking = (): JSX.Element => {
    const dispatch = useDispatch();
 
    const {

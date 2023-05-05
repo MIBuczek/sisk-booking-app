@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Dispatch} from 'redux';
 import {IBuilding, IBuildingAction} from 'models';
 import {BUILDING_STATE, db, parseFirebaseBuildingData, SAVING_STAGE} from 'utils';
@@ -6,6 +5,11 @@ import {collection, getDocs} from 'firebase/firestore';
 
 const BUILDINGS_COLLECTION_KEY: Readonly<'buildings'> = 'buildings';
 
+/**
+ * Generate redux payload fetching buildings action.
+ *
+ * @returns {IBuildingAction}
+ */
 const fetchingBuildingsStart = (): IBuildingAction => ({
    type: BUILDING_STATE.GET_BUILDING,
    payload: {
@@ -16,6 +20,12 @@ const fetchingBuildingsStart = (): IBuildingAction => ({
    }
 });
 
+/**
+ * Generate redux payload fetching success buildings action.
+ *
+ * @param {Array<IBuilding>} buildings
+ * @returns {IBuildingAction}
+ */
 const fetchingBuildingsDone = (buildings: IBuilding[]): IBuildingAction => ({
    type: BUILDING_STATE.GET_BUILDING,
    payload: {
@@ -26,6 +36,12 @@ const fetchingBuildingsDone = (buildings: IBuilding[]): IBuildingAction => ({
    }
 });
 
+/**
+ * Generate redux payload fetching failed buildings action.
+ *
+ * @param {String} errorMessage
+ * @returns {IBuildingAction}
+ */
 const fetchingBuildingsError = (errorMessage: string): IBuildingAction => ({
    type: BUILDING_STATE.ERROR_BUILDING,
    payload: {

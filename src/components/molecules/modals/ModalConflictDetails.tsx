@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {clearBookingConflicts, closeModal} from 'store';
 import {IReduxState} from 'models';
 import {modelDisplayValue} from 'utils';
-import Button from '../../atoms/Button';
-import Header from '../../atoms/Header';
+import Button from 'components/atoms/Button';
+import Header from 'components/atoms/Header';
 
 const ModalConflictWrapper = styled.div`
    display: flex;
@@ -77,10 +77,15 @@ const BookingTimeDetailWrapper = styled.div`
    }
 `;
 
+/**
+ * Modal conflict details component.
+ *
+ * @returns {JSX.Element}
+ */
 const ModalConflictDetails = (): JSX.Element => {
    const dispatch = useDispatch();
-
    const {conflictedBookings} = useSelector((state: IReduxState) => state.bookingStore);
+
    const closeConflictModal = (): void => {
       dispatch(clearBookingConflicts());
       dispatch(closeModal());

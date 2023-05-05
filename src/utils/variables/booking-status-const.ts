@@ -1,4 +1,4 @@
-import {IBookingStatusForm, TSelect} from 'models';
+import {TSelect} from 'models';
 
 enum BOOKING_STATUS {
    INITIAL = 'INITIAL',
@@ -21,10 +21,4 @@ const BOOKING_STATUS_OPTIONS: TSelect[] = [
    }
 ];
 
-const INITIAL_BOOKING_STATUS_FORM: IBookingStatusForm = {
-   bookingStatus: BOOKING_STATUS_OPTIONS[0],
-   bookingParticipants: '',
-   bookingComments: ''
-};
-
-export {BOOKING_STATUS, INITIAL_BOOKING_STATUS_FORM, BOOKING_STATUS_OPTIONS};
+export {BOOKING_STATUS, BOOKING_STATUS_OPTIONS};

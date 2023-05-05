@@ -15,7 +15,7 @@ import {IAdminState, IMainState, IReduxState, TSelect} from 'models';
 import Label from 'components/atoms/Label';
 import ButtonIcon, {iconStyle} from 'components/atoms/ButtonIcon';
 import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/SelectInputField';
-import BookingDetails from '../molecules/BookingDetails';
+import BookingDetails from 'components/molecules/BookingDetails';
 
 const SideWrapper = styled.aside`
    width: 30%;
@@ -88,6 +88,12 @@ interface IProps {
    tabHandler: (currentTab: ADMIN_TABS) => void;
 }
 
+/**
+ * Side navigation panel - admin view.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
 const SideNav: React.FunctionComponent<IProps> = ({
    isAdmin,
    isAdminPanel,
@@ -115,7 +121,7 @@ const SideNav: React.FunctionComponent<IProps> = ({
       return generateBuildingOptions(buildings)[city.value];
    };
 
-   React.useEffect(() => {}, [city.value]);
+   React.useEffect(() => undefined, [city.value]);
 
    const blockSelectOptions = isAdminPanel ? !isAdmin : false;
 

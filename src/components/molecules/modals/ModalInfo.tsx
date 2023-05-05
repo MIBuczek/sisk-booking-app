@@ -29,7 +29,13 @@ interface IProps {
    header: string;
 }
 
-const ModalInfo: React.FunctionComponent<IProps> = ({header}) => {
+/**
+ * Modal information component.
+ *
+ * @param {IProps} props
+ * @returns {JSX.Element}
+ */
+const ModalInfo: React.FunctionComponent<IProps> = ({header}): JSX.Element => {
    const dispatch = useDispatch();
    const {message} = useSelector((store: IReduxState) => store.modal);
 

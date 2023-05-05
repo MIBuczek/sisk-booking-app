@@ -32,26 +32,31 @@ const MainWrapper = styled.section`
 
 export interface IProps {}
 
+/**
+ * User panel component
+ *
+ * @returns {JSX.Element} User panel
+ */
 const Main: React.FC<IProps> = (): JSX.Element => {
    const [mainState, setNavState] = React.useState<IMainState>(cloneDeep(initialMainState));
+
+   const {
+      modal: {isOpen, type},
+      authStore: {auth}
+   } = useSelector((state: IReduxState) => state);
 
    /**
     * Function to handler main state on user view.
     * @param value
     * @param field
     */
-   const mainStateHandler = (value: TSelect, field: string) => {
+   const mainStateHandler = (value: TSelect, field: string): void => {
       if (field === 'city') {
          setNavState(() => cloneDeep({city: value, building: BUILDINGS_OPTIONS[value.value][0]}));
       } else {
          setNavState((prev) => ({...prev, building: value}));
       }
    };
-
-   const {
-      modal: {isOpen, type},
-      authStore: {auth}
-   } = useSelector((state: IReduxState) => state);
 
    if (auth) {
       return <Navigate to="/admin" />;

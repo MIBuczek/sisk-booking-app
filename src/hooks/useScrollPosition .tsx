@@ -13,6 +13,9 @@ const useScrollPosition = () => {
       setScrollPosition(window.scrollY);
    };
 
+   /**
+    * Effect to listen scroll event.
+    */
    useEffect(() => {
       window.addEventListener('scroll', updatePosition);
       return () => window.removeEventListener('scroll', updatePosition);

@@ -8,6 +8,9 @@ type DataPickerType = {
    disabled?: boolean;
 };
 
+/**
+ * React Data Picker Element
+ */
 export const DataPickerField = styled(ReactDatePicker)<DataPickerType>`
    width: 190px;
    height: 35px;

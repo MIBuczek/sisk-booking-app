@@ -6,6 +6,9 @@ type ButtonProps = {
    tertiary?: boolean;
 };
 
+/**
+ * Button HTML component.
+ */
 const Button = styled.button<ButtonProps>`
    color: ${({theme}) => theme.darkGrey};
    background: ${({theme, secondary, tertiary}) => {

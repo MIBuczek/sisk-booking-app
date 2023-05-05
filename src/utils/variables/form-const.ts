@@ -1,10 +1,10 @@
-import {IBookingForm} from 'models/forms/booking-form-models';
-import {IClientForm} from 'models/forms/client-form-model';
+import {IBookingTimeForm, ISingleBookingDate, IBookingForm, IClientForm} from 'models';
+import {BOOKING_STATUS, BOOKING_STATUS_OPTIONS} from './booking-status-const';
 
 const today = new Date();
 
 // Form Buildings
-export enum SIZE_OPTIONS {
+enum SIZE_OPTIONS {
    '1/1' = '1/1',
    '1/2' = '1/2',
    '1/3' = '1/3',
@@ -13,7 +13,7 @@ export enum SIZE_OPTIONS {
    '3/4' = '3/4'
 }
 
-export enum CLIENT_TYPE {
+enum CLIENT_TYPE {
    CLIENT = 'Indywidualny',
    COMPANY = 'Firma'
 }
@@ -39,11 +39,6 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
    club: '',
    email: '',
    phone: '',
-   regular: false,
-   startDate: today,
-   endDate: today,
-   startHour: today,
-   endHour: today,
    accepted: false,
    message: '',
    payment: {value: 'transfer', label: 'Przelew'},
@@ -51,6 +46,36 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
    archive: false
 };
 
+const BOOKING_TIME_INITIAL_VALUE: IBookingTimeForm = {
+   day: today,
+   startHour: today,
+   endHour: today
+};
+
+const BOOKING_SINGLE_TIME_INITIAL_VALUE: ISingleBookingDate = {
+   day: today,
+   startHour: today,
+   endHour: today,
+   status: BOOKING_STATUS.INITIAL,
+   comments: '',
+   participants: ''
+};
+
+const BOOKING_TIME_STATUS_INITIAL_VALUE = {
+   bookingStatus: BOOKING_STATUS_OPTIONS[0],
+   bookingParticipants: '',
+   bookingComments: ''
+};
+
 const SIZE_OPTIONS_BTN = Object.values(SIZE_OPTIONS);
 
-export {CLIENT_INITIAL_VALUE, BOOKING_INITIAL_VALUE, SIZE_OPTIONS_BTN};
+export {
+   CLIENT_INITIAL_VALUE,
+   BOOKING_INITIAL_VALUE,
+   BOOKING_TIME_INITIAL_VALUE,
+   BOOKING_SINGLE_TIME_INITIAL_VALUE,
+   BOOKING_TIME_STATUS_INITIAL_VALUE,
+   SIZE_OPTIONS_BTN,
+   CLIENT_TYPE,
+   SIZE_OPTIONS
+};

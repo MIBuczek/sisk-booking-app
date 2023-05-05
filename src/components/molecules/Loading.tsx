@@ -23,9 +23,12 @@ export const LoaderDots = styled(Loader)`
    }
 `;
 
-export interface IProps {}
-
-const Loading: React.FC<IProps> = (): JSX.Element => (
+/**
+ * Loader component with loader dots.
+ *
+ * @returns {JSX.Element}
+ */
+const Loading = (): JSX.Element => (
    <LoadingWrapper>
       <LoaderDots type="ball-pulse" active />
    </LoadingWrapper>

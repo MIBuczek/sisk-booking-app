@@ -429,6 +429,7 @@ const Summary = (): JSX.Element => {
     * @return {VoidFunction}
     */
    const updateToMonthDataInForm = (): void => {
+      if (new Date(fromMonth).getTime() - new Date(toMonth).getTime() < 100) return;
       reset({client: clientValue, fromMonth, toMonth: fromMonth, fromTheBeginning});
    };
 
@@ -572,8 +573,7 @@ const Summary = (): JSX.Element => {
                   data={csvAllReportData}
                   headers={csvFileHeaders}
                   filename={generateFileName(true, fromMonth, toMonth)}
-                  separator=";"
-               >
+                  separator=";">
                   Pobierz raport [.csv]
                   <BsFileEarmarkRuledFill style={{...pdfIconStyles, color: '#FFF'}} />
                </CSVAllClients>
@@ -645,8 +645,7 @@ const Summary = (): JSX.Element => {
                         data={csvReportData}
                         headers={csvFileHeaders}
                         filename={generateFileName(false, fromMonth, toMonth)}
-                        separator=";"
-                     >
+                        separator=";">
                         Pobierz plik [.csv]
                         <BsFileEarmarkRuledFill style={{...pdfIconStyles, color: '#FFF'}} />
                      </CSVButton>

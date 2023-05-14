@@ -345,7 +345,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                   <Label>Od godziny</Label>
                   <Controller
                      name="startHour"
-                     defaultValue={undefined}
+                     defaultValue={new Date()}
                      control={control}
                      rules={{
                         required: {
@@ -379,7 +379,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                   <Label>Do godziny</Label>
                   <Controller
                      name="endHour"
-                     defaultValue={undefined}
+                     defaultValue={new Date()}
                      control={control}
                      rules={{
                         required: {

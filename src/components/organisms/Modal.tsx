@@ -37,8 +37,8 @@ const ModalContent = styled.div`
    position: absolute;
 
    &.overflow {
-      overflow-y: auto;
-      overflow-x: auto;
+      overflow-y: scroll;
+      overflow-x: visible;
    }
 
    @media (max-width: 890px) {

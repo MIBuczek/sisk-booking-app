@@ -1,5 +1,7 @@
 interface IBookingTimeForm {
-   day: Date;
+   cyclical: boolean;
+   startDay: Date;
+   endDay: Date;
    startHour: Date;
    endHour: Date;
 }

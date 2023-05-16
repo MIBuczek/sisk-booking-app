@@ -15,7 +15,7 @@ import {
    formatCalenderDate,
    generateMaxRangDate
 } from 'utils';
-import {IBooking, IBookingTimeForm} from 'models';
+import {IBooking, ISingleBookingDate} from 'models';
 import ErrorMsg from 'components/atoms/ErrorMsg';
 import ConfirmAction from 'components/molecules/ConfirmAction';
 import Button from 'components/atoms/Button';
@@ -94,7 +94,7 @@ const BookingSingleTimeForm: React.FunctionComponent<IProps> = ({
       control,
       reset,
       watch
-   } = useForm<IBookingTimeForm>({defaultValues: {...BOOKING_SINGLE_TIME_INITIAL_VALUE}});
+   } = useForm<ISingleBookingDate>({defaultValues: {...BOOKING_SINGLE_TIME_INITIAL_VALUE}});
 
    const {startHour: start, endHour: end} = watch();
 
@@ -113,7 +113,7 @@ const BookingSingleTimeForm: React.FunctionComponent<IProps> = ({
     *
     * @param cred
     */
-   const onSubmit: SubmitHandler<IBookingTimeForm> = (cred): void => {
+   const onSubmit: SubmitHandler<ISingleBookingDate> = (cred): void => {
       const clonedBooking = cloneDeep(currentBooking);
       const editedBookingTime = clonedBooking.bookingTime[bookingTimeIndex];
       clonedBooking.bookingTime[bookingTimeIndex] = {

@@ -15,6 +15,7 @@ import {
    BOOKING_SINGLE_TIME_INITIAL_VALUE,
    BOOKING_STATUS,
    BOOKING_TIME_INITIAL_VALUE,
+   bookingTimeCreator,
    checkNewAddedBookingTimeConflicts,
    formatCalenderDate,
    generateMaxRangDate,
@@ -22,6 +23,7 @@ import {
 } from 'utils';
 import RoundButton from 'components/atoms/ButtonRound';
 import WarningMsg from 'components/atoms/WarningMsg';
+import Checkbox from '../../../atoms/Checkbox';
 
 const TimeWrapper = styled.section`
    width: 100%;
@@ -42,7 +44,7 @@ const TimeOptionsContent = styled.div`
 const TimeOptionHeader = styled.h3`
    width: 100%;
    margin: 10px 0;
-   padding: 0 20px;
+   padding: 0 8px;
    line-height: 1.2;
    text-transform: uppercase;
    color: ${({theme}) => theme.darkGrey};
@@ -54,23 +56,36 @@ const TimeOptionsForm = styled.div`
    display: flex;
    align-items: flex-start;
    justify-content: space-between;
+   flex-wrap: wrap;
 
    @media (max-width: 720px) {
       flex-wrap: wrap;
    }
 `;
 
-const SingleOption = styled.div`
-   width: 30%;
-   min-width: 190px;
+const CheckboxWrapper = styled.div`
+   width: 100%;
+   height: auto;
+   display: flex;
+   align-items: center;
+   margin: 10px 0;
+`;
+
+type SingleSmall = {
+   small: boolean;
+};
+
+const SingleOption = styled.div<SingleSmall>`
+   width: ${({small}) => (small ? '22%' : '30%')};
+   min-width: ${({small}) => (small ? '130px' : '180px')};
    display: flex;
    flex-direction: column;
    align-items: center;
    padding: 0 0.425rem;
 `;
 
-const DatePicker = styled(DataPickerField)`
-   width: 180px;
+const DatePicker = styled(DataPickerField)<SingleSmall>`
+   width: ${({small}) => (small ? '120px' : '170px')};
 `;
 
 const ButtonWrapper = styled(SingleOption)`
@@ -173,7 +188,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
       watch
    } = useForm<IBookingTimeForm>();
 
-   const {startHour: start, endHour: end} = watch();
+   const {startHour: start, endHour: end, cyclical} = watch();
 
    /**
     * Function add new time to booking time state.
@@ -182,24 +197,34 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
     */
    const onSubmit: SubmitHandler<IBookingTimeForm> = (cred): void => {
       const clonedBookingTime = cloneDeep(bookingTime);
-      const formattedCred = {
-         ...cred,
-         day: new Date(`${formatCalenderDate(cred.day)}T00:01:00.000Z`)
-      };
-      if (isNumber(editedIndex)) {
-         const currentBookingData: ISingleBookingDate = clonedBookingTime[editedIndex];
-         const updatedBookingTime: ISingleBookingDate = {...currentBookingData, ...formattedCred};
-         clonedBookingTime.splice(editedIndex, 1, updatedBookingTime);
+      /* */
+      if (cyclical) {
+         const generatedBookingsTime = bookingTimeCreator(cred);
+         setBookingTime([...clonedBookingTime, ...generatedBookingsTime]);
       } else {
-         const newBookingTime: ISingleBookingDate = {
-            ...BOOKING_SINGLE_TIME_INITIAL_VALUE,
-            ...formattedCred
+         const formattedCred = {
+            ...cred,
+            day: new Date(`${formatCalenderDate(cred.startDay)}T00:01:00.000Z`)
          };
-         clonedBookingTime.push(newBookingTime);
+
+         if (isNumber(editedIndex)) {
+            const currentBookingData: ISingleBookingDate = clonedBookingTime[editedIndex];
+            const updatedBookingTime: ISingleBookingDate = {
+               ...currentBookingData,
+               ...formattedCred
+            };
+            clonedBookingTime.splice(editedIndex, 1, updatedBookingTime);
+         } else {
+            const newBookingTime: ISingleBookingDate = {
+               ...BOOKING_SINGLE_TIME_INITIAL_VALUE,
+               ...formattedCred
+            };
+            clonedBookingTime.push(newBookingTime);
+         }
+         setBookingTime(clonedBookingTime);
       }
-      setBookingTime(clonedBookingTime);
       setEditedIndex(undefined);
-      reset({...BOOKING_TIME_INITIAL_VALUE, startHour: undefined, endHour: undefined});
+      reset(cloneDeep(BOOKING_TIME_INITIAL_VALUE));
    };
 
    /**
@@ -215,7 +240,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
       if (isNumber(editedIndex)) return;
       const {day, startHour, endHour, status} = bookingTime[index];
       if (status !== BOOKING_STATUS.INITIAL) return;
-      reset({day, startHour, endHour});
+      reset({startDay: day, startHour, endHour});
    };
 
    /**
@@ -233,8 +258,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
          setErrorMsg('Nie można skasować pola które zostało rozliczone');
          return;
       }
-      const cloneBookingTime = cloneDeep(bookingTime);
-      cloneBookingTime.splice(index, 1);
+      const cloneBookingTime = bookingTime.filter((v, i) => i !== index);
       setBookingTime(cloneBookingTime);
    };
 
@@ -310,10 +334,27 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                {errorMsg && <ErrorMsg innerText={errorMsg} />}
             </TimeOptionHeader>
             <TimeOptionsForm>
-               <SingleOption>
+               <CheckboxWrapper>
+                  <Label>Rezerwacja cykliczna</Label>
+                  <Controller
+                     name="cyclical"
+                     defaultValue={false}
+                     control={control}
+                     render={({field: {onChange, value}}) => (
+                        <Checkbox
+                           checked={value}
+                           className="checkbox"
+                           name="cyclical"
+                           changeHandler={onChange}
+                           disabled={disabled}
+                        />
+                     )}
+                  />
+               </CheckboxWrapper>
+               <SingleOption small={cyclical}>
                   <Label>Kiedy</Label>
                   <Controller
-                     name="day"
+                     name="startDay"
                      defaultValue={new Date()}
                      control={control}
                      rules={{
@@ -324,6 +365,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                      }}
                      render={({field: {onChange, onBlur, value}}) => (
                         <DatePicker
+                           small={cyclical}
                            showTimeSelect={false}
                            shouldCloseOnSelect
                            placeholderText="Wybierz"
@@ -331,7 +373,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                            minDate={!isAdmin ? new Date() : null}
                            maxDate={addMonths(generateMaxRangDate(), 8)}
                            dateFormat="dd-MM-yyyy"
-                           invalid={!!errors.day}
+                           invalid={!!errors.startDay}
                            onChange={onChange}
                            onBlur={onBlur}
                            selected={value}
@@ -339,9 +381,43 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                         />
                      )}
                   />
-                  {errors.day && <ErrorMsg innerText={errors.day.message} />}
+                  {errors.startDay && <ErrorMsg innerText={errors.startDay.message} />}
                </SingleOption>
-               <SingleOption>
+               {cyclical && (
+                  <SingleOption small={cyclical}>
+                     <Label>Do kiedy</Label>
+                     <Controller
+                        name="endDay"
+                        defaultValue={new Date()}
+                        control={control}
+                        rules={{
+                           required: {
+                              value: true,
+                              message: 'Pole nie może być puste'
+                           }
+                        }}
+                        render={({field: {onChange, onBlur, value}}) => (
+                           <DatePicker
+                              small={cyclical}
+                              showTimeSelect={false}
+                              shouldCloseOnSelect
+                              placeholderText="Wybierz"
+                              locale="pl"
+                              minDate={!isAdmin ? new Date() : null}
+                              maxDate={addMonths(generateMaxRangDate(), 8)}
+                              dateFormat="dd-MM-yyyy"
+                              invalid={!!errors.endDay}
+                              onChange={onChange}
+                              onBlur={onBlur}
+                              selected={value}
+                              disabled={disabled}
+                           />
+                        )}
+                     />
+                     {errors.endDay && <ErrorMsg innerText={errors.endDay.message} />}
+                  </SingleOption>
+               )}
+               <SingleOption small={cyclical}>
                   <Label>Od godziny</Label>
                   <Controller
                      name="startHour"
@@ -355,6 +431,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                      }}
                      render={({field: {onChange, onBlur, value}}) => (
                         <DatePicker
+                           small={cyclical}
                            placeholderText="Wybierz"
                            showTimeSelect
                            showTimeSelectOnly
@@ -375,7 +452,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                   />
                   {errors.startHour && <ErrorMsg innerText={errors.startHour.message} />}
                </SingleOption>
-               <SingleOption>
+               <SingleOption small={cyclical}>
                   <Label>Do godziny</Label>
                   <Controller
                      name="endHour"
@@ -389,6 +466,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                      }}
                      render={({field: {onChange, onBlur, value}}) => (
                         <DatePicker
+                           small={cyclical}
                            placeholderText="Wybierz"
                            showTimeSelect
                            showTimeSelectOnly
@@ -409,7 +487,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                   />
                   {errors.endHour && <ErrorMsg innerText={errors.endHour.message} />}
                </SingleOption>
-               <ButtonWrapper>
+               <ButtonWrapper small={false}>
                   <RoundButton disabled={!!errorMsg || disabled} onClick={handleSubmit(onSubmit)}>
                      {isNumber(editedIndex) ? <BsRepeat /> : <BsXLg />}
                   </RoundButton>

@@ -30,6 +30,12 @@ const CalenderWrapper = styled.section`
    padding: 30px 0;
    z-index: 0;
 
+   .fc-list-table {
+      .fc-event {
+         cursor: pointer;
+      }
+   }
+
    .fc-direction-ltr {
       width: 95%;
       max-height: 650px;
@@ -47,6 +53,7 @@ const CalenderWrapper = styled.section`
          background-color: ${({theme}) => theme.green};
          border-color: #b9b8b8;
          overflow: hidden;
+         cursor: pointer;
 
          p {
             margin: 3px 2px;

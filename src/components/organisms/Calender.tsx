@@ -16,7 +16,6 @@ import RenderEventContent from 'components/atoms/CalenderEvent';
 import ModalResolveBooking from 'components/molecules/modals/ModalResolveBooking';
 import Modal from 'components/organisms/Modal';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
-import {isEqual} from 'lodash';
 import {LoaderDots} from '../molecules/Loading';
 
 const CalenderWrapper = styled.section`
@@ -194,7 +193,13 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
          },
          []
       );
-      if (!isEqual(calenderEvents, events)) setEvents(calenderEvents);
+      setLoading(true);
+      setEvents(calenderEvents);
+
+      /* Case to refresh calendar view */
+      setTimeout(() => {
+         setLoading(false);
+      }, 1000);
    };
 
    /**
@@ -217,6 +222,11 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
     * Refresh view component after any mainState or bookings changes.
     */
    React.useEffect(() => createEvents(), [mainState, bookings]);
+
+   /**
+    * Refresh view component after changes on events.
+    */
+   React.useEffect(() => undefined, [events]);
 
    /**
     * Block initial view go get final events objects.

@@ -429,7 +429,7 @@ const Summary = (): JSX.Element => {
     * @return {VoidFunction}
     */
    const updateToMonthDataInForm = (): void => {
-      if (new Date(fromMonth).getTime() - new Date(toMonth).getTime() < 100) return;
+      if (isEqual(fromMonth, toMonth)) return;
       reset({client: clientValue, fromMonth, toMonth: fromMonth, fromTheBeginning});
    };
 

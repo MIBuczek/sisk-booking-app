@@ -44,7 +44,6 @@ const SIZE_FIELD_OPTIONS: ISizeFieldOptions = {
 const PAYMENTS_OPTIONS: TSelect[] = [
    {value: 'transfer', label: 'Przelew'},
    {value: 'cash', label: 'Gotówka'},
-   {value: 'invoice', label: 'Faktura'},
    {value: 'free', label: 'Bezpłatne'}
 ];
 

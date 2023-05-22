@@ -2,6 +2,7 @@ import {
    IBooking,
    IBookingForm,
    IBookingStatusForm,
+   IBookingTimeForm,
    ISelectedExtraOptions,
    ISingleBookingDate,
    TSelect
@@ -13,8 +14,12 @@ import {
    DISCOUNT_OPTIONS,
    PAYMENTS_OPTIONS,
    SIZE_OPTIONS,
-   findSelectedOption
+   findSelectedOption,
+   BOOKING_STATUS,
+   formatCalenderDate,
+   formatCalenderHours
 } from 'utils';
+import {isEqual, uniqWith} from 'lodash';
 
 /**
  * Function to overwrite booking day object and add one hour to be as in CET time zone
@@ -22,13 +27,13 @@ import {
  * @param  hour
  * @returns {Date}
  */
-// const overwriteDate = (day: Date, hour: Date): Date => {
-//    const convertedDay = formatCalenderDate(day);
-//    const convertedHour = formatCalenderHours(
-//       new Date(hour.getTime() - hour.getTimezoneOffset() * 60000)
-//    );
-//    return new Date(`${convertedDay}${convertedHour}`);
-// };
+const overwriteDate = (day: Date, hour: Date): Date => {
+   const convertedDay = formatCalenderDate(day);
+   const convertedHour = formatCalenderHours(
+      new Date(hour.getTime() - hour.getTimezoneOffset() * 60000)
+   );
+   return new Date(`${convertedDay}${convertedHour}`);
+};
 
 /**
  * Function to check and return number of full weeks between two date
@@ -36,51 +41,51 @@ import {
  * @param  d2
  * @returns {Number}
  */
-// function calculateWeeksBetween(d1: number, d2: number): number {
-//    return Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
-// }
+function calculateWeeksBetween(d1: number, d2: number): number {
+   return Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
+}
 
 /**
  * Function to create bookingTime object.
  * It calculates if the current booking is single or periodic reservation.
  * If so then it generates array of bookingTime objects.
- * @param  cred
+ * @param  {IBookingTimeForm} cred
  * @returns {Array<ISingleBookingDate>}
  */
-// const bookingTimeCreator = (cred: IBookingForm): ISingleBookingDate[] => {
-//    const {startDate, endDate, startHour, endHour, regular} = cred;
-//    const bookingArray: ISingleBookingDate[] = [
-//       {
-//          day: new Date(`${formatCalenderDate(startDate)}T00:01:00.000Z`),
-//          startHour: overwriteDate(startDate, startHour),
-//          endHour: overwriteDate(startDate, endHour),
-//          comments: '',
-//          participants: '',
-//          status: BOOKING_STATUS.INITIAL
-//       }
-//    ];
-//
-//    if (!regular) {
-//       return bookingArray;
-//    }
-//    /* one week is 604800000 ms */
-//    const weekInMilliseconds = 604800000;
-//    let index = 1;
-//    const weeksBetween = calculateWeeksBetween(startDate.getTime(), endDate.getTime());
-//    do {
-//       const day = new Date(startDate.getTime() + weekInMilliseconds * index);
-//       bookingArray.push({
-//          day: new Date(`${formatCalenderDate(day)}T00:01:00.000Z`),
-//          startHour: overwriteDate(day, startHour),
-//          endHour: overwriteDate(day, endHour),
-//          comments: '',
-//          participants: '',
-//          status: BOOKING_STATUS.INITIAL
-//       });
-//       index += 1;
-//    } while (index <= weeksBetween);
-//    return bookingArray;
-// };
+const bookingTimeCreator = (cred: IBookingTimeForm): ISingleBookingDate[] => {
+   const {startDay, endDay, startHour, endHour, cyclical} = cred;
+   const bookingArray: ISingleBookingDate[] = [
+      {
+         day: new Date(`${formatCalenderDate(startDay)}T00:01:00.000Z`),
+         startHour: overwriteDate(startDay, startHour),
+         endHour: overwriteDate(startDay, endHour),
+         comments: '',
+         participants: '',
+         status: BOOKING_STATUS.INITIAL
+      }
+   ];
+
+   if (!cyclical) {
+      return bookingArray;
+   }
+   /* one week is 604800000 ms */
+   const weekInMilliseconds = 604800000;
+   let index = 1;
+   const weeksBetween = calculateWeeksBetween(startDay.getTime(), endDay.getTime());
+   do {
+      const day = new Date(startDay.getTime() + weekInMilliseconds * index);
+      bookingArray.push({
+         day: new Date(`${formatCalenderDate(day)}T00:01:00.000Z`),
+         startHour: overwriteDate(day, startHour),
+         endHour: overwriteDate(day, endHour),
+         comments: '',
+         participants: '',
+         status: BOOKING_STATUS.INITIAL
+      });
+      index += 1;
+   } while (index <= weeksBetween);
+   return bookingArray;
+};
 
 /**
  * Function to generate final booking object saved in database
@@ -176,18 +181,18 @@ const generateBookingFormDetails = (
  * @param prevBookingTime
  * @param curBookingTime
  */
-// const concatBookingTime = (
-//    prevBookingTime: ISingleBookingDate[],
-//    curBookingTime: ISingleBookingDate[]
-// ): ISingleBookingDate[] => {
-//    const resolvedBT = prevBookingTime.filter((bt) => bt.status !== BOOKING_STATUS.INITIAL);
-//    return uniqWith([...resolvedBT, ...curBookingTime], (a, b) =>
-//       isEqual(a.day.getTime(), b.day.getTime())
-//    ).sort((a, b) => {
-//       if (a.day.getTime() < b.day.getTime()) return -1;
-//       return 1;
-//    });
-// };
+const concatBookingTime = (
+   prevBookingTime: ISingleBookingDate[],
+   curBookingTime: ISingleBookingDate[]
+): ISingleBookingDate[] => {
+   const resolvedBT = prevBookingTime.filter((bt) => bt.status !== BOOKING_STATUS.INITIAL);
+   return uniqWith([...resolvedBT, ...curBookingTime], (a, b) =>
+      isEqual(a.day.getTime(), b.day.getTime())
+   ).sort((a, b) => {
+      if (a.day.getTime() < b.day.getTime()) return -1;
+      return 1;
+   });
+};
 
 /**
  * Function to generate max rang in data type input.
@@ -207,5 +212,7 @@ export {
    generateBookingDetails,
    generateBookingFormDetails,
    generateBookingStatusDate,
-   generateMaxRangDate
+   generateMaxRangDate,
+   bookingTimeCreator,
+   concatBookingTime
 };

@@ -30,6 +30,19 @@ const transformFirebaseSelectedOptionsData = (item: any): ISelectedExtraOptions 
 });
 
 /**
+ * Convert payment method.
+ *
+ * @param {String} payment
+ * @return {String}
+ */
+const changePaymentMethod = (payment: string): string => {
+   if (payment === 'invoice') {
+      return 'transfer';
+   }
+   return payment;
+};
+
+/**
  * Map function to transform single booking data form firebase.
  *
  * @param doc
@@ -52,7 +65,7 @@ const parseFirebaseBookingData = (doc: any) =>
       selectedOptions: doc.data().selectedOptions.map(transformFirebaseSelectedOptionsData),
       accepted: doc.data().accepted,
       message: doc.data().message,
-      payment: doc.data().payment,
+      payment: changePaymentMethod(doc.data().payment),
       discount: doc.data().discount || '',
       archive: doc.data().archive,
       id: doc.id

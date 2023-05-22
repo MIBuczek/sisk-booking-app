@@ -47,7 +47,9 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
 };
 
 const BOOKING_TIME_INITIAL_VALUE: IBookingTimeForm = {
-   day: today,
+   cyclical: false,
+   startDay: today,
+   endDay: today,
    startHour: today,
    endHour: today
 };

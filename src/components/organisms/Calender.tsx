@@ -16,7 +16,6 @@ import RenderEventContent from 'components/atoms/CalenderEvent';
 import ModalResolveBooking from 'components/molecules/modals/ModalResolveBooking';
 import Modal from 'components/organisms/Modal';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
-import {isEqual} from 'lodash';
 import {LoaderDots} from '../molecules/Loading';
 
 const CalenderWrapper = styled.section`
@@ -29,6 +28,12 @@ const CalenderWrapper = styled.section`
    justify-content: center;
    padding: 30px 0;
    z-index: 0;
+
+   .fc-list-table {
+      .fc-event {
+         cursor: pointer;
+      }
+   }
 
    .fc-direction-ltr {
       width: 95%;
@@ -47,6 +52,7 @@ const CalenderWrapper = styled.section`
          background-color: ${({theme}) => theme.green};
          border-color: #b9b8b8;
          overflow: hidden;
+         cursor: pointer;
 
          p {
             margin: 3px 2px;
@@ -150,8 +156,8 @@ interface IProps {
 }
 
 /**
- * Booking calender component.
- * Contains full calender to display events and dispatch click actions.
+ * Booking calendar component.
+ * Contains full calendar to display events and dispatch click actions.
  *
  * @param {IProps} props
  * @returns {JSX.Element}
@@ -187,7 +193,13 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
          },
          []
       );
-      if (!isEqual(calenderEvents, events)) setEvents(calenderEvents);
+      setLoading(true);
+      setEvents(calenderEvents);
+
+      /* Case to refresh calendar view */
+      setTimeout(() => {
+         setLoading(false);
+      }, 1000);
    };
 
    /**
@@ -209,7 +221,12 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
    /**
     * Refresh view component after any mainState or bookings changes.
     */
-   React.useEffect(() => createEvents(), [mainState]);
+   React.useEffect(() => createEvents(), [mainState, bookings]);
+
+   /**
+    * Refresh view component after changes on events.
+    */
+   React.useEffect(() => undefined, [events]);
 
    /**
     * Block initial view go get final events objects.

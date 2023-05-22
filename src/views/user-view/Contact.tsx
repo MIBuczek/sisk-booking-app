@@ -74,7 +74,7 @@ const Contact = (): JSX.Element => (
          </Paragraph>
          <Anchor href="tel:+48718890023">
             <BsPhone style={iconNormal} />
-            tel. 71 889 00 23
+            tel. 609 996 070
          </Anchor>
          <Anchor href="biuro@sisk-siechnice.pl">
             <BsEnvelope style={iconNormal} />

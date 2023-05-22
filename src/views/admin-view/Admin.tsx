@@ -45,6 +45,9 @@ const Admin = (): JSX.Element => {
    const [adminState, setAdminState] = React.useState<IAdminState>({...initialAdminState});
    const [tab, setTab] = React.useState<ADMIN_TABS>(ADMIN_TABS.CALENDER);
 
+   /* Register last user click action */
+   const lastMouseClick = userMouseClick();
+
    const dispatch = useDispatch();
 
    const {
@@ -90,15 +93,12 @@ const Admin = (): JSX.Element => {
     */
    React.useEffect(() => {
       const intervalId = setInterval((): void => {
-         /* Register last user click action */
-         const lastMouseClick = userMouseClick();
-
          if (new Date().getTime() - lastMouseClick > 900000) {
             dispatch(openModal(MODAL_TYPES.AUTO_LOGOUT));
          }
       }, 60000);
       return () => clearInterval(intervalId);
-   }, []);
+   }, [lastMouseClick]);
 
    /**
     * Effect set city from user assigned work place

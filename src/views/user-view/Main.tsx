@@ -74,7 +74,7 @@ const Main: React.FC<IProps> = (): JSX.Element => {
          />
          <BookingCalender mainState={mainState} />
          {isOpen && (
-            <Modal>
+            <Modal customClassName={type === MODAL_TYPES.BOOKINGS ? 'overflow' : undefined}>
                {type === MODAL_TYPES.BOOKINGS && <ModalBooking mainState={mainState} />}
                {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
                {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}

@@ -98,7 +98,7 @@ const Admin = (): JSX.Element => {
          }
       }, 60000);
       return () => clearInterval(intervalId);
-   }, []);
+   }, [lastMouseClick]);
 
    /**
     * Effect set city from user assigned work place

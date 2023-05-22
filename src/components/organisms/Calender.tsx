@@ -157,8 +157,8 @@ interface IProps {
 }
 
 /**
- * Booking calender component.
- * Contains full calender to display events and dispatch click actions.
+ * Booking calendar component.
+ * Contains full calendar to display events and dispatch click actions.
  *
  * @param {IProps} props
  * @returns {JSX.Element}
@@ -216,7 +216,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
    /**
     * Refresh view component after any mainState or bookings changes.
     */
-   React.useEffect(() => createEvents(), [mainState]);
+   React.useEffect(() => createEvents(), [mainState, bookings]);
 
    /**
     * Block initial view go get final events objects.

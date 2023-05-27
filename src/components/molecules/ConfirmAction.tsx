@@ -15,10 +15,10 @@ const ConfirmationWrapper = styled.div`
    border-radius: 5px;
 
    &.modalResolveBooking {
-      width: 200%;
+      width: 250%;
       position: relative;
-      bottom: -100px;
-      left: -100%;
+      bottom: -60px;
+      left: -118%;
 
       @media (max-width: 850px) {
          left: 0;

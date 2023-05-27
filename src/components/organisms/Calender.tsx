@@ -273,7 +273,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
             </>
          )}
          {isOpen && (
-            <Modal>
+            <Modal customClassName="overflow">
                {type === MODAL_TYPES.BOOKINGS_CALENDER_STATUS && <ModalResolveBooking />}
                {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
                {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}

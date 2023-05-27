@@ -204,7 +204,7 @@ const Clients = (): JSX.Element => {
             emptyText="Nie ma żadnego dodanego klient do bazy danych."
          />
          {isOpen && (
-            <Modal>
+            <Modal customClassName="overflow">
                {type === MODAL_TYPES.CLIENT && (
                   <ClientForm
                      isEditing={isEditing}

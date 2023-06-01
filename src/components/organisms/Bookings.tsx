@@ -319,6 +319,7 @@ const Bookings: React.FunctionComponent<IProps> = ({mainState}) => {
                      initialEditingState={initialBookingState}
                      isSISKEmployee={siskEmployeeCredentials(user)}
                      isAdmin={adminCredentials(user)}
+                     isOffice={user?.isOffice || false}
                   />
                )}
                {type === MODAL_TYPES.BOOKINGS_STATUS && (

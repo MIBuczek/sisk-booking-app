@@ -226,6 +226,7 @@ interface IProps {
    bookingsList: IBooking[];
    isSISKEmployee: boolean;
    isAdmin: boolean;
+   isOffice: boolean;
    isEditing: boolean;
    editedItemIndex?: number;
    initialEditingState: () => void;
@@ -243,6 +244,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
    mainState,
    isSISKEmployee,
    isAdmin,
+   isOffice,
    isEditing,
    editedItemIndex,
    initialEditingState
@@ -754,7 +756,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                         onSelect={(val: string) => {
                            setValue('discount', val.split(' ')[0]);
                         }}
-                        disabled={!isAdmin || displayConfirmation}
+                        disabled={!(isAdmin || isOffice) || displayConfirmation}
                      />
                   )}
                />

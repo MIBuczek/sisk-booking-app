@@ -1,12 +1,12 @@
-import * as React from 'react';
-import {Navigate} from 'react-router-dom';
-import styled from 'styled-components';
-import {useDispatch, useSelector} from 'react-redux';
-import Header from 'components/atoms/Header';
-import {fadeIn} from 'style/animation';
-import SideNav from 'components/organisms/SideNav';
-import BookingCalender from 'components/organisms/Calender';
-import {IAdminState, IReduxState, TSelect} from 'models';
+import * as React from "react";
+import { Navigate } from "react-router-dom";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import Header from "components/atoms/Header";
+import { fadeIn } from "style/animation";
+import SideNav from "components/organisms/SideNav";
+import BookingCalender from "components/organisms/Calender";
+import { IAdminState, IReduxState, TSelect } from "models";
 import {
    ADMIN_TABS,
    adminSeeContentCredentials,
@@ -15,15 +15,13 @@ import {
    hasRightsToSeeContent,
    initialAdminState,
    MODAL_TYPES
-} from 'utils';
-import Clients from 'components/organisms/Clients';
-import Bookings from 'components/organisms/Bookings';
-import Building from 'components/organisms/Building';
-import Summary from 'components/organisms/Summary';
-import userMouseClick from 'hooks/userMoseClock';
-import {openModal} from 'store';
-import Modal from 'components/organisms/Modal';
-import ModalOutLogOut from 'components/molecules/modals/ModalOutLogOut';
+} from "utils";
+import Clients from "components/organisms/Clients";
+import Bookings from "components/organisms/Bookings";
+import Building from "components/organisms/Building";
+import Summary from "components/organisms/Summary";
+import Modal from "components/organisms/Modal";
+import ModalOutLogOut from "components/molecules/modals/ModalOutLogOut";
 
 const AdminWrapper = styled.section`
    width: 100%;
@@ -45,10 +43,10 @@ const Admin = (): JSX.Element => {
    const [adminState, setAdminState] = React.useState<IAdminState>({...initialAdminState});
    const [tab, setTab] = React.useState<ADMIN_TABS>(ADMIN_TABS.CALENDER);
 
+   // TODO - Client change requirement - leve it for later purpose.
    /* Register last user click action */
-   const lastMouseClick = userMouseClick();
-
-   const dispatch = useDispatch();
+   // const lastMouseClick = userMouseClick();
+   // const dispatch = useDispatch();
 
    const {
       authStore: {auth},
@@ -88,17 +86,18 @@ const Admin = (): JSX.Element => {
       setTab(currentTab);
    };
 
-   /**
-    * Effect to track last user action to log him out if no action in last 15 minute.
-    */
-   React.useEffect(() => {
-      const intervalId = setInterval((): void => {
-         if (new Date().getTime() - lastMouseClick > 900000) {
-            dispatch(openModal(MODAL_TYPES.AUTO_LOGOUT));
-         }
-      }, 60000);
-      return () => clearInterval(intervalId);
-   }, [lastMouseClick]);
+   // TODO - Client change requirement - leve it for later purpose.
+   // /**
+   //  * Effect to track last user action to log him out if no action in last 15 minute.
+   //  */
+   // React.useEffect(() => {
+   //    const intervalId = setInterval((): void => {
+   //       if (new Date().getTime() - lastMouseClick > 900000) {
+   //          dispatch(openModal(MODAL_TYPES.AUTO_LOGOUT));
+   //       }
+   //    }, 60000);
+   //    return () => clearInterval(intervalId);
+   // }, [lastMouseClick]);
 
    /**
     * Effect set city from user assigned work place

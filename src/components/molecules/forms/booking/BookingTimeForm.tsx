@@ -1,16 +1,16 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import {Controller, SubmitHandler, useForm} from 'react-hook-form';
-import addMonths from 'date-fns/addMonths';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
-import {BsFillFileTextFill, BsRepeat, BsTrashFill, BsXLg} from 'react-icons/bs';
-import {cloneDeep, isEmpty} from 'lodash';
-import {fadeIn} from 'style/animation';
-import {IBookingTimeForm, ISingleBookingDate, isNumber} from 'models';
-import Label from 'components/atoms/Label';
-import {DataPickerField} from 'components/atoms/DatapickerField';
-import ErrorMsg from 'components/atoms/ErrorMsg';
+import * as React from "react";
+import styled from "styled-components";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import addMonths from "date-fns/addMonths";
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
+import { BsFillFileTextFill, BsRepeat, BsTrashFill, BsXLg } from "react-icons/bs";
+import { cloneDeep, isEmpty } from "lodash";
+import { fadeIn } from "style/animation";
+import { IBookingTimeForm, ISingleBookingDate, isNumber } from "models";
+import Label from "components/atoms/Label";
+import { DataPickerField } from "components/atoms/DatapickerField";
+import ErrorMsg from "components/atoms/ErrorMsg";
 import {
    BOOKING_SINGLE_TIME_INITIAL_VALUE,
    BOOKING_STATUS,
@@ -20,10 +20,10 @@ import {
    formatCalenderDate,
    generateMaxRangDate,
    modelDisplayValue
-} from 'utils';
-import RoundButton from 'components/atoms/ButtonRound';
-import WarningMsg from 'components/atoms/WarningMsg';
-import Checkbox from '../../../atoms/Checkbox';
+} from "utils";
+import RoundButton from "components/atoms/ButtonRound";
+import WarningMsg from "components/atoms/WarningMsg";
+import Checkbox from "../../../atoms/Checkbox";
 
 const TimeWrapper = styled.section`
    width: 100%;
@@ -31,8 +31,8 @@ const TimeWrapper = styled.section`
    display: flex;
    justify-content: center;
    animation: ${fadeIn} 0.5s linear;
-   border-top: ${({theme}) => `2px solid ${theme.green}`};
-   border-bottom: ${({theme}) => `2px solid ${theme.green}`};
+   border-top: ${({ theme }) => `2px solid ${theme.green}`};
+   border-bottom: ${({ theme }) => `2px solid ${theme.green}`};
 `;
 
 const TimeOptionsContent = styled.div`
@@ -371,7 +371,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                            placeholderText="Wybierz"
                            locale="pl"
                            minDate={!isAdmin ? new Date() : null}
-                           maxDate={addMonths(generateMaxRangDate(), 8)}
+                           maxDate={addMonths(generateMaxRangDate(isAdmin), 8)}
                            dateFormat="dd-MM-yyyy"
                            invalid={!!errors.startDay}
                            onChange={onChange}
@@ -404,7 +404,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                               placeholderText="Wybierz"
                               locale="pl"
                               minDate={!isAdmin ? new Date() : null}
-                              maxDate={addMonths(generateMaxRangDate(), 8)}
+                              maxDate={addMonths(generateMaxRangDate(isAdmin), 8)}
                               dateFormat="dd-MM-yyyy"
                               invalid={!!errors.endDay}
                               onChange={onChange}

@@ -6,20 +6,20 @@ import {
    ISelectedExtraOptions,
    ISingleBookingDate,
    TSelect
-} from 'models';
+} from "models";
 import {
+   BOOKING_STATUS,
    BUILDINGS_OPTIONS,
    CITY_OPTIONS,
    CLIENT_TYPE,
    DISCOUNT_OPTIONS,
-   PAYMENTS_OPTIONS,
-   SIZE_OPTIONS,
    findSelectedOption,
-   BOOKING_STATUS,
    formatCalenderDate,
-   formatCalenderHours
-} from 'utils';
-import {isEqual, uniqWith} from 'lodash';
+   formatCalenderHours,
+   PAYMENTS_OPTIONS,
+   SIZE_OPTIONS
+} from "utils";
+import { isEqual, uniqWith } from "lodash";
 
 /**
  * Function to overwrite booking day object and add one hour to be as in CET time zone
@@ -198,11 +198,12 @@ const concatBookingTime = (
  * Function to generate max rang in data type input.
  * If we have august then extend it for next year.
  *
+ * @param isAdmin
  * @returns {Date}
  */
-const generateMaxRangDate = (): Date => {
+const generateMaxRangDate = (isAdmin: boolean): Date => {
    let currentYear = new Date().getFullYear();
-   if (new Date().getMonth() >= 7) {
+   if (isAdmin || new Date().getMonth() >= 7) {
       currentYear += 1;
    }
    return new Date(`${currentYear}-01-01T00:01:00.676Z`);

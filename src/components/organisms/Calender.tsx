@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import FullCalendar from '@fullcalendar/react';
 import listPlugin from '@fullcalendar/list';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {EventClickArg, EventInput} from '@fullcalendar/core';
@@ -46,6 +47,26 @@ const CalenderWrapper = styled.section`
          .fc-timegrid-col-frame {
             background: #eeeeee;
          }
+      }
+
+      .fc-daygrid-event-harness {
+         border-bottom: ${({theme}) => `1px solid ${theme.middleGray}`};
+         font-size: 18px;
+         color: ${({theme}) => theme.white};
+         padding: 0.5rem;
+
+         .fc-daygrid-event {
+            display: flex;
+            justify-content: space-around;
+            height: 80px;
+         }
+      }
+
+      .fc-list-event-title {
+         display: flex;
+         justify-content: space-around;
+         border-radius: 5px;
+         color: ${({theme}) => theme.white};
       }
 
       .fc-timegrid-event.fc-v-event {
@@ -245,10 +266,11 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
          ) : (
             <>
                <FullCalendar
-                  plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
+                  plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
                   headerToolbar={{
                      left: 'prev,next today',
-                     right: 'timeGridWeek,listWeek'
+                     center: 'title',
+                     right: 'timeGridWeek,dayGridDay,listWeek'
                   }}
                   locale="pl"
                   initialView="timeGridWeek"

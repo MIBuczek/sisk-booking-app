@@ -6,7 +6,7 @@ import {
    ISelectedExtraOptions,
    ISingleBookingDate,
    TSelect
-} from "models";
+} from 'models';
 import {
    BOOKING_STATUS,
    BUILDINGS_OPTIONS,
@@ -18,8 +18,8 @@ import {
    formatCalenderHours,
    PAYMENTS_OPTIONS,
    SIZE_OPTIONS
-} from "utils";
-import { isEqual, uniqWith } from "lodash";
+} from 'utils';
+import {isEqual, uniqWith} from 'lodash';
 
 /**
  * Function to overwrite booking day object and add one hour to be as in CET time zone

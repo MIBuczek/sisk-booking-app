@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Navigate } from "react-router-dom";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-import Header from "components/atoms/Header";
-import { fadeIn } from "style/animation";
-import SideNav from "components/organisms/SideNav";
-import BookingCalender from "components/organisms/Calender";
-import { IAdminState, IReduxState, TSelect } from "models";
+import * as React from 'react';
+import {Navigate} from 'react-router-dom';
+import styled from 'styled-components';
+import {useSelector} from 'react-redux';
+import Header from 'components/atoms/Header';
+import {fadeIn} from 'style/animation';
+import SideNav from 'components/organisms/SideNav';
+import BookingCalender from 'components/organisms/Calender';
+import {IAdminState, IReduxState, TSelect} from 'models';
 import {
    ADMIN_TABS,
    adminSeeContentCredentials,
@@ -15,13 +15,13 @@ import {
    hasRightsToSeeContent,
    initialAdminState,
    MODAL_TYPES
-} from "utils";
-import Clients from "components/organisms/Clients";
-import Bookings from "components/organisms/Bookings";
-import Building from "components/organisms/Building";
-import Summary from "components/organisms/Summary";
-import Modal from "components/organisms/Modal";
-import ModalOutLogOut from "components/molecules/modals/ModalOutLogOut";
+} from 'utils';
+import Clients from 'components/organisms/Clients';
+import Bookings from 'components/organisms/Bookings';
+import Building from 'components/organisms/Building';
+import Summary from 'components/organisms/Summary';
+import Modal from 'components/organisms/Modal';
+import ModalOutLogOut from 'components/molecules/modals/ModalOutLogOut';
 
 const AdminWrapper = styled.section`
    width: 100%;

@@ -1,25 +1,25 @@
-import * as React from "react";
-import { useDispatch } from "react-redux";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { cloneDeep } from "lodash";
-import styled from "styled-components";
-import addMonths from "date-fns/addMonths";
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
-import { DataPickerField } from "components/atoms/DatapickerField";
-import Label from "components/atoms/Label";
-import { closeModal } from "store";
+import * as React from 'react';
+import {useDispatch} from 'react-redux';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import {cloneDeep} from 'lodash';
+import styled from 'styled-components';
+import addMonths from 'date-fns/addMonths';
+import setHours from 'date-fns/setHours';
+import setMinutes from 'date-fns/setMinutes';
+import {DataPickerField} from 'components/atoms/DatapickerField';
+import Label from 'components/atoms/Label';
+import {closeModal} from 'store';
 import {
    BOOKING_SINGLE_TIME_INITIAL_VALUE,
    BOOKING_STATUS,
    formatCalenderDate,
    generateMaxRangDate
-} from "utils";
-import { IBooking, ISingleBookingDate } from "models";
-import ErrorMsg from "components/atoms/ErrorMsg";
-import ConfirmAction from "components/molecules/ConfirmAction";
-import Button from "components/atoms/Button";
-import WarningMsg from "components/atoms/WarningMsg";
+} from 'utils';
+import {IBooking, ISingleBookingDate} from 'models';
+import ErrorMsg from 'components/atoms/ErrorMsg';
+import ConfirmAction from 'components/molecules/ConfirmAction';
+import Button from 'components/atoms/Button';
+import WarningMsg from 'components/atoms/WarningMsg';
 
 const SingleBookingTimeWrapper = styled.form`
    width: 100%;

@@ -33,19 +33,6 @@ const RADWANICE_BUILDINGS: IBuilding[] = [
 
 const SIECHNICE_BUILDINGS: IBuilding[] = [
    {
-      name: 'Bieżnia trawiasta na stadionie LA',
-      property: 'boisko-trawiaste-stadionie-la',
-      city: 'siechnice',
-      size: [SIZE_OPTIONS['1/1']],
-      phone: '609 996 064',
-      email: 'siechnice.hala@gmail.com',
-      extra: {
-         lighting: false,
-         toilets: false
-      },
-      employees: ['Bożena Kaczyńska', 'Beata Hasiuk']
-   },
-   {
       name: 'Hala sportowa',
       property: 'hala-sportowa',
       city: 'siechnice',
@@ -102,6 +89,32 @@ const SIECHNICE_BUILDINGS: IBuilding[] = [
       property: 'orlik',
       city: 'siechnice',
       size: [SIZE_OPTIONS['1/1'], SIZE_OPTIONS['1/2']],
+      phone: '609 996 064',
+      email: 'siechnice.hala@gmail.com',
+      extra: {
+         lighting: false,
+         toilets: false
+      },
+      employees: ['Bożena Kaczyńska', 'Beata Hasiuk']
+   },
+   {
+      name: 'KORT#1',
+      property: 'kort_1',
+      city: 'siechnice',
+      size: [SIZE_OPTIONS['1/1']],
+      phone: '609 996 064',
+      email: 'siechnice.hala@gmail.com',
+      extra: {
+         lighting: false,
+         toilets: false
+      },
+      employees: ['Bożena Kaczyńska', 'Beata Hasiuk']
+   },
+   {
+      name: 'KORT#2',
+      property: 'kort_2',
+      city: 'siechnice',
+      size: [SIZE_OPTIONS['1/1']],
       phone: '609 996 064',
       email: 'siechnice.hala@gmail.com',
       extra: {

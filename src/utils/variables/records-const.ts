@@ -9,7 +9,8 @@ const RECORDS_CLIENTS_ROW_DETAILS = [
    'street',
    'city',
    'zipCode',
-   'nip'
+   'nip',
+   'nick'
 ];
 
 const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP: {[x: string]: string} = {
@@ -21,7 +22,8 @@ const RECORDS_CLIENTS_DETAILS_PROPERTY_MAP: {[x: string]: string} = {
    street: 'Ulica',
    city: 'Miasto',
    zipCode: 'Kod pocztowy',
-   nip: 'NIP'
+   nip: 'NIP',
+   nick: 'Nick'
 };
 
 const RECORDS_BOOKINGS_HEADERS = [
@@ -42,6 +44,7 @@ const RECORDS_BOOKING_ROW_DETAILS = [
    'building',
    'size',
    'person',
+   'nick',
    'club',
    'email',
    'phone',
@@ -59,6 +62,7 @@ const RECORDS_BOOKING_DETAILS_PROPERTY_MAP = {
    city: ' Miasto',
    building: 'Budynek',
    size: 'Powierzchnia',
+   nick: 'Nick',
    person: 'Najemca',
    club: 'Klub sportowy',
    email: 'E-mail',

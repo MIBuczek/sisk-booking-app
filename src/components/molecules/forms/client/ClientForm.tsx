@@ -465,6 +465,38 @@ const ClientForm: React.FunctionComponent<IProps> = ({
                )}
             />
             {errors.zipCode && <ErrorMsg innerText={errors.zipCode.message} />}
+            <Label>Nick</Label>
+            <Controller
+               name="nick"
+               defaultValue={''}
+               control={control}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 3,
+                     message: 'Minimalna ilość znaków to 5'
+                  },
+                  maxLength: {
+                     value: 100,
+                     message: 'Maksymalna ilość znaków to 8'
+                  }
+               }}
+               render={({field: {onChange, onBlur, value}}) => (
+                  <TextInputField
+                     onBlur={onBlur}
+                     value={value}
+                     onChange={onChange}
+                     invalid={!!errors.nick}
+                     className="input"
+                     placeholder="Wpisz"
+                     disabled={displayConfirmation}
+                  />
+               )}
+            />
+            {errors.nick && <ErrorMsg innerText={errors.nick.message} />}
          </ClientInnerContent>
          {displayConfirmation ? (
             <ConfirmAction

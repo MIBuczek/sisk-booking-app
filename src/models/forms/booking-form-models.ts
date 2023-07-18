@@ -5,6 +5,7 @@ interface IBookingForm {
    city: TSelect;
    building: TSelect;
    size: SIZE_OPTIONS;
+   nick: string;
    person: string;
    club?: string;
    clientId?: TSelect;

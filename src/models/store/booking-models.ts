@@ -29,6 +29,7 @@ interface IBooking {
    building: string;
    size: SIZE_OPTIONS;
    clientId: string;
+   nick: string;
    person: string;
    club?: string;
    email: string;

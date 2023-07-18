@@ -55,6 +55,7 @@ const parseFirebaseBookingData = (doc: any) =>
       building: doc.data().building,
       size: doc.data().size,
       clientId: doc.data().clientId,
+      nick: doc.data().nick || '',
       person: doc.data().person,
       club: doc.data().club,
       email: doc.data().email,
@@ -80,6 +81,7 @@ const parseFirebaseBookingData = (doc: any) =>
 const parseFirebaseClientData = (doc: any) =>
    ({
       type: doc.data().type,
+      nick: doc.data().nick || '',
       name: doc.data().name,
       contactPerson: doc.data().contactPerson,
       phone: doc.data().phone,

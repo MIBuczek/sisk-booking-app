@@ -20,6 +20,16 @@ const WarningTextContent = styled.span`
       margin: 5px 40px;
    }
 
+   &.bookingForm {
+      text-align: center;
+      width: 90%;
+
+      svg {
+         width: 30px;
+         height: 30px;
+      }
+   }
+
    svg {
       height: 15px;
       width: 12px;

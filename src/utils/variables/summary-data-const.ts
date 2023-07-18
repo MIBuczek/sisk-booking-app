@@ -10,6 +10,7 @@ const INITIAL_REPORT_BOOKING_BY_CITY = {
 const INITIAL_CLIENT_BOOKING_DETAILS: ISummaryClientBookings = {
    client: {
       type: '',
+      nick: '',
       name: '',
       contactPerson: '',
       phone: '',

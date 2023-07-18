@@ -204,7 +204,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
             const {city, building} = mainState;
             if (city.value === booking.city && building.value === booking.building) {
                booking.bookingTime.forEach((bt, index) => {
-                  const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
+                  const itemTitle = `${hasRights ? booking.person : booking.nick || 'Rezerwacja'}`;
                   if (bt.status !== BOOKING_STATUS.QUIT) {
                      acc.push(prepareCalenderItem(itemTitle, booking, index));
                   }

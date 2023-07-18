@@ -21,6 +21,7 @@ enum CLIENT_TYPE {
 // Form Clients
 const CLIENT_INITIAL_VALUE: IClientForm = {
    type: {label: 'Osoba prywatna', value: CLIENT_TYPE.CLIENT},
+   nick: '',
    name: '',
    contactPerson: '',
    phone: '',
@@ -35,6 +36,7 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
    city: {label: 'Siechnice', value: 'siechnice'},
    building: {label: 'Hala sportowa', value: 'hala-sportowa'},
    size: SIZE_OPTIONS['1/1'],
+   nick: '',
    person: '',
    club: '',
    email: '',

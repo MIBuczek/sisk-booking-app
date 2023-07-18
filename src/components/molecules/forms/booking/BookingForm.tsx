@@ -47,6 +47,7 @@ import ConfirmAction from 'components/molecules/ConfirmAction';
 import BookingExtraOptions from 'components/molecules/forms/booking/BookingExtraOptions';
 import Autocomplete from 'components/atoms/Autocomplete';
 import BookingTimeForm from 'components/molecules/forms/booking/BookingTimeForm';
+import WarningMsg from 'components/atoms/WarningMsg';
 
 registerLocale('pl', pl);
 
@@ -94,6 +95,13 @@ const InputContainer = styled.div`
    .react-datepicker__input-container {
       display: flex;
       justify-content: center;
+   }
+
+   &.info {
+      border-top: ${({theme}) => `2px solid ${theme.green}`};
+      border-bottom: ${({theme}) => `2px solid ${theme.green}`};
+      background: whitesmoke;
+      margin: 0.75rem 0;
    }
 `;
 
@@ -399,9 +407,10 @@ const BookingForm: React.FunctionComponent<IProps> = ({
       if (!selectedClient || !selectedClientId) return;
 
       const formClientData = {
-         person: selectedClient?.name,
-         email: selectedClient?.email,
-         phone: selectedClient?.phone
+         nick: selectedClient.nick || 'Rezerwacja',
+         person: selectedClient.name,
+         email: selectedClient.email,
+         phone: selectedClient.phone
       };
 
       const currentFormValues = getValues();
@@ -622,6 +631,48 @@ const BookingForm: React.FunctionComponent<IProps> = ({
             />
             {errors.payment && <ErrorMsg innerText={errors.payment.message} />}
          </SelectWrapper>
+         <InputContainer className="info">
+            <InputWrapper>
+               <Label>Nick</Label>
+               <Controller
+                  name="nick"
+                  defaultValue={'Rezerwacja'}
+                  control={control}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     },
+                     minLength: {
+                        value: 3,
+                        message: 'Minimalna ilość znaków to 3'
+                     },
+                     maxLength: {
+                        value: 100,
+                        message: 'Maksymalna ilość znaków to 100'
+                     }
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                     <TextInputField
+                        onBlur={onBlur}
+                        value={value}
+                        onChange={onChange}
+                        invalid={!!errors.nick}
+                        className="input"
+                        placeholder="Wpisz"
+                        disabled={displayConfirmation}
+                     />
+                  )}
+               />
+               {errors.nick && <ErrorMsg innerText={errors.nick.message} />}
+            </InputWrapper>
+            <InputWrapper>
+               <WarningMsg
+                  innerText="Pole [Nick] bedzie wyświetlane w głównym kalendarzu przy rezerwacji."
+                  className="bookingForm"
+               />
+            </InputWrapper>
+         </InputContainer>
          <InputContainer>
             <InputWrapper>
                <Label>Imię i nazwisko</Label>

@@ -109,6 +109,7 @@ const generateBookingDetails = (
    building: cred.building.value,
    size: selectedSize,
    clientId: cred.clientId?.value || '',
+   nick: cred.nick,
    person: cred.person,
    club: cred.club || '',
    email: cred.email,

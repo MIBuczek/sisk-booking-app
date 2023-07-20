@@ -122,6 +122,7 @@ const Admin = (): JSX.Element => {
             stateHandler={stateHandler}
             activeTab={tab}
             tabHandler={tabHandler}
+            user={user}
             isAdmin={adminSeeContentCredentials(user)}
          />
          {/* admin inner content */}

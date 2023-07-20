@@ -46,9 +46,22 @@ const adminSeeContentCredentials = (loggedUsed: IUser | undefined): boolean => {
    return isAdmin || isOffice;
 };
 
+/**
+ * Funtion to block selected user view some tabs.
+ * @param loggedUsed
+ * @returns {Boolean}
+ */
+const summaryUserRestriction = (loggedUsed: IUser | undefined): boolean => {
+   if (!loggedUsed) return false;
+   const {isAdmin, isOffice, email} = loggedUsed;
+   if (['mkulakowski@umsiechnice.pl'].includes(email)) return false;
+   return isAdmin || isOffice;
+};
+
 export {
    hasRightsToSeeContent,
    adminCredentials,
    siskEmployeeCredentials,
-   adminSeeContentCredentials
+   adminSeeContentCredentials,
+   summaryUserRestriction
 };

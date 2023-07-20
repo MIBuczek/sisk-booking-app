@@ -9,9 +9,15 @@ import {
 } from 'react-icons/bs';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
-import {ADMIN_TABS, CITY_OPTIONS, generateBuildingOptions, MODAL_TYPES} from 'utils';
+import {
+   ADMIN_TABS,
+   CITY_OPTIONS,
+   generateBuildingOptions,
+   MODAL_TYPES,
+   summaryUserRestriction
+} from 'utils';
 import {openModal} from 'store';
-import {IAdminState, IMainState, IReduxState, TSelect} from 'models';
+import {IAdminState, IMainState, IReduxState, IUser, TSelect} from 'models';
 import Label from 'components/atoms/Label';
 import ButtonIcon, {iconStyle} from 'components/atoms/ButtonIcon';
 import SelectInputField, {customStyles, SelectWrapper} from 'components/atoms/SelectInputField';
@@ -80,6 +86,7 @@ const SideSelectWrapper = styled(SelectWrapper)`
 `;
 
 interface IProps {
+   user?: IUser;
    isAdmin: boolean;
    isAdminPanel?: boolean;
    state: IMainState | IAdminState;
@@ -95,6 +102,7 @@ interface IProps {
  * @returns {JSX.Element}
  */
 const SideNav: React.FunctionComponent<IProps> = ({
+   user,
    isAdmin,
    isAdminPanel,
    state,
@@ -189,13 +197,17 @@ const SideNav: React.FunctionComponent<IProps> = ({
                      >
                         <BsBuilding style={iconStyle} /> OBIEKTY
                      </ButtonIcon>
-                     <ButtonIcon
-                        className={setActiveTab(ADMIN_TABS.SUMMARY)}
-                        role="button"
-                        onClick={() => tabHandler(ADMIN_TABS.SUMMARY)}
-                     >
-                        <BsFileEarmarkBarGraphFill style={iconStyle} /> PODSUMOWANIE NAJMÓW
-                     </ButtonIcon>
+                     {summaryUserRestriction(user) && (
+                        <>
+                           <ButtonIcon
+                              className={setActiveTab(ADMIN_TABS.SUMMARY)}
+                              role="button"
+                              onClick={() => tabHandler(ADMIN_TABS.SUMMARY)}
+                           >
+                              <BsFileEarmarkBarGraphFill style={iconStyle} /> PODSUMOWANIE NAJMÓW
+                           </ButtonIcon>
+                        </>
+                     )}
                   </>
                )}
             </InnerNavigationPanel>

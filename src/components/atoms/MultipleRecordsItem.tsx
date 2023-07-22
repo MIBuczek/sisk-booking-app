@@ -5,6 +5,7 @@ import {
    IDeleteHandler,
    IEditHandler,
    instanceOfBookings,
+   IReduxState,
    ISelectedExtraOptions,
    ISingleBookingDate,
    singleInstanceOfBookings
@@ -19,10 +20,17 @@ import {
 } from 'react-icons/bs';
 import {fadeIn, fadeInLeft} from 'style/animation';
 import styled from 'styled-components';
-import {checkIsLastIndex, checkSelectedOption, MODAL_TYPES, modelDisplayValue} from 'utils';
+import {
+   checkIsLastIndex,
+   checkRecordActionPermission,
+   checkSelectedOption,
+   MODAL_TYPES,
+   modelDisplayValue
+} from 'utils';
 import Collapse, {IRenderProps} from 'providers/Collapse';
 import Button from 'components/atoms/Button';
 import RecordOpenItem from 'components/atoms/RecordOpenItem';
+import {useSelector} from 'react-redux';
 
 const RecordTableData = styled.td`
    display: inline-block;
@@ -184,6 +192,7 @@ const MultipleRecordItem: React.FunctionComponent<IProps> = ({
    editHandler,
    deleteHandler
 }): JSX.Element => {
+   const {user} = useSelector((state: IReduxState) => state.currentUserStore);
    /**
     * Method to return single reservation for  current record.
     *
@@ -223,7 +232,7 @@ const MultipleRecordItem: React.FunctionComponent<IProps> = ({
                      <ListItemBtn onClick={toggle}>
                         <ChevronIcon className={openRecords || isCollapsed ? 'open' : 'close'} />
                      </ListItemBtn>
-                     {isAdmin && (
+                     {checkRecordActionPermission(currentRecord, user) && (
                         <>
                            <ListItemBtn
                               onClick={() =>

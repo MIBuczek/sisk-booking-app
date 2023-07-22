@@ -5,7 +5,8 @@ import {
    IReduxState,
    ISelectedExtraOptions,
    ISingleBookingDate,
-   TSelect
+   TSelect,
+   isNumber
 } from 'models';
 import {IBookingForm} from 'models/forms/booking-form-models';
 import * as React from 'react';
@@ -18,6 +19,7 @@ import {
    BOOKING_INITIAL_VALUE,
    checkConflicts,
    CITY_OPTIONS,
+   createBookingTimeStamps,
    DISCOUNT_OPTIONS,
    generateBookingDetails,
    generateBookingFormDetails,
@@ -48,6 +50,7 @@ import BookingExtraOptions from 'components/molecules/forms/booking/BookingExtra
 import Autocomplete from 'components/atoms/Autocomplete';
 import BookingTimeForm from 'components/molecules/forms/booking/BookingTimeForm';
 import WarningMsg from 'components/atoms/WarningMsg';
+import TimeStamps from 'components/molecules/TimeStamp';
 
 registerLocale('pl', pl);
 
@@ -273,6 +276,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
    const dispatch = useDispatch();
 
    const {
+      currentUserStore: {user},
       clientStore: {clients},
       buildingStore: {buildings}
    } = useSelector((state: IReduxState): IReduxState => state);
@@ -327,8 +331,20 @@ const BookingForm: React.FunctionComponent<IProps> = ({
          return;
       }
 
-      const bookingToApprove = cloneDeep(
+      let bookingToApprove;
+
+      bookingToApprove = cloneDeep(
          generateBookingDetails(cred, selectedSize, bookingTime, extraOptions, bookingId)
+      );
+
+      let originBooking: IBooking | undefined;
+
+      if (isNumber(editedItemIndex)) {
+         originBooking = cloneDeep(bookingsList[editedItemIndex]);
+      }
+
+      bookingToApprove = cloneDeep(
+         createBookingTimeStamps(isEditing, bookingToApprove, originBooking, user)
       );
 
       setBookingData(bookingToApprove);
@@ -437,6 +453,39 @@ const BookingForm: React.FunctionComponent<IProps> = ({
    };
 
    /**
+    * Method to display appropriate form title.
+    * @returns {String}
+    */
+   const bookingFormTitle = (): string => {
+      if (isAdmin && isEditing) return 'Edytuj rezerwację';
+      if (isAdmin) return 'Dodaj nową rezerwację';
+      if ((user?.isOffice || user?.isEmployee) && isEditing) return 'Edytuj prośbę o rezerwację';
+      return 'Prośbę o rezerwację';
+   };
+
+   /**
+    * Method to display appropriate accept button text.
+    * @returns {String}
+    */
+   const bookingFormButtonText = (): string => {
+      if (isAdmin && isEditing) return 'Zaktualizuj rezerwację';
+      if (isAdmin) return 'Dodaj rezerwację';
+      if ((user?.isOffice || user?.isEmployee) && isEditing) {
+         return 'Zaktualizuj prośbę o rezerwację';
+      }
+      return 'Wyślij prośbę o rezerwację';
+   };
+
+   /**
+    * Method to handle disabled accept button state.
+    * @returns {Boolean}
+    */
+   const handlerDisableApproveBtn = (): boolean => {
+      if (isAdmin || user?.isOffice || user?.isEmployee) return false;
+      return !police;
+   };
+
+   /**
     * Function to display right confirmation message according current state.
     */
    const confirmationMessage = (): string => {
@@ -482,7 +531,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
 
    return (
       <BookingWrapper>
-         <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
+         <BookingHeader>{bookingFormTitle()}</BookingHeader>
          {isSISKEmployee && (
             <AcceptWrapper>
                <SelectWrapper>
@@ -843,7 +892,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                />
             )}
          />
-         {isEditing && (
+         {isAdmin && isEditing && (
             <ArchiveWrapper>
                <Label>Zarchiwizować rezerwacje</Label>
                <Controller
@@ -877,7 +926,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                </Paragraph>
             </RodoWrapper>
          )}
-         {!isAdmin && (
+         {!(isAdmin || user?.isOffice || user?.isEmployee) && (
             <RodoWrapper>
                <Checkbox
                   checked={police}
@@ -918,13 +967,14 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                <Button
                   role="button"
                   onClick={handleSubmit(onSubmit)}
-                  disabled={isAdmin ? false : !police}
+                  disabled={handlerDisableApproveBtn()}
                >
-                  {isAdmin
-                     ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwację`
-                     : 'Wyślij prośbę o rezerwację'}
+                  {bookingFormButtonText()}
                </Button>
             </ButtonPanel>
+         )}
+         {isEditing && isNumber(editedItemIndex) && (
+            <TimeStamps currentBooking={bookingsList[editedItemIndex]} />
          )}
       </BookingWrapper>
    );

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import {DocumentData} from 'firebase/firestore';
 import {IBuilding, IClient, ISelectedExtraOptions, IBooking, ISingleBookingDate} from 'models';
 
 /**
@@ -48,7 +49,7 @@ const changePaymentMethod = (payment: string): string => {
  * @param doc
  * @returns {Object<IBooking>}
  */
-const parseFirebaseBookingData = (doc: any) =>
+const parseFirebaseBookingData = (doc: DocumentData) =>
    ({
       type: doc.data().type,
       city: doc.data().city,
@@ -69,6 +70,10 @@ const parseFirebaseBookingData = (doc: any) =>
       payment: changePaymentMethod(doc.data().payment),
       discount: doc.data().discount || '',
       archive: doc.data().archive,
+      createdBy: doc.data().createdBy || 'Unknown',
+      createdAt: doc.data().createdAt || '',
+      modifiedBy: doc.data().modifiedBy || 'Unknown',
+      modifiedAt: doc.data().modifiedAt || '',
       id: doc.id
    } as IBooking);
 
@@ -78,7 +83,7 @@ const parseFirebaseBookingData = (doc: any) =>
  * @param doc
  * @returns {Object<IClient>}
  */
-const parseFirebaseClientData = (doc: any) =>
+const parseFirebaseClientData = (doc: DocumentData) =>
    ({
       type: doc.data().type,
       nick: doc.data().nick || '',
@@ -99,7 +104,7 @@ const parseFirebaseClientData = (doc: any) =>
  * @param doc
  * @returns {Object<IBuilding>}
  */
-const parseFirebaseBuildingData = (doc: any) =>
+const parseFirebaseBuildingData = (doc: DocumentData) =>
    ({
       name: doc.data().name,
       city: doc.data().city,

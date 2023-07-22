@@ -3,8 +3,11 @@ import {
    IBookingForm,
    IBookingStatusForm,
    IBookingTimeForm,
+   IBookingTimeStamp,
+   IBookingToApprove,
    ISelectedExtraOptions,
    ISingleBookingDate,
+   IUser,
    TSelect
 } from 'models';
 import {
@@ -103,7 +106,7 @@ const generateBookingDetails = (
    bookingTime: ISingleBookingDate[],
    extraOptions: ISelectedExtraOptions[],
    id: string = ''
-): IBooking => ({
+): IBookingToApprove => ({
    type: CLIENT_TYPE.CLIENT,
    city: cred.city.value,
    building: cred.building.value,
@@ -125,6 +128,52 @@ const generateBookingDetails = (
    bookingTime,
    id
 });
+
+/**
+ * Method to create or update booking time stamps.
+ *
+ * @param {Boolean} isEditing
+ * @param {IBookingToApprove} currentBooking
+ * @param {IBooking} originBooking
+ * @param {IUser} currentUser
+ * @returns {IBooking}
+ */
+const createBookingTimeStamps = (
+   isEditing: boolean,
+   currentBooking: IBookingToApprove,
+   originBooking?: IBooking,
+   currentUser?: IUser
+): IBooking => {
+   let timeStamps: IBookingTimeStamp = {
+      createdBy: currentBooking?.email as string,
+      createdAt: new Date().toISOString(),
+      modifiedBy: currentBooking.email as string,
+      modifiedAt: new Date().toISOString()
+   };
+
+   if (currentUser) {
+      const {email} = currentUser;
+      timeStamps = {
+         createdBy: email,
+         createdAt: new Date().toISOString(),
+         modifiedBy: email,
+         modifiedAt: new Date().toISOString()
+      };
+   }
+
+   if (isEditing && originBooking && currentUser) {
+      const {createdAt, createdBy} = originBooking;
+      const {email} = currentUser;
+      timeStamps = {
+         createdBy,
+         createdAt,
+         modifiedBy: email,
+         modifiedAt: new Date().toISOString()
+      };
+   }
+
+   return Object.assign(currentBooking, timeStamps) as IBooking;
+};
 /**
  * Function to generate single booking status data.
  *
@@ -212,6 +261,7 @@ const generateMaxRangDate = (isAdmin: boolean): Date => {
 
 export {
    generateBookingDetails,
+   createBookingTimeStamps,
    generateBookingFormDetails,
    generateBookingStatusDate,
    generateMaxRangDate,

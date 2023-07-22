@@ -146,7 +146,7 @@ const Bookings: React.FunctionComponent<IProps> = ({mainState}) => {
     */
    const bookingListHandler = (searchResults: (IClient | IBooking)[], phase: string): void => {
       if (searchResults.length && instanceOfBookings(searchResults)) {
-         let filteredResult = filterBookingsPerPlace(searchResults, mainState, user?.isAdmin);
+         let filteredResult = filterBookingsPerPlace(searchResults, mainState, user);
          if (filterAccepted) {
             filteredResult = filteredResult.filter((r) => !r.accepted);
          }
@@ -230,7 +230,7 @@ const Bookings: React.FunctionComponent<IProps> = ({mainState}) => {
     * Function for handle UseEffect call back.
     */
    const handlerEffectCallBack = (): void => {
-      const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user?.isAdmin);
+      const bookingByPlace: IBooking[] = filterBookingsPerPlace(bookings, mainState, user);
       setAllBookingsPerPlace(bookingByPlace);
       let searchedResults = searchSelectedContent(bookingByPlace, 'person', searchPhase);
       if (filterAccepted) {

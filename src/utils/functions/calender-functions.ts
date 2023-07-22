@@ -26,8 +26,11 @@ const checkIfWinterTimeZone = (date: Date): boolean =>
  * @param {Date | null} date
  * @returns {String}
  */
-const formatDate = (date: Date | null): string => {
-   if (!date) return '';
+const formatDate = (date: Date | string | null): string => {
+   if (!date) return 'Unknown';
+   if (typeof date === 'string') {
+      return new Date(date).toLocaleDateString();
+   }
    return date.toLocaleDateString();
 };
 

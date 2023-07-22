@@ -44,9 +44,19 @@ interface IBooking {
    discount: string;
    archive: boolean;
    id: string;
+   createdBy: string;
+   createdAt: string;
+   modifiedBy: string;
+   modifiedAt: string;
 
    [x: string]: TBooking;
 }
+
+interface IBookingToApprove
+   extends Omit<IBooking, 'createdBy' | 'createdAt' | 'modifiedBy' | 'modifiedAt'> {}
+
+interface IBookingTimeStamp
+   extends Pick<IBooking, 'createdBy' | 'createdAt' | 'modifiedBy' | 'modifiedAt'> {}
 
 interface IBookingsPayload extends IPayload {
    booking?: IBooking;
@@ -60,4 +70,12 @@ interface IBookingsAction {
    payload: IBookingsPayload;
 }
 
-export type {ISingleBookingDate, IBooking, IBookingsPayload, IBookingsAction, TBooking};
+export type {
+   ISingleBookingDate,
+   IBooking,
+   IBookingToApprove,
+   IBookingTimeStamp,
+   IBookingsPayload,
+   IBookingsAction,
+   TBooking
+};

@@ -10,7 +10,8 @@ import {
    startAt,
    updateDoc,
    where,
-   orderBy
+   orderBy,
+   and
 } from 'firebase/firestore';
 import {
    BOOKING_STATE,
@@ -237,9 +238,9 @@ export const getBookingDataForUser =
    async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
       dispatch(fetchingBookings());
       try {
-         const bookingsQuery = await query(
+         const bookingsQuery = query(
             collection(db, BOOKING_COLLECTION_KEY),
-            where('accepted', '==', true)
+            and(where('accepted', '==', true), where('archive', '==', false))
          );
          const documents = await getDocs(bookingsQuery);
          const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);

@@ -11,13 +11,19 @@ export interface IProps {
 }
 
 /**
+ * Method to check current url and if is user or admin then load data
+ * @returns {Boolean}
+ */
+const checkCurrentUrl = (): boolean => !['#/contact', '#/login'].includes(window.location.hash);
+
+/**
  * Prepare redux store during app initialization.
  *
  * @param {IProps} props
  * @returns
  */
 const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
-   const [isUserPage] = React.useState<boolean>(window.location.hash.length === 2);
+   const [shouldLoad] = React.useState<boolean>(checkCurrentUrl());
    const [storeReady, setStoreReady] = React.useState<boolean>(true);
 
    const dispatch = useDispatch();
@@ -36,15 +42,17 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
     * Effect to start loading data from firebase
     */
    React.useEffect(() => {
-      if (!isEmpty(authStore.auth)) {
-         dispatch(StoreActions.getUserData());
-         dispatch(StoreActions.getClientsData());
-         dispatch(StoreActions.getBuildingsData());
-         setStoreReady(false);
-      } else {
-         dispatch(StoreActions.getBookingDataForUser());
-         dispatch(StoreActions.getBuildingsData());
-         setStoreReady(false);
+      if (shouldLoad) {
+         if (!isEmpty(authStore.auth)) {
+            dispatch(StoreActions.getUserData());
+            dispatch(StoreActions.getClientsData());
+            dispatch(StoreActions.getBuildingsData());
+            setStoreReady(false);
+         } else {
+            dispatch(StoreActions.getBookingDataForUser());
+            dispatch(StoreActions.getBuildingsData());
+            setStoreReady(false);
+         }
       }
    }, [authStore.savingStage]);
 
@@ -52,10 +60,10 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
     * Effect to set store ready flag and close loaded component.
     */
    React.useEffect(() => {
-      if (adminStoreReady && !isUserPage) {
+      if (adminStoreReady && shouldLoad) {
          setStoreReady(true);
       }
-      if (userStoreReady) {
+      if (userStoreReady && shouldLoad) {
          setStoreReady(true);
       }
    }, [

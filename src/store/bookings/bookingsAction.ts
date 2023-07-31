@@ -157,21 +157,22 @@ export const clearBookingConflictsState = (
    }
 });
 
-/**
+/*
  * Booking store action to update current booking list by new structure.
- */
-export const syncBookingData = (bookingList: IBooking[]): void => {
-   try {
-      const updatedBooking: IBooking[] = [];
-      bookingList.forEach(async (b) => {
-         await updateDoc(doc(db, BOOKING_COLLECTION_KEY, b.id), b);
-         updatedBooking.push(b);
-      });
-      console.log(updatedBooking.length);
-   } catch (err) {
-      console.error(err);
-   }
-};
+ * [COMMENT] : RUN IF BOOKING STRUCTURE CHANGE !
+   export const syncBookingData = (bookingList: IBooking[]): void => {
+      try {
+         const updatedBooking: IBooking[] = [];
+         bookingList.forEach(async (b) => {
+            await updateDoc(doc(db, BOOKING_COLLECTION_KEY, b.id), b);
+            updatedBooking.push(b);
+         });
+         console.e(updatedBooking.length);
+      } catch (err) {
+         console.error(err);
+      }
+   };
+*/
 
 /**
  * Booking store action to get records form firebase in admin view by selected date range.

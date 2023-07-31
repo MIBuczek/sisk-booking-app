@@ -255,7 +255,9 @@ const Footer = (): JSX.Element => {
             ) : null}
          </FooterWrapper>
          <AppInfo>
-            <span>Wersja aplikacji : 1.2.8</span>
+            <span>
+               Wersja aplikacji {`${process.env.REACT_APP_NAME} ${process.env.REACT_APP_VERSION}`}
+            </span>
          </AppInfo>
       </>
    );

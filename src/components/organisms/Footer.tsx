@@ -169,6 +169,20 @@ const FooterAnchor = styled(Anchor)`
    padding-top: 0;
 `;
 
+const AppInfo = styled.div`
+   width: 100%;
+   height: 2vh;
+   background: ${({theme}) => theme.lightGray};
+   display: flex;
+   align-items: center;
+   justify-content: end;
+   padding: 0 40px;
+
+   span {
+      font-size: 10px;
+   }
+`;
+
 /**
  * General footer component.
  *
@@ -179,60 +193,71 @@ const Footer = (): JSX.Element => {
    const {isOpen, type} = useSelector((state: IReduxState) => state.modal);
 
    return (
-      <FooterWrapper>
-         <FooterContent>
-            <ContentItem>
-               <img src={logoFooter} alt="logo" />
-               <img src={BIPFooter} alt="BIP" />
-            </ContentItem>
-            <ContentItem />
-            <ContentItem>
-               <FooterParagraph small>
-                  Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.
-                  <br />
-                  ul. Księżnej Anny z Przemyślidów 6a,
-                  <br />
-                  55-011 Siechnice
-                  <FooterAnchor href="tel:+48718890023">tel. 71 889 00 23</FooterAnchor>
-                  <FooterAnchor href="biuro@sisk-siechnice.pl">
-                     biuro@sisk-siechnice.pl
-                  </FooterAnchor>
-                  <FooterAnchor href="www.sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnchor>
-               </FooterParagraph>
-            </ContentItem>
-            <ContentItem>
-               <FooterLinkItem to="/">Rezerwacje</FooterLinkItem>
-               <FooterLinkItem to="contact">Kontakt</FooterLinkItem>
-               <FooterAnchor href="https://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
-               <FooterButton role="button" onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}>
-                  Skontaktuj się z nami
-               </FooterButton>
-            </ContentItem>
-         </FooterContent>
-         <FooterCredits>
-            <FooterAnchor href="https://www.sisk-siechnice.pl/polityka-prywatnosci" target="_blank">
-               Polityka prywatności
-            </FooterAnchor>
-            <FooterParagraph small>
-               © Copyright 2018 SISK / Created by
+      <>
+         <FooterWrapper>
+            <FooterContent>
+               <ContentItem>
+                  <img src={logoFooter} alt="logo" />
+                  <img src={BIPFooter} alt="BIP" />
+               </ContentItem>
+               <ContentItem />
+               <ContentItem>
+                  <FooterParagraph small>
+                     Siechnicka Inwestycyjna Spółka Komunalna sp. z o.o.
+                     <br />
+                     ul. Księżnej Anny z Przemyślidów 6a,
+                     <br />
+                     55-011 Siechnice
+                     <FooterAnchor href="tel:+48718890023">tel. 71 889 00 23</FooterAnchor>
+                     <FooterAnchor href="biuro@sisk-siechnice.pl">
+                        biuro@sisk-siechnice.pl
+                     </FooterAnchor>
+                     <FooterAnchor href="www.sisk-siechnice.pl">www.sisk-siechnice.pl</FooterAnchor>
+                  </FooterParagraph>
+               </ContentItem>
+               <ContentItem>
+                  <FooterLinkItem to="/">Rezerwacje</FooterLinkItem>
+                  <FooterLinkItem to="contact">Kontakt</FooterLinkItem>
+                  <FooterAnchor href="https://www.sisk-siechnice.pl/">Strona SISK</FooterAnchor>
+                  <FooterButton
+                     role="button"
+                     onClick={() => dispatch(openModal(MODAL_TYPES.MESSAGE))}
+                  >
+                     Skontaktuj się z nami
+                  </FooterButton>
+               </ContentItem>
+            </FooterContent>
+            <FooterCredits>
                <FooterAnchor
-                  style={{
-                     display: 'inline-block',
-                     paddingLeft: '8px',
-                     textDecoration: 'underline'
-                  }}
-                  href="https://gecko-web-services.web.app"
+                  href="https://www.sisk-siechnice.pl/polityka-prywatnosci"
+                  target="_blank"
                >
-                  GECKO Web Services
+                  Polityka prywatności
                </FooterAnchor>
-            </FooterParagraph>
-         </FooterCredits>
-         {isOpen && type === MODAL_TYPES.MESSAGE ? (
-            <Modal>
-               <ModalMessage />
-            </Modal>
-         ) : null}
-      </FooterWrapper>
+               <FooterParagraph small>
+                  © Copyright 2018 SISK / Created by
+                  <FooterAnchor
+                     style={{
+                        display: 'inline-block',
+                        paddingLeft: '8px',
+                        textDecoration: 'underline'
+                     }}
+                     href="https://gecko-web-services.web.app"
+                  >
+                     GECKO Web Services
+                  </FooterAnchor>
+               </FooterParagraph>
+            </FooterCredits>
+            {isOpen && type === MODAL_TYPES.MESSAGE ? (
+               <Modal>
+                  <ModalMessage />
+               </Modal>
+            ) : null}
+         </FooterWrapper>
+         <AppInfo>
+            <span>Wersja aplikacji : 1.2.8</span>
+         </AppInfo>
+      </>
    );
 };
 

@@ -56,6 +56,13 @@ const BookingsWrapper = styled.section`
 
 const BookingsHeader = styled(Header)`
    margin: 20px 0 40px 0;
+
+   span {
+      font-size: 18px;
+      margin-left: 1rem;
+      color: gray;
+   }
+
    @media (max-width: 890px) {
       width: 80%;
    }
@@ -78,6 +85,7 @@ const OpenBookingsModalButton = styled(Button)`
    border-color: ${({theme}) => theme.green};
    color: #454545;
    font-size: 16px;
+   width: 290px;
 
    &:hover {
       background-color: ${({theme}) => theme.green};
@@ -134,7 +142,7 @@ const Bookings: React.FunctionComponent<IProps> = ({mainState}) => {
    const dispatch = useDispatch();
 
    const {
-      bookingStore: {bookings, errorMessage: errorBooking},
+      bookingStore: {bookings, selectedLoadedPeriod, errorMessage: errorBooking},
       currentUserStore: {user, errorMessage: errorUser},
       modal: {isOpen, type}
    } = useSelector((state: IReduxState) => state);
@@ -251,8 +259,15 @@ const Bookings: React.FunctionComponent<IProps> = ({mainState}) => {
 
    return (
       <BookingsWrapper>
-         <BookingsHeader>Lista Rezerwacji</BookingsHeader>
+         <BookingsHeader>
+            Lista Rezerwacji <span>{`${selectedLoadedPeriod}`}</span>
+         </BookingsHeader>
          {(errorBooking || errorUser) && <ErrorMsgServer innerText={errorBooking || errorUser} />}
+         <RecordsActionContent>
+            <OpenBookingsModalButton onClick={() => dispatch(openModal(MODAL_TYPES.LOAD_BOOKINGS))}>
+               Pobierz rezerwacje z innego okresu
+            </OpenBookingsModalButton>
+         </RecordsActionContent>
          <RecordsActionContent>
             <SearchInputField
                type="bookings"

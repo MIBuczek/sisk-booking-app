@@ -27,7 +27,6 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
 
    const adminStoreReady =
       currentUserStore.savingStage === SAVING_STAGE.SUCCESS &&
-      bookingStore.savingStage === SAVING_STAGE.SUCCESS &&
       clientStore.savingStage === SAVING_STAGE.SUCCESS &&
       buildingStore.savingStage === SAVING_STAGE.SUCCESS;
 
@@ -39,7 +38,6 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
    React.useEffect(() => {
       if (!isEmpty(authStore.auth)) {
          dispatch(StoreActions.getUserData());
-         dispatch(StoreActions.getBookingsData());
          dispatch(StoreActions.getClientsData());
          dispatch(StoreActions.getBuildingsData());
          setStoreReady(false);
@@ -57,7 +55,7 @@ const PrepareStore: React.FC<IProps> = ({children}): JSX.Element | null => {
       if (adminStoreReady && !isUserPage) {
          setStoreReady(true);
       }
-      if (userStoreReady && userStoreReady) {
+      if (userStoreReady) {
          setStoreReady(true);
       }
    }, [

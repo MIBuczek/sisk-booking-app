@@ -4,10 +4,13 @@ import {
    collection,
    deleteDoc,
    doc,
+   endAt,
    getDocs,
    query,
+   startAt,
    updateDoc,
-   where
+   where,
+   orderBy
 } from 'firebase/firestore';
 import {
    BOOKING_STATE,
@@ -37,7 +40,8 @@ export const fetchingBookings = (): IBookingsAction => ({
       booking: undefined,
       bookingTimeIndex: null,
       bookings: [],
-      conflictedBookings: []
+      conflictedBookings: [],
+      selectedLoadedPeriod: '[Od początku]'
    }
 });
 
@@ -48,7 +52,11 @@ export const fetchingBookings = (): IBookingsAction => ({
  * @param {Array<IBooking>} bookings
  * @returns {IBookingsAction}
  */
-export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBookingsAction => ({
+export const fetchingBookingsDone = (
+   type: string,
+   bookings: IBooking[],
+   selectedLoadedPeriod: string
+): IBookingsAction => ({
    type,
    payload: {
       isFetching: false,
@@ -57,7 +65,8 @@ export const fetchingBookingsDone = (type: string, bookings: IBooking[]): IBooki
       booking: undefined,
       bookingTimeIndex: null,
       bookings,
-      conflictedBookings: []
+      conflictedBookings: [],
+      selectedLoadedPeriod
    }
 });
 
@@ -76,14 +85,16 @@ export const fetchingBookingsError = (errorMessage: string): IBookingsAction => 
       booking: undefined,
       bookingTimeIndex: null,
       bookings: [],
-      conflictedBookings: []
+      conflictedBookings: [],
+      selectedLoadedPeriod: '[N/A]'
    }
 });
 
 export const getSingleBooking = (
    bookings: IBooking[],
    bookingTimeIndex: number | null,
-   booking?: IBooking
+   booking: IBooking | undefined,
+   selectedLoadedPeriod: string
 ): IBookingsAction => ({
    type: BOOKING_STATE.GET_BOOKING,
    payload: {
@@ -93,7 +104,8 @@ export const getSingleBooking = (
       booking,
       bookingTimeIndex,
       bookings,
-      conflictedBookings: []
+      conflictedBookings: [],
+      selectedLoadedPeriod
    }
 });
 
@@ -106,7 +118,8 @@ export const getSingleBooking = (
  */
 export const getBookingConflicts = (
    bookings: IBooking[],
-   conflictedBookings: IBooking[]
+   conflictedBookings: IBooking[],
+   selectedLoadedPeriod: string
 ): IBookingsAction => ({
    type: BOOKING_STATE.GET_BOOKING_CONFLICTS,
    payload: {
@@ -116,7 +129,8 @@ export const getBookingConflicts = (
       booking: undefined,
       bookingTimeIndex: null,
       bookings,
-      conflictedBookings
+      conflictedBookings,
+      selectedLoadedPeriod
    }
 });
 
@@ -126,7 +140,10 @@ export const getBookingConflicts = (
  * @param {Array<IBooking>} bookings
  * @returns {IBookingsAction}
  */
-export const clearBookingConflictsState = (bookings: IBooking[]): IBookingsAction => ({
+export const clearBookingConflictsState = (
+   bookings: IBooking[],
+   selectedLoadedPeriod: string
+): IBookingsAction => ({
    type: BOOKING_STATE.CLEAR_BOOKING_CONFLICTS,
    payload: {
       isFetching: false,
@@ -135,9 +152,59 @@ export const clearBookingConflictsState = (bookings: IBooking[]): IBookingsActio
       booking: undefined,
       bookingTimeIndex: null,
       bookings,
-      conflictedBookings: []
+      conflictedBookings: [],
+      selectedLoadedPeriod
    }
 });
+
+/**
+ * Booking store action to update current booking list by new structure.
+ */
+export const syncBookingData = (bookingList: IBooking[]): void => {
+   try {
+      const updatedBooking: IBooking[] = [];
+      bookingList.forEach(async (b) => {
+         await updateDoc(doc(db, BOOKING_COLLECTION_KEY, b.id), b);
+         updatedBooking.push(b);
+      });
+      console.log(updatedBooking.length);
+   } catch (err) {
+      console.error(err);
+   }
+};
+
+/**
+ * Booking store action to get records form firebase in admin view by selected date range.
+ */
+export const getBookingsDataByDate =
+   ({
+      selectedLoadedPeriod,
+      startDate,
+      endDate
+   }: {
+      selectedLoadedPeriod: string;
+      startDate: string;
+      endDate: string;
+   }) =>
+   async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
+      dispatch(fetchingBookings());
+      try {
+         const bookingCollection = await query(
+            collection(db, BOOKING_COLLECTION_KEY),
+            orderBy('createdAt'),
+            startAt(startDate),
+            endAt(endDate)
+         );
+         const documents = await getDocs(bookingCollection);
+         const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
+         dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings, selectedLoadedPeriod));
+      } catch (err) {
+         dispatch(
+            fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.')
+         );
+         throw new Error(JSON.stringify(err));
+      }
+   };
 
 /**
  * Booking store action to get records form firebase in admin view.
@@ -150,7 +217,9 @@ export const getBookingsData =
          const bookingCollection = await collection(db, BOOKING_COLLECTION_KEY);
          const documents = await getDocs(bookingCollection);
          const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
-         dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
+         /* This is method to run just once to sync data with new updates */
+         // syncBookingData(bookings);
+         dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings, '[Od początku]'));
       } catch (err) {
          dispatch(
             fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.')
@@ -173,7 +242,7 @@ export const getBookingDataForUser =
          );
          const documents = await getDocs(bookingsQuery);
          const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
-         dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings));
+         dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings, '[Od początku]'));
       } catch (err) {
          dispatch(
             fetchingBookingsError('Problem z serverem. Nie można pobrac danych rezerwacyjnych.')
@@ -195,13 +264,15 @@ export const addBooking =
          const addedDocument = await addDoc(collection(db, BOOKING_COLLECTION_KEY), bookingData);
 
          const {
-            bookingStore: {bookings},
+            bookingStore: {bookings, selectedLoadedPeriod},
             buildingStore: {buildings}
          } = getStore();
 
          const newBookings: IBooking[] = [{...bookingData, id: addedDocument.id}, ...bookings];
 
-         dispatch(fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings));
+         dispatch(
+            fetchingBookingsDone(BOOKING_STATE.ADD_BOOKING, newBookings, selectedLoadedPeriod)
+         );
          dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została dodana pomyślnie'));
 
          const building = buildings.find((b) => b.property === bookingData.building);
@@ -241,7 +312,7 @@ export const updateBooking =
          await updateDoc(doc(db, BOOKING_COLLECTION_KEY, bookingData.id), bookingData);
 
          const {
-            bookingStore: {bookings},
+            bookingStore: {bookings, selectedLoadedPeriod},
             buildingStore: {buildings}
          } = getStore();
 
@@ -249,7 +320,9 @@ export const updateBooking =
          const bookingIndex = clonedBookings.findIndex((b) => b.id === bookingData.id);
          clonedBookings.splice(bookingIndex, 1, bookingData);
 
-         dispatch(fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, clonedBookings));
+         dispatch(
+            fetchingBookingsDone(BOOKING_STATE.UPDATE_BOOKING, clonedBookings, selectedLoadedPeriod)
+         );
          dispatch(openModal(MODAL_TYPES.SUCCESS, 'Rezerwacji została zaktualizowana pomyślnie'));
 
          const building = buildings.find((b) => b.property === bookingData.building);
@@ -281,10 +354,12 @@ export const updateBooking =
 export const getCurrentBooking =
    (id: string, bookingTimeIndex: number) =>
    async (dispatch: Dispatch<IBookingsAction>, getStore: () => IReduxState): Promise<void> => {
-      const {bookings} = getStore().bookingStore;
+      const {bookings, selectedLoadedPeriod} = getStore().bookingStore;
       const currentBooking = bookings.find((b) => b.id === id);
       if (currentBooking) {
-         dispatch(getSingleBooking(bookings, bookingTimeIndex, currentBooking));
+         dispatch(
+            getSingleBooking(bookings, bookingTimeIndex, currentBooking, selectedLoadedPeriod)
+         );
       } else {
          dispatch(
             fetchingBookingsError('Problem z serverem. Nie można pokazac wybranej rezerwacji.')
@@ -298,8 +373,8 @@ export const getCurrentBooking =
 export const clearCurrentBooking =
    () =>
    async (dispatch: Dispatch<IBookingsAction>, getStore: () => IReduxState): Promise<void> => {
-      const {bookings} = getStore().bookingStore;
-      dispatch(getSingleBooking(bookings, null, undefined));
+      const {bookings, selectedLoadedPeriod} = getStore().bookingStore;
+      dispatch(getSingleBooking(bookings, null, undefined, selectedLoadedPeriod));
    };
 
 /**
@@ -313,9 +388,11 @@ export const deleteBooking =
    ): Promise<void> => {
       try {
          await deleteDoc(doc(db, BOOKING_COLLECTION_KEY, id));
-         const {bookings} = getStore().bookingStore;
+         const {bookings, selectedLoadedPeriod} = getStore().bookingStore;
          const newBookings: IBooking[] = bookings.filter((booking: IBooking) => booking.id !== id);
-         dispatch(fetchingBookingsDone(BOOKING_STATE.DELETE_BOOKING, newBookings));
+         dispatch(
+            fetchingBookingsDone(BOOKING_STATE.DELETE_BOOKING, newBookings, selectedLoadedPeriod)
+         );
          dispatch(openModal(MODAL_TYPES.SUCCESS, 'Kasowanie elementu przebiegło pomyślnie'));
       } catch (err) {
          dispatch(
@@ -331,8 +408,8 @@ export const deleteBooking =
 export const updateBookingConflicts =
    (conflictedBookings: IBooking[]) =>
    async (dispatch: Dispatch<IBookingsAction>, getStore: () => IReduxState): Promise<void> => {
-      const {bookings} = getStore().bookingStore;
-      dispatch(getBookingConflicts(bookings, conflictedBookings));
+      const {bookings, selectedLoadedPeriod} = getStore().bookingStore;
+      dispatch(getBookingConflicts(bookings, conflictedBookings, selectedLoadedPeriod));
    };
 
 /**
@@ -341,6 +418,6 @@ export const updateBookingConflicts =
 export const clearBookingConflicts =
    () =>
    async (dispatch: Dispatch<IBookingsAction>, getStore: () => IReduxState): Promise<void> => {
-      const {bookings} = getStore().bookingStore;
-      dispatch(clearBookingConflictsState(bookings));
+      const {bookings, selectedLoadedPeriod} = getStore().bookingStore;
+      dispatch(clearBookingConflictsState(bookings, selectedLoadedPeriod));
    };

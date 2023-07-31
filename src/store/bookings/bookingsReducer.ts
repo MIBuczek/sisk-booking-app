@@ -8,7 +8,8 @@ const INITIAL_STATE: IBookingsPayload = {
    booking: undefined,
    bookingTimeIndex: null,
    bookings: [],
-   conflictedBookings: []
+   conflictedBookings: [],
+   selectedLoadedPeriod: '[Od początku]'
 };
 
 /**

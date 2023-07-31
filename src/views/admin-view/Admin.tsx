@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Navigate} from 'react-router-dom';
 import styled from 'styled-components';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Header from 'components/atoms/Header';
 import {fadeIn} from 'style/animation';
 import SideNav from 'components/organisms/SideNav';
@@ -22,6 +22,8 @@ import Building from 'components/organisms/Building';
 import Summary from 'components/organisms/Summary';
 import Modal from 'components/organisms/Modal';
 import ModalOutLogOut from 'components/molecules/modals/ModalOutLogOut';
+import ModalLoadBookings from 'components/molecules/modals/ModalLoadBookings';
+import {openModal} from 'store';
 
 const AdminWrapper = styled.section`
    width: 100%;
@@ -46,7 +48,7 @@ const Admin = (): JSX.Element => {
    // TODO - Client change requirement - leve it for later purpose.
    /* Register last user click action */
    // const lastMouseClick = userMouseClick();
-   // const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
    const {
       authStore: {auth},
@@ -99,6 +101,10 @@ const Admin = (): JSX.Element => {
    //    return () => clearInterval(intervalId);
    // }, [lastMouseClick]);
 
+   React.useEffect(() => {
+      dispatch(openModal(MODAL_TYPES.LOAD_BOOKINGS));
+   }, []);
+
    /**
     * Effect set city from user assigned work place
     */
@@ -137,11 +143,13 @@ const Admin = (): JSX.Element => {
                {tab === ADMIN_TABS.SUMMARY && <Summary />}
             </>
          )}
-         {isOpen && type === MODAL_TYPES.AUTO_LOGOUT && (
-            <Modal>
-               <ModalOutLogOut />
-            </Modal>
-         )}
+         {isOpen &&
+            [MODAL_TYPES.AUTO_LOGOUT, MODAL_TYPES.LOAD_BOOKINGS].includes(type as MODAL_TYPES) && (
+               <Modal>
+                  {type === MODAL_TYPES.AUTO_LOGOUT && <ModalOutLogOut />}
+                  {type === MODAL_TYPES.LOAD_BOOKINGS && <ModalLoadBookings />}
+               </Modal>
+            )}
       </AdminWrapper>
    );
 };

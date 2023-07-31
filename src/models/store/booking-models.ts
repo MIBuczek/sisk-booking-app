@@ -2,6 +2,14 @@
 import {IPayload, ISelectedExtraOptions} from 'models';
 import {CLIENT_TYPE, SIZE_OPTIONS} from 'utils';
 
+interface BookingDataLoadOptions {
+   label: string;
+   value: {
+      startDate: string;
+      endDate: string;
+   };
+}
+
 interface ISingleBookingDate {
    day: Date;
    startHour: Date;
@@ -63,6 +71,7 @@ interface IBookingsPayload extends IPayload {
    bookingTimeIndex: number | null;
    bookings: IBooking[];
    conflictedBookings: IBooking[];
+   selectedLoadedPeriod: string;
 }
 
 interface IBookingsAction {
@@ -71,6 +80,7 @@ interface IBookingsAction {
 }
 
 export type {
+   BookingDataLoadOptions,
    ISingleBookingDate,
    IBooking,
    IBookingToApprove,

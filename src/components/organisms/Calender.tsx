@@ -17,6 +17,7 @@ import RenderEventContent from 'components/atoms/CalenderEvent';
 import ModalResolveBooking from 'components/molecules/modals/ModalResolveBooking';
 import Modal from 'components/organisms/Modal';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
+import Header from 'components/atoms/Header';
 import {LoaderDots} from '../molecules/Loading';
 
 const CalenderWrapper = styled.section`
@@ -152,6 +153,21 @@ const CalenderWrapper = styled.section`
    }
 `;
 
+const CalenderHeader = styled(Header)`
+   margin: 20px 0 40px 0;
+   width: 100%;
+
+   span {
+      font-size: 18px;
+      margin-left: 1rem;
+      color: gray;
+   }
+
+   @media (max-width: 890px) {
+      width: 80%;
+   }
+`;
+
 const UserInfo = styled(Paragraph)`
    font-size: 12px;
    width: 95%;
@@ -190,7 +206,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
    const dispatch = useDispatch();
    const {
       modal: {isOpen, type},
-      bookingStore: {bookings, errorMessage}
+      bookingStore: {bookings, errorMessage, selectedLoadedPeriod}
    } = useSelector((state: IReduxState) => state);
 
    /**
@@ -265,6 +281,9 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
             </LoadingWrapper>
          ) : (
             <>
+               <CalenderHeader>
+                  Kalendarz <span>{`${selectedLoadedPeriod}`}</span>
+               </CalenderHeader>
                <FullCalendar
                   plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
                   headerToolbar={{

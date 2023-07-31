@@ -70,8 +70,10 @@ const parseFirebaseBookingData = (doc: DocumentData) =>
       payment: changePaymentMethod(doc.data().payment),
       discount: doc.data().discount || '',
       archive: doc.data().archive,
-      createdBy: doc.data().createdBy || 'Unknown',
-      createdAt: doc.data().createdAt || '',
+      createdBy: doc.data().createdBy || 'michal.hoffman@sisk-siechnice.pl',
+      createdAt:
+         doc.data().createdAt ||
+         new Date(doc._document.createTime.timestamp.toDate()).toISOString(),
       modifiedBy: doc.data().modifiedBy || 'Unknown',
       modifiedAt: doc.data().modifiedAt || '',
       id: doc.id

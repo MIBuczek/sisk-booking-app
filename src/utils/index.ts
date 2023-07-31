@@ -24,3 +24,4 @@ export * from 'utils/functions/check-booking-conflicts-function';
 export * from 'utils/functions/filter-bookings-function';
 export * from 'utils/functions/generate-building-function';
 export * from 'utils/functions/email-services';
+export * from 'utils/functions/load-bookings-functions';

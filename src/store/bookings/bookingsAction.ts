@@ -198,7 +198,7 @@ export const getBookingsDataByDate =
             endAt(endDate)
          );
          const documents = await getDocs(bookingCollection);
-         const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
+         const bookings: IBooking[] = documents.docs.reduce(parseFirebaseBookingData, []);
          dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings, selectedLoadedPeriod));
       } catch (err) {
          dispatch(
@@ -216,9 +216,12 @@ export const getBookingsData =
    async (dispatch: Dispatch<IBookingsAction>): Promise<void> => {
       dispatch(fetchingBookings());
       try {
-         const bookingCollection = await collection(db, BOOKING_COLLECTION_KEY);
+         const bookingCollection = query(
+            collection(db, BOOKING_COLLECTION_KEY),
+            where('archive', '==', false)
+         );
          const documents = await getDocs(bookingCollection);
-         const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
+         const bookings: IBooking[] = documents.docs.reduce(parseFirebaseBookingData, []);
          /* This is method to run just once to sync data with new updates */
          // syncBookingData(bookings);
          dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings, '[Od początku]'));
@@ -243,7 +246,7 @@ export const getBookingDataForUser =
             and(where('accepted', '==', true), where('archive', '==', false))
          );
          const documents = await getDocs(bookingsQuery);
-         const bookings: IBooking[] = documents.docs.map(parseFirebaseBookingData);
+         const bookings: IBooking[] = documents.docs.reduce(parseFirebaseBookingData, []);
          dispatch(fetchingBookingsDone(BOOKING_STATE.GET_BOOKING, bookings, '[Od początku]'));
       } catch (err) {
          dispatch(

@@ -1,5 +1,8 @@
 import {BookingDataLoadOptions} from 'models';
 
+/**
+ * Default load data option - from the beginning.
+ */
 const defaultOption: BookingDataLoadOptions = {
    label: 'Od początku',
    value: {
@@ -8,6 +11,11 @@ const defaultOption: BookingDataLoadOptions = {
    }
 };
 
+/**
+ * Method to calculate and generate load booking data options.
+ *
+ * @returns {BookingDataLoadOptions}
+ */
 const generateBookingDateOptions = (): BookingDataLoadOptions[] => {
    const baseOptions: BookingDataLoadOptions[] = [
       {
@@ -23,12 +31,12 @@ const generateBookingDateOptions = (): BookingDataLoadOptions[] => {
    let startYear = 2022;
 
    while (startYear <= currentYear) {
-      if (currentMonth > 5) {
+      if ((currentMonth >= 8 && currentYear === startYear) || currentYear > startYear) {
          baseOptions.push({
             label: `${startYear}/${startYear + 1}`,
             value: {
-               startDate: new Date(`${startYear}-07-01`).toISOString(),
-               endDate: new Date(`${startYear + 1}-06-30`).toISOString()
+               startDate: new Date(`${startYear}-09-01`).toISOString(),
+               endDate: new Date(`${startYear + 1}-08-31`).toISOString()
             }
          });
       }

@@ -281,9 +281,11 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
             </LoadingWrapper>
          ) : (
             <>
-               <CalenderHeader>
-                  Kalendarz <span>{`${selectedLoadedPeriod}`}</span>
-               </CalenderHeader>
+               {hasRights && (
+                  <CalenderHeader>
+                     Kalendarz <span>{`${selectedLoadedPeriod}`}</span>
+                  </CalenderHeader>
+               )}
                <FullCalendar
                   plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
                   headerToolbar={{

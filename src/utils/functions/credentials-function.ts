@@ -71,7 +71,7 @@ const checkRecordActionPermission = (record: IBooking | IClient, currentUser?: I
       if (record.createdBy.includes(currentUser?.email || '')) return true;
       return false;
    }
-   return false;
+   return currentUser?.isAdmin;
 };
 
 export {

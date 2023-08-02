@@ -12,6 +12,7 @@ import {useDispatch} from 'react-redux';
 import {IClient, IClientForm} from 'models';
 import {addClient, closeModal, updateClient} from 'store';
 import ConfirmAction from 'components/molecules/ConfirmAction';
+import {cloneDeep} from 'lodash';
 
 const ClientWrapper = styled.section`
    display: flex;
@@ -99,7 +100,7 @@ const ClientForm: React.FunctionComponent<IProps> = ({
       control,
       reset,
       watch
-   } = useForm<IClientForm>();
+   } = useForm<IClientForm>({defaultValues: cloneDeep(CLIENT_INITIAL_VALUE)});
 
    const {type: clientType} = watch();
 
@@ -119,6 +120,8 @@ const ClientForm: React.FunctionComponent<IProps> = ({
    const onSubmit: SubmitHandler<IClientForm> = (cred) => {
       setClientData({
          ...cred,
+         nip: cred.nip || '',
+         contactPerson: cred.contactPerson || '',
          type: cred.type.value
       } as IClient);
       setDisplayConfirmation(true);

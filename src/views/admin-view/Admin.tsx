@@ -14,7 +14,8 @@ import {
    CITY_OPTIONS,
    hasRightsToSeeContent,
    initialAdminState,
-   MODAL_TYPES
+   MODAL_TYPES,
+   SAVING_STAGE
 } from 'utils';
 import Clients from 'components/organisms/Clients';
 import Bookings from 'components/organisms/Bookings';
@@ -23,7 +24,8 @@ import Summary from 'components/organisms/Summary';
 import Modal from 'components/organisms/Modal';
 import ModalOutLogOut from 'components/molecules/modals/ModalOutLogOut';
 import ModalLoadBookings from 'components/molecules/modals/ModalLoadBookings';
-import {openModal} from 'store';
+import {getClientsData, getUserData, openModal} from 'store';
+import {isEmpty} from 'lodash';
 
 const AdminWrapper = styled.section`
    width: 100%;
@@ -45,7 +47,7 @@ const Admin = (): JSX.Element => {
    const [adminState, setAdminState] = React.useState<IAdminState>({...initialAdminState});
    const [tab, setTab] = React.useState<ADMIN_TABS>(ADMIN_TABS.CALENDER);
 
-   // TODO - Client change requirement - leve it for later purpose.
+   // TODO - Client change requirement - level it for later purpose.
    /* Register last user click action */
    // const lastMouseClick = userMouseClick();
    const dispatch = useDispatch();
@@ -53,7 +55,8 @@ const Admin = (): JSX.Element => {
    const {
       authStore: {auth},
       modal: {isOpen, type},
-      currentUserStore: {user}
+      currentUserStore: {user, savingStage: userSavingStatus},
+      clientStore: {clients, savingStage: clientSavingStatus}
    } = useSelector((state: IReduxState) => state);
 
    /**
@@ -90,7 +93,7 @@ const Admin = (): JSX.Element => {
 
    // TODO - Client change requirement - leve it for later purpose.
    // /**
-   //  * Effect to track last user action to log him out if no action in last 15 minute.
+   //  * Effect to track last user actiongetUserData to log him out if no action in last 15 minute.
    //  */
    // React.useEffect(() => {
    //    const intervalId = setInterval((): void => {
@@ -103,6 +106,12 @@ const Admin = (): JSX.Element => {
 
    React.useEffect(() => {
       dispatch(openModal(MODAL_TYPES.LOAD_BOOKINGS));
+      if (isEmpty(user) && userSavingStatus === SAVING_STAGE.INITIAL) {
+         dispatch(getUserData());
+      }
+      if (isEmpty(clients) && clientSavingStatus === SAVING_STAGE.INITIAL) {
+         dispatch(getClientsData());
+      }
    }, []);
 
    /**

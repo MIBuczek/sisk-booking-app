@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import * as React from 'react';
 import styled from 'styled-components';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
@@ -497,7 +498,7 @@ const BookingTimeForm: React.FunctionComponent<IProps> = ({
                {!isEmpty(bookingTime) ? (
                   bookingTime.map((sbt, index) => (
                      <DisplaySelectedTimeItem
-                        key={sbt.startHour.getTime()}
+                        key={index}
                         className={`${handlerStyleClasses(sbt, index)}`}
                      >
                         <RecordDetailSpan>

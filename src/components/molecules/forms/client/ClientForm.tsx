@@ -283,7 +283,24 @@ const ClientForm: React.FunctionComponent<IProps> = ({
                name="phone"
                defaultValue={''}
                control={control}
-               rules={{required: true}}
+               rules={{
+                  required: {
+                     value: true,
+                     message: 'Pole nie może być puste'
+                  },
+                  minLength: {
+                     value: 9,
+                     message: 'Minimalna ilość znaków to 9'
+                  },
+                  maxLength: {
+                     value: 15,
+                     message: 'Maksymalna ilość znaków to 15'
+                  },
+                  pattern: {
+                     value: /^[0-9\s-]+$/,
+                     message: 'Pole może zawierać tylko liczby,myślnik lub spacje'
+                  }
+               }}
                render={({field: {onChange, onBlur, value}}) => (
                   <TextInputField
                      onBlur={onBlur}
@@ -296,7 +313,7 @@ const ClientForm: React.FunctionComponent<IProps> = ({
                   />
                )}
             />
-            {errors.phone && <ErrorMsg innerText="Pole nie może być puste" />}
+            {errors.phone && <ErrorMsg innerText={errors.phone.message} />}
             <Label>E-mail</Label>
             <Controller
                name="email"

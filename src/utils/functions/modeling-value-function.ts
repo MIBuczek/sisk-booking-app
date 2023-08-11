@@ -21,6 +21,8 @@ const transformValue: {[x: string]: string} = {
    'bieznia-na-stadionie-la': 'Bieżnia na stadionie LA',
    'sala-fitness': 'Sala fitness',
    'hala-sportowa': 'Hala sportowa',
+   kort_1: 'KORT#1',
+   kort_2: 'KORT#2',
    orlik: 'Orlik',
    cash: 'Gotówka',
    invoice: 'Faktura',

@@ -1,4 +1,4 @@
-import {IAdminState, IBooking, IClient} from 'models';
+import {IAdminState, IBooking, IClient, IUser} from 'models';
 
 /**
  * Function to set string value as lower case.
@@ -19,11 +19,14 @@ const formatData = (s: string): string => s.toLocaleLowerCase().trim();
 const filterBookingsPerPlace = (
    bookingList: IBooking[],
    mainState: IAdminState,
-   isAdmin: boolean = false
+   user?: IUser
 ): IBooking[] => {
    const {city, building} = mainState;
    return bookingList.filter(
-      (b) => b.city === city.value && b.building === building.value && (isAdmin || b.accepted)
+      (b) =>
+         b.city === city.value &&
+         b.building === building.value &&
+         (user?.isAdmin || b.createdBy.includes(user?.email || '') || b.accepted)
    );
 };
 

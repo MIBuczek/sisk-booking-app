@@ -5,13 +5,14 @@ import BookingCalender from 'components/organisms/Calender';
 import SideNav from 'components/organisms/SideNav';
 import {fadeIn} from 'style/animation';
 import {IMainState, IReduxState, TSelect} from 'models';
-import {ADMIN_TABS, BUILDINGS_OPTIONS, initialMainState, MODAL_TYPES} from 'utils';
-import {cloneDeep} from 'lodash';
-import {useSelector} from 'react-redux';
+import {ADMIN_TABS, BUILDINGS_OPTIONS, initialMainState, MODAL_TYPES, SAVING_STAGE} from 'utils';
+import {cloneDeep, isEmpty} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
 import Modal from 'components/organisms/Modal';
 import ModalBooking from 'components/molecules/modals/ModalBooking';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
 import {Navigate} from 'react-router-dom';
+import {getBookingDataForUser} from 'store/bookings/bookingsAction';
 
 const MainWrapper = styled.section`
    width: 100%;
@@ -40,9 +41,11 @@ export interface IProps {}
 const Main: React.FC<IProps> = (): JSX.Element => {
    const [mainState, setNavState] = React.useState<IMainState>(cloneDeep(initialMainState));
 
+   const dispatch = useDispatch();
    const {
       modal: {isOpen, type},
-      authStore: {auth}
+      authStore: {auth},
+      bookingStore: {bookings, savingStage: bookingSavingStatus}
    } = useSelector((state: IReduxState) => state);
 
    /**
@@ -61,6 +64,12 @@ const Main: React.FC<IProps> = (): JSX.Element => {
    if (auth) {
       return <Navigate to="/admin" />;
    }
+
+   React.useEffect(() => {
+      if (isEmpty(bookings) && bookingSavingStatus === SAVING_STAGE.INITIAL) {
+         dispatch(getBookingDataForUser());
+      }
+   }, []);
 
    return (
       <MainWrapper>

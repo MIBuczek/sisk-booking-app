@@ -2,6 +2,7 @@ import {TSelect} from 'models';
 
 interface IClientForm {
    type: TSelect;
+   nick: string;
    name: string;
    contactPerson: string;
    phone: string;

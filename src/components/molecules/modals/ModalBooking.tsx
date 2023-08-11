@@ -18,6 +18,7 @@ const ModalBooking: React.FunctionComponent<IProps> = ({mainState}): JSX.Element
       bookingsList={[]}
       isSISKEmployee={false}
       isAdmin={false}
+      isOffice={false}
       isEditing={false}
       initialEditingState={() => null}
    />

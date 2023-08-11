@@ -1,4 +1,4 @@
-import {IUser} from 'models';
+import {IBooking, IClient, IUser, singleInstanceOfBookings} from 'models';
 
 /**
  * Function to check user credentials to see booked usernames
@@ -46,9 +46,39 @@ const adminSeeContentCredentials = (loggedUsed: IUser | undefined): boolean => {
    return isAdmin || isOffice;
 };
 
+/**
+ * Funtion to block selected user view some tabs.
+ * @param loggedUsed
+ * @returns {Boolean}
+ */
+const summaryUserRestriction = (loggedUsed: IUser | undefined): boolean => {
+   if (!loggedUsed) return false;
+   const {isAdmin, isOffice, email} = loggedUsed;
+   if (['mkulakowski@umsiechnice.pl'].includes(email)) return false;
+   return isAdmin || isOffice;
+};
+
+/**
+ * Check current user permission to allow record action.
+ *
+ * @param record
+ * @param currentUser
+ * @returns {Boolean}
+ */
+const checkRecordActionPermission = (record: IBooking | IClient, currentUser?: IUser) => {
+   if (singleInstanceOfBookings(record)) {
+      if (currentUser?.isAdmin) return true;
+      if (record.createdBy.includes(currentUser?.email || '')) return true;
+      return false;
+   }
+   return currentUser?.isAdmin;
+};
+
 export {
    hasRightsToSeeContent,
    adminCredentials,
    siskEmployeeCredentials,
-   adminSeeContentCredentials
+   adminSeeContentCredentials,
+   summaryUserRestriction,
+   checkRecordActionPermission
 };

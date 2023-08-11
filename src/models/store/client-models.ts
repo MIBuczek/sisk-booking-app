@@ -2,6 +2,7 @@ import {IPayload} from 'models';
 
 interface IClient {
    type: string;
+   nick: string;
    name: string;
    contactPerson: string;
    phone: string;

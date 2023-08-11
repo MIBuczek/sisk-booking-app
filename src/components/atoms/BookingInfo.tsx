@@ -46,12 +46,12 @@ const BookingInfo: React.FunctionComponent<IProps> = ({
    currentBooking,
    bookingTimeIndex
 }): JSX.Element => {
-   const {person, city, building, bookingTime, size, message, payment} = currentBooking;
+   const {person, nick, city, building, bookingTime, size, message, payment} = currentBooking;
 
    return (
       <>
          <DetailsParagraph bold>
-            Najemca :<DetailsSpan>{isAdmin ? person : 'Rezerwacja'}</DetailsSpan>
+            Najemca :<DetailsSpan>{isAdmin ? person : nick || 'Rezerwacja'}</DetailsSpan>
          </DetailsParagraph>
          <DetailsParagraph bold>
             Dzień :

@@ -5,7 +5,8 @@ import {
    IReduxState,
    ISelectedExtraOptions,
    ISingleBookingDate,
-   TSelect
+   TSelect,
+   isNumber
 } from 'models';
 import {IBookingForm} from 'models/forms/booking-form-models';
 import * as React from 'react';
@@ -18,6 +19,7 @@ import {
    BOOKING_INITIAL_VALUE,
    checkConflicts,
    CITY_OPTIONS,
+   createBookingTimeStamps,
    DISCOUNT_OPTIONS,
    generateBookingDetails,
    generateBookingFormDetails,
@@ -47,6 +49,8 @@ import ConfirmAction from 'components/molecules/ConfirmAction';
 import BookingExtraOptions from 'components/molecules/forms/booking/BookingExtraOptions';
 import Autocomplete from 'components/atoms/Autocomplete';
 import BookingTimeForm from 'components/molecules/forms/booking/BookingTimeForm';
+import WarningMsg from 'components/atoms/WarningMsg';
+import TimeStamps from 'components/molecules/TimeStamp';
 
 registerLocale('pl', pl);
 
@@ -94,6 +98,13 @@ const InputContainer = styled.div`
    .react-datepicker__input-container {
       display: flex;
       justify-content: center;
+   }
+
+   &.info {
+      border-top: ${({theme}) => `2px solid ${theme.green}`};
+      border-bottom: ${({theme}) => `2px solid ${theme.green}`};
+      background: whitesmoke;
+      margin: 0.75rem 0;
    }
 `;
 
@@ -226,6 +237,7 @@ interface IProps {
    bookingsList: IBooking[];
    isSISKEmployee: boolean;
    isAdmin: boolean;
+   isOffice: boolean;
    isEditing: boolean;
    editedItemIndex?: number;
    initialEditingState: () => void;
@@ -243,6 +255,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
    mainState,
    isSISKEmployee,
    isAdmin,
+   isOffice,
    isEditing,
    editedItemIndex,
    initialEditingState
@@ -263,6 +276,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
    const dispatch = useDispatch();
 
    const {
+      currentUserStore: {user},
       clientStore: {clients},
       buildingStore: {buildings}
    } = useSelector((state: IReduxState): IReduxState => state);
@@ -317,8 +331,20 @@ const BookingForm: React.FunctionComponent<IProps> = ({
          return;
       }
 
-      const bookingToApprove = cloneDeep(
+      let bookingToApprove;
+
+      bookingToApprove = cloneDeep(
          generateBookingDetails(cred, selectedSize, bookingTime, extraOptions, bookingId)
+      );
+
+      let originBooking: IBooking | undefined;
+
+      if (isNumber(editedItemIndex)) {
+         originBooking = cloneDeep(bookingsList[editedItemIndex]);
+      }
+
+      bookingToApprove = cloneDeep(
+         createBookingTimeStamps(isEditing, bookingToApprove, originBooking, user)
       );
 
       setBookingData(bookingToApprove);
@@ -397,9 +423,10 @@ const BookingForm: React.FunctionComponent<IProps> = ({
       if (!selectedClient || !selectedClientId) return;
 
       const formClientData = {
-         person: selectedClient?.name,
-         email: selectedClient?.email,
-         phone: selectedClient?.phone
+         nick: selectedClient.nick || 'Rezerwacja',
+         person: selectedClient.name,
+         email: selectedClient.email,
+         phone: selectedClient.phone
       };
 
       const currentFormValues = getValues();
@@ -423,6 +450,39 @@ const BookingForm: React.FunctionComponent<IProps> = ({
    const compareClientIds = (): boolean => {
       if (!selectedClientId || !selectedClientId.label) return false;
       return selectedClientId?.label !== personName;
+   };
+
+   /**
+    * Method to display appropriate form title.
+    * @returns {String}
+    */
+   const bookingFormTitle = (): string => {
+      if (isAdmin && isEditing) return 'Edytuj rezerwację';
+      if (isAdmin) return 'Dodaj nową rezerwację';
+      if ((user?.isOffice || user?.isEmployee) && isEditing) return 'Edytuj prośbę o rezerwację';
+      return 'Prośbę o rezerwację';
+   };
+
+   /**
+    * Method to display appropriate accept button text.
+    * @returns {String}
+    */
+   const bookingFormButtonText = (): string => {
+      if (isAdmin && isEditing) return 'Zaktualizuj rezerwację';
+      if (isAdmin) return 'Dodaj rezerwację';
+      if ((user?.isOffice || user?.isEmployee) && isEditing) {
+         return 'Zaktualizuj prośbę o rezerwację';
+      }
+      return 'Wyślij prośbę o rezerwację';
+   };
+
+   /**
+    * Method to handle disabled accept button state.
+    * @returns {Boolean}
+    */
+   const handlerDisableApproveBtn = (): boolean => {
+      if (isAdmin || user?.isOffice || user?.isEmployee) return false;
+      return !police;
    };
 
    /**
@@ -471,7 +531,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
 
    return (
       <BookingWrapper>
-         <BookingHeader>{isAdmin ? 'Dodaj nową rezerwację' : ' Prośbę o rezerwację'}</BookingHeader>
+         <BookingHeader>{bookingFormTitle()}</BookingHeader>
          {isSISKEmployee && (
             <AcceptWrapper>
                <SelectWrapper>
@@ -620,6 +680,48 @@ const BookingForm: React.FunctionComponent<IProps> = ({
             />
             {errors.payment && <ErrorMsg innerText={errors.payment.message} />}
          </SelectWrapper>
+         <InputContainer className="info">
+            <InputWrapper>
+               <Label>Nick</Label>
+               <Controller
+                  name="nick"
+                  defaultValue={'Rezerwacja'}
+                  control={control}
+                  rules={{
+                     required: {
+                        value: true,
+                        message: 'Pole nie może być puste'
+                     },
+                     minLength: {
+                        value: 3,
+                        message: 'Minimalna ilość znaków to 3'
+                     },
+                     maxLength: {
+                        value: 100,
+                        message: 'Maksymalna ilość znaków to 100'
+                     }
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                     <TextInputField
+                        onBlur={onBlur}
+                        value={value}
+                        onChange={onChange}
+                        invalid={!!errors.nick}
+                        className="input"
+                        placeholder="Wpisz"
+                        disabled={displayConfirmation}
+                     />
+                  )}
+               />
+               {errors.nick && <ErrorMsg innerText={errors.nick.message} />}
+            </InputWrapper>
+            <InputWrapper>
+               <WarningMsg
+                  innerText="Pole [Nick] bedzie wyświetlane w głównym kalendarzu przy rezerwacji."
+                  className="bookingForm"
+               />
+            </InputWrapper>
+         </InputContainer>
          <InputContainer>
             <InputWrapper>
                <Label>Imię i nazwisko</Label>
@@ -711,8 +813,8 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                         message: 'Maksymalna ilość znaków to 15'
                      },
                      pattern: {
-                        value: /^[\d./-]+$/,
-                        message: 'Pole może zawierać tylko liczby oraz myślnik'
+                        value: /^[0-9\s-]+$/,
+                        message: 'Pole może zawierać tylko liczby,myślnik lub spacje'
                      }
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
@@ -754,7 +856,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                         onSelect={(val: string) => {
                            setValue('discount', val.split(' ')[0]);
                         }}
-                        disabled={!isAdmin || displayConfirmation}
+                        disabled={!(isAdmin || isOffice) || displayConfirmation}
                      />
                   )}
                />
@@ -790,7 +892,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                />
             )}
          />
-         {isEditing && (
+         {isAdmin && isEditing && (
             <ArchiveWrapper>
                <Label>Zarchiwizować rezerwacje</Label>
                <Controller
@@ -824,7 +926,7 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                </Paragraph>
             </RodoWrapper>
          )}
-         {!isAdmin && (
+         {!(isAdmin || user?.isOffice || user?.isEmployee) && (
             <RodoWrapper>
                <Checkbox
                   checked={police}
@@ -865,13 +967,14 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                <Button
                   role="button"
                   onClick={handleSubmit(onSubmit)}
-                  disabled={isAdmin ? false : !police}
+                  disabled={handlerDisableApproveBtn()}
                >
-                  {isAdmin
-                     ? `${isEditing ? 'Zapisz' : 'Dodaj'} rezerwację`
-                     : 'Wyślij prośbę o rezerwację'}
+                  {bookingFormButtonText()}
                </Button>
             </ButtonPanel>
+         )}
+         {isEditing && isNumber(editedItemIndex) && (
+            <TimeStamps currentBooking={bookingsList[editedItemIndex]} />
          )}
       </BookingWrapper>
    );

@@ -3,21 +3,24 @@ import {
    IBookingForm,
    IBookingStatusForm,
    IBookingTimeForm,
+   IBookingTimeStamp,
+   IBookingToApprove,
    ISelectedExtraOptions,
    ISingleBookingDate,
+   IUser,
    TSelect
 } from 'models';
 import {
+   BOOKING_STATUS,
    BUILDINGS_OPTIONS,
    CITY_OPTIONS,
    CLIENT_TYPE,
    DISCOUNT_OPTIONS,
-   PAYMENTS_OPTIONS,
-   SIZE_OPTIONS,
    findSelectedOption,
-   BOOKING_STATUS,
    formatCalenderDate,
-   formatCalenderHours
+   formatCalenderHours,
+   PAYMENTS_OPTIONS,
+   SIZE_OPTIONS
 } from 'utils';
 import {isEqual, uniqWith} from 'lodash';
 
@@ -103,12 +106,13 @@ const generateBookingDetails = (
    bookingTime: ISingleBookingDate[],
    extraOptions: ISelectedExtraOptions[],
    id: string = ''
-): IBooking => ({
+): IBookingToApprove => ({
    type: CLIENT_TYPE.CLIENT,
    city: cred.city.value,
    building: cred.building.value,
    size: selectedSize,
    clientId: cred.clientId?.value || '',
+   nick: cred.nick,
    person: cred.person,
    club: cred.club || '',
    email: cred.email,
@@ -124,6 +128,52 @@ const generateBookingDetails = (
    bookingTime,
    id
 });
+
+/**
+ * Method to create or update booking time stamps.
+ *
+ * @param {Boolean} isEditing
+ * @param {IBookingToApprove} currentBooking
+ * @param {IBooking} originBooking
+ * @param {IUser} currentUser
+ * @returns {IBooking}
+ */
+const createBookingTimeStamps = (
+   isEditing: boolean,
+   currentBooking: IBookingToApprove,
+   originBooking?: IBooking,
+   currentUser?: IUser
+): IBooking => {
+   let timeStamps: IBookingTimeStamp = {
+      createdBy: currentBooking?.email as string,
+      createdAt: new Date().toISOString(),
+      modifiedBy: currentBooking.email as string,
+      modifiedAt: new Date().toISOString()
+   };
+
+   if (currentUser) {
+      const {email} = currentUser;
+      timeStamps = {
+         createdBy: email,
+         createdAt: new Date().toISOString(),
+         modifiedBy: email,
+         modifiedAt: new Date().toISOString()
+      };
+   }
+
+   if (isEditing && originBooking && currentUser) {
+      const {createdAt, createdBy} = originBooking;
+      const {email} = currentUser;
+      timeStamps = {
+         createdBy,
+         createdAt,
+         modifiedBy: email,
+         modifiedAt: new Date().toISOString()
+      };
+   }
+
+   return Object.assign(currentBooking, timeStamps) as IBooking;
+};
 /**
  * Function to generate single booking status data.
  *
@@ -198,11 +248,12 @@ const concatBookingTime = (
  * Function to generate max rang in data type input.
  * If we have august then extend it for next year.
  *
+ * @param isAdmin
  * @returns {Date}
  */
-const generateMaxRangDate = (): Date => {
+const generateMaxRangDate = (isAdmin: boolean): Date => {
    let currentYear = new Date().getFullYear();
-   if (new Date().getMonth() >= 7) {
+   if (isAdmin || new Date().getMonth() >= 7) {
       currentYear += 1;
    }
    return new Date(`${currentYear}-01-01T00:01:00.676Z`);
@@ -210,6 +261,7 @@ const generateMaxRangDate = (): Date => {
 
 export {
    generateBookingDetails,
+   createBookingTimeStamps,
    generateBookingFormDetails,
    generateBookingStatusDate,
    generateMaxRangDate,

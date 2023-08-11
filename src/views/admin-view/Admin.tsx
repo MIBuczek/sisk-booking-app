@@ -14,16 +14,18 @@ import {
    CITY_OPTIONS,
    hasRightsToSeeContent,
    initialAdminState,
-   MODAL_TYPES
+   MODAL_TYPES,
+   SAVING_STAGE
 } from 'utils';
 import Clients from 'components/organisms/Clients';
 import Bookings from 'components/organisms/Bookings';
 import Building from 'components/organisms/Building';
 import Summary from 'components/organisms/Summary';
-import userMouseClick from 'hooks/userMoseClock';
-import {openModal} from 'store';
 import Modal from 'components/organisms/Modal';
 import ModalOutLogOut from 'components/molecules/modals/ModalOutLogOut';
+import ModalLoadBookings from 'components/molecules/modals/ModalLoadBookings';
+import {getClientsData, getUserData, openModal} from 'store';
+import {isEmpty} from 'lodash';
 
 const AdminWrapper = styled.section`
    width: 100%;
@@ -45,15 +47,16 @@ const Admin = (): JSX.Element => {
    const [adminState, setAdminState] = React.useState<IAdminState>({...initialAdminState});
    const [tab, setTab] = React.useState<ADMIN_TABS>(ADMIN_TABS.CALENDER);
 
+   // TODO - Client change requirement - level it for later purpose.
    /* Register last user click action */
-   const lastMouseClick = userMouseClick();
-
+   // const lastMouseClick = userMouseClick();
    const dispatch = useDispatch();
 
    const {
       authStore: {auth},
       modal: {isOpen, type},
-      currentUserStore: {user}
+      currentUserStore: {user, savingStage: userSavingStatus},
+      clientStore: {clients, savingStage: clientSavingStatus}
    } = useSelector((state: IReduxState) => state);
 
    /**
@@ -88,17 +91,28 @@ const Admin = (): JSX.Element => {
       setTab(currentTab);
    };
 
-   /**
-    * Effect to track last user action to log him out if no action in last 15 minute.
-    */
+   // TODO - Client change requirement - leve it for later purpose.
+   // /**
+   //  * Effect to track last user actiongetUserData to log him out if no action in last 15 minute.
+   //  */
+   // React.useEffect(() => {
+   //    const intervalId = setInterval((): void => {
+   //       if (new Date().getTime() - lastMouseClick > 900000) {
+   //          dispatch(openModal(MODAL_TYPES.AUTO_LOGOUT));
+   //       }
+   //    }, 60000);
+   //    return () => clearInterval(intervalId);
+   // }, [lastMouseClick]);
+
    React.useEffect(() => {
-      const intervalId = setInterval((): void => {
-         if (new Date().getTime() - lastMouseClick > 900000) {
-            dispatch(openModal(MODAL_TYPES.AUTO_LOGOUT));
-         }
-      }, 60000);
-      return () => clearInterval(intervalId);
-   }, [lastMouseClick]);
+      dispatch(openModal(MODAL_TYPES.LOAD_BOOKINGS));
+      if (isEmpty(user) && userSavingStatus === SAVING_STAGE.INITIAL) {
+         dispatch(getUserData());
+      }
+      if (isEmpty(clients) && clientSavingStatus === SAVING_STAGE.INITIAL) {
+         dispatch(getClientsData());
+      }
+   }, []);
 
    /**
     * Effect set city from user assigned work place
@@ -123,6 +137,7 @@ const Admin = (): JSX.Element => {
             stateHandler={stateHandler}
             activeTab={tab}
             tabHandler={tabHandler}
+            user={user}
             isAdmin={adminSeeContentCredentials(user)}
          />
          {/* admin inner content */}
@@ -137,11 +152,13 @@ const Admin = (): JSX.Element => {
                {tab === ADMIN_TABS.SUMMARY && <Summary />}
             </>
          )}
-         {isOpen && type === MODAL_TYPES.AUTO_LOGOUT && (
-            <Modal>
-               <ModalOutLogOut />
-            </Modal>
-         )}
+         {isOpen &&
+            [MODAL_TYPES.AUTO_LOGOUT, MODAL_TYPES.LOAD_BOOKINGS].includes(type as MODAL_TYPES) && (
+               <Modal>
+                  {type === MODAL_TYPES.AUTO_LOGOUT && <ModalOutLogOut />}
+                  {type === MODAL_TYPES.LOAD_BOOKINGS && <ModalLoadBookings />}
+               </Modal>
+            )}
       </AdminWrapper>
    );
 };

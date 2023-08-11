@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import FullCalendar from '@fullcalendar/react';
 import listPlugin from '@fullcalendar/list';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {EventClickArg, EventInput} from '@fullcalendar/core';
@@ -16,6 +17,7 @@ import RenderEventContent from 'components/atoms/CalenderEvent';
 import ModalResolveBooking from 'components/molecules/modals/ModalResolveBooking';
 import Modal from 'components/organisms/Modal';
 import ModalInfo from 'components/molecules/modals/ModalInfo';
+import Header from 'components/atoms/Header';
 import {LoaderDots} from '../molecules/Loading';
 
 const CalenderWrapper = styled.section`
@@ -46,6 +48,26 @@ const CalenderWrapper = styled.section`
          .fc-timegrid-col-frame {
             background: #eeeeee;
          }
+      }
+
+      .fc-daygrid-event-harness {
+         border-bottom: ${({theme}) => `1px solid ${theme.middleGray}`};
+         font-size: 18px;
+         color: ${({theme}) => theme.white};
+         padding: 0.5rem;
+
+         .fc-daygrid-event {
+            display: flex;
+            justify-content: space-around;
+            height: 80px;
+         }
+      }
+
+      .fc-list-event-title {
+         display: flex;
+         justify-content: space-around;
+         border-radius: 5px;
+         color: ${({theme}) => theme.white};
       }
 
       .fc-timegrid-event.fc-v-event {
@@ -131,6 +153,21 @@ const CalenderWrapper = styled.section`
    }
 `;
 
+const CalenderHeader = styled(Header)`
+   margin: 20px 0 40px 0;
+   width: 100%;
+
+   span {
+      font-size: 18px;
+      margin-left: 1rem;
+      color: gray;
+   }
+
+   @media (max-width: 890px) {
+      width: 80%;
+   }
+`;
+
 const UserInfo = styled(Paragraph)`
    font-size: 12px;
    width: 95%;
@@ -169,7 +206,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
    const dispatch = useDispatch();
    const {
       modal: {isOpen, type},
-      bookingStore: {bookings, errorMessage}
+      bookingStore: {bookings, errorMessage, selectedLoadedPeriod}
    } = useSelector((state: IReduxState) => state);
 
    /**
@@ -183,7 +220,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
             const {city, building} = mainState;
             if (city.value === booking.city && building.value === booking.building) {
                booking.bookingTime.forEach((bt, index) => {
-                  const itemTitle = `${hasRights ? booking.person : 'Rezerwacja'}`;
+                  const itemTitle = `${hasRights ? booking.person : booking.nick || 'Rezerwacja'}`;
                   if (bt.status !== BOOKING_STATUS.QUIT) {
                      acc.push(prepareCalenderItem(itemTitle, booking, index));
                   }
@@ -244,11 +281,17 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
             </LoadingWrapper>
          ) : (
             <>
+               {hasRights && (
+                  <CalenderHeader>
+                     Kalendarz <span>{`${selectedLoadedPeriod}`}</span>
+                  </CalenderHeader>
+               )}
                <FullCalendar
-                  plugins={[listPlugin, timeGridPlugin, interactionPlugin]}
+                  plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
                   headerToolbar={{
                      left: 'prev,next today',
-                     right: 'timeGridWeek,listWeek'
+                     center: 'title',
+                     right: 'timeGridWeek,dayGridDay,listWeek'
                   }}
                   locale="pl"
                   initialView="timeGridWeek"
@@ -273,7 +316,7 @@ const BookingCalender: React.FunctionComponent<IProps> = ({mainState, hasRights}
             </>
          )}
          {isOpen && (
-            <Modal>
+            <Modal customClassName="overflow">
                {type === MODAL_TYPES.BOOKINGS_CALENDER_STATUS && <ModalResolveBooking />}
                {type === MODAL_TYPES.SUCCESS && <ModalInfo header="Rezerwacja" />}
                {type === MODAL_TYPES.ERROR && <ModalInfo header="Rezerwacja" />}

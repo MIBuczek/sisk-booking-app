@@ -191,7 +191,7 @@ const csvClientSummary = (
                status: transformValue[bt.status],
                payment: transformValue[formattedBooking.payment],
                size: transformToPercentage(formattedBooking.size),
-               day: modelDisplayValue('', bt.startHour) || '',
+               day: modelDisplayValue('', bt.day) || '',
                startHour: modelDisplayValue('', bt.startHour, true) || '',
                endHour: modelDisplayValue('', bt.endHour, true) || '',
                cityBooking: transformValue[booking.city],

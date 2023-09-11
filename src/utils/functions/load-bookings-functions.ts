@@ -35,7 +35,7 @@ const generateBookingDateOptions = (): BookingDataLoadOptions[] => {
          baseOptions.push({
             label: `${startYear}/${startYear + 1}`,
             value: {
-               startDate: new Date(`${startYear}-09-01`).toISOString(),
+               startDate: new Date(`${startYear}-08-01`).toISOString(),
                endDate: new Date(`${startYear + 1}-08-31`).toISOString()
             }
          });

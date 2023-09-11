@@ -138,7 +138,6 @@ const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number
       accepted
    };
 };
-
 /**
  * Function to change day in Date object.
  *

@@ -461,16 +461,12 @@ const Summary = (): JSX.Element => {
          return `Wszyscy klienci [${partFileName}].csv`.toLowerCase();
       }
 
-      return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
+      return `${clientSummary.client.name} (${partFileName}).csv`.toLowerCase();
    };
 
    React.useEffect(() => {
       updateToMonthDataInForm();
    }, [fromMonth, fromTheBeginning]);
-
-   // React.useEffect(() => {
-   //    generateReportForAllClients(fromMonth, toMonth);
-   // }, [fromMonth, toMonth]);
 
    return (
       <SummaryWrapper>

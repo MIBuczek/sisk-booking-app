@@ -458,7 +458,7 @@ const Summary = (): JSX.Element => {
       }
 
       if (forAll) {
-         return `Wszyscy klienci [${partFileName}].csv`.toLowerCase();
+         return `Wszyscy klienci (${partFileName}).csv`.toLowerCase();
       }
 
       return `${clientSummary.client.name} (${partFileName}).csv`.toLowerCase();

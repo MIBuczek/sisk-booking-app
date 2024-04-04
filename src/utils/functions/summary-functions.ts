@@ -12,15 +12,15 @@ import {
    TSelect
 } from 'models';
 import {
-   changeDayInDate,
    BOOKING_STATUS,
    modelDisplayValue,
    transformToPercentage,
    transformValue,
    checkSelectedOption,
-   makeLastDayOfMonth,
    csvBookingKeys,
-   csvClientKeys
+   csvClientKeys,
+   changeDayInDateStart,
+   changeDayInDateEnd
 } from 'utils';
 
 /**
@@ -38,16 +38,8 @@ const findAllClientReservation = (bookings: IBooking[], clientValue: TSelect): I
  * @param {Date} date
  * @returns {Number}
  */
-const numberOfMonthDays = (date: Date): number => {
-   const convertedDate = new Date(date);
-   if (convertedDate.getMonth() === 1) {
-      return 28;
-   }
-   if ([0, 2, 4, 6, 7, 9, 11].includes(convertedDate.getMonth())) {
-      return 31;
-   }
-   return 30;
-};
+const numberOfMonthDays = (date: Date): number =>
+   new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 
 /**
  * Function to model all client reservation and divide it into to cities.
@@ -83,8 +75,12 @@ const generateReservationSummary = (
          /* Create booking time details information */
          const bookingTimeDetails = bookingTime.reduce((acc: ISingleBookingDate[], bt) => {
             const bookingDate = new Date(bt.day);
-            const fromSelectedMonth = changeDayInDate(new Date(fromMonth), 1);
-            const toSelectedMonth = changeDayInDate(new Date(toMonth), numberOfMonthDays(toMonth));
+            const fromSelectedMonth = changeDayInDateStart(new Date(fromMonth), 1);
+            const toSelectedMonth = changeDayInDateEnd(
+               new Date(toMonth),
+               numberOfMonthDays(toMonth)
+            );
+
             if (
                fromTheBeginning ||
                (bookingDate.getTime() >= fromSelectedMonth.getTime() &&
@@ -164,13 +160,13 @@ const csvClientSummary = (
 
       booking.bookingTime.forEach((bt) => {
          const bookingDate = new Date(bt.day);
-         const fromSelectedMonth = changeDayInDate(new Date(fromMonth), 1);
-         const toSelectedMonth = changeDayInDate(new Date(toMonth), numberOfMonthDays(toMonth));
+         const fromSelectedMonth = changeDayInDateStart(new Date(fromMonth), 1);
+         const toSelectedMonth = changeDayInDateEnd(new Date(toMonth), numberOfMonthDays(toMonth));
 
          if (
             fromTheBeginning ||
             (bookingDate.getTime() >= fromSelectedMonth.getTime() &&
-               bookingDate.getTime() <= makeLastDayOfMonth(toSelectedMonth).getTime())
+               bookingDate.getTime() <= toSelectedMonth.getTime())
          ) {
             let selectedOptions = '';
             let startHourOption = '';

@@ -145,8 +145,15 @@ const prepareCalenderItem = (itemTitle: string, booking: IBooking, index: number
  * @param newDay
  * @returns {String}
  */
-const changeDayInDate = (date: Date, newDay: number): Date => {
+const changeDayInDateStart = (date: Date, newDay: number): Date => {
    date.setDate(newDay);
+   date.setHours(0, 0, 1, 0);
+   return date;
+};
+
+const changeDayInDateEnd = (date: Date, newDay: number): Date => {
+   date.setDate(newDay);
+   date.setHours(23, 59, 59, 0);
    return date;
 };
 
@@ -156,5 +163,6 @@ export {
    formatTime,
    formatCalenderDate,
    formatCalenderHours,
-   changeDayInDate
+   changeDayInDateStart,
+   changeDayInDateEnd
 };

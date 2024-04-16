@@ -312,7 +312,6 @@ const Summary = (): JSX.Element => {
       cloneDeep(INITIAL_CLIENT_BOOKING_DETAILS)
    );
    const [csvReportData, setCSVReportData] = React.useState<CSVReportData[]>([]);
-   const [csvAllReportData, setCsvAllReportData] = React.useState<CSVReportData[]>([]);
    const [isSummaryGenerated, setIsSummaryGenerated] = React.useState<boolean>(false);
 
    const {
@@ -393,21 +392,14 @@ const Summary = (): JSX.Element => {
     * Function to generate all clients booking report for csv file.
     * @param {Date} fromSelectedMont
     * @param {Date} toSelectedMonth
-    * @return {VoidFunction}
+    * @return {Array<CSVReportData>}
     */
    const generateReportForAllClients = (
-      fromSelectedMont = new Date(),
-      toSelectedMonth = new Date()
-   ): void => {
-      const cvsGeneratedReport = csvAllClientSummary(
-         clients,
-         bookings,
-         fromTheBeginning,
-         fromSelectedMont,
-         toSelectedMonth
-      );
-      if (!isEqual(csvAllReportData, cvsGeneratedReport)) setCsvAllReportData(cvsGeneratedReport);
-   };
+      fromSelectedMont: Date = new Date(),
+      toSelectedMonth: Date = new Date()
+   ): CSVReportData[] =>
+      csvAllClientSummary(clients, bookings, fromTheBeginning, fromSelectedMont, toSelectedMonth);
+
    /**
     * Function to restore initial status.
     * @return {VoidFunction}
@@ -466,19 +458,15 @@ const Summary = (): JSX.Element => {
       }
 
       if (forAll) {
-         return `Wszyscy klienci [${partFileName}].csv`.toLowerCase();
+         return `Wszyscy klienci (${partFileName}).csv`.toLowerCase();
       }
 
-      return `${clientSummary.client.name} [${partFileName}].csv`.toLowerCase();
+      return `${clientSummary.client.name} (${partFileName}).csv`.toLowerCase();
    };
 
    React.useEffect(() => {
       updateToMonthDataInForm();
    }, [fromMonth, fromTheBeginning]);
-
-   React.useEffect(() => {
-      generateReportForAllClients(fromMonth, toMonth);
-   }, [fromMonth, toMonth]);
 
    return (
       <SummaryWrapper>
@@ -570,7 +558,7 @@ const Summary = (): JSX.Element => {
                <Label>Generuj raport wszystkich klientów</Label>
                <CSVAllClients
                   type="button"
-                  data={csvAllReportData}
+                  data={generateReportForAllClients(fromMonth, toMonth)}
                   headers={csvFileHeaders}
                   filename={generateFileName(true, fromMonth, toMonth)}
                   separator=";"

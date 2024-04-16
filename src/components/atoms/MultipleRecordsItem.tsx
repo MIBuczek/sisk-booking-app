@@ -210,7 +210,7 @@ const MultipleRecordItem: React.FunctionComponent<IProps> = ({
       <Collapse
          render={({isCollapsed, toggle}: IRenderProps) => (
             <>
-               <tr>
+               <tr aria-label="record">
                   <RecordTableData>
                      {currentPage > 1 ? (currentPage - 1) * 20 + index + 1 : index + 1}
                   </RecordTableData>

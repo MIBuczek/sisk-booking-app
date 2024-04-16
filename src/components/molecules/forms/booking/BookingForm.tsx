@@ -47,10 +47,10 @@ import {BsFillExclamationCircleFill, BsQuestionCircleFill} from 'react-icons/bs'
 import Paragraph from 'components/atoms/Paragraph';
 import ConfirmAction from 'components/molecules/ConfirmAction';
 import BookingExtraOptions from 'components/molecules/forms/booking/BookingExtraOptions';
-import Autocomplete from 'components/atoms/Autocomplete';
 import BookingTimeForm from 'components/molecules/forms/booking/BookingTimeForm';
 import WarningMsg from 'components/atoms/WarningMsg';
 import TimeStamps from 'components/molecules/TimeStamp';
+import AutocompleteTextInput from 'components/atoms/AutocompleteTextInput';
 
 registerLocale('pl', pl);
 
@@ -842,20 +842,39 @@ const BookingForm: React.FunctionComponent<IProps> = ({
                         value: true,
                         message: 'Pole nie może być puste'
                      },
-                     validate: () =>
-                        getValues('discount').includes('%') || 'Pole musi zawierać znak %'
+                     pattern: {
+                        value: /^[0-9/%]+$/,
+                        message: 'Pole może zawierać tylko liczby i znak procent'
+                     },
+                     minLength: {
+                        value: 2,
+                        message: 'Minimalna ilość znaków to 2'
+                     },
+                     maxLength: {
+                        value: 4,
+                        message: 'Maksymalna ilość znaków to 4'
+                     },
+                     validate: () => {
+                        if (!getValues('discount').includes('%')) {
+                           return ' Pole musi zawierać znak %';
+                        }
+                        const numVal = Number(getValues('discount').replace('%', ''));
+                        if (numVal < 0 || numVal > 100) {
+                           return 'Pole musi zawierać wartość od 0 do 100%';
+                        }
+                        return true;
+                     }
                   }}
                   render={({field: {onChange, value}}) => (
-                     <Autocomplete
-                        trigger=""
-                        Component="input"
+                     <AutocompleteTextInput
                         placeholder="0%"
                         value={value}
                         options={DISCOUNT_OPTIONS}
                         onChange={onChange}
                         onSelect={(val: string) => {
-                           setValue('discount', val.split(' ')[0]);
+                           setValue('discount', val);
                         }}
+                        invalid={!!errors.discount}
                         disabled={!(isAdmin || isOffice) || displayConfirmation}
                      />
                   )}

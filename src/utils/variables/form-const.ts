@@ -1,5 +1,5 @@
-import { IBookingTimeForm, ISingleBookingDate, IBookingForm, IClientForm } from 'models';
-import { BOOKING_STATUS, BOOKING_STATUS_OPTIONS } from './booking-status-const';
+import {IBookingTimeForm, ISingleBookingDate, IBookingForm, IClientForm} from 'models';
+import {BOOKING_STATUS, BOOKING_STATUS_OPTIONS} from './booking-status-const';
 
 const today = new Date();
 
@@ -20,7 +20,7 @@ enum CLIENT_TYPE {
 
 // Form Clients
 const CLIENT_INITIAL_VALUE: IClientForm = {
-   type: { label: 'Osoba prywatna', value: CLIENT_TYPE.CLIENT },
+   type: {label: 'Osoba prywatna', value: CLIENT_TYPE.CLIENT},
    nick: '',
    name: '',
    contactPerson: '',
@@ -33,8 +33,8 @@ const CLIENT_INITIAL_VALUE: IClientForm = {
 };
 
 const BOOKING_INITIAL_VALUE: IBookingForm = {
-   city: { label: 'Siechnice', value: 'siechnice' },
-   building: { label: 'Hala sportowa', value: 'hala-sportowa' },
+   city: {label: 'Siechnice', value: 'siechnice'},
+   building: {label: 'Hala sportowa', value: 'hala-sportowa'},
    size: SIZE_OPTIONS['1/1'],
    nick: '',
    person: '',
@@ -43,7 +43,7 @@ const BOOKING_INITIAL_VALUE: IBookingForm = {
    phone: '',
    accepted: false,
    message: '',
-   payment: { value: 'transfer', label: 'Przelew' },
+   payment: {value: 'transfer', label: 'Przelew'},
    discount: '0%',
    archive: false
 };
